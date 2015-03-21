@@ -27,7 +27,7 @@ def initdb():
     db.create_all()
 
     admin = BranchUser(
-            branch_id=1
+            branch_id=1,
             name=u'Edgar',
             email=u'admin@fucking.com',
             password=u'123456')
