@@ -27,7 +27,6 @@ def setup():
     Setup virtual env.
     """
 
-    local("virtualenv env")
     activate_this = "env/bin/activate_this.py"
     execfile(activate_this, dict(__file__=activate_this))
     local("python setup.py install")
