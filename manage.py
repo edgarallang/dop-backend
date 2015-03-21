@@ -4,7 +4,7 @@ from flask.ext.script import Manager
 
 from fbone import create_app
 from fbone.extensions import db
-from fbone.user import User, UserDetail, ADMIN, ACTIVE
+from fbone.user import User, BranchUser, UserDetail, ADMIN, ACTIVE
 from fbone.utils import MALE
 
 
