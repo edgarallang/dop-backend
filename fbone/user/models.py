@@ -70,22 +70,22 @@ class BranchUser(db.Model, UserMixin):
         return check_password_hash(self.password, password)
 
     # ================================================================
-    role_code = Column(db.SmallInteger, default=USER, nullable=False)
+    # role_code = Column(db.SmallInteger, default=USER, nullable=False)
 
-    @property
-    def role(self):
-        return USER_ROLE[self.role_code]
+    # @property
+    # def role(self):
+    #     return USER_ROLE[self.role_code]
 
-    def is_admin(self):
-        return self.role_code == ADMIN
+    # def is_admin(self):
+    #     return self.role_code == ADMIN
 
     # ================================================================
     # One-to-many relationship between users and user_statuses.
-    status_code = Column(db.SmallInteger, default=INACTIVE)
+    # status_code = Column(db.SmallInteger, default=INACTIVE)
 
-    @property
-    def status(self):
-        return USER_STATUS[self.status_code]
+    # @property
+    # def status(self):
+    #     return USER_STATUS[self.status_code]
 
 class User(db.Model, UserMixin):
 

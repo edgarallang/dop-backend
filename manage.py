@@ -27,11 +27,10 @@ def initdb():
     db.create_all()
 
     admin = BranchUser(
+            branch_id=1
             name=u'Edgar',
             email=u'admin@fucking.com',
-            password=u'123456',
-            role_code=ADMIN,
-            status_code=ACTIVE)
+            password=u'123456')
     db.session.add(admin)
     db.session.commit()
 
