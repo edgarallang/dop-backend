@@ -49,7 +49,7 @@ class UserDetail(db.Model):
 
     __tablename__ = 'user_details'
 
-    id = Column(db.Integer, primary_key=True)
+    user_id = Column(db.Integer, primary_key=True)
 
     age = Column(db.Integer)
     phone = Column(db.String(STRING_LEN))
@@ -67,18 +67,12 @@ class UserDetail(db.Model):
     created_time = Column(db.DateTime, default=get_current_time)
 
 
-class User(db.Model, UserMixin):
-
-    __tablename__ = 'users'
-
-    id = Column(db.Integer, primary_key=True)
+class BranchUser(db.Model, UserMixin):
+    __tablename__ = 'branchesUser'
+    branch_user_id = Column(db.Integer, primary_key=True)
+    branch_id = Column(db.Integer, nullable=False)
     name = Column(db.String(STRING_LEN), nullable=False, unique=True)
     email = Column(db.String(STRING_LEN), nullable=False, unique=True)
-    openid = Column(db.String(STRING_LEN), unique=True)
-    activation_key = Column(db.String(STRING_LEN))
-    created_time = Column(db.DateTime, default=get_current_time)
-
-    avatar = Column(db.String(STRING_LEN))
 
     _password = Column('password', db.String(STRING_LEN), nullable=False)
 
@@ -96,7 +90,7 @@ class User(db.Model, UserMixin):
         if self.password is None:
             return False
         return check_password_hash(self.password, password)
-
+        
     # ================================================================
     role_code = Column(db.SmallInteger, default=USER, nullable=False)
 
@@ -114,6 +108,21 @@ class User(db.Model, UserMixin):
     @property
     def status(self):
         return USER_STATUS[self.status_code]
+
+class User(db.Model, UserMixin):
+
+    __tablename__ = 'users'
+
+    user_id = Column(db.Integer, primary_key=True)
+    names = Column(db.String(STRING_LEN), nullable=False, unique=True)
+    email = Column(db.String(STRING_LEN), nullable=False, unique=True)
+    openid = Column(db.String(STRING_LEN), unique=True)
+    facebook_key = Column(db.String(STRING_LEN))
+    google_key = Column(db.String(STRING_LEN))
+    twitter_key = Column(db.String(STRING_LEN))
+    created_time = Column(db.DateTime, default=get_current_time)
+
+
 
     # ================================================================
     # One-to-one (uselist=False) relationship between users and user_details.

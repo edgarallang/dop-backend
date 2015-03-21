@@ -26,21 +26,14 @@ def initdb():
     # db.drop_all()
     db.create_all()
 
-    # admin = User(
-    #         name=u'admin',
-    #         email=u'admin@example.com',
-    #         password=u'123456',
-    #         role_code=ADMIN,
-    #         status_code=ACTIVE,
-    #         user_detail=UserDetail(
-    #             sex_code=MALE,
-    #             age=10,
-    #             url=u'http://admin.example.com',
-    #             deposit=100.00,
-    #             location=u'Culiacan',
-    #             bio=u'admin Guy is ... hmm ... just a admin guy.'))
-    # db.session.add(admin)
-    # db.session.commit()
+    admin = BranchUser(
+            name=u'Edgar',
+            email=u'admin@fucking.com',
+            password=u'123456',
+            role_code=ADMIN,
+            status_code=ACTIVE)
+    db.session.add(admin)
+    db.session.commit()
 
 
 manager.add_option('-c', '--config',
