@@ -37,7 +37,7 @@ def initdb():
                 age=10,
                 url=u'http://admin.example.com',
                 deposit=100.00,
-                location=u'Hangzhou',
+                location=u'Culiacan',
                 bio=u'admin Guy is ... hmm ... just a admin guy.'))
     db.session.add(admin)
     db.session.commit()

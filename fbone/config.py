@@ -39,9 +39,9 @@ class DefaultConfig(BaseConfig):
     # Flask-Sqlalchemy: http://packages.python.org/Flask-SQLAlchemy/config.html
     SQLALCHEMY_ECHO = True
     # SQLITE for prototyping.
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + INSTANCE_FOLDER_PATH + '/db.sqlite'
+    # SQLALCHEMY_DATABASE_URI = 'sqlite:///' + INSTANCE_FOLDER_PATH + '/db.sqlite'
     # MYSQL for production.
-    #SQLALCHEMY_DATABASE_URI = 'mysql://username:password@server/db?charset=utf8'
+    SQLALCHEMY_DATABASE_URI = 'postgresql://root:doprocks@localhost:5432/dop_db'
 
     # Flask-babel: http://pythonhosted.org/Flask-Babel/
     ACCEPT_LANGUAGES = ['zh']
