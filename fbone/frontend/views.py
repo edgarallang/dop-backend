@@ -8,7 +8,7 @@ from flask.ext.mail import Message
 from flask.ext.babel import gettext as _
 from flask.ext.login import login_required, login_user, current_user, logout_user, confirm_login, login_fresh
 
-from ..user import User, UserDetail
+from ..user import User, BranchUser
 from ..extensions import db, mail, login_manager, oid
 from .forms import SignupForm, LoginForm, RecoverPasswordForm, ReauthForm, ChangePasswordForm, OpenIDForm, CreateProfileForm
 
@@ -144,7 +144,7 @@ def signup():
 
     if form.validate_on_submit():
         user = User()
-        user.user_detail = UserDetail()
+        # user.user_detail = UserDetail()
         form.populate_obj(user)
 
         db.session.add(user)
