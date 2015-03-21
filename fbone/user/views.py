@@ -6,7 +6,7 @@ from flask import Blueprint, render_template, send_from_directory, abort
 from flask import current_app as APP
 from flask.ext.login import login_required, current_user
 
-from .models import User
+from .models import User, BranchUser
 
 
 user = Blueprint('user', __name__, url_prefix='/user')
