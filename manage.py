@@ -23,7 +23,7 @@ def run():
 def initdb():
     """Init/reset database."""
 
-    db.drop_all()
+    # db.drop_all()
     db.create_all()
 
     admin = User(
