@@ -68,7 +68,7 @@ class UserDetail(db.Model):
 
 
 class BranchUser(db.Model, UserMixin):
-    __tablename__ = 'branchesUser'
+    __tablename__ = 'branches_user'
     branch_user_id = Column(db.Integer, primary_key=True)
     branch_id = Column(db.Integer, nullable=False)
     name = Column(db.String(STRING_LEN), nullable=False, unique=True)
@@ -90,7 +90,7 @@ class BranchUser(db.Model, UserMixin):
         if self.password is None:
             return False
         return check_password_hash(self.password, password)
-        
+
     # ================================================================
     role_code = Column(db.SmallInteger, default=USER, nullable=False)
 
