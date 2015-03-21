@@ -9,7 +9,7 @@ project = "fbone"
 # the user to use for the remote commands
 env.user = ''
 # the servers where the commands are executed
-env.hosts = ['']
+env.hosts = ['104.236.141.44']
 
 
 def reset():
@@ -27,6 +27,7 @@ def setup():
     Setup virtual env.
     """
 
+    local("virtualenv env")
     activate_this = "env/bin/activate_this.py"
     execfile(activate_this, dict(__file__=activate_this))
     local("python setup.py install")
