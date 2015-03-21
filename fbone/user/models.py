@@ -45,28 +45,6 @@ class DenormalizedText(Mutable, types.TypeDecorator):
         return set(value)
 
 
-class UserDetail(db.Model):
-
-    __tablename__ = 'user_details'
-
-    user_id = Column(db.Integer, primary_key=True)
-
-    age = Column(db.Integer)
-    phone = Column(db.String(STRING_LEN))
-    url = Column(db.String(STRING_LEN))
-    deposit = Column(db.Numeric)
-    location = Column(db.String(STRING_LEN))
-    bio = Column(db.String(STRING_LEN))
-
-    sex_code = db.Column(db.Integer)
-
-    @property
-    def sex(self):
-        return SEX_TYPE.get(self.sex_code)
-
-    created_time = Column(db.DateTime, default=get_current_time)
-
-
 class BranchUser(db.Model, UserMixin):
     __tablename__ = 'branches_user'
     branch_user_id = Column(db.Integer, primary_key=True)
@@ -121,13 +99,6 @@ class User(db.Model, UserMixin):
     google_key = Column(db.String(STRING_LEN))
     twitter_key = Column(db.String(STRING_LEN))
     created_time = Column(db.DateTime, default=get_current_time)
-
-
-
-    # ================================================================
-    # One-to-one (uselist=False) relationship between users and user_details.
-    user_detail_id = Column(db.Integer, db.ForeignKey("user_details.id"))
-    user_detail = db.relationship("UserDetail", uselist=False, backref="user")
 
     # ================================================================
     # Follow / Following
