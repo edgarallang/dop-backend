@@ -47,7 +47,7 @@ class DenormalizedText(Mutable, types.TypeDecorator):
 
 class BranchUser(db.Model, UserMixin):
     __tablename__ = 'branches_user'
-    branch_user_id = Column(db.Integer, primary_key=True)
+    branches_user_id = Column(db.Integer, primary_key=True)
     branch_id = Column(db.Integer, nullable=False)
     name = Column(db.String(STRING_LEN), nullable=False, unique=True)
     email = Column(db.String(STRING_LEN), nullable=False, unique=True)
