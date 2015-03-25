@@ -101,9 +101,6 @@ class BranchUser(db.Model, UserMixin):
             return False
         return check_password_hash(self.password, password)
 
-    branch_id = Column(db.Integer, db.ForeignKey("branches.branch_id"))
-    branches_user = db.relationship("BranchUser", uselist=False, backref="branches")
-
     # ================================================================
     # role_code = Column(db.SmallInteger, default=USER, nullable=False)
 
