@@ -32,7 +32,7 @@ def logout():
         logout_user()
     return jsonify(flag='success', msg='Logouted.')
 
-@user.route('/v1/calis', methods=['GET'])
+@api.route('/v1/calis', methods=['GET'])
 def calis():
     user = {
         'user': 'Edgar Allan',
