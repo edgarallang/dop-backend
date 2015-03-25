@@ -131,7 +131,7 @@ class User(db.Model, UserMixin):
     facebook_key = Column(db.String(STRING_LEN))
     google_key = Column(db.String(STRING_LEN))
     twitter_key = Column(db.String(STRING_LEN))
-    created_time = Column(db.DateTime, default=get_current_time)
+    # created_time = Column(db.DateTime, default=get_current_time)
 
     # ================================================================
     # Follow / Following
