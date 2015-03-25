@@ -72,6 +72,8 @@ class Branch(db.Model, UserMixin):
     name = Column(db.String(STRING_LEN), nullable=False, unique=True)
     category_id = Column(db.Integer, nullable=False)
 
+    branches_user_id = Column(db.Integer, db.ForeignKey("branches_user.branches_user_id"))
+    branches_user = db.relationship("BranchUser", uselist=False, backref="branch")
 # =====================================================================
 # Branches user is the person geting into the system from that specific branch
 
