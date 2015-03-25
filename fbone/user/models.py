@@ -135,35 +135,35 @@ class User(db.Model, UserMixin):
 
     # ================================================================
     # Follow / Following
-    followers = Column(DenormalizedText)
-    following = Column(DenormalizedText)
+    # followers = Column(DenormalizedText)
+    # following = Column(DenormalizedText)
 
-    @property
-    def num_followers(self):
-        if self.followers:
-            return len(self.followers)
-        return 0
+    # @property
+    # def num_followers(self):
+    #     if self.followers:
+    #         return len(self.followers)
+    #     return 0
 
-    @property
-    def num_following(self):
-        return len(self.following)
+    # @property
+    # def num_following(self):
+    #     return len(self.following)
 
-    def follow(self, user):
-        user.followers.add(self.id)
-        self.following.add(user.user_id)
+    # def follow(self, user):
+    #     user.followers.add(self.id)
+    #     self.following.add(user.user_id)
 
-    def unfollow(self, user):
-        if self.id in user.followers:
-            user.followers.remove(self.id)
+    # def unfollow(self, user):
+    #     if self.id in user.followers:
+    #         user.followers.remove(self.id)
 
-        if user.user_id in self.following:
-            self.following.remove(user.user_id)
+    #     if user.user_id in self.following:
+    #         self.following.remove(user.user_id)
 
-    def get_following_query(self):
-        return User.query.filter(User.user_id.in_(self.following or set()))
+    # def get_following_query(self):
+    #     return User.query.filter(User.user_id.in_(self.following or set()))
 
-    def get_followers_query(self):
-        return User.query.filter(User.user_id.in_(self.followers or set()))
+    # def get_followers_query(self):
+    #     return User.query.filter(User.user_id.in_(self.followers or set()))
 
     # ================================================================
     # Class methods
