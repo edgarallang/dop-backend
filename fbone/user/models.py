@@ -49,18 +49,18 @@ class DenormalizedText(Mutable, types.TypeDecorator):
 # Company
 
 class Company(db.Model, UserMixin):
-    __tablename__ = 'companies'
-    company_id = Column(db.Integer, primary_key=True)
-    name = Column(db.String(STRING_LEN), nullable=False, unique=True)
+    __tablename__ = 'companies'
+    company_id = Column(db.Integer, primary_key=True)
+    name = Column(db.String(STRING_LEN), nullable=False, unique=True)
 
 
 # =====================================================================
 # Categories 
 
 class Category(db.Model, UserMixin):
-    __tablename__ = 'categories'
-    category_id = Column(db.Integer, primary_key=True)
-    name = Column(db.String(STRING_LEN), nullable=False, unique=True)
+    __tablename__ = 'categories'
+    category_id = Column(db.Integer, primary_key=True)
+    name = Column(db.String(STRING_LEN), nullable=False, unique=True)
 
 # =====================================================================
 # Branches 
