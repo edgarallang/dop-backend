@@ -53,6 +53,8 @@ class Company(db.Model, UserMixin):
     company_id = Column(db.Integer, primary_key=True)
     name = Column(db.String(STRING_LEN), nullable=False, unique=True)
 
+    branches = db.relationship("Branch", uselist=False, backref="companies")
+
 
 # =====================================================================
 # Categories 
@@ -68,7 +70,7 @@ class Category(db.Model, UserMixin):
 class Branch(db.Model, UserMixin):
     __tablename__ = 'branches'
     branch_id = Column(db.Integer, primary_key=True)
-    company_id = Column(db.Integer, nullable=False)
+    company_id = Column(db.Integer, db.ForeignKey('companies.company_id'),nullable=False)
     name = Column(db.String(STRING_LEN), nullable=False, unique=True)
     category_id = Column(db.Integer, nullable=False)
 
@@ -149,27 +151,27 @@ class User(db.Model, UserMixin):
 
     def follow(self, user):
         user.followers.add(self.id)
-        self.following.add(user.id)
+        self.following.add(user.user_id)
 
     def unfollow(self, user):
         if self.id in user.followers:
             user.followers.remove(self.id)
 
-        if user.id in self.following:
-            self.following.remove(user.id)
+        if user.user_id in self.following:
+            self.following.remove(user.user_id)
 
     def get_following_query(self):
-        return User.query.filter(User.id.in_(self.following or set()))
+        return User.query.filter(User.user_id.in_(self.following or set()))
 
     def get_followers_query(self):
-        return User.query.filter(User.id.in_(self.followers or set()))
+        return User.query.filter(User.user_id.in_(self.followers or set()))
 
     # ================================================================
     # Class methods
 
     @classmethod
     def authenticate(cls, login, password):
-        user = cls.query.filter(db.or_(User.name == login, User.email == login)).first()
+        user = cls.query.filter(db.or_(User.names == login, User.email == login)).first()
 
         if user:
             authenticated = user.check_password(password)
@@ -195,4 +197,4 @@ class User(db.Model, UserMixin):
         return cls.query.filter_by(id=user_id).first_or_404()
 
     def check_name(self, name):
-        return User.query.filter(db.and_(User.name == name, User.email != self.id)).count() == 0
+        return User.query.filter(db.and_(User.names == names, User.email != self.id)).count() == 0
