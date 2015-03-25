@@ -80,7 +80,7 @@ class Branch(db.Model, UserMixin):
 class BranchUser(db.Model, UserMixin):
     __tablename__ = 'branches_user'
     branches_user_id = Column(db.Integer, primary_key=True)
-    branch_id = Column(db.Integer, nullable=False)
+    branch_id = Column(db.Integer, ForeignKey('branches.id'), nullable=False)
     name = Column(db.String(STRING_LEN), nullable=False, unique=True)
     email = Column(db.String(STRING_LEN), nullable=False, unique=True)
 
