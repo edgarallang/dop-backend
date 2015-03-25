@@ -127,8 +127,7 @@ class User(db.Model, UserMixin):
 
     user_id = Column(db.Integer, primary_key=True)
     names = Column(db.String(STRING_LEN), nullable=False, unique=True)
-    email = Column(db.String(STRING_LEN), nullable=False, unique=True)
-    openid = Column(db.String(STRING_LEN), unique=True)
+    # openid = Column(db.String(STRING_LEN), unique=True)
     facebook_key = Column(db.String(STRING_LEN))
     google_key = Column(db.String(STRING_LEN))
     twitter_key = Column(db.String(STRING_LEN))
