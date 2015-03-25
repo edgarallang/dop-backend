@@ -45,6 +45,36 @@ class DenormalizedText(Mutable, types.TypeDecorator):
         return set(value)
 
 
+# =====================================================================
+# Company
+
+class Company(db.Model, UserMixin):
+    __tablename__ = 'companies'
+    company_id = Column(db.Integer, primary_key=True)
+    name = Column(db.String(STRING_LEN), nullable=False, unique=True)
+
+
+# =====================================================================
+# Categories 
+
+class Category(db.Model, UserMixin):
+    __tablename__ = 'categories'
+    category_id = Column(db.Integer, primary_key=True)
+    name = Column(db.String(STRING_LEN), nullable=False, unique=True)
+
+# =====================================================================
+# Branches 
+
+class Branch(db.Model, UserMixin):
+    __tablename__ = 'branches'
+    branch_id = Column(db.Integer, primary_key=True)
+    company_id = Column(db.Integer, nullable=False)
+    name = Column(db.String(STRING_LEN), nullable=False, unique=True)
+    category_id = Column(db.Integer, nullable=False)
+
+# =====================================================================
+# Branches user is the person geting into the system from that specific branch
+
 class BranchUser(db.Model, UserMixin):
     __tablename__ = 'branches_user'
     branches_user_id = Column(db.Integer, primary_key=True)
@@ -68,6 +98,9 @@ class BranchUser(db.Model, UserMixin):
         if self.password is None:
             return False
         return check_password_hash(self.password, password)
+
+    branch_id = Column(db.Integer, db.ForeignKey("branches.id"))
+    branches_user = db.relationship("BranchUser", uselist=False, backref="branches")
 
     # ================================================================
     # role_code = Column(db.SmallInteger, default=USER, nullable=False)
