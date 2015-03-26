@@ -45,40 +45,46 @@ class DenormalizedText(Mutable, types.TypeDecorator):
         return set(value)
 
 
-class UserDetail(db.Model):
+# =====================================================================
+# Company
 
-    __tablename__ = 'user_details'
+class Company(db.Model, UserMixin):
+    __tablename__ = 'companies'
+    company_id = Column(db.Integer, primary_key=True)
+    name = Column(db.String(STRING_LEN), nullable=False, unique=True)
 
-    id = Column(db.Integer, primary_key=True)
-
-    age = Column(db.Integer)
-    phone = Column(db.String(STRING_LEN))
-    url = Column(db.String(STRING_LEN))
-    deposit = Column(db.Numeric)
-    location = Column(db.String(STRING_LEN))
-    bio = Column(db.String(STRING_LEN))
-
-    sex_code = db.Column(db.Integer)
-
-    @property
-    def sex(self):
-        return SEX_TYPE.get(self.sex_code)
-
-    created_time = Column(db.DateTime, default=get_current_time)
+    branches = db.relationship("Branch", uselist=False, backref="companies")
 
 
-class User(db.Model, UserMixin):
+# =====================================================================
+# Categories 
 
-    __tablename__ = 'users'
+class Category(db.Model, UserMixin):
+    __tablename__ = 'categories'
+    category_id = Column(db.Integer, primary_key=True)
+    name = Column(db.String(STRING_LEN), nullable=False, unique=True)
 
-    id = Column(db.Integer, primary_key=True)
+# =====================================================================
+# Branches 
+
+class Branch(db.Model, UserMixin):
+    __tablename__ = 'branches'
+    branch_id = Column(db.Integer, primary_key=True)
+    company_id = Column(db.Integer, db.ForeignKey('companies.company_id'),nullable=False)
+    name = Column(db.String(STRING_LEN), nullable=False, unique=True)
+    category_id = Column(db.Integer, nullable=False)
+
+    # branches_user_id = Column(db.Integer, db.ForeignKey("branches_user.branches_user_id"))
+    branches_user = db.relationship("BranchUser", uselist=False, backref="branches")
+# =====================================================================
+# Branches user is the person geting into the system from that specific branch
+
+class BranchUser(db.Model, UserMixin):
+    __tablename__ = 'branches_user'
+    branches_user_id = Column(db.Integer, primary_key=True)
+    branch_id = Column(db.Integer, db.ForeignKey('branches.branch_id'), nullable=False)
     name = Column(db.String(STRING_LEN), nullable=False, unique=True)
     email = Column(db.String(STRING_LEN), nullable=False, unique=True)
-    openid = Column(db.String(STRING_LEN), unique=True)
-    activation_key = Column(db.String(STRING_LEN))
-    created_time = Column(db.DateTime, default=get_current_time)
-
-    avatar = Column(db.String(STRING_LEN))
 
     _password = Column('password', db.String(STRING_LEN), nullable=False)
 
@@ -98,66 +104,73 @@ class User(db.Model, UserMixin):
         return check_password_hash(self.password, password)
 
     # ================================================================
-    role_code = Column(db.SmallInteger, default=USER, nullable=False)
+    # role_code = Column(db.SmallInteger, default=USER, nullable=False)
 
-    @property
-    def role(self):
-        return USER_ROLE[self.role_code]
+    # @property
+    # def role(self):
+    #     return USER_ROLE[self.role_code]
 
-    def is_admin(self):
-        return self.role_code == ADMIN
+    # def is_admin(self):
+    #     return self.role_code == ADMIN
 
     # ================================================================
     # One-to-many relationship between users and user_statuses.
-    status_code = Column(db.SmallInteger, default=INACTIVE)
+    # status_code = Column(db.SmallInteger, default=INACTIVE)
 
-    @property
-    def status(self):
-        return USER_STATUS[self.status_code]
+    # @property
+    # def status(self):
+    #     return USER_STATUS[self.status_code]
 
-    # ================================================================
-    # One-to-one (uselist=False) relationship between users and user_details.
-    user_detail_id = Column(db.Integer, db.ForeignKey("user_details.id"))
-    user_detail = db.relationship("UserDetail", uselist=False, backref="user")
+class User(db.Model, UserMixin):
+
+    __tablename__ = 'users'
+
+    user_id = Column(db.Integer, primary_key=True)
+    names = Column(db.String(STRING_LEN), nullable=False, unique=True)
+    # openid = Column(db.String(STRING_LEN), unique=True)
+    facebook_key = Column(db.String(STRING_LEN))
+    google_key = Column(db.String(STRING_LEN))
+    twitter_key = Column(db.String(STRING_LEN))
+    # created_time = Column(db.DateTime, default=get_current_time)
 
     # ================================================================
     # Follow / Following
-    followers = Column(DenormalizedText)
-    following = Column(DenormalizedText)
+    # followers = Column(DenormalizedText)
+    # following = Column(DenormalizedText)
 
-    @property
-    def num_followers(self):
-        if self.followers:
-            return len(self.followers)
-        return 0
+    # @property
+    # def num_followers(self):
+    #     if self.followers:
+    #         return len(self.followers)
+    #     return 0
 
-    @property
-    def num_following(self):
-        return len(self.following)
+    # @property
+    # def num_following(self):
+    #     return len(self.following)
 
-    def follow(self, user):
-        user.followers.add(self.id)
-        self.following.add(user.id)
+    # def follow(self, user):
+    #     user.followers.add(self.id)
+    #     self.following.add(user.user_id)
 
-    def unfollow(self, user):
-        if self.id in user.followers:
-            user.followers.remove(self.id)
+    # def unfollow(self, user):
+    #     if self.id in user.followers:
+    #         user.followers.remove(self.id)
 
-        if user.id in self.following:
-            self.following.remove(user.id)
+    #     if user.user_id in self.following:
+    #         self.following.remove(user.user_id)
 
-    def get_following_query(self):
-        return User.query.filter(User.id.in_(self.following or set()))
+    # def get_following_query(self):
+    #     return User.query.filter(User.user_id.in_(self.following or set()))
 
-    def get_followers_query(self):
-        return User.query.filter(User.id.in_(self.followers or set()))
+    # def get_followers_query(self):
+    #     return User.query.filter(User.user_id.in_(self.followers or set()))
 
     # ================================================================
     # Class methods
 
     @classmethod
     def authenticate(cls, login, password):
-        user = cls.query.filter(db.or_(User.name == login, User.email == login)).first()
+        user = cls.query.filter(db.or_(User.names == login, User.email == login)).first()
 
         if user:
             authenticated = user.check_password(password)
@@ -183,4 +196,4 @@ class User(db.Model, UserMixin):
         return cls.query.filter_by(id=user_id).first_or_404()
 
     def check_name(self, name):
-        return User.query.filter(db.and_(User.name == name, User.email != self.id)).count() == 0
+        return User.query.filter(db.and_(User.names == names, User.email != self.id)).count() == 0

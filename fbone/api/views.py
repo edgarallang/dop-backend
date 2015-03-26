@@ -31,3 +31,11 @@ def logout():
     if current_user.is_authenticated():
         logout_user()
     return jsonify(flag='success', msg='Logouted.')
+
+@api.route('/v1/calis', methods=['GET'])
+def calis():
+    user = {
+        'user': 'Edgar Allan',
+        'pass': 123456
+    }
+    return jsonify({'AquiEstaTuApi': user})

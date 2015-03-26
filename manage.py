@@ -4,7 +4,7 @@ from flask.ext.script import Manager
 
 from fbone import create_app
 from fbone.extensions import db
-from fbone.user import User, UserDetail, ADMIN, ACTIVE
+from fbone.user import User, BranchUser, ADMIN, ACTIVE
 from fbone.utils import MALE
 
 
@@ -26,19 +26,11 @@ def initdb():
     # db.drop_all()
     db.create_all()
 
-    admin = User(
-            name=u'admin',
-            email=u'admin@example.com',
-            password=u'123456',
-            role_code=ADMIN,
-            status_code=ACTIVE,
-            user_detail=UserDetail(
-                sex_code=MALE,
-                age=10,
-                url=u'http://admin.example.com',
-                deposit=100.00,
-                location=u'Culiacan',
-                bio=u'admin Guy is ... hmm ... just a admin guy.'))
+    admin = BranchUser(
+            branch_id=2,
+            name=u'Edgar',
+            email=u'admin@fucking.com',
+            password=u'123456')
     db.session.add(admin)
     db.session.commit()
 
