@@ -74,6 +74,8 @@ class User(db.Model, UserMixin):
     facebook_key = Column(db.String(STRING_LEN))
     google_key = Column(db.String(STRING_LEN))
     twitter_key = Column(db.String(STRING_LEN))
+
+    users_image_user_id = db.relationship("UserImage", uselist=False, backref="users")
     # created_time = Column(db.DateTime, default=get_current_time)
 
     # ================================================================
@@ -115,6 +117,16 @@ class User(db.Model, UserMixin):
         user_image_id = Column(db.Integer, primary_key=True)
         user_id = Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
         main_image = Column(db.String(STRING_LEN))
+
+    # ================================================================
+    # User Level 
+
+    class UserLevel(db.Model, UserMixin):
+        __tablename__ = 'users_level'
+        user_level_id = Column(db.Integer, primary_key=True)
+        user_id = Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
+        level_id = Column(db.Integer, db.ForeignKey('levels.level_id'), nullable=False)
+        exp = Column(db.Integer, nullable=False)
 
     # ================================================================
     # Class methods
