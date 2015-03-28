@@ -112,21 +112,21 @@ class User(db.Model, UserMixin):
 
     # Images 
 
-    class UserImage(db.Model, UserMixin):
-        __tablename__ = 'user_images'
-        user_image_id = Column(db.Integer, primary_key=True)
-        user_id = Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
-        main_image = Column(db.String(STRING_LEN))
+class UserImage(db.Model, UserMixin):
+    __tablename__ = 'user_images'
+    user_image_id = Column(db.Integer, primary_key=True)
+    user_id = Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
+    main_image = Column(db.String(STRING_LEN))
 
-    # ================================================================
-    # User Level 
+# ================================================================
+# User Level 
 
-    class UserLevel(db.Model, UserMixin):
-        __tablename__ = 'users_level'
-        user_level_id = Column(db.Integer, primary_key=True)
-        user_id = Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
-        level_id = Column(db.Integer, db.ForeignKey('levels.level_id'), nullable=False)
-        exp = Column(db.Integer, nullable=False)
+class UserLevel(db.Model, UserMixin):
+    __tablename__ = 'users_level'
+    user_level_id = Column(db.Integer, primary_key=True)
+    user_id = Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
+    level_id = Column(db.Integer, db.ForeignKey('levels.level_id'), nullable=False)
+    exp = Column(db.Integer, nullable=False)
 
     # ================================================================
     # Class methods
