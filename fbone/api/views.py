@@ -40,8 +40,11 @@ def companies():
         'user': 'pikochin',
         'pass': 123456
     }
-    print result
-    return jsonify({'AquiEstaTuApi': user})
+    names = []
+    for row in result
+        names.append(row[0])
+
+    return jsonify({'AquiEstaTuApi': names})
 
 @api.route('/v1/calis', methods=['GET'])
 def calis():
