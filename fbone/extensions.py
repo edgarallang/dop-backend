@@ -14,3 +14,6 @@ login_manager = LoginManager()
 
 from flask.ext.openid import OpenID
 oid = OpenID()
+
+from flask.ext.jwt import JWT
+jwt = JWT()

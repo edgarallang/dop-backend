@@ -1,6 +1,6 @@
 from sqlalchemy import Column, types
 from sqlalchemy.ext.mutable import Mutable
-from ..extensions import db
+from ..extensions import db, jwt
 from ..utils import get_current_time, SEX_TYPE, STRING_LEN
 
 # =====================================================================
