@@ -41,7 +41,7 @@ def companies():
         'pass': 123456
     }
     names = []
-    for row in result
+    for row in result:
         names.append(row[0])
 
     return jsonify({'AquiEstaTuApi': names})
