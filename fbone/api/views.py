@@ -2,6 +2,7 @@
 
 from flask import Blueprint, current_app, request, jsonify
 from flask.ext.login import login_user, current_user, logout_user
+from ..extensions import db
 
 from ..user import User
 
@@ -31,6 +32,16 @@ def logout():
     if current_user.is_authenticated():
         logout_user()
     return jsonify(flag='success', msg='Logouted.')
+
+@api.route('/select-companies', methods=['GET'])    
+def companies():
+    result = db.engine.execute("SELECT * FROM companies")
+    user = {
+        'user': 'pikochin',
+        'pass': 123456
+    }
+    print result
+    return jsonify({'AquiEstaTuApi': user})
 
 @api.route('/v1/calis', methods=['GET'])
 def calis():
