@@ -7,6 +7,7 @@ from flask.ext.babel import Babel
 
 from .config import DefaultConfig
 from .user import User, user
+from .company import Company, Branch, BranchLocation, BranchDesign, BranchUser, Category, company
 from .settings import settings
 from .frontend import frontend
 from .api import api

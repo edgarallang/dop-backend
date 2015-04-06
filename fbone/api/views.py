@@ -33,19 +33,6 @@ def logout():
         logout_user()
     return jsonify(flag='success', msg='Logouted.')
 
-@api.route('/select-companies', methods=['GET'])    
-def companies():
-    result = db.engine.execute("SELECT * FROM companies")
-    user = {
-        'user': 'pikochin',
-        'pass': 123456
-    }
-    names = []
-    for row in result:
-        names.append(row[1])
-
-    return jsonify({'AquiEstaTuApi': names})
-
 @api.route('/v1/calis', methods=['GET'])
 def calis():
     user = {

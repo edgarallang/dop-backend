@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
-
+from datetime import datetime, timedelta
 import os
-
+import jwt
+import json
+import requests
 from flask import Blueprint, render_template, send_from_directory, abort
 from flask import current_app as APP
 from flask.ext.login import login_required, current_user
-from flask.ext.jwt import JWT, jwt_required
+from jwt import DecodeError, ExpiredSignature
 from .models import Company, Branch, BranchDesign, BranchLocation, BranchUser, Category
 
 
@@ -30,3 +32,25 @@ def signup():
             return redirect(form.next.data or url_for('user.index'))
 
     return render_template('frontend/signup.html', form=form)
+
+@company.route('/auth/signup', methods=['POST'])
+def signup():
+    branchUser = BranchUserUser(email=request.json['email'], password=request.json['password'])
+    db.session.add(branchUser)
+    db.session.commit()
+    token = create_token(branchUser)
+    return jsonify(token=token)
+
+@company.route('/select-companies', methods=['GET'])    
+def companies():
+    result = db.engine.execute("SELECT * FROM companies")
+    user = {
+        'user': 'pikochin',
+        'pass': 123456
+    }
+    names = []
+    for row in result:
+        names.append(row[1])
+
+    return jsonify({'AquiEstaTuApi': names})
+

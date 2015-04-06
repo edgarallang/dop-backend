@@ -6,7 +6,7 @@ from ..utils import get_current_time, SEX_TYPE, STRING_LEN
 # =====================================================================
 # Company
 
-class Company(db.Model, UserMixin):
+class Company(db.Model):
     __tablename__ = 'companies'
     company_id = Column(db.Integer, primary_key=True)
     name = Column(db.String(STRING_LEN), nullable=False, unique=True)
@@ -16,7 +16,7 @@ class Company(db.Model, UserMixin):
 # =====================================================================
 # Branches 
 
-class Branch(db.Model, UserMixin):
+class Branch(db.Model):
     __tablename__ = 'branches'
     branch_id = Column(db.Integer, primary_key=True)
     company_id = Column(db.Integer, db.ForeignKey('companies.company_id'),nullable=False)
@@ -31,7 +31,7 @@ class Branch(db.Model, UserMixin):
 # =====================================================================
 # Branches Design
 
-class BranchDesign(db.Model, UserMixin):
+class BranchDesign(db.Model):
     __tablename__ = 'branches_design'
     design_id = Column(db.Integer, primary_key=True)
     branch_id = Column(db.Integer, db.ForeignKey('branches.branch_id'),nullable=False)
@@ -44,7 +44,7 @@ class BranchDesign(db.Model, UserMixin):
 # =====================================================================
 # Branches Location
 
-class BranchLocation(db.Model, UserMixin):
+class BranchLocation(db.Model):
     __tablename__ = 'branches_location'
     user_location_id = Column(db.Integer, primary_key=True)
     branch_id = Column(db.Integer, db.ForeignKey('branches.branch_id'),nullable=False)
@@ -57,7 +57,7 @@ class BranchLocation(db.Model, UserMixin):
 # =====================================================================
 # Categories 
 
-class Category(db.Model, UserMixin):
+class Category(db.Model):
     __tablename__ = 'categories'
     category_id = Column(db.Integer, primary_key=True)
     name = Column(db.String(STRING_LEN), nullable=False, unique=True)
@@ -67,7 +67,7 @@ class Category(db.Model, UserMixin):
 # =====================================================================
 # Branches user is the person geting into the system from that specific branch
 
-class BranchUser(db.Model, UserMixin):
+class BranchUser(db.Model):
     __tablename__ = 'branches_user'
     branches_user_id = Column(db.Integer, primary_key=True)
     branch_id = Column(db.Integer, db.ForeignKey('branches.branch_id'), nullable=False)
