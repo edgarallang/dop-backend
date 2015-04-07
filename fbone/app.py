@@ -7,7 +7,7 @@ from flask.ext.babel import Babel
 
 from .config import DefaultConfig
 from .badge import Badge
-from .level import Level
+from .level import Level, level
 from .user import User, UserLevel, user
 from .company import Company, Branch, BranchLocation, BranchDesign, BranchUser, Category, company
 from .settings import settings
