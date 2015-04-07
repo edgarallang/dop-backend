@@ -74,21 +74,21 @@ class BranchUser(db.Model):
     name = Column(db.String(STRING_LEN), nullable=False, unique=True)
     email = Column(db.String(STRING_LEN), nullable=False, unique=True)
 
-    _password = Column('password', db.String(STRING_LEN), nullable=False)
+    password = Column('password', db.String(STRING_LEN), nullable=False)
 
-    def _get_password(self):
-        return self._password
+    # def _get_password(self):
+    #     return self._password
 
-    def _set_password(self, password):
-        self._password = generate_password_hash(password)
-    # Hide password encryption by exposing password field only.
-    password = db.synonym('_password',
-                          descriptor=property(_get_password,
-                                              _set_password))
+    # def _set_password(self, password):
+    #     self._password = generate_password_hash(password)
+    # # Hide password encryption by exposing password field only.
+    # password = db.synonym('_password',
+    #                       descriptor=property(_get_password,
+    #                                           _set_password))
 
-    def check_password(self, password):
-        if self.password is None:
-            return False
-        return check_password_hash(self.password, password)
+    # def check_password(self, password):
+    #     if self.password is None:
+    #         return False
+    #     return check_password_hash(self.password, password)
 
 # ================================================================
