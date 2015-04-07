@@ -11,7 +11,7 @@ from jwt import DecodeError, ExpiredSignature
 from .models import Company, Branch, BranchDesign, BranchLocation, BranchUser, Category
 
 
-company = Blueprint('company', __name__, url_prefix='/')
+company = Blueprint('company', __name__, url_prefix='/company')
 
 # @company.route('/signup', methods=['GET', 'POST'])
 # def signup():

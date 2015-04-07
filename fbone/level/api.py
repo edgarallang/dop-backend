@@ -10,7 +10,7 @@ from flask.ext.login import login_required, current_user
 from jwt import DecodeError, ExpiredSignature
 from .models import Level
 
-level = Blueprint('level', __name__, url_prefix='/')
+level = Blueprint('level', __name__, url_prefix='/level')
 
 @level.route('/select_level', methods=['GET'])
 def levels():
