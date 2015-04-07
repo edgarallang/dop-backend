@@ -15,8 +15,8 @@ level = Blueprint('level', __name__, url_prefix='/level')
 @level.route('/select_level', methods=['GET'])
 def levels():
     lvl = {
-      name: 'Dragon Master',
-      benefits: 'Ruby',
-      lvl: 30
+      'name': 'Dragon Master',
+      'benefits': 'Ruby',
+      'lvl': 30
     }
     return jsonify(level=lvl)
