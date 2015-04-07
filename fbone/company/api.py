@@ -36,7 +36,7 @@ company = Blueprint('company', __name__, url_prefix='/company')
 
 @company.route('/auth/signup', methods=['POST'])
 def signup():
-    branchUser = BranchUserUser(email=request.json['email'], password=request.json['password'])
+    branchUser = BranchUser(email=request.json['email'], password=request.json['password'])
     db.session.add(branchUser)
     db.session.commit()
     token = create_token(branchUser)
