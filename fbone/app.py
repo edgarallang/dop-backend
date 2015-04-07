@@ -6,7 +6,9 @@ from flask import Flask, request, render_template
 from flask.ext.babel import Babel
 
 from .config import DefaultConfig
-from .user import User, user
+from .badge import Badge
+from .level import Level
+from .user import User, UserLevel, user
 from .company import Company, Branch, BranchLocation, BranchDesign, BranchUser, Category, company
 from .settings import settings
 from .frontend import frontend
