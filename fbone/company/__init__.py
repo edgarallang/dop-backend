@@ -1,2 +1,2 @@
-from .models import Branch, BranchLocation, BranchDesign, BranchUser, Category, Company
+from .models import *
 from .api import company
