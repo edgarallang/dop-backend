@@ -2,7 +2,7 @@ from sqlalchemy import Column, types
 from sqlalchemy.ext.mutable import Mutable
 from ..extensions import db, jwt
 from ..utils import get_current_time, SEX_TYPE, STRING_LEN
-from level import Level
+from ../level import Level
 
 class Badge(db.Model):
     __tablename__ = 'badges'
