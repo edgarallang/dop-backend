@@ -39,7 +39,8 @@ def signup():
     branchUser = BranchUser(email=request.json['email'], password=request.json['password'], branch_id=request.json['branch_id'], name=request.json['name'])
     db.session.add(branchUser)
     db.session.commit()
-    token = create_token(branchUser)
+    priv_key = 'bitch'
+    token = jwt.generate_jwt(branchUser, priv_key, 'RS256', datetime.timedelta(minutes=5))
     return jsonify(token=token)
 
 @company.route('/select-companies', methods=['GET'])    
