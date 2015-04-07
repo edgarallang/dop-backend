@@ -40,7 +40,7 @@ def signup():
     db.session.add(branchUser)
     db.session.commit()
     priv_key = 'bitch'
-    token = jwt.encode({ 'new_token': branchUser }, priv_key, algorithm='HS256')
+    token = jwt.encode(jsonify({ 'new_token': branchUser }), priv_key, algorithm='HS256')
     return jsonify(token=token)
 
 @company.route('/select-companies', methods=['GET'])    
