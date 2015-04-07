@@ -1,2 +1,2 @@
 from .models import Badge
-from .api import badge
+# from .api import badge
