@@ -13,25 +13,25 @@ from .models import Company, Branch, BranchDesign, BranchLocation, BranchUser, C
 
 company = Blueprint('company', __name__, url_prefix='/')
 
-@company.route('/signup', methods=['GET', 'POST'])
-def signup():
-    if current_user.is_authenticated():
-        return redirect(url_for('user.index'))
+# @company.route('/signup', methods=['GET', 'POST'])
+# def signup():
+#     if current_user.is_authenticated():
+#         return redirect(url_for('user.index'))
 
-    form = SignupForm(next=request.args.get('next'))
+#     form = SignupForm(next=request.args.get('next'))
 
-    if form.validate_on_submit():
-        user = User()
-        # user.user_detail = UserDetail()
-        form.populate_obj(user)
+#     if form.validate_on_submit():
+#         user = User()
+#         # user.user_detail = UserDetail()
+#         form.populate_obj(user)
 
-        db.session.add(user)
-        db.session.commit()
+#         db.session.add(user)
+#         db.session.commit()
 
-        if login_user(user):
-            return redirect(form.next.data or url_for('user.index'))
+#         if login_user(user):
+#             return redirect(form.next.data or url_for('user.index'))
 
-    return render_template('frontend/signup.html', form=form)
+#     return render_template('frontend/signup.html', form=form)
 
 @company.route('/auth/signup', methods=['POST'])
 def signup():
