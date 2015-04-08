@@ -104,7 +104,6 @@ def configure_blueprints(app, blueprints):
 
     for blueprint in blueprints:
         app.register_blueprint(blueprint)
-        print blueprint
 
 def configure_template_filters(app):
 

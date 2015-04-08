@@ -42,7 +42,7 @@ def signup():
     priv_key = 'bitch'
     newUser = request.json
     token = jwt.encode({ 'new_token': newUser }, priv_key, algorithm='HS256')
-    return jsonify(token=token)
+    return jsonify({'token': token})
 
 @company.route('/select-companies', methods=['GET'])    
 def companies():
