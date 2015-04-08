@@ -31,9 +31,7 @@ def signup():
     branchUser = BranchUser(email=request.json['email'], password=request.json['password'], branch_id=request.json['branch_id'], name=request.json['name'])
     db.session.add(branchUser)
     db.session.commit()
-    priv_key = 'bitch'
-    newUser = request.json
-    token = jwt.encode({ 'new_token': newUser }, priv_key, algorithm='HS256')
+    token = create_token(branchUser)
 
     return jsonify({'token': token})
 

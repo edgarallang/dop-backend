@@ -78,6 +78,8 @@ class BranchUser(db.Model):
     password = Column('password', db.String(STRING_LEN), nullable=False)
 
     def check_password(self, password):
+        print password
+        print self.password
         return check_password_hash(self.password, password)
 
     # def _get_password(self):
