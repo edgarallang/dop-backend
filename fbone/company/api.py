@@ -39,9 +39,11 @@ def signup():
 def login():
     branchUser = BranchUser.query.filter_by(email=request.json['email']).first()
     if not branchUser or not branchUser.check_password(request.json['password']):
+        print 'entro'
         response = jsonify(message='Wrong Email or Password')
         response.status_code = 401
         return response
+    print 'no entro'
     token = create_token(branchUser)
     return jsonify(token=token)
 
