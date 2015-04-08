@@ -39,13 +39,12 @@ def signup():
 def login():
     branchUser = BranchUser.query.filter_by(email=request.json['email']).first()
     flagPass = branchUser.check_password(request.json['password'])
-    print flagPass
     if not branchUser or not flagPass:
         response = jsonify(message='Wrong Email or Password')
         response.status_code = 401
         return response
-
     token = create_token(branchUser)
+
     return jsonify(token=token)
 
 @company.route('/select-companies', methods=['GET'])    
