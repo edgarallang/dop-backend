@@ -20,8 +20,8 @@ def create_token(user):
         'birth': datetime.now(),
         'death': datetime.now() + timedelta(days=14)
     }
-    print jsonify(token)
     token = jwt.encode(payload, app.config['TOKEN_SECRET'])
+    print jsonify(token)
     return token.decode('unicode_escape')
 def parse_token(req):
     token = req.headers.get('Authorization').split()[1]
