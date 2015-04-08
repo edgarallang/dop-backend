@@ -5,7 +5,7 @@ import jwt
 import json
 import requests
 from flask import Blueprint, current_app, request, jsonify
-from flask import current_app as APP
+from flask import current_app as app
 from flask.ext.login import login_required, current_user
 from jwt import DecodeError, ExpiredSignature
 from .models import Company, Branch, BranchDesign, BranchLocation, BranchUser, Category
