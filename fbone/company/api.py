@@ -12,7 +12,7 @@ from .models import Company, Branch, BranchDesign, BranchLocation, BranchUser, C
 from ..extensions import db
 
 
-company = Blueprint('company', __name__, url_prefix='/company')
+company = Blueprint('company', __name__, url_prefix='/api/company')
 
 # @company.route('/signup', methods=['GET', 'POST'])
 # def signup():

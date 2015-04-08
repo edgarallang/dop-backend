@@ -17,3 +17,5 @@ oid = OpenID()
 
 from flask.ext.jwt import JWT
 jwt = JWT()
+
+from flask.ext.cors import CORS

@@ -14,7 +14,7 @@ from .settings import settings
 from .frontend import frontend
 from .api import api
 from .admin import admin
-from .extensions import db, mail, cache, login_manager, oid
+from .extensions import db, mail, cache, login_manager, oid, CORS
 from .utils import INSTANCE_FOLDER_PATH
 
 
@@ -48,7 +48,7 @@ def create_app(config=None, app_name=None, blueprints=None):
     configure_logging(app)
     configure_template_filters(app)
     configure_error_handlers(app)
-
+    cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
     return app
 
 
