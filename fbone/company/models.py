@@ -1,5 +1,6 @@
 from sqlalchemy import Column, types
 from sqlalchemy.ext.mutable import Mutable
+from werkzeug.security import generate_password_hash, check_password_hash
 from ..extensions import db, jwt
 from ..utils import get_current_time, SEX_TYPE, STRING_LEN
 
@@ -75,6 +76,9 @@ class BranchUser(db.Model):
     email = Column(db.String(STRING_LEN), nullable=False, unique=True)
 
     password = Column('password', db.String(STRING_LEN), nullable=False)
+
+    def check_password(self, password):
+        return check_password_hash(self.password, password)
 
     # def _get_password(self):
     #     return self._password

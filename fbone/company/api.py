@@ -14,25 +14,17 @@ from ..extensions import db
 
 company = Blueprint('company', __name__, url_prefix='/api/company')
 
-# @company.route('/signup', methods=['GET', 'POST'])
-# def signup():
-#     if current_user.is_authenticated():
-#         return redirect(url_for('user.index'))
-
-#     form = SignupForm(next=request.args.get('next'))
-
-#     if form.validate_on_submit():
-#         user = User()
-#         # user.user_detail = UserDetail()
-#         form.populate_obj(user)
-
-#         db.session.add(user)
-#         db.session.commit()
-
-#         if login_user(user):
-#             return redirect(form.next.data or url_for('user.index'))
-
-#     return render_template('frontend/signup.html', form=form)
+def create_token(user):
+    payload = {
+        'sub': user.id,
+        'iat': datetime.now(),
+        'exp': datetime.now() + timedelta(days=14)
+    }
+    token = jwt.encode(payload, app.config['TOKEN_SECRET'])
+    return token.decode('unicode_escape')
+def parse_token(req):
+    token = req.headers.get('Authorization').split()[1]
+    return jwt.decode(token, app.config['TOKEN_SECRET'])
 
 @company.route('/auth/signup', methods=['POST'])
 def signup():
@@ -42,7 +34,18 @@ def signup():
     priv_key = 'bitch'
     newUser = request.json
     token = jwt.encode({ 'new_token': newUser }, priv_key, algorithm='HS256')
+
     return jsonify({'token': token})
+
+@company.route('/auth/login', methods=['POST'])
+def login():
+    branchUser = BranchUser.query.filter_by(email=request.json['email']).first()
+    if not branchUser or not branchUser.check_password(request.json['password']):
+        response = jsonify(message='Wrong Email or Password')
+        response.status_code = 401
+        return response
+    token = create_token(branchUser)
+    return jsonify(token=token)
 
 @company.route('/select-companies', methods=['GET'])    
 def companies():
