@@ -16,7 +16,7 @@ company = Blueprint('company', __name__, url_prefix='/api/company')
 
 def create_token(user):
     payload = {
-        'sub': user.id,
+        'sub': user.branches_user_id,
         'iat': datetime.now(),
         'exp': datetime.now() + timedelta(days=14)
     }
