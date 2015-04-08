@@ -17,11 +17,11 @@ company = Blueprint('company', __name__, url_prefix='/api/company')
 def create_token(user):
     payload = {
         'id': user.branches_user_id,
-        'birth': datetime.now(),
-        'death': datetime.now() + timedelta(days=14)
+        'iat': datetime.now(),
+        'exp': datetime.now() + timedelta(days=14)
     }
     token = jwt.encode(payload, app.config['TOKEN_SECRET'])
-    print jsonify(token)
+
     return token.decode('unicode_escape')
 def parse_token(req):
     token = req.headers.get('Authorization').split()[1]
