@@ -16,9 +16,9 @@ company = Blueprint('company', __name__, url_prefix='/api/company')
 
 def create_token(user):
     payload = {
-        'sub': user.branches_user_id,
-        'iat': datetime.now(),
-        'exp': datetime.now() + timedelta(days=14)
+        'id': user.branches_user_id,
+        'birth': datetime.now(),
+        'death': datetime.now() + timedelta(days=14)
     }
     token = jwt.encode(payload, app.config['TOKEN_SECRET'])
     return token.decode('unicode_escape')
@@ -33,7 +33,7 @@ def signup():
     db.session.commit()
     token = create_token(branchUser)
 
-    return jsonify({'token': token})
+    return jsonify(token=token)
 
 @company.route('/auth/login', methods=['POST'])
 def login():
