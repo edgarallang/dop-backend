@@ -6,12 +6,15 @@ from flask import Flask, request, render_template
 from flask.ext.babel import Babel
 
 from .config import DefaultConfig
-from .user import User, user
+from .badge import Badge
+from .level import Level, level
+from .user import User, UserLevel, user
+from .company import Company, Branch, BranchLocation, BranchDesign, BranchUser, Category, company
 from .settings import settings
 from .frontend import frontend
 from .api import api
 from .admin import admin
-from .extensions import db, mail, cache, login_manager, oid
+from .extensions import db, mail, cache, login_manager, oid, CORS
 from .utils import INSTANCE_FOLDER_PATH
 
 
@@ -21,6 +24,8 @@ __all__ = ['create_app']
 DEFAULT_BLUEPRINTS = (
     frontend,
     user,
+    company,
+    level,
     settings,
     api,
     admin,
@@ -43,7 +48,7 @@ def create_app(config=None, app_name=None, blueprints=None):
     configure_logging(app)
     configure_template_filters(app)
     configure_error_handlers(app)
-
+    cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
     return app
 
 
@@ -99,7 +104,6 @@ def configure_blueprints(app, blueprints):
 
     for blueprint in blueprints:
         app.register_blueprint(blueprint)
-
 
 def configure_template_filters(app):
 

@@ -1,12 +1,13 @@
 from sqlalchemy import Column, types
 from sqlalchemy.ext.mutable import Mutable
-from ..extensions import db
+from werkzeug.security import generate_password_hash, check_password_hash
+from ..extensions import db, jwt
 from ..utils import get_current_time, SEX_TYPE, STRING_LEN
 
 # =====================================================================
 # Company
 
-class Company(db.Model, UserMixin):
+class Company(db.Model):
     __tablename__ = 'companies'
     company_id = Column(db.Integer, primary_key=True)
     name = Column(db.String(STRING_LEN), nullable=False, unique=True)
@@ -16,7 +17,7 @@ class Company(db.Model, UserMixin):
 # =====================================================================
 # Branches 
 
-class Branch(db.Model, UserMixin):
+class Branch(db.Model):
     __tablename__ = 'branches'
     branch_id = Column(db.Integer, primary_key=True)
     company_id = Column(db.Integer, db.ForeignKey('companies.company_id'),nullable=False)
@@ -31,7 +32,7 @@ class Branch(db.Model, UserMixin):
 # =====================================================================
 # Branches Design
 
-class BranchDesign(db.Model, UserMixin):
+class BranchDesign(db.Model):
     __tablename__ = 'branches_design'
     design_id = Column(db.Integer, primary_key=True)
     branch_id = Column(db.Integer, db.ForeignKey('branches.branch_id'),nullable=False)
@@ -44,7 +45,7 @@ class BranchDesign(db.Model, UserMixin):
 # =====================================================================
 # Branches Location
 
-class BranchLocation(db.Model, UserMixin):
+class BranchLocation(db.Model):
     __tablename__ = 'branches_location'
     user_location_id = Column(db.Integer, primary_key=True)
     branch_id = Column(db.Integer, db.ForeignKey('branches.branch_id'),nullable=False)
@@ -57,7 +58,7 @@ class BranchLocation(db.Model, UserMixin):
 # =====================================================================
 # Categories 
 
-class Category(db.Model, UserMixin):
+class Category(db.Model):
     __tablename__ = 'categories'
     category_id = Column(db.Integer, primary_key=True)
     name = Column(db.String(STRING_LEN), nullable=False, unique=True)
@@ -67,28 +68,31 @@ class Category(db.Model, UserMixin):
 # =====================================================================
 # Branches user is the person geting into the system from that specific branch
 
-class BranchUser(db.Model, UserMixin):
+class BranchUser(db.Model):
     __tablename__ = 'branches_user'
     branches_user_id = Column(db.Integer, primary_key=True)
     branch_id = Column(db.Integer, db.ForeignKey('branches.branch_id'), nullable=False)
     name = Column(db.String(STRING_LEN), nullable=False, unique=True)
     email = Column(db.String(STRING_LEN), nullable=False, unique=True)
 
-    _password = Column('password', db.String(STRING_LEN), nullable=False)
-
-    def _get_password(self):
-        return self._password
-
-    def _set_password(self, password):
-        self._password = generate_password_hash(password)
-    # Hide password encryption by exposing password field only.
-    password = db.synonym('_password',
-                          descriptor=property(_get_password,
-                                              _set_password))
+    password = Column('password', db.String(STRING_LEN), nullable=False)
 
     def check_password(self, password):
-        if self.password is None:
-            return False
-        return check_password_hash(self.password, password)
+        return self.password == password
+
+    # def _get_password(self):
+    #     return self._password
+
+    # def _set_password(self, password):
+    #     self._password = generate_password_hash(password)
+    # # Hide password encryption by exposing password field only.
+    # password = db.synonym('_password',
+    #                       descriptor=property(_get_password,
+    #                                           _set_password))
+
+    # def check_password(self, password):
+    #     if self.password is None:
+    #         return False
+    #     return check_password_hash(self.password, password)
 
 # ================================================================
