@@ -65,7 +65,7 @@ def companies():
 def company():
     company = Company.query.filter_by(id_company=request.json['id_company']).first()
     user = {
-        'name': company
+        'name': company.name
     }
 
     return jsonify({'AquiEstaTuApi': user})
