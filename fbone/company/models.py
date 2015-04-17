@@ -92,6 +92,15 @@ class BranchUser(db.Model):
     def check_password(self, password):
         return self.password == password
 
+    def get_name(self):
+        return self.name
+
+    def get_email(self):
+        return self.email
+
+    def get_branch_id(self):
+        return self.branch_id
+
     # def _get_password(self):
     #     return self._password
 

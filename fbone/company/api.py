@@ -73,7 +73,7 @@ def select_company():
 
 @company.route('/select-branch', methods=['GET'])    
 def select_branch():
-    selectBranch = Company.query.filter_by(branch_id=request.json['branch_id']).first()
+    selectBranch = Branch.query.filter_by(branch_id=request.json['branch_id']).first()
     branchName = selectBranch.get_name()
     branchCategoryId = selectBranch.get_category_id()
     branchCompanyId = selectBranch.get_company_id()
@@ -84,3 +84,17 @@ def select_branch():
     }
 
     return jsonify({'data': branch})
+
+@company.route('/me', methods=['GET'])    
+def select_branch_user():
+    selectBranchUser = BranchUser.query.filter_by(branches_user_id=request.json['branches_user_id']).first()
+    branchUserName = selectBranchUser.get_name()
+    branchId = selectBranch.get_category_id()
+    branchEmail = selectBranch.get_company_id()
+    branchUser = {
+        'branch_id': branchId,
+        'name': branchUserName,
+        'email': branchEmail
+    }
+
+    return jsonify({'data': branchUser})
