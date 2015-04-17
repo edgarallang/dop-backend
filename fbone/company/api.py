@@ -64,9 +64,10 @@ def companies():
 @company.route('/select-company', methods=['GET'])    
 def select_company():
     selectCompany = Company.query.filter_by(company_id=request.json['id_company']).first()
-    companyName = selectCompany.name
-    user = {
-        'name': companyName
-    }
+    print selectCompany
+    # companyName = selectCompany.name
+    # user = {
+    #     'name': companyName
+    # }
 
-    return jsonify({'AquiEstaTuApi': user})
+    # return jsonify({'AquiEstaTuApi': user})
