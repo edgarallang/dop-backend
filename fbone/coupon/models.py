@@ -42,7 +42,7 @@ class DiscountCoupon(db.Model):
     percent = Column(db.Integer, nullable=False)
     coupon_category_id = Column(db.Integer, db.ForeignKey('coupons_category.coupon_category_id'),nullable=False)
 
-    coupons_category = db.relationship('CouponCategory', uselist=False, backref="bond_coupon")
+    coupons_category = db.relationship('CouponCategory', uselist=False, backref="discount_coupon")
 
 class NxNCoupon(db.Model):
     __tablename__ = 'nxn_coupon'
