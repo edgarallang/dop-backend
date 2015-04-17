@@ -63,7 +63,7 @@ def companies():
 
 @company.route('/select-company', methods=['GET'])    
 def company():
-    company = Company.query.filter_by(id_company=request.json['id_company']).first()
+    company = Company.query.filter_by(company_id=request.json['id_company']).first()
     user = {
         'name': company.name
     }
