@@ -89,7 +89,7 @@ def select_branch():
 def select_branch_user():
     selectBranchUser = BranchUser.query.filter_by(branches_user_id=request.json['branches_user_id']).first()
     branchUserName = selectBranchUser.get_name()
-    branchId = selectBranchUser.get_category_id()
+    branchId = selectBranchUser.get_branch_id()
     branchEmail = selectBranchUser.get_company_id()
     branchUser = {
         'branch_id': branchId,
