@@ -14,6 +14,9 @@ class Company(db.Model):
 
     branches = db.relationship("Branch", uselist=False, backref="companies")
 
+    def get_name(self):
+        return self.name
+
 # =====================================================================
 # Branches 
 
