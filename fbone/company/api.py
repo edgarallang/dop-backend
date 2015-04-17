@@ -78,8 +78,8 @@ def select_branch():
     branchCategoryId = selectBranch.get_category_id()
     branchCompanyId = selectBranch.get_company_id()
     branch = {
-        'company_id': companyName,
-        'category_id': companyName,
+        'company_id': branchCompanyId,
+        'category_id': branchCategoryId,
         'name': branchName
     }
 
