@@ -32,6 +32,15 @@ class Branch(db.Model):
     branches_location = db.relationship("BranchLocation", uselist=False, backref="branches")
     branches_user = db.relationship("BranchUser", uselist=False, backref="branches")
 
+    def get_name(self):
+        return self.name
+
+    def get_category_id(self):
+        return self.category_id
+
+    def get_company_id(self):
+        return self.company_id
+
 # =====================================================================
 # Branches Design
 
