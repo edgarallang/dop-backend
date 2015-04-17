@@ -15,8 +15,8 @@ class Coupon(db.Model):
     name = Column(db.String(STRING_LEN), nullable=False, unique=True)
     coupon_folio = Column(db.Integer, nullable=False, unique=True)
     description = Column(db.String(STRING_LEN))
-    start_date  = Column(db.Timestamp(timezone=False), nullable=False)
-    end_date = Column(db.Timestamp(timezone=False), nullable=False)
+    start_date  = Column(db.Date, nullable=False)
+    end_date = Column(db.Date, nullable=False)
     min_spent = Column(db.Integer, nullable=False)
     coupon_category_id = Column(db.Integer, db.ForeignKey('coupons_category.coupon_category_id'),nullable=False)
 
@@ -59,7 +59,7 @@ class ClientsCoupon(db.Model):
     user_id = Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
     coupon_id = Column(db.Integer, db.ForeignKey('coupons.coupon_id'), nullable=False)
     folio = Column(db.String(STRING_LEN), nullable=False)
-    taken_date = Column(db.Timestamp(timezone=False), nullable=False)
+    taken_date = Column(db.Date, nullable=False)
 
     coupons_user = db.relationship('User', uselist=False, backref='clients_coupon')
     clients_coupons = db.relationship('Coupon', uselist=False, backref='clients_coupon')

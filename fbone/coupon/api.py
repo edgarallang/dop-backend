@@ -12,18 +12,18 @@ from .models import *
 from ..extensions import db
 
 
-company = Blueprint('coupon', __name__, url_prefix='/api/coupon')
+coupon = Blueprint('coupon', __name__, url_prefix='/api/coupon')
 
-@company.route('/bond/create', methods=['POST'])
+@coupon.route('/bond/create', methods=['POST'])
 def create_bond():
     bondCoupon = BondCoupon(coupon_category_id=request.json['coupon_category_id'], bond_size=request.json['bond_size'])
     db.session.add(bondCoupon)
     db.session.commit()
 
     return jsonify({'data': bondCoupon})
-    
-@company.route('/discount/create', methods=['POST'])
-def create_discount():
 
-@company.route('/nxn/create', methods=['POST'])
-def create_nxn():
+# @coupon.route('/discount/create', methods=['POST'])
+# def create_discount():
+
+# @coupon.route('/nxn/create', methods=['POST'])
+# def create_nxn():

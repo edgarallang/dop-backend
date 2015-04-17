@@ -10,6 +10,7 @@ from .badge import Badge
 from .level import Level, level
 from .user import User, UserLevel, user
 from .company import Company, Branch, BranchLocation, BranchDesign, BranchUser, Category, company
+from .coupon import *
 from .settings import settings
 from .frontend import frontend
 from .api import api
@@ -25,6 +26,7 @@ DEFAULT_BLUEPRINTS = (
     frontend,
     user,
     company,
+    coupon,
     level,
     settings,
     api,
