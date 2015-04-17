@@ -32,6 +32,15 @@ class Branch(db.Model):
     branches_location = db.relationship("BranchLocation", uselist=False, backref="branches")
     branches_user = db.relationship("BranchUser", uselist=False, backref="branches")
 
+    def get_name(self):
+        return self.name
+
+    def get_category_id(self):
+        return self.category_id
+
+    def get_company_id(self):
+        return self.company_id
+
 # =====================================================================
 # Branches Design
 
@@ -82,6 +91,15 @@ class BranchUser(db.Model):
 
     def check_password(self, password):
         return self.password == password
+
+    def get_name(self):
+        return self.name
+
+    def get_email(self):
+        return self.email
+
+    def get_branch_id(self):
+        return self.branch_id
 
     # def _get_password(self):
     #     return self._password

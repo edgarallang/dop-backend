@@ -59,14 +59,42 @@ def companies():
     for row in result:
         names.append(row[1])
 
-    return jsonify({'AquiEstaTuApi': names})
+    return jsonify({'data': names})
 
 @company.route('/select-company', methods=['GET'])    
 def select_company():
-    selectCompany = Company.query.filter_by(company_id=request.json['id_company']).first()
+    selectCompany = Company.query.filter_by(company_id=request.json['company_id']).first()
     companyName = selectCompany.get_name()
     user = {
         'name': companyName
     }
 
-    return jsonify({'AquiEstaTuApi': user})
+    return jsonify({'data': user})
+
+@company.route('/select-branch', methods=['GET'])    
+def select_branch():
+    selectBranch = Branch.query.filter_by(branch_id=request.json['branch_id']).first()
+    branchName = selectBranch.get_name()
+    branchCategoryId = selectBranch.get_category_id()
+    branchCompanyId = selectBranch.get_company_id()
+    branch = {
+        'company_id': companyName,
+        'category_id': companyName,
+        'name': branchName
+    }
+
+    return jsonify({'data': branch})
+
+@company.route('/me', methods=['GET'])    
+def select_branch_user():
+    selectBranchUser = BranchUser.query.filter_by(branches_user_id=request.json['branches_user_id']).first()
+    branchUserName = selectBranchUser.get_name()
+    branchId = selectBranch.get_category_id()
+    branchEmail = selectBranch.get_company_id()
+    branchUser = {
+        'branch_id': branchId,
+        'name': branchUserName,
+        'email': branchEmail
+    }
+
+    return jsonify({'data': branchUser})
