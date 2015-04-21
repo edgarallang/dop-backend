@@ -26,7 +26,7 @@ def create_coupon(request):
                     coupon_category_id = request.json['coupon_category_id'])
     db.session.add(new_coupon)
     db.session.commit()
-    result = coupon_schema.dump(new_coupon)
+    result = coupon_schema.dumps(new_coupon)
     print jsonify({'data': result.data})
     return result.data.coupon_id
 
@@ -50,7 +50,7 @@ def create_discount():
     db.session.add(discountCoupon)
     db.session.commit()
 
-    return jsonify({'data': discountCoupon})
+    return jsonify({'message': 'se creo un cupon ten tu 200'})
 
 @coupon.route('/nxn/create', methods = ['POST'])
 def create_nxn():
