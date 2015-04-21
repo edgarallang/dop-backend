@@ -79,10 +79,9 @@ class ClientsCoupon(db.Model):
 class BondCouponSchema(Schema):
     class Meta:
         fields = ('bond_size')
-        
+
 class CouponSchema(Schema):
     class Meta:
-        bond_size = fields.Nested(BondCouponSchema)
         fields = ('coupon_id',
                   'branch_id',
                   'name',
@@ -92,8 +91,7 @@ class CouponSchema(Schema):
                   'end_date',
                   'limit',
                   'min_spent',
-                  'coupon_category_id',
-                  'bond_size')
+                  'coupon_category_id')
 
 
 coupon_schema = CouponSchema()
