@@ -33,7 +33,9 @@ class BondCoupon(db.Model):
     bond_id = Column(db.Integer, primary_key=True)
     coupon_category_id = Column(db.Integer, db.ForeignKey('coupons_category.coupon_category_id'),nullable=False)
     bond_size = Column(db.Integer, nullable=False)
+    coupon_id = Column(db.Integer, db.ForeignKey('coupons.coupon_id'), nullable=False)
 
+    coupon = db.relationship('Coupon', uselist=False, backref="bond_coupon")
     coupons_category = db.relationship('CouponCategory', uselist=False, backref="bond_coupon")
 
 class DiscountCoupon(db.Model):
@@ -41,6 +43,9 @@ class DiscountCoupon(db.Model):
     discount_coupon_id = Column(db.Integer, primary_key=True)
     percent = Column(db.Integer, nullable=False)
     coupon_category_id = Column(db.Integer, db.ForeignKey('coupons_category.coupon_category_id'),nullable=False)
+    coupon_id = Column(db.Integer, db.ForeignKey('coupons.coupon_id'), nullable=False)
+
+    coupon = db.relationship('Coupon', uselist=False, backref="discount_coupon")
 
     coupons_category = db.relationship('CouponCategory', uselist=False, backref="discount_coupon")
 
@@ -50,6 +55,9 @@ class NxNCoupon(db.Model):
     n1 = Column(db.Integer, nullable=False)
     n2 = Column(db.Integer, nullable=False)
     coupon_category_id = Column(db.Integer, db.ForeignKey('coupons_category.coupon_category_id'),nullable=False)
+    coupon_id = Column(db.Integer, db.ForeignKey('coupons.coupon_id'), nullable=False)
+
+    coupon = db.relationship('Coupon', uselist=False, backref="nxn_coupon")
 
     coupons_category = db.relationship('CouponCategory', uselist=False, backref="nxn_coupon")
 
