@@ -15,7 +15,7 @@ from ..extensions import db
 coupon = Blueprint('coupon', __name__, url_prefix='/api/coupon')
 
 def create_coupon(request):
-    coupon = Coupon(branch_id = request.json['branch_id'], 
+    new_coupon = Coupon(branch_id = request.json['branch_id'], 
                     name = request.json['name'], 
                     start_date = request.json['start_date'],
                     end_date = request.json['end_date'],
@@ -24,10 +24,10 @@ def create_coupon(request):
                     coupon_folio = 'EAG',
                     min_spent = request.json['min_spent'],
                     coupon_category_id = request.json['coupon_category_id'])
-    db.session(coupon)
+    db.session(new_coupon)
     db.session.commit()
-    print coupon.coupon_id
-    return coupon.coupon_id
+    print new_coupon.coupon_id
+    return new_coupon.coupon_id
 
 @coupon.route('/bond/create', methods=['POST'])
 def create_bond():
