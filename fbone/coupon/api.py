@@ -24,7 +24,7 @@ def create_coupon(request):
                     coupon_folio = 'EAG',
                     min_spent = request.json['min_spent'],
                     coupon_category_id = request.json['coupon_category_id'])
-    db.session(new_coupon)
+    db.session.add(new_coupon)
     db.session.commit()
     print new_coupon.coupon_id
     return new_coupon.coupon_id
