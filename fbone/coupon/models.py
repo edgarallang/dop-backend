@@ -38,7 +38,7 @@ class BondCoupon(db.Model):
     coupon_id = Column(db.Integer, db.ForeignKey('coupons.coupon_id'), nullable=False)
 
     coupon = db.relationship('Coupon', backref=db.backref("bond_coupon", lazy='joined'), lazy="dynamic")
-    coupons_category = db.relationship('CouponCategory', uselist=False, backref="bond_coupon")
+    coupons_category = db.relationship('CouponCategory', backref="bond_coupon")
 
 class DiscountCoupon(db.Model):
     __tablename__ = 'discount_coupon'
@@ -48,7 +48,7 @@ class DiscountCoupon(db.Model):
     coupon_id = Column(db.Integer, db.ForeignKey('coupons.coupon_id'), nullable=False)
 
     coupon = db.relationship('Coupon', backref=db.backref("discount_coupon", lazy='joined'), lazy="dynamic")
-    coupons_category = db.relationship('CouponCategory', uselist=False, backref="discount_coupon")
+    coupons_category = db.relationship('CouponCategory', backref="discount_coupon")
 
 class NxNCoupon(db.Model):
     __tablename__ = 'nxn_coupon'
@@ -59,7 +59,7 @@ class NxNCoupon(db.Model):
     coupon_id = Column(db.Integer, db.ForeignKey('coupons.coupon_id'), nullable=False)
 
     coupon = db.relationship('Coupon', backref=db.backref("nxn_coupon", lazy='joined'), lazy="dynamic")
-    coupons_category = db.relationship('CouponCategory', uselist=False, backref="nxn_coupon")
+    coupons_category = db.relationship('CouponCategory', backref="nxn_coupon")
 
 class ClientsCoupon(db.Model):
     __tablename__ = 'clients_coupon'
