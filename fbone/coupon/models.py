@@ -1,3 +1,4 @@
+from marshmallow import Schema, fields, ValidationError
 from sqlalchemy import Column, types
 from sqlalchemy.ext.mutable import Mutable
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -73,7 +74,29 @@ class ClientsCoupon(db.Model):
     coupons_user = db.relationship('User', uselist=False, backref='clients_coupon')
     clients_coupons = db.relationship('Coupon', uselist=False, backref='clients_coupon')
 
+# Serializer Schemas
 
+class BondCouponSchema(Schema):
+    class Meta:
+        fields = ('bond_size')
+        
+class CouponSchema(Schema):
+    class Meta:
+        bond_size = fields.Nested(BondCouponSchema)
+        fields = ('coupon_id',
+                  'branch_id',
+                  'name',
+                  'coupon_folio',
+                  'description',
+                  'start_date',
+                  'end_date',
+                  'limit',
+                  'min_spent',
+                  'coupon_category_id',
+                  'bond_size')
+
+
+coupon_schema = CouponSchema()
 
 
 

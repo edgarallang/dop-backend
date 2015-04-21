@@ -26,8 +26,9 @@ def create_coupon(request):
                     coupon_category_id = request.json['coupon_category_id'])
     db.session.add(new_coupon)
     db.session.commit()
-    print new_coupon.coupon_id
-    return new_coupon.coupon_id
+    result = coupon_schema(new_coupon)
+    print jsonify({'data': result.data})
+    return result.data.coupon_id
 
 @coupon.route('/bond/create', methods=['POST'])
 def create_bond():
@@ -38,7 +39,7 @@ def create_bond():
     db.session.add(bondCoupon)
     db.session.commit()
 
-    return jsonify({'data': bondCoupon})
+    return jsonify({'message': 'se creo un cupon ten tu 200'})
 
 @coupon.route('/discount/create', methods = ['POST'])
 def create_discount():
