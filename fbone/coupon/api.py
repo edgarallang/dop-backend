@@ -45,7 +45,7 @@ def create_discount():
     new_coupon_id = create_coupon(request)
     discountCoupon = DiscountCoupon(coupon_id = new_coupon_id,
                                     coupon_category_id = request.json['coupon_category_id'],
-                                    discount = request.json['discount'])
+                                    percent = request.json['discount'])
     db.session.add(discountCoupon)
     db.session.commit()
 
