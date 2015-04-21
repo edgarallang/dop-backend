@@ -22,8 +22,8 @@ class Coupon(db.Model):
     min_spent = Column(db.Integer, nullable=False)
     coupon_category_id = Column(db.Integer, db.ForeignKey('coupons_category.coupon_category_id'),nullable=False)
 
-    coupons_category = db.relationship('CouponCategory', uselist=False, backref="coupons")
-    branches_coupons = db.relationship('Branch', uselist=False, backref="coupons")
+    coupons_category = db.relationship('CouponCategory', backref="coupons")
+    branches_coupons = db.relationship('Branch', backref="coupons")
 
 class CouponCategory(db.Model):
     __tablename__ = 'coupons_category'
@@ -69,8 +69,8 @@ class ClientsCoupon(db.Model):
     folio = Column(db.String(STRING_LEN), nullable=False)
     taken_date = Column(db.Date, nullable=False)
 
-    coupons_user = db.relationship('User', uselist=False, backref='clients_coupon')
-    clients_coupons = db.relationship('Coupon', uselist=False, backref='clients_coupon')
+    coupons_user = db.relationship('User', backref='clients_coupon')
+    clients_coupons = db.relationship('Coupon', backref='clients_coupon')
 
 # Serializer Schemas
 
