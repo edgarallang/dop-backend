@@ -65,7 +65,7 @@ def create_nxn():
 
 @coupon.route('/get/<int:coupon_id>', methods = ['GET'])
 def get_coupon(coupon_id):
-    generic_coupon = Coupon.query.filter_by(coupon_id).first()
+    generic_coupon = Coupon.query.filter_by(coupon_id=coupon_id).first()
 
     selected_coupon = coupon_schema.dumps(generic_coupon)
     return jsonify({'data': selected_coupon.data})
