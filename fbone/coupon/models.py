@@ -13,7 +13,7 @@ class Coupon(db.Model):
     coupon_id = Column(db.Integer, primary_key=True)
     branch_id = Column(db.Integer, db.ForeignKey('branches.branch_id'),nullable=False)
     name = Column(db.String(STRING_LEN), nullable=False, unique=True)
-    coupon_folio = Column(db.Integer, nullable=False, unique=True)
+    coupon_folio = Column(db.Integer, nullable=False)
     description = Column(db.String(STRING_LEN))
     start_date  = Column(db.Date, nullable=False)
     end_date = Column(db.Date, nullable=False)
