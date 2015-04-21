@@ -48,7 +48,6 @@ class DiscountCoupon(db.Model):
     coupon_id = Column(db.Integer, db.ForeignKey('coupons.coupon_id'), nullable=False)
 
     coupon = db.relationship('Coupon', uselist=False, backref="discount_coupon")
-
     coupons_category = db.relationship('CouponCategory', uselist=False, backref="discount_coupon")
 
 class NxNCoupon(db.Model):
@@ -60,7 +59,6 @@ class NxNCoupon(db.Model):
     coupon_id = Column(db.Integer, db.ForeignKey('coupons.coupon_id'), nullable=False)
 
     coupon = db.relationship('Coupon', uselist=False, backref="nxn_coupon")
-
     coupons_category = db.relationship('CouponCategory', uselist=False, backref="nxn_coupon")
 
 class ClientsCoupon(db.Model):
@@ -80,7 +78,19 @@ class BondCouponSchema(Schema):
     class Meta:
         fields = ('bond_size')
 
+class DiscountCouponSchema(Schema):
+    class Meta:
+        fields = ('percent')
+
+class NxNCouponSchema(Schema):
+    class Meta:
+        fields = ('n1',
+                  'n2')
+
 class CouponSchema(Schema):
+    bond = fields.Nested('BondCouponSchema')
+    discount = fields.Nested('DiscountCouponSchema')
+    nxn = fields.Nested('NxNCouponSchema')
     class Meta:
         fields = ('coupon_id',
                   'branch_id',
@@ -94,7 +104,7 @@ class CouponSchema(Schema):
                   'coupon_category_id')
 
 
-coupon_schema = CouponSchema()
+coupon_schema = CouponSchema(many=True)
 
 
 

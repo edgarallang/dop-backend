@@ -69,3 +69,14 @@ def get_coupon(coupon_id):
 
     selected_coupon = coupon_schema.dump(generic_coupon)
     return jsonify(selected_coupon.data)
+
+@coupon.route('/get/all', methods = ['GET'])
+def get_all_coupon():
+    list_coupon = Coupon.query.join(Coupon).\
+                               join(BondCoupon.coupon).\
+                               join(DiscountCoupon.coupon).\
+                               join(NxNCoupon.coupon).\
+                               filter(Coupon.coupon_id)
+
+    selected_coupon = coupon_schema.dump(list_coupon)
+    return jsonify(selected_coupon.data)
