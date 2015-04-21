@@ -17,6 +17,7 @@ class Coupon(db.Model):
     description = Column(db.String(STRING_LEN))
     start_date  = Column(db.Date, nullable=False)
     end_date = Column(db.Date, nullable=False)
+    limit = Column(db.Integer)
     min_spent = Column(db.Integer, nullable=False)
     coupon_category_id = Column(db.Integer, db.ForeignKey('coupons_category.coupon_category_id'),nullable=False)
 
