@@ -26,11 +26,10 @@ def create_coupon(request):
                     coupon_category_id = request.json['coupon_category_id'])
     db.session.add(new_coupon)
     db.session.commit()
-    result = coupon_schema.dumps(new_coupon)
-    print jsonify({'data': result.data})
+
     return new_coupon.coupon_id
 
-@coupon.route('/bond/create', methods=['POST'])
+@coupon.route('/bond/create', methods = ['POST'])
 def create_bond():
     new_coupon_id = create_coupon(request)
     bondCoupon = BondCoupon(coupon_id = new_coupon_id, 
@@ -63,3 +62,9 @@ def create_nxn():
     db.session.commit()
 
     return jsonify({'data': nxnCoupon})
+
+@coupon.route('/coupon/<int:coupon_id>', methods = ['GET'])
+    generic_coupon = Coupon.query.filter_by(coupon_id).first()
+
+    selected_coupon = coupon_schema.dumps(generic_coupon)
+    return jsonify({'data': selected_coupon.data})
