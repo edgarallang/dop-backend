@@ -28,7 +28,7 @@ def create_coupon(request):
     db.session.commit()
     result = coupon_schema.dumps(new_coupon)
     print jsonify({'data': result.data})
-    return result.data.coupon_id
+    return new_coupon.coupon_id
 
 @coupon.route('/bond/create', methods=['POST'])
 def create_bond():
