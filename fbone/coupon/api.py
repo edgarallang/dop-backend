@@ -77,5 +77,5 @@ def get_all_coupon():
                                # join(DiscountCoupon).\
                                # join(NxNCoupon)
 
-    selected_coupon = coupon_schema.dump(list_coupon)
-    return jsonify(selected_coupon.data)
+    selected_list_coupon = coupon_schema.dump(list_coupon)
+    return jsonify({'data': selected_list_coupon.data})
