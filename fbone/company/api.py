@@ -101,3 +101,9 @@ def select_branch_user():
     }
 
     return jsonify({'data': branchUser})
+
+@company.route('/update-branch', methods=['GET'])    
+def select_branch_user():
+    Branch.query.filter_by(branch_id=request.json['branch_id']).update({"name": "Bob Marley"})
+
+    return jsonify({'data': ':P'})
