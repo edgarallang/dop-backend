@@ -26,7 +26,7 @@ def create_coupon(request):
                     coupon_category_id = request.json['coupon_category_id'])
     db.session.add(new_coupon)
     db.session.commit()
-    result = coupon_schema(new_coupon)
+    result = coupon_schema.dump(new_coupon)
     print jsonify({'data': result.data})
     return result.data.coupon_id
 
