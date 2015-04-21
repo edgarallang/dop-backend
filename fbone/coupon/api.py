@@ -31,7 +31,7 @@ def create_coupon(request):
 
 @coupon.route('/bond/create', methods=['POST'])
 def create_bond():
-    new_coupon_id = self.create_coupon(request)
+    new_coupon_id = create_coupon(request)
     bondCoupon = BondCoupon(coupon_id = new_coupon_id, 
                             coupon_category_id = request.json['coupon_category_id'], 
                             bond_size = request.json['bond_size'])
@@ -42,7 +42,7 @@ def create_bond():
 
 @coupon.route('/discount/create', methods = ['POST'])
 def create_discount():
-    new_coupon_id = self.create_coupon(request)
+    new_coupon_id = create_coupon(request)
     discountCoupon = DiscountCoupon(coupon_id = new_coupon_id,
                                     coupon_category_id = request.json['coupon_category_id'],
                                     discount = request.json['discount'])
@@ -53,7 +53,7 @@ def create_discount():
 
 @coupon.route('/nxn/create', methods = ['POST'])
 def create_nxn():
-    new_coupon_id = self.create_coupon(request)
+    new_coupon_id = create_coupon(request)
     nxnCoupon = NxNCoupon(coupon_id = new_coupon_id,
                           coupon_category_id = request.json['coupon_category_id'],
                           n1 = request.json['n1'],
