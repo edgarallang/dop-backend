@@ -46,7 +46,6 @@ class DiscountCoupon(db.Model):
     percent = Column(db.Integer, nullable=False)
     coupon_category_id = Column(db.Integer, db.ForeignKey('coupons_category.coupon_category_id'),nullable=False)
     coupon_id = Column(db.Integer, db.ForeignKey('coupons.coupon_id'), nullable=False)
-    coupon_info = Coupon
 
     coupon = db.relationship('Coupon', uselist=False, backref="discount_coupon")
     coupons_category = db.relationship('CouponCategory', uselist=False, backref="discount_coupon")
