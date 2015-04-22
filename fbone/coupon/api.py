@@ -67,11 +67,22 @@ def create_nxn():
     return jsonify({'data': nxnCoupon})
 
 @coupon.route('/get/<int:coupon_id>', methods = ['GET'])
-def get_coupon(coupon_id):
-    generic_coupon = DiscountCoupon.query.filter_by(coupon_id=coupon_id).first()
+def get_coupon(id):
+    generic_coupon = Coupon.query.get(id)
+    coupon_type = generic_coupon.coupon_category_id
+
+    if (coupon_type == 1):
+      coupon_benefit = BondCoupon.query.get(id)
+      coupon_benefit_json = bond_coupon_schema.dump(coupon_benefit)
+    elif (coupon_type == 2):
+      coupon_benefit = DiscountCoupon.query.get(id)
+      coupon_benefit_json = discount_coupon_schema.dump(coupon_benefit)
+    elif (coupon_type == 3):
+      coupon_benefit = NxNCoupon.query.get(id)
+      coupon_benefit_json = nxn_coupon_schema.dump(coupon_benefit)
 
     selected_coupon = coupon_schema.dump(generic_coupon)
-    return jsonify(selected_coupon.data)
+    return jsonify({'coupon_info': selected_coupon.data, 'benefit': coupon_benefit_json})
 
 @coupon.route('/get/all', methods = ['GET'])
 def get_all_coupon():

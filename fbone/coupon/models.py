@@ -76,9 +76,6 @@ class ClientsCoupon(db.Model):
 # Serializer Schemas
 
 class CouponSchema(Schema):
-    # bond = fields.Nested('BondCouponSchema')
-    # discount = fields.Nested('DiscountCouponSchema')
-    # nxn = fields.Nested('NxNCouponSchema')
     class Meta:
         fields = ('coupon_id',
                   'branch_id',
@@ -93,13 +90,13 @@ class CouponSchema(Schema):
 
 class BondCouponSchema(Schema):
     class Meta:
-        fields = ('bond_size')
+        fields = ('bond_id',
+                  'bond_size')
 
 class DiscountCouponSchema(Schema):
-    coupon = fields.Nested(CouponSchema)
     class Meta:
-        fields = ('percent',
-                  'coupon')
+        fields = ('discount_coupon_id',
+                  'percent')
 
 class NxNCouponSchema(Schema):
     class Meta:
@@ -107,8 +104,11 @@ class NxNCouponSchema(Schema):
                   'n2')
 
 
-coupon_schema = DiscountCouponSchema()
+coupon_schema = CouponSchema()
 coupons_schema = CouponSchema(many=True)
+bond_coupon_schema = BondCouponSchema()
+discount_coupon_schema = DiscountCouponSchema()
+nxn_coupon_schema = NxNCouponSchema()
 
 
 
