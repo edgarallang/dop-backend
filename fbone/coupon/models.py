@@ -90,7 +90,7 @@ class CouponSchema(Schema):
                   'limit',
                   'min_spent',
                   'coupon_category_id')
-        
+
 class BondCouponSchema(Schema):
     class Meta:
         fields = ('bond_size')
@@ -107,7 +107,7 @@ class NxNCouponSchema(Schema):
                   'n2')
 
 
-coupon_schema = CouponSchema()
+coupon_schema = DiscountCouponSchema()
 coupons_schema = CouponSchema(many=True)
 
 
