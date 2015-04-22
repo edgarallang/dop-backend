@@ -1,3 +1,4 @@
+from marshmallow import Schema, fields, ValidationError
 from sqlalchemy import Column, types
 from sqlalchemy.ext.mutable import Mutable
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -13,10 +14,11 @@ class Coupon(db.Model):
     coupon_id = Column(db.Integer, primary_key=True)
     branch_id = Column(db.Integer, db.ForeignKey('branches.branch_id'),nullable=False)
     name = Column(db.String(STRING_LEN), nullable=False, unique=True)
-    coupon_folio = Column(db.Integer, nullable=False, unique=True)
+    coupon_folio = Column(db.String(STRING_LEN), nullable=False)
     description = Column(db.String(STRING_LEN))
     start_date  = Column(db.Date, nullable=False)
     end_date = Column(db.Date, nullable=False)
+    limit = Column(db.Integer)
     min_spent = Column(db.Integer, nullable=False)
     coupon_category_id = Column(db.Integer, db.ForeignKey('coupons_category.coupon_category_id'),nullable=False)
 
@@ -33,7 +35,9 @@ class BondCoupon(db.Model):
     bond_id = Column(db.Integer, primary_key=True)
     coupon_category_id = Column(db.Integer, db.ForeignKey('coupons_category.coupon_category_id'),nullable=False)
     bond_size = Column(db.Integer, nullable=False)
+    coupon_id = Column(db.Integer, db.ForeignKey('coupons.coupon_id'), nullable=False)
 
+    coupon = db.relationship('Coupon', uselist=False, backref="bond_coupon")
     coupons_category = db.relationship('CouponCategory', uselist=False, backref="bond_coupon")
 
 class DiscountCoupon(db.Model):
@@ -41,6 +45,9 @@ class DiscountCoupon(db.Model):
     discount_coupon_id = Column(db.Integer, primary_key=True)
     percent = Column(db.Integer, nullable=False)
     coupon_category_id = Column(db.Integer, db.ForeignKey('coupons_category.coupon_category_id'),nullable=False)
+    coupon_id = Column(db.Integer, db.ForeignKey('coupons.coupon_id'), nullable=False)
+
+    coupon = db.relationship('Coupon', uselist=False, backref="discount_coupon")
 
     coupons_category = db.relationship('CouponCategory', uselist=False, backref="discount_coupon")
 
@@ -50,6 +57,9 @@ class NxNCoupon(db.Model):
     n1 = Column(db.Integer, nullable=False)
     n2 = Column(db.Integer, nullable=False)
     coupon_category_id = Column(db.Integer, db.ForeignKey('coupons_category.coupon_category_id'),nullable=False)
+    coupon_id = Column(db.Integer, db.ForeignKey('coupons.coupon_id'), nullable=False)
+
+    coupon = db.relationship('Coupon', uselist=False, backref="nxn_coupon")
 
     coupons_category = db.relationship('CouponCategory', uselist=False, backref="nxn_coupon")
 
@@ -64,7 +74,27 @@ class ClientsCoupon(db.Model):
     coupons_user = db.relationship('User', uselist=False, backref='clients_coupon')
     clients_coupons = db.relationship('Coupon', uselist=False, backref='clients_coupon')
 
+# Serializer Schemas
 
+class BondCouponSchema(Schema):
+    class Meta:
+        fields = ('bond_size')
+
+class CouponSchema(Schema):
+    class Meta:
+        fields = ('coupon_id',
+                  'branch_id',
+                  'name',
+                  'coupon_folio',
+                  'description',
+                  'start_date',
+                  'end_date',
+                  'limit',
+                  'min_spent',
+                  'coupon_category_id')
+
+
+coupon_schema = CouponSchema()
 
 
 

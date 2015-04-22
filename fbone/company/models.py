@@ -1,3 +1,4 @@
+from marshmallow import Schema, fields, ValidationError
 from sqlalchemy import Column, types
 from sqlalchemy.ext.mutable import Mutable
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -117,3 +118,21 @@ class BranchUser(db.Model):
     #     return check_password_hash(self.password, password)
 
 # ================================================================
+
+# Serializer Schemas
+
+class CompanySchema(Schema):
+    class Meta:
+        fields = ('company_id',
+                  'name'
+                  )
+
+class BranchSchema(Schema):
+    class Meta:
+        fields = ('branch_id',
+                  'company_id',
+                  'name',
+                  'category_id'
+                  )
+
+branch_schema = BranchSchema()
