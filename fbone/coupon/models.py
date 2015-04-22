@@ -23,7 +23,7 @@ class Coupon(db.Model):
     coupon_category_id = Column(db.Integer, db.ForeignKey('coupons_category.coupon_category_id'),nullable=False)
 
     bound_coupon = db.relationship('BoundCoupon', backref=db.backref("coupons", lazy='joined'), lazy="dynamic")
-    discount_coupon = db.relationship('DiscountCoupon', uselist=False backref=db.backref("coupons", lazy='joined'), lazy="dynamic")
+    discount_coupon = db.relationship('DiscountCoupon', uselist=False, backref=db.backref("coupons", lazy='joined'), lazy="dynamic")
     nxn_coupon = db.relationship('NXNCoupon', uselist=False, backref=db.backref("coupons", lazy='joined'), lazy="dynamic")
     coupons_category = db.relationship('CouponCategory', uselist=False, backref="coupons")
     branches_coupons = db.relationship('Branch', backref="coupons")
