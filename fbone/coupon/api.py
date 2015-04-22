@@ -79,7 +79,7 @@ def get_coupon(coupon_id):
       coupon_benefit_json = nxn_coupon_schema.dump(coupon_benefit)
 
     selected_coupon = coupon_schema.dump(generic_coupon)
-    return jsonify({'coupon_info': selected_coupon.data, 'benefit': coupon_benefit_json})
+    return jsonify({'coupon_info': selected_coupon.data, 'benefit': coupon_benefit_json.data})
 
 @coupon.route('/get/all', methods = ['GET'])
 def get_all_coupon():
