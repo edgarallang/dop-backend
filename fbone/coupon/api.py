@@ -38,7 +38,7 @@ def create_bond():
     db.session.add(bondCoupon)
     db.session.commit()
 
-    return jsonify({'message': 'se creo un cupon ten tu 200'})
+    return jsonify({'message': 'El cupon se creo con exito, ten, toma una galleta'})
 
 @coupon.route('/discount/create', methods = ['POST'])
 def create_discount():
@@ -61,7 +61,7 @@ def create_nxn():
     db.session.add(nxnCoupon)
     db.session.commit()
 
-    return jsonify({'data': nxnCoupon})
+    return jsonify({'message': 'El cupon se creo con exito, ten, toma una galleta'})
 
 @coupon.route('/get/<int:coupon_id>', methods = ['GET'])
 def get_coupon(coupon_id):
