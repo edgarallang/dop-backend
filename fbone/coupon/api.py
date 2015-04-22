@@ -21,7 +21,7 @@ def create_coupon(request):
                     end_date = request.json['end_date'],
                     limit = request.json['limit'],
                     description = request.json['description'],
-                    coupon_folio = 'EAG',
+                    coupon_folio = "EAG",
                     min_spent = request.json['min_spent'],
                     coupon_category_id = request.json['coupon_category_id'])
     db.session.add(new_coupon)
@@ -77,5 +77,5 @@ def get_all_coupon():
                                # join(DiscountCoupon).\
                                # join(NxNCoupon)
 
-    selected_list_coupon = coupon_schema.dump(list_coupon)
+    selected_list_coupon = coupons_schema.dump(list_coupon)
     return jsonify({'data': selected_list_coupon.data})

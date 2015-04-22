@@ -103,8 +103,8 @@ class CouponSchema(Schema):
                   'min_spent',
                   'coupon_category_id')
 
-
-coupon_schema = CouponSchema(many=True)
+coupon_schema = CouponSchema()
+coupons_schema = CouponSchema(many=True)
 
 
 
