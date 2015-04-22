@@ -69,13 +69,13 @@ def get_coupon(coupon_id):
     coupon_type = generic_coupon.coupon_category_id
 
     if (coupon_type == 1):
-      coupon_benefit = BondCoupon.query.get(coupon_id)
+      coupon_benefit = BondCoupon.query.filter_by(coupon_id = coupon_id)
       coupon_benefit_json = bond_coupon_schema.dump(coupon_benefit)
     elif (coupon_type == 2):
-      coupon_benefit = DiscountCoupon.query.get(coupon_id)
+      coupon_benefit = DiscountCoupon.query.filter_by(coupon_id = coupon_id)
       coupon_benefit_json = discount_coupon_schema.dump(coupon_benefit)
     elif (coupon_type == 3):
-      coupon_benefit = NxNCoupon.query.get(coupon_id)
+      coupon_benefit = NxNCoupon.query.filter_by(coupon_id = coupon_id)
       coupon_benefit_json = nxn_coupon_schema.dump(coupon_benefit)
 
     selected_coupon = coupon_schema.dump(generic_coupon)
