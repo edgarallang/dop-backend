@@ -61,7 +61,7 @@ def companies():
 
     return jsonify({'data': names})
 
-@company.route('/select-company', methods=['GET'])    
+@company.route('/select/company', methods=['GET'])    
 def select_company():
     selectCompany = Company.query.filter_by(company_id=request.json['company_id']).first()
     companyName = selectCompany.get_name()
@@ -71,7 +71,7 @@ def select_company():
 
     return jsonify({'data': company})
 
-@company.route('/select-branch', methods=['GET'])    
+@company.route('/select/branch', methods=['GET'])    
 def select_branch():
     selectBranch = Branch.query.filter_by(branch_id=request.json['branch_id']).first()
     branchCompanyId = selectBranch.get_company_id()
@@ -102,8 +102,8 @@ def select_branch_user():
 
     return jsonify({'data': branchUser})
 
-@company.route('/update-branch', methods=['GET'])    
-def select_branch_user():
+@company.route('/update/branch', methods=['GET'])    
+def update_branch_user():
     Branch.query.filter_by(branch_id=request.json['branch_id']).update({"name": "Bob Marley"})
 
     return jsonify({'data': ':P'})
