@@ -27,7 +27,7 @@ def create_coupon(request):
     db.session.add(new_coupon)
     db.session.commit()
 
-    return new_coupon.coupon_id
+    return new_coupon
 
 @coupon.route('/bond/create', methods = ['POST'])
 def create_bond():
@@ -42,14 +42,17 @@ def create_bond():
 
 @coupon.route('/discount/create', methods = ['POST'])
 def create_discount():
-    new_coupon_id = create_coupon(request)
-    discountCoupon = DiscountCoupon(coupon_id = new_coupon_id,
+    new_coupon = create_coupon(request)
+    discountCoupon = DiscountCoupon(coupon_id = new_coupon.coupon_id,
                                     coupon_category_id = request.json['coupon_category_id'],
-                                    percent = request.json['discount'])
+                                    percent = request.json['discount'],
+                                    coupon_info =  new_coupon)
     db.session.add(discountCoupon)
     db.session.commit()
 
-    return jsonify({'message': 'se creo un cupon ten tu 200'})
+    result = coupon_schema.dump(discountCoupon)
+
+    return jsonify(result.data)
 
 @coupon.route('/nxn/create', methods = ['POST'])
 def create_nxn():
@@ -73,9 +76,6 @@ def get_coupon(coupon_id):
 @coupon.route('/get/all', methods = ['GET'])
 def get_all_coupon():
     list_coupon = Coupon.query.all()
-                               # join(BondCoupon).\
-                               # join(DiscountCoupon).\
-                               # join(NxNCoupon)
 
     selected_list_coupon = coupons_schema.dump(list_coupon)
     return jsonify({'data': selected_list_coupon.data})
