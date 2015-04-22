@@ -22,7 +22,10 @@ class Coupon(db.Model):
     min_spent = Column(db.Integer, nullable=False)
     coupon_category_id = Column(db.Integer, db.ForeignKey('coupons_category.coupon_category_id'),nullable=False)
 
-    coupons_category = db.relationship('CouponCategory', backref="coupons")
+    bound_coupon = db.relationship('BoundCoupon', backref=db.backref("coupons", lazy='joined'), lazy="dynamic")
+    discount_coupon = db.relationship('DiscountCoupon', uselist=False backref=db.backref("coupons", lazy='joined'), lazy="dynamic")
+    nxn_coupon = db.relationship('NXNCoupon', uselist=False, backref=db.backref("coupons", lazy='joined'), lazy="dynamic")
+    coupons_category = db.relationship('CouponCategory', uselist=False, backref="coupons")
     branches_coupons = db.relationship('Branch', backref="coupons")
 
 class CouponCategory(db.Model):
@@ -37,7 +40,6 @@ class BondCoupon(db.Model):
     bond_size = Column(db.Integer, nullable=False)
     coupon_id = Column(db.Integer, db.ForeignKey('coupons.coupon_id'), nullable=False)
 
-    coupon = db.relationship('Coupon', backref=db.backref("bond_coupon", lazy='joined'), lazy="dynamic")
     coupons_category = db.relationship('CouponCategory', backref="bond_coupon")
 
 class DiscountCoupon(db.Model):
@@ -47,7 +49,6 @@ class DiscountCoupon(db.Model):
     coupon_category_id = Column(db.Integer, db.ForeignKey('coupons_category.coupon_category_id'),nullable=False)
     coupon_id = Column(db.Integer, db.ForeignKey('coupons.coupon_id'), nullable=False)
 
-    coupon = db.relationship('Coupon', backref=db.backref("discount_coupon", lazy='joined'), lazy="dynamic")
     coupons_category = db.relationship('CouponCategory', backref="discount_coupon")
 
 class NxNCoupon(db.Model):
@@ -58,7 +59,6 @@ class NxNCoupon(db.Model):
     coupon_category_id = Column(db.Integer, db.ForeignKey('coupons_category.coupon_category_id'),nullable=False)
     coupon_id = Column(db.Integer, db.ForeignKey('coupons.coupon_id'), nullable=False)
 
-    coupon = db.relationship('Coupon', backref=db.backref("nxn_coupon", lazy='joined'), lazy="dynamic")
     coupons_category = db.relationship('CouponCategory', backref="nxn_coupon")
 
 class ClientsCoupon(db.Model):
