@@ -15,7 +15,6 @@ class Company(db.Model):
 
     branches = db.relationship("Branch", uselist=False, backref="companies")
 
-
 # =====================================================================
 # Branches 
 
@@ -106,25 +105,23 @@ class BranchUser(db.Model):
 class CompanySchema(Schema):
     class Meta:
         fields = ('company_id',
-                  'name'
-                  )
+                  'name')
 
 class BranchSchema(Schema):
     class Meta:
         fields = ('branch_id',
                   'company_id',
                   'name',
-                  'category_id'
-                  )
+                  'category_id')
+        
 class BranchUserSchema(Schema):
-    branch_name = fields.Nested(BranchSchema,only=["name"])
+    branch_name = fields.Nested(BranchSchema, only=["name"])
     class Meta:
         fields = ('branches_user_id',
                   'branch_id',
                   'name',
                   'email',
-                  'branch_name'
-                  )
+                  'branch_name')
 
 company_schema= CompanySchema()
 companies_schema = CompanySchema(many=True)

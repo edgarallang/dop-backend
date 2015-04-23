@@ -23,13 +23,17 @@ def create_token(user):
     token = jwt.encode(payload, app.config['TOKEN_SECRET'])
 
     return token.decode('unicode_escape')
+    
 def parse_token(req):
     token = req.headers.get('Authorization').split()[1]
     return jwt.decode(token, app.config['TOKEN_SECRET'])
 
 @company.route('/auth/signup', methods=['POST'])
 def signup():
-    branchUser = BranchUser(email=request.json['email'], password=request.json['password'], branch_id=request.json['branch_id'], name=request.json['name'])
+    branchUser = BranchUser(email = request.json['email'],
+                            password = request.json['password'],
+                            branch_id = request.json['branch_id'],
+                            name = request.json['name'])
     db.session.add(branchUser)
     db.session.commit()
     token = create_token(branchUser)
@@ -38,7 +42,7 @@ def signup():
 
 @company.route('/auth/login', methods=['POST'])
 def login():
-    branchUser = BranchUser.query.filter_by(email=request.json['email']).first()
+    branchUser = BranchUser.query.filter_by(email = request.json['email']).first()
     flagPass = branchUser.check_password(request.json['password'])
     if not branchUser or not flagPass:
         response = jsonify(message='Wrong Email or Password')
