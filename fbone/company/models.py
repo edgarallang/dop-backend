@@ -79,6 +79,9 @@ class BranchUser(db.Model):
     branch = db.relationship('Branch',
                         backref=db.backref("branches_user", lazy="dynamic"))
 
+    def __init__(self, branch):
+        self.branch = branch
+
     def check_password(self, password):
         return self.password == password
 
@@ -114,14 +117,18 @@ class BranchSchema(Schema):
                   'name',
                   'category_id')
 
+    def must_not_be_blank(data):
+        if not data:
+            raise ValidationError('Data not provided.')
+
 class BranchUserSchema(Schema):
-    branch_name = fields.Nested(BranchSchema, only="name")
+    branch = fields.Nested(BranchSchema, validate=must_not_be_blank)
     class Meta:
         fields = ('branches_user_id',
                   'branch_id',
                   'name',
                   'email',
-                  'branch_name')
+                  'branch')
 
 company_schema = CompanySchema()
 companies_schema = CompanySchema(many=True)
