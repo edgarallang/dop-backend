@@ -115,7 +115,7 @@ class BranchSchema(Schema):
                   'category_id')
 
 class BranchUserSchema(Schema):
-    branch_name = fields.Nested(BranchSchema, only=["name"])
+    branch_name = fields.Nested(BranchSchema, only="name")
     class Meta:
         fields = ('branches_user_id',
                   'branch_id',
