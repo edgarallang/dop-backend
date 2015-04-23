@@ -2,7 +2,7 @@ from marshmallow import Schema, fields, ValidationError
 from sqlalchemy import Column, types
 from sqlalchemy.ext.mutable import Mutable
 from werkzeug.security import generate_password_hash, check_password_hash
-from ..extensions import db, jwt
+from ..extensions import db
 from ..utils import get_current_time, SEX_TYPE, STRING_LEN
 
 # =====================================================================
