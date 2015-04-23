@@ -15,8 +15,6 @@ class Company(db.Model):
 
     branches = db.relationship("Branch", uselist=False, backref="companies")
 
-    def get_name(self):
-        return self.name
 
 # =====================================================================
 # Branches 
@@ -31,16 +29,7 @@ class Branch(db.Model):
     # branches_user_id = Column(db.Integer, db.ForeignKey("branches_user.branches_user_id"))
     branches_design = db.relationship("BranchDesign", uselist=False, backref="branches")
     branches_location = db.relationship("BranchLocation", uselist=False, backref="branches")
-    branches_user = db.relationship("BranchUser", uselist=False, backref="branches")
-
-    def get_name(self):
-        return self.name
-
-    def get_category_id(self):
-        return self.category_id
-
-    def get_company_id(self):
-        return self.company_id
+    branches_user = db.relationship("BranchUser", uselist=False, backref="branches",lazy="dynamic")
 
 # =====================================================================
 # Branches Design
@@ -93,14 +82,6 @@ class BranchUser(db.Model):
     def check_password(self, password):
         return self.password == password
 
-    def get_name(self):
-        return self.name
-
-    def get_email(self):
-        return self.email
-
-    def get_branch_id(self):
-        return self.branch_id
 
     # def _get_password(self):
     #     return self._password
@@ -134,5 +115,17 @@ class BranchSchema(Schema):
                   'name',
                   'category_id'
                   )
+class BranchUserSchema(Schema):
+    branch_name = fields.Nested(BranchSchema,only=["name"])
+    class Meta:
+        fields = ('branches_user_id',
+                  'branch_id',
+                  'name',
+                  'email',
+                  'branch_name'
+                  )
 
+company_schema= CompanySchema()
+companies_schema = CompanySchema(many=True)
 branch_schema = BranchSchema()
+branch_user_schema = BranchUserSchema()

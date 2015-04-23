@@ -8,7 +8,7 @@ from flask import Blueprint, current_app, request, jsonify
 from flask import current_app as app
 from flask.ext.login import login_required, current_user
 from jwt import DecodeError, ExpiredSignature
-from .models import Company, Branch, BranchDesign, BranchLocation, BranchUser, Category
+from .models import *
 from ..extensions import db
 
 
@@ -50,57 +50,31 @@ def login():
 
 @company.route('/select/companies', methods=['GET'])    
 def companies():
-    result = db.engine.execute("SELECT * FROM companies")
-    user = {
-        'user': 'pikochin',
-        'pass': 123456
-    }
-    names = []
-    for row in result:
-        names.append(row[1])
+    selectedCompanies = Company.query.all()
+    companies = companies_schema.dump(selectedCompanies)
 
-    return jsonify({'data': names})
+    return jsonify(companies)
 
 @company.route('/select/company/<int:companyId>', methods=['GET'])    
 def select_company(companyId):
-    selectCompany = Company.query.filter_by(company_id=companyId).first()
-    companyName = selectCompany.get_name()
-    company = {
-        'name': company
-    }
+    selectedCompany = Company.query.get(companyId)
+    company = company_schema.dump(selectedCompany)
 
-    return jsonify({'data': company})
+    return jsonify(company)
 
 @company.route('/select/branch/<int:branchId>', methods=['GET'])    
 def select_branch(branchId):
-    selectBranch = Branch.query.filter_by(branch_id=branchId).first()
-    branchCompanyId = selectBranch.get_company_id()
-    branchName = selectBranch.get_name()
-    branchCategoryId = selectBranch.get_category_id()
-    branch = {
-        'company_id': branchCompanyId,
-        'category_id': branchCategoryId,
-        'name': branchName
-    }
-
-    return jsonify({'data': branch})
+    selectedBranch = Branch.query.get(branchId)
+    branch = branch_schema.dump(selectedBranch)
+    
+    return jsonify(branch)
 
 @company.route('/me', methods = ['POST'])    
 def select_branch_user():
-    selectBranchUser = BranchUser.query.filter_by(branches_user_id = request.json['branches_user_id']).first()
-    branchId = selectBranchUser.get_branch_id()
-    branchUserName = selectBranchUser.get_name()
-    branchEmail = selectBranchUser.get_email()
-    selectBranch = Branch.query.filter_by(branch_id = branchId).first()
-    branchName = selectBranch.get_name()
-    branchUser = {
-        'branch_id': branchId,
-        'name': branchUserName,
-        'email': branchEmail,
-        'branch_name': branchName
-    }
+    selectedBranchUser = BranchUser.query.get(request.json['branches_user_id'])
+    branchUser = branch_user_schema.dump(selectedBranchUser)
 
-    return jsonify({'data': branchUser})
+    return jsonify(branchUser)
 
 @company.route('/update/branch/<int:branchId>', methods=['GET'])    
 def update_branch_user(branchId):
