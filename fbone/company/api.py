@@ -61,14 +61,14 @@ def companies():
 
     return jsonify({'data': companies.data})
 
-@company.route('/select/company/<int:companyId>', methods=['GET'])    
+@company.route('/<int:companyId>/get', methods=['GET'])    
 def select_company(companyId):
     selectedCompany = Company.query.get(companyId)
     company = company_schema.dump(selectedCompany)
 
     return jsonify({'data': company.data})
 
-@company.route('/select/branch/<int:branchId>', methods=['GET'])    
+@company.route('/branch/<int:branchId>/get', methods=['GET'])    
 def select_branch(branchId):
     selectedBranch = Branch.query.get(branchId)
     branch = branch_schema.dump(selectedBranch)
@@ -82,7 +82,7 @@ def select_branch_user():
 
     return jsonify({'data': branchUser.data})
 
-@company.route('/update/branch/<int:branchId>', methods=['GET'])    
+@company.route('/branch/<int:branchId>/update', methods=['GET'])    
 def update_branch_user(branchId):
     Branch.query.filter_by(branch_id=branchId).update({"name": "Bob Marley"})
 
