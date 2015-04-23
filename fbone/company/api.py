@@ -20,6 +20,7 @@ def create_token(user):
         'iat': datetime.now(),
         'exp': datetime.now() + timedelta(days=14)
     }
+    import pdb; pdb.set_trace()
     token = jwt.encode(payload, app.config['TOKEN_SECRET'])
 
     return token.decode('unicode_escape')
