@@ -29,7 +29,6 @@ class Branch(db.Model):
     # branches_user_id = Column(db.Integer, db.ForeignKey("branches_user.branches_user_id"))
     branches_design = db.relationship("BranchDesign", uselist=False, backref="branches")
     branches_location = db.relationship("BranchLocation", uselist=False, backref="branches")
-    branches_user = db.relationship("BranchUser", uselist=False, backref="branches",lazy="dynamic")
 
 # =====================================================================
 # Branches Design
@@ -78,6 +77,8 @@ class BranchUser(db.Model):
     email = Column(db.String(STRING_LEN), nullable=False, unique=True)
 
     password = Column('password', db.String(STRING_LEN), nullable=False)
+    branch = db.relationship('Branch',
+                        backref=db.backref("branches_user", lazy="dynamic"))
 
     def check_password(self, password):
         return self.password == password
