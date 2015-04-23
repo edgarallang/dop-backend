@@ -1,6 +1,7 @@
 from marshmallow import Schema, fields, ValidationError
 from sqlalchemy import Column, types
 from sqlalchemy.ext.mutable import Mutable
+from sqlalchemy.exc import IntegrityError
 from werkzeug.security import generate_password_hash, check_password_hash
 from ..extensions import db
 from ..utils import get_current_time, SEX_TYPE, STRING_LEN
@@ -117,9 +118,9 @@ class BranchSchema(Schema):
                   'name',
                   'category_id')
 
-    def must_not_be_blank(data):
-        if not data:
-            raise ValidationError('Data not provided.')
+def must_not_be_blank(data):
+    if not data:
+        raise ValidationError('Data not provided.')
 
 class BranchUserSchema(Schema):
     branch = fields.Nested(BranchSchema, validate=must_not_be_blank)
