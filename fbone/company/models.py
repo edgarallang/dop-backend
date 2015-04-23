@@ -113,7 +113,7 @@ class BranchSchema(Schema):
                   'company_id',
                   'name',
                   'category_id')
-        
+
 class BranchUserSchema(Schema):
     branch_name = fields.Nested(BranchSchema, only=["name"])
     class Meta:
@@ -123,7 +123,7 @@ class BranchUserSchema(Schema):
                   'email',
                   'branch_name')
 
-company_schema= CompanySchema()
+company_schema = CompanySchema()
 companies_schema = CompanySchema(many=True)
 branch_schema = BranchSchema()
 branch_user_schema = BranchUserSchema()

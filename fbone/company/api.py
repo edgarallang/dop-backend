@@ -23,7 +23,7 @@ def create_token(user):
     token = jwt.encode(payload, app.config['TOKEN_SECRET'])
 
     return token.decode('unicode_escape')
-    
+
 def parse_token(req):
     token = req.headers.get('Authorization').split()[1]
     return jwt.decode(token, app.config['TOKEN_SECRET'])
@@ -48,6 +48,7 @@ def login():
         response = jsonify(message='Wrong Email or Password')
         response.status_code = 401
         return response
+    print 
     token = create_token(branchUser)
 
     return jsonify(token=token)
