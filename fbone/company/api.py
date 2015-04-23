@@ -59,28 +59,28 @@ def companies():
     selectedCompanies = Company.query.all()
     companies = companies_schema.dump(selectedCompanies)
 
-    return jsonify({'data': companies})
+    return jsonify({'data': companies.data})
 
 @company.route('/select/company/<int:companyId>', methods=['GET'])    
 def select_company(companyId):
     selectedCompany = Company.query.get(companyId)
     company = company_schema.dump(selectedCompany)
 
-    return jsonify({'data': company})
+    return jsonify({'data': company.data})
 
 @company.route('/select/branch/<int:branchId>', methods=['GET'])    
 def select_branch(branchId):
     selectedBranch = Branch.query.get(branchId)
     branch = branch_schema.dump(selectedBranch)
     
-    return jsonify({'data': branch})
+    return jsonify({'data': branch.data})
 
 @company.route('/me', methods = ['POST'])    
 def select_branch_user():
     selectedBranchUser = BranchUser.query.get(request.json['branches_user_id'])
     branchUser = branch_user_schema.dump(selectedBranchUser)
 
-    return jsonify({'data': branchUser})
+    return jsonify({'data': branchUser.data})
 
 @company.route('/update/branch/<int:branchId>', methods=['GET'])    
 def update_branch_user(branchId):
