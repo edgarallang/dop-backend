@@ -48,7 +48,7 @@ def login():
 
     return jsonify(token=token)
 
-@company.route('/select-companies', methods=['GET'])    
+@company.route('/select/companies', methods=['GET'])    
 def companies():
     result = db.engine.execute("SELECT * FROM companies")
     user = {
@@ -87,11 +87,11 @@ def select_branch():
 
 @company.route('/me', methods=['GET'])    
 def select_branch_user():
-    selectBranchUser = BranchUser.query.filter_by(branches_user_id=request.json['branches_user_id']).first()
+    selectBranchUser = BranchUser.query.filter_by(branches_user_id = request.json['branches_user_id']).first()
     branchId = selectBranchUser.get_branch_id()
     branchUserName = selectBranchUser.get_name()
     branchEmail = selectBranchUser.get_email()
-    selectBranch = Branch.query.filter_by(branch_id=branchId).first()
+    selectBranch = Branch.query.filter_by(branch_id = branchId).first()
     branchName = selectBranch.get_name()
     branchUser = {
         'branch_id': branchId,
