@@ -85,7 +85,7 @@ def select_branch():
 
     return jsonify({'data': branch})
 
-@company.route('/me', methods=['GET'])    
+@company.route('/me', methods = ['POST'])    
 def select_branch_user():
     selectBranchUser = BranchUser.query.filter_by(branches_user_id = request.json['branches_user_id']).first()
     branchId = selectBranchUser.get_branch_id()
