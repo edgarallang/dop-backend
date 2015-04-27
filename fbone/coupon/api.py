@@ -83,7 +83,7 @@ def get_coupon(coupon_id):
 
 @coupon.route('/get/all', methods = ['GET'])
 def get_all_coupon():
-    list_coupon = Coupon.query.all().limit(8)
+    list_coupon = Coupon.query.limit(8).all()
 
     selected_list_coupon = coupons_schema.dump(list_coupon)
     return jsonify({'data': selected_list_coupon.data})
