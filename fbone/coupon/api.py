@@ -13,7 +13,7 @@ from ..extensions import db
 
 
 coupon = Blueprint('coupon', __name__, url_prefix='/api/coupon')
-
+# class methods
 def create_coupon(request):
     new_coupon = Coupon(branch_id = request.json['branch_id'], 
                     name = request.json['name'], 
@@ -23,12 +23,14 @@ def create_coupon(request):
                     description = request.json['description'],
                     coupon_folio = "EAG",
                     min_spent = request.json['min_spent'],
-                    coupon_category_id = request.json['coupon_category_id'])
+                    coupon_category_id = request.json['coupon_category_id'],
+                    deleted = False)
     db.session.add(new_coupon)
     db.session.commit()
 
     return new_coupon
 
+# POST methods
 @coupon.route('/bond/create', methods = ['POST'])
 def create_bond():
     new_coupon = create_coupon(request)
@@ -63,6 +65,7 @@ def create_nxn():
 
     return jsonify({'message': 'El cupon se creo con exito, ten, toma una galleta'})
 
+# GET methods
 @coupon.route('/get/<int:coupon_id>', methods = ['GET'])
 def get_coupon(coupon_id):
     generic_coupon = Coupon.query.get(coupon_id)
@@ -87,3 +90,17 @@ def get_all_coupon():
 
     selected_list_coupon = coupons_schema.dump(list_coupon)
     return jsonify({'data': selected_list_coupon.data})
+
+# PUT methods
+@coupon.route('/delete/<int:coupon_id>', methods = ['PUT'])
+def pseudo_delete(coupon_id):
+    coupon_to_delete = Coupon.query.get(coupon_id)
+    coupon_to_delete.deleted = True
+    db.session.commit()
+
+    return jsonify({'message': 'El cupón ha sido eliminado'})
+
+
+
+
+
