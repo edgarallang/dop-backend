@@ -66,7 +66,7 @@ def create_nxn():
     return jsonify({'message': 'El cupon se creo con exito, ten, toma una galleta'})
 
 # GET methods
-@coupon.route('/get/<int:coupon_id>', methods = ['GET'])
+@coupon.route('/<int:coupon_id>/get', methods = ['GET'])
 def get_coupon(coupon_id):
     generic_coupon = Coupon.query.get(coupon_id)
     coupon_type = generic_coupon.coupon_category_id
@@ -84,7 +84,7 @@ def get_coupon(coupon_id):
     selected_coupon = coupon_schema.dump(generic_coupon)
     return jsonify({'coupon_info': selected_coupon.data, 'benefit': coupon_benefit_json.data})
 
-@coupon.route('/get/all', methods = ['GET'])
+@coupon.route('/all/get', methods = ['GET'])
 def get_all_coupon():
     list_coupon = Coupon.query.limit(6).all()
 
@@ -92,7 +92,7 @@ def get_all_coupon():
     return jsonify({'data': selected_list_coupon.data})
 
 # PUT methods
-@coupon.route('/delete/<int:coupon_id>', methods = ['PUT'])
+@coupon.route('/<int:coupon_id>/delete', methods = ['PUT'])
 def pseudo_delete(coupon_id):
     coupon_to_delete = Coupon.query.get(coupon_id)
     coupon_to_delete.deleted = True
