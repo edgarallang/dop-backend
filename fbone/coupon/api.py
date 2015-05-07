@@ -93,7 +93,7 @@ def get_all_coupon_by_branch(branch_id):
     return json.dumps(selected_list_coupon.data)
 
 @coupon.route('/all/get', methods = ['GET'])
-def get_all_coupon(branch_id):
+def get_all_coupon():
     list_coupon = Coupon.query.filter_by(deleted = False).limit(6).all()
 
     selected_list_coupon = coupons_schema.dump(list_coupon)
