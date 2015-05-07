@@ -97,7 +97,7 @@ def get_all_coupon():
     list_coupon = Coupon.query.filter_by(deleted = False).limit(6).all()
 
     selected_list_coupon = coupons_schema.dump(list_coupon)
-    return json.dumps(selected_list_coupon.data)
+    return jsonify({'data': selected_list_coupon.data})
 
 # PUT methods
 @coupon.route('/<int:coupon_id>/delete', methods = ['PUT'])
