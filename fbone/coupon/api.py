@@ -67,7 +67,7 @@ def create_nxn():
     return jsonify({'message': 'El cupon se creo con exito, ten, toma una galleta'})
 
 @coupon.route('/user/take',methods=['POST'])
-def take_coupon(request):
+def take_coupon():
     user_take = ClientsCoupon(user_id = request.json['user_id'],
                               coupon_id = request.json['coupon_id'],
                               folio = '234432',
