@@ -104,12 +104,19 @@ class NxNCouponSchema(Schema):
         fields = ('n1',
                   'n2')
 
+class ClientsCouponSchema(Schema):
+    class Meta:
+        fields = ('clients_coupon_id',
+                  'user_id',
+                  'folio',
+                  'taken_date')
 
 coupon_schema = CouponSchema()
 coupons_schema = CouponSchema(many=True)
 bond_coupon_schema = BondCouponSchema()
 discount_coupon_schema = DiscountCouponSchema()
 nxn_coupon_schema = NxNCouponSchema()
+clients_coupon_schema = ClientsCouponSchema()
 
 
 
