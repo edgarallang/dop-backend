@@ -67,7 +67,11 @@ def create_nxn():
     return jsonify({'message': 'El cupon se creo con exito, ten, toma una galleta'})
 
 @coupon.route('/user/take',methods=['POST'])
-def take_coupon(request):
+def take_coupon():
+    
+    mangled = (request.json['coupon_id']*1679979167)%(36**6)
+    folio = baseN(mangled,36)
+
     user_take = ClientsCoupon(user_id = request.json['user_id'],
                               coupon_id = request.json['coupon_id'],
                               folio = '234432',
@@ -76,7 +80,7 @@ def take_coupon(request):
     db.session.add(user_take)
     db.session.commit()
 
-    return jsonify({'message': 'El cupon se tomó con éxito'})
+    return jsonify({'message': 'El cupon se tomó con éxito','folio':folio})
 
 # GET methods
 @coupon.route('/<int:coupon_id>/get', methods = ['GET'])
