@@ -126,5 +126,3 @@ def baseN(num,b,numerals="0123456789abcdefghijklmnopqrstuvwxyz"):
 
 
 
-
-
