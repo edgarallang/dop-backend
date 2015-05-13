@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-
+import conekta
+conekta.api_key = 'key_ReaoWd2MyxP5QdUWKSuXBQ'
 from flask import Blueprint, current_app, request, jsonify
 from flask.ext.login import login_user, current_user, logout_user
 from ..extensions import db
@@ -33,10 +34,20 @@ def logout():
         logout_user()
     return jsonify(flag='success', msg='Logouted.')
 
-@api.route('/v1/calis', methods=['GET'])
-def calis():
-    user = {
-        'user': 'Edgar Allan',
-        'pass': 123456
-    }
-    return jsonify({'AquiEstaTuApi': user})
+@api.route('/payment/card', methods=['POST'])
+def process_payment():
+    try:
+        charge = conekta.Charge.create({
+          "amount": 51000,
+          "currency": "MXN",
+          "description": "Pizza Delivery",
+          "reference_id": "1",
+          "card": request.json['token_id'], 
+          "details": {
+            "email": "edgarallan182@gmail.com"
+          }
+        })
+    except conekta.ConektaError as e:
+        return jsonify({ 'message': e.message_to_purchaser })
+    #el pago no pudo ser procesado
+    return jsonify({ 'message': charge.status })
