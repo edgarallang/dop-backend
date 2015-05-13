@@ -34,7 +34,7 @@ def logout():
         logout_user()
     return jsonify(flag='success', msg='Logouted.')
 
-@api.route('/payment/card')
+@api.route('/payment/card', methods=['POST'])
 def process_payment():
     try:
         charge = conekta.Charge.create({
