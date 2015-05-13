@@ -74,7 +74,7 @@ def take_coupon():
 
     user_take = ClientsCoupon(user_id = request.json['user_id'],
                               coupon_id = request.json['coupon_id'],
-                              folio = '234432',
+                              folio = folio,
                               taken_date = request.json['taken_date'])
 
     db.session.add(user_take)
