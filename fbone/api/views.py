@@ -2,6 +2,7 @@
 import conekta
 conekta.api_key = 'key_ReaoWd2MyxP5QdUWKSuXBQ'
 conekta.locale = 'es'
+import json
 from flask import Blueprint, current_app, request, jsonify
 from flask.ext.login import login_user, current_user, logout_user
 from ..extensions import db
