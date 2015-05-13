@@ -40,7 +40,7 @@ def logout():
 def process_payment():
     try:
         charge = conekta.Charge.create({
-          "amount": request.json['paymentData'].total
+          "amount": request.json['paymentData'].total,
           "currency": "MXN",
           "description": "Pizza Delivery",
           "reference_id": "1",
