@@ -42,6 +42,7 @@ def create_bond():
     if request.headers.get('Authorization'):
         payload = parse_token(request)
         import pdb; pdb.set_trace()
+        branch_id = BranchUser.query.get(payload['id']).branch_id
         new_coupon = create_coupon(request)
         bondCoupon = BondCoupon(coupon_id = new_coupon.coupon_id, 
                                 coupon_category_id = request.json['coupon_category_id'], 
