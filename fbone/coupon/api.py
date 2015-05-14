@@ -38,10 +38,10 @@ def create_coupon(request):
 # POST methods
 @coupon.route('/bond/create', methods = ['POST'])
 def create_bond():
-    import pdb; pdb.set_trace()
+    
     if request.headers.get('Authorization'):
         payload = parse_token(request)
-
+        import pdb; pdb.set_trace()
         new_coupon = create_coupon(request)
         bondCoupon = BondCoupon(coupon_id = new_coupon.coupon_id, 
                                 coupon_category_id = request.json['coupon_category_id'], 
