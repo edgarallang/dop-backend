@@ -1,17 +1,29 @@
 # -*- coding: utf-8 -*-
-
+from datetime import datetime, timedelta
 import os
-
-from flask import Blueprint, render_template, send_from_directory, abort
-from flask import current_app as APP
+import jwt
+import json
+import requests
+from flask import Blueprint, request, jsonify
+from flask import current_app as app
 from flask.ext.login import login_required, current_user
-
-from .models import User, UserImage, UserLevel
+from jwt import DecodeError, ExpiredSignature
+from .models import *
 from ..extensions import db
 
 
 user = Blueprint('user', __name__, url_prefix='/user')
 
+def create_token(user):
+    payload = {
+        'id': user.user_id,
+        'iat': datetime.now(),
+        'exp': datetime.now() + timedelta(days=14)
+    }
+
+    token = jwt.encode(payload, app.config['TOKEN_SECRET'])
+
+    return token.decode('unicode_escape')
 
 @user.route('/')
 @login_required
@@ -38,12 +50,11 @@ def facebook_login():
     facebookUser = User.query.filter_by(facebook_key = request.json['facebook_key']).first()
     if not facebookUser:
         facebookUser = User(names = request.json['names'],
-		                    surnames = request.json['surnames'],
-		                    birth_date = request.json['birth_date'],
-		                    facebook_key = request.json['facebook_key'])
-	    db.session.add(facebookUser)
-	    db.session.commit()
-    print 
+                            surnames = request.json['surnames'],
+                            birth_date = request.json['birth_date'],
+                            facebook_key = request.json['facebook_key'])
+        db.session.add(facebookUser)
+        db.session.commit()
     token = create_token(facebookUser)
 
     return jsonify(token=token)
