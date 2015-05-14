@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+from marshmallow import Schema, fields, ValidationError
 from sqlalchemy import Column, types
 from sqlalchemy.ext.mutable import Mutable
 from werkzeug import generate_password_hash, check_password_hash
@@ -75,39 +75,6 @@ class User(db.Model, UserMixin):
     twitter_key = Column(db.String(STRING_LEN))
 
     users_image_user_id = db.relationship("UserImage", uselist=False, backref="users")
-    # created_time = Column(db.DateTime, default=get_current_time)
-
-    # ================================================================
-    # Follow / Following
-    # followers = Column(DenormalizedText)
-    # following = Column(DenormalizedText)
-
-    # @property
-    # def num_followers(self):
-    #     if self.followers:
-    #         return len(self.followers)
-    #     return 0
-
-    # @property
-    # def num_following(self):
-    #     return len(self.following)
-
-    # def follow(self, user):
-    #     user.followers.add(self.id)
-    #     self.following.add(user.user_id)
-
-    # def unfollow(self, user):
-    #     if self.id in user.followers:
-    #         user.followers.remove(self.id)
-
-    #     if user.user_id in self.following:
-    #         self.following.remove(user.user_id)
-
-    # def get_following_query(self):
-    #     return User.query.filter(User.user_id.in_(self.following or set()))
-
-    # def get_followers_query(self):
-    #     return User.query.filter(User.user_id.in_(self.followers or set()))
 
     # Images 
 
@@ -127,35 +94,54 @@ class UserLevel(db.Model, UserMixin):
     level_id = Column(db.Integer, db.ForeignKey('levels.level_id'), nullable=False)
     exp = Column(db.Integer, nullable=False)
 
+
+# Serializer Schemas
+
+class UserSchema(Schema):
+    class Meta:
+        fields = ('user_id',
+                  'names',
+                  'surnames',
+                  'birth_date',
+                  'facebook_key',
+                  'google_key',
+                  'twitter_key')
+
+
+
+user_schema = UserSchema()
+
     # ================================================================
     # Class methods
 
-    @classmethod
-    def authenticate(cls, login, password):
-        user = cls.query.filter(db.or_(User.names == login, User.email == login)).first()
+    # @classmethod
+    # def authenticate(cls, login, password):
+    #     user = cls.query.filter(db.or_(User.names == login, User.email == login)).first()
 
-        if user:
-            authenticated = user.check_password(password)
-        else:
-            authenticated = False
+    #     if user:
+    #         authenticated = user.check_password(password)
+    #     else:
+    #         authenticated = False
 
-        return user, authenticated
+    #     return user, authenticated
 
-    @classmethod
-    def search(cls, keywords):
-        criteria = []
-        for keyword in keywords.split():
-            keyword = '%' + keyword + '%'
-            criteria.append(db.or_(
-                User.name.ilike(keyword),
-                User.email.ilike(keyword),
-            ))
-        q = reduce(db.and_, criteria)
-        return cls.query.filter(q)
+    # @classmethod
+    # def search(cls, keywords):
+    #     criteria = []
+    #     for keyword in keywords.split():
+    #         keyword = '%' + keyword + '%'
+    #         criteria.append(db.or_(
+    #             User.name.ilike(keyword),
+    #             User.email.ilike(keyword),
+    #         ))
+    #     q = reduce(db.and_, criteria)
+    #     return cls.query.filter(q)
 
-    @classmethod
-    def get_by_id(cls, user_id):
-        return cls.query.filter_by(id=user_id).first_or_404()
+    # @classmethod
+    # def get_by_id(cls, user_id):
+    #     return cls.query.filter_by(id=user_id).first_or_404()
 
-    def check_name(self, name):
-        return User.query.filter(db.and_(User.names == names, User.email != self.id)).count() == 0
+    # def check_name(self, name):
+    #     return User.query.filter(db.and_(User.names == names, User.email != self.id)).count() == 0
+
+
