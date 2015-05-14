@@ -16,7 +16,7 @@ user = Blueprint('user', __name__, url_prefix='/user')
 
 def create_token(user):
     payload = {
-        'id': user.branches_user_id,
+        'id': user.user_id,
         'iat': datetime.now(),
         'exp': datetime.now() + timedelta(days=14)
     }
@@ -24,7 +24,7 @@ def create_token(user):
     token = jwt.encode(payload, app.config['TOKEN_SECRET'])
 
     return token.decode('unicode_escape')
-    
+
 @user.route('/')
 @login_required
 def index():
