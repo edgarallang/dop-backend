@@ -44,7 +44,7 @@ def process_payment():
         charge = conekta.Charge.create({
           "amount": payment_data['total'],
           "currency": "MXN",
-          "description": "Pizza Delivery",
+          "description": "Compra de campaña",
           "reference_id": "1",
           "card": request.json['token_id'], 
           "details": {

@@ -14,18 +14,22 @@ from ..extensions import db
 
 coupon = Blueprint('coupon', __name__, url_prefix='/api/coupon')
 # class methods
+def parse_token(req):
+    token = req.headers.get('Authorization').split()[1]
+    return jwt.decode(token, app.config['TOKEN_SECRET'])
+
 def create_coupon(request):
     new_coupon = Coupon(branch_id = request.json['branch_id'], 
-                    name = request.json['name'], 
-                    start_date = request.json['start_date'],
-                    end_date = request.json['end_date'],
-                    limit = request.json['limit'],
-                    description = request.json['description'],
-                    coupon_folio = "EAG",
-                    min_spent = request.json['min_spent'],
-                    coupon_category_id = request.json['coupon_category_id'],
-                    available = 0,
-                    deleted = False)
+                        name = request.json['name'], 
+                        start_date = request.json['start_date'],
+                        end_date = request.json['end_date'],
+                        limit = request.json['limit'],
+                        description = request.json['description'],
+                        coupon_folio = "EAG",
+                        min_spent = request.json['min_spent'],
+                        coupon_category_id = request.json['coupon_category_id'],
+                        available = 0,
+                        deleted = False)
     db.session.add(new_coupon)
     db.session.commit()
 
@@ -34,12 +38,16 @@ def create_coupon(request):
 # POST methods
 @coupon.route('/bond/create', methods = ['POST'])
 def create_bond():
-    new_coupon = create_coupon(request)
-    bondCoupon = BondCoupon(coupon_id = new_coupon.coupon_id, 
-                            coupon_category_id = request.json['coupon_category_id'], 
-                            bond_size = request.json['bond_size'])
-    db.session.add(bondCoupon)
-    db.session.commit()
+    import pdb; pdb.set_trace()
+    if request.headers.get('Authorization'):
+        payload = parse_token(request)
+
+        new_coupon = create_coupon(request)
+        bondCoupon = BondCoupon(coupon_id = new_coupon.coupon_id, 
+                                coupon_category_id = request.json['coupon_category_id'], 
+                                bond_size = request.json['bond_size'])
+        db.session.add(bondCoupon)
+        db.session.commit()
 
     return jsonify({'message': 'El cupon se creo con exito, ten, toma una galleta'})
 
