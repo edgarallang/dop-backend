@@ -38,12 +38,11 @@ def facebook_login():
     facebookUser = User.query.filter_by(facebook_key = request.json['facebook_key']).first()
     if not facebookUser:
         facebookUser = User(names = request.json['names'],
-		                    surnames = request.json['surnames'],
-		                    birth_date = request.json['birth_date'],
-		                    facebook_key = request.json['facebook_key'])
-	    db.session.add(facebookUser)
-	    db.session.commit()
-    print 
+                            surnames = request.json['surnames'],
+                            birth_date = request.json['birth_date'],
+                            facebook_key = request.json['facebook_key'])
+        db.session.add(facebookUser)
+        db.session.commit()
     token = create_token(facebookUser)
 
     return jsonify(token=token)
