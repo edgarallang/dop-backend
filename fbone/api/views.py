@@ -38,11 +38,11 @@ def logout():
 
 @api.route('/payment/card', methods=['POST'])
 def process_payment():
-    payment_data = request.get_json().paymentData
-    print payment_data
+    payment_data = request.json['paymentData']
+
     try:
         charge = conekta.Charge.create({
-          "amount": payment_data.total,
+          "amount": payment_data['total'],
           "currency": "MXN",
           "description": "Pizza Delivery",
           "reference_id": "1",
