@@ -18,8 +18,8 @@ def parse_token(req):
     token = req.headers.get('Authorization').split()[1]
     return jwt.decode(token, app.config['TOKEN_SECRET'])
 
-def create_coupon(request):
-    new_coupon = Coupon(branch_id = request.json['branch_id'], 
+def create_coupon(request, id):
+    new_coupon = Coupon(branch_id = id, 
                         name = request.json['name'], 
                         start_date = request.json['start_date'],
                         end_date = request.json['end_date'],
@@ -41,16 +41,16 @@ def create_bond():
     
     if request.headers.get('Authorization'):
         payload = parse_token(request)
-        import pdb; pdb.set_trace()
+
         branch_id = BranchUser.query.get(payload['id']).branch_id
-        new_coupon = create_coupon(request)
+        new_coupon = create_coupon(request, branch_id)
         bondCoupon = BondCoupon(coupon_id = new_coupon.coupon_id, 
                                 coupon_category_id = request.json['coupon_category_id'], 
                                 bond_size = request.json['bond_size'])
         db.session.add(bondCoupon)
         db.session.commit()
 
-    return jsonify({'message': 'El cupon se creo con exito, ten, toma una galleta'})
+        return jsonify({'message': 'El cupon se creo con exito, ten, toma una galleta'})
 
 @coupon.route('/discount/create', methods = ['POST'])
 def create_discount():
