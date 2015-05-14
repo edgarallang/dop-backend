@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import conekta
 conekta.api_key = 'key_ReaoWd2MyxP5QdUWKSuXBQ'
+conekta.locale = 'es'
+import json
 from flask import Blueprint, current_app, request, jsonify
 from flask.ext.login import login_user, current_user, logout_user
 from ..extensions import db
@@ -36,9 +38,11 @@ def logout():
 
 @api.route('/payment/card', methods=['POST'])
 def process_payment():
+    payment_data = request.json['paymentData']
+
     try:
         charge = conekta.Charge.create({
-          "amount": 51000,
+          "amount": payment_data['total'],
           "currency": "MXN",
           "description": "Pizza Delivery",
           "reference_id": "1",
