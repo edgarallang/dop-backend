@@ -78,6 +78,7 @@ def create_nxn():
 
 @coupon.route('/user/take',methods=['POST'])
 def take_coupon():
+    import pdb; pdb.set_trace()
     if request.headers.get('Authorization'):
         payload = parse_token(request)
         mangled = (request.json['coupon_id']*1679979167)%(36**6)
@@ -91,7 +92,7 @@ def take_coupon():
         db.session.add(user_take)
         db.session.commit()
 
-        return jsonify({'message': 'El cupon se tomó con éxito','folio':folio})
+        return jsonify({'message': 'El cupon se tomó con éxito','folio': folio})
     else:
         return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
