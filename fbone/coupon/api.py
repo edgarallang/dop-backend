@@ -93,7 +93,7 @@ def take_coupon():
 
         return jsonify({'message': 'El cupon se tomó con éxito','folio':folio})
     else:
-        return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'
+        return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
 # GET methods
 @coupon.route('/<int:coupon_id>/get', methods = ['GET'])
