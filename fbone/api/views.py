@@ -3,6 +3,7 @@ import conekta
 conekta.api_key = 'key_ReaoWd2MyxP5QdUWKSuXBQ'
 conekta.locale = 'es'
 import json
+import jwt
 from flask import Blueprint, current_app, request, jsonify
 from flask.ext.login import login_user, current_user, logout_user
 from ..extensions import db
@@ -12,6 +13,9 @@ from ..user import User
 
 api = Blueprint('api', __name__, url_prefix='/api')
 
+def parse_token(req):
+    token = req.headers.get('Authorization').split()[1]
+    return jwt.decode(token, app.config['TOKEN_SECRET'])
 
 @api.route('/login', methods=['POST'])
 def login():
@@ -39,19 +43,21 @@ def logout():
 @api.route('/payment/card', methods=['POST'])
 def process_payment():
     payment_data = request.json['paymentData']
-
-    try:
-        charge = conekta.Charge.create({
-          "amount": payment_data['total'],
-          "currency": "MXN",
-          "description": "Compra de campaña",
-          "reference_id": "1",
-          "card": request.json['token_id'], 
-          "details": {
-            "email": "edgarallan182@gmail.com"
-          }
-        })
-    except conekta.ConektaError as e:
-        return jsonify({ 'message': e.message_to_purchaser })
+    if request.headers.get('Authorization'):
+      payload = parse_token(request)
+      user = BranchUser.query.get(payload['id'])
+      try:
+          charge = conekta.Charge.create({
+            "amount": payment_data['total'],
+            "currency": "MXN",
+            "description": "Compra de campaña",
+            "reference_id": user.branch_id,
+            "card": request.json['token_id'], 
+            "details": {
+              "email": user.email
+            }
+          })
+      except conekta.ConektaError as e:
+          return jsonify({ 'message': e.message_to_purchaser })
     #el pago no pudo ser procesado
     return jsonify({ 'message': charge.status })

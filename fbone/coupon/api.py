@@ -51,6 +51,7 @@ def create_bond():
         db.session.commit()
 
         return jsonify({'message': 'El cupon se creo con exito, ten, toma una galleta'})
+    return jsonify({'message': 'Oops! algo salió mal :('})
 
 @coupon.route('/discount/create', methods = ['POST'])
 def create_discount():
@@ -77,14 +78,15 @@ def create_nxn():
 
 @coupon.route('/user/take',methods=['POST'])
 def take_coupon():
-    
-    mangled = (request.json['coupon_id']*1679979167)%(36**6)
-    folio = baseN(mangled,36)
+    if request.headers.get('Authorization'):
+        payload = parse_token(request)
+        mangled = (request.json['coupon_id']*1679979167)%(36**6)
+        folio = baseN(mangled, 36)
 
-    user_take = ClientsCoupon(user_id = request.json['user_id'],
-                              coupon_id = request.json['coupon_id'],
-                              folio = folio,
-                              taken_date = request.json['taken_date'])
+        user_take = ClientsCoupon(user_id = payload['id'],
+                                  coupon_id = request.json['coupon_id'],
+                                  folio = folio,
+                                  taken_date = request.json['taken_date'])
 
     db.session.add(user_take)
     db.session.commit()
