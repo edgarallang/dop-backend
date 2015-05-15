@@ -14,9 +14,11 @@ from ..extensions import db
 
 coupon = Blueprint('coupon', __name__, url_prefix='/api/coupon')
 # class methods
-def parse_token(req):
-    import pdb; pdb.set_trace()
-    token = req.headers.get('Authorization').split()[1]
+def parse_token(req, token_index):
+    if token_index:
+        token = req.headers.get('Authorization').split()[0]
+    else:
+        token = req.headers.get('Authorization').split()[1]
     return jwt.decode(token, app.config['TOKEN_SECRET'])
 
 def create_coupon(request, id):
@@ -41,7 +43,8 @@ def create_coupon(request, id):
 def create_bond():
     
     if request.headers.get('Authorization'):
-        payload = parse_token(request)
+        token_index = 0
+        payload = parse_token(request, token_index)
 
         branch_id = BranchUser.query.get(payload['id']).branch_id
         new_coupon = create_coupon(request, branch_id)
