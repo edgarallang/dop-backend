@@ -92,7 +92,7 @@ def take_coupon():
         db.session.commit()
 
         return jsonify({'message': 'El cupon se tomó con éxito','folio':folio})
-    else
+    else:
         return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'
 
 # GET methods
