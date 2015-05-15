@@ -15,6 +15,7 @@ from ..extensions import db
 coupon = Blueprint('coupon', __name__, url_prefix='/api/coupon')
 # class methods
 def parse_token(req):
+    import pdb; pdb.set_trace()
     token = req.headers.get('Authorization').split()[1]
     return jwt.decode(token, app.config['TOKEN_SECRET'])
 
