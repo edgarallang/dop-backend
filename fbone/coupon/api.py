@@ -58,26 +58,38 @@ def create_bond():
 
 @coupon.route('/discount/create', methods = ['POST'])
 def create_discount():
-    new_coupon = create_coupon(request)
-    discountCoupon = DiscountCoupon(coupon_id = new_coupon.coupon_id,
-                                    coupon_category_id = request.json['coupon_category_id'],
-                                    percent = request.json['discount'])
-    db.session.add(discountCoupon)
-    db.session.commit()
+    
+    if request.headers.get('Authorization'):
+        payload = parse_token(request)
 
-    return jsonify({'message': 'El cupon se creo con exito, ten, toma una galleta'})
+        branch_id = BranchUser.query.get(payload['id']).branch_id
+        new_coupon = create_coupon(request, branch_id)
+        discountCoupon = DiscountCoupon(coupon_id = new_coupon.coupon_id,
+                                        coupon_category_id = request.json['coupon_category_id'],
+                                        percent = request.json['discount'])
+        db.session.add(discountCoupon)
+        db.session.commit()
+
+        return jsonify({'message': 'El cupon se creo con exito, ten, toma una galleta'})
+    return jsonify({'message': 'Oops! algo salió mal :('})
 
 @coupon.route('/nxn/create', methods = ['POST'])
 def create_nxn():
-    new_coupon = create_coupon(request)
-    nxnCoupon = NxNCoupon(coupon_id = new_coupon.coupon_id,
-                          coupon_category_id = request.json['coupon_category_id'],
-                          n1 = request.json['n1'],
-                          n2 = request.json['n2'])
-    db.session.add(nxnCoupon)
-    db.session.commit()
 
-    return jsonify({'message': 'El cupon se creo con exito, ten, toma una galleta'})
+    if request.headers.get('Authorization'):
+        payload = parse_token(request)
+
+        branch_id = BranchUser.query.get(payload['id']).branch_id
+        new_coupon = create_coupon(request)
+        nxnCoupon = NxNCoupon(coupon_id = new_coupon.coupon_id,
+                              coupon_category_id = request.json['coupon_category_id'],
+                              n1 = request.json['n1'],
+                              n2 = request.json['n2'])
+        db.session.add(nxnCoupon)
+        db.session.commit()
+
+        return jsonify({'message': 'El cupon se creo con exito, ten, toma una galleta'})
+    return jsonify({'message': 'Oops! algo salió mal :('})
 
 @coupon.route('/user/take',methods=['POST'])
 def take_coupon():
@@ -97,8 +109,7 @@ def take_coupon():
         db.session.commit()
 
         return jsonify({'message': 'El cupon se tomó con éxito','folio': folio})
-    else:
-        return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
+    return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
 # GET methods
 @coupon.route('/<int:coupon_id>/get', methods = ['GET'])
