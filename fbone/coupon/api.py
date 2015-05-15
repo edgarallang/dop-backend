@@ -83,7 +83,7 @@ def create_nxn():
 def take_coupon():
 
     if request.headers.get('Authorization'):
-        token_index = 0
+        token_index = True
         payload = parse_token(request, token_index)
         mangled = (request.json['coupon_id']*1679979167)%(36**6)
         folio = baseN(mangled, 36)
