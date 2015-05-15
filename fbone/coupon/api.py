@@ -88,10 +88,12 @@ def take_coupon():
                                   folio = folio,
                                   taken_date = request.json['taken_date'])
 
-    db.session.add(user_take)
-    db.session.commit()
+        db.session.add(user_take)
+        db.session.commit()
 
-    return jsonify({'message': 'El cupon se tomó con éxito','folio':folio})
+        return jsonify({'message': 'El cupon se tomó con éxito','folio':folio})
+    else
+        return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'
 
 # GET methods
 @coupon.route('/<int:coupon_id>/get', methods = ['GET'])
