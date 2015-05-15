@@ -78,7 +78,7 @@ def create_nxn():
 
 @coupon.route('/user/take',methods=['POST'])
 def take_coupon():
-    import pdb; pdb.set_trace()
+
     if request.headers.get('Authorization'):
         payload = parse_token(request)
         mangled = (request.json['coupon_id']*1679979167)%(36**6)
