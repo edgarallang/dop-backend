@@ -43,8 +43,7 @@ def create_coupon(request, id):
 def create_bond():
     
     if request.headers.get('Authorization'):
-        token_index = 0
-        payload = parse_token(request, token_index)
+        payload = parse_token(request)
 
         branch_id = BranchUser.query.get(payload['id']).branch_id
         new_coupon = create_coupon(request, branch_id)
@@ -84,7 +83,8 @@ def create_nxn():
 def take_coupon():
 
     if request.headers.get('Authorization'):
-        payload = parse_token(request)
+        token_index = 0
+        payload = parse_token(request, token_index)
         mangled = (request.json['coupon_id']*1679979167)%(36**6)
         folio = baseN(mangled, 36)
 
