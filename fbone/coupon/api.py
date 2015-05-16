@@ -159,7 +159,7 @@ def pseudo_delete(coupon_id):
 def process_payment():
     payment_data = request.json['paymentData']
     if request.headers.get('Authorization'):
-      payload = parse_token(request)
+      payload = parse_token(request, False)
       user = BranchUser.query.get(payload['id'])
       try:
           charge = conekta.Charge.create({
