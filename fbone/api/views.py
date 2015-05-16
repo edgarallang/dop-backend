@@ -40,24 +40,3 @@ def logout():
         logout_user()
     return jsonify(flag='success', msg='Logouted.')
 
-@api.route('/payment/card', methods=['POST'])
-def process_payment():
-    payment_data = request.json['paymentData']
-    if request.headers.get('Authorization'):
-      payload = parse_token(request)
-      user = BranchUser.query.get(payload['id'])
-      try:
-          charge = conekta.Charge.create({
-            "amount": payment_data['total'],
-            "currency": "MXN",
-            "description": "Compra de campaña",
-            "reference_id": user.branch_id,
-            "card": request.json['token_id'], 
-            "details": {
-              "email": user.email
-            }
-          })
-      except conekta.ConektaError as e:
-          return jsonify({ 'message': e.message_to_purchaser })
-    #el pago no pudo ser procesado
-    return jsonify({ 'message': charge.status })
