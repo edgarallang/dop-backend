@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime, timedelta
+import conekta
+conekta.api_key = 'key_ReaoWd2MyxP5QdUWKSuXBQ'
+conekta.locale = 'es'
 import os
 import jwt
 import json

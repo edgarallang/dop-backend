@@ -1,7 +1,4 @@
 # -*- coding: utf-8 -*-
-import conekta
-conekta.api_key = 'key_ReaoWd2MyxP5QdUWKSuXBQ'
-conekta.locale = 'es'
 import json
 import jwt
 from flask import Blueprint, current_app, request, jsonify
