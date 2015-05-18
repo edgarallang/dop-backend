@@ -26,7 +26,7 @@ def parse_token(req, token_index):
 
 def create_coupon(request):
     if request.headers.get('Authorization'):
-        payload = parse_token(request)
+        payload = parse_token(request, False)
         branch_id = BranchUser.query.get(payload['id']).branch_id
         new_coupon = Coupon(branch_id = branch_id, 
                             # name = request.json['name'], 
