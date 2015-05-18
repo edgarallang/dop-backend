@@ -183,6 +183,9 @@ def process_payment():
           return jsonify({ 'message': e.message_to_purchaser })
     #el pago no pudo ser procesado
     if (charge.status == 'paid'):
-        create_coupon(request)
+        message = create_coupon(request)
+
+        return jsonify({ 'message': message })
+    return jsonify({'message': 'Oops! algo salió mal, seguramente fue tu tarjeta sobregirada'})
 
 
