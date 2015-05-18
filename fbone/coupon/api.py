@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime, timedelta
+import conekta
+conekta.api_key = 'key_ReaoWd2MyxP5QdUWKSuXBQ'
+conekta.locale = 'es'
 import os
 import jwt
 import json
@@ -155,11 +158,11 @@ def pseudo_delete(coupon_id):
     return jsonify({'message': 'El cupón ha sido eliminado'})
 
 
-@api.route('/payment/card', methods=['POST'])
+@coupon.route('/payment/card', methods=['POST'])
 def process_payment():
     payment_data = request.json['paymentData']
     if request.headers.get('Authorization'):
-      payload = parse_token(request)
+      payload = parse_token(request, False)
       user = BranchUser.query.get(payload['id'])
       try:
           charge = conekta.Charge.create({
