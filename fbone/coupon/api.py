@@ -67,7 +67,7 @@ def create_bond():
 def create_discount():
     
     if request.headers.get('Authorization'):
-        payload = parse_token(request)
+        payload = parse_token(request, False)
 
         branch_id = BranchUser.query.get(payload['id']).branch_id
         new_coupon = create_coupon(request, branch_id)
