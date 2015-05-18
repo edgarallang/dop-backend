@@ -37,7 +37,7 @@ def create_coupon(request):
                             # description = request.json['description'],
                             coupon_folio = "EAG",
                             # min_spent = request.json['min_spent'],
-                            # coupon_category_id = request.json['coupon_category_id'],
+                            coupon_category_id = 0,
                             available = 0,
                             deleted = False,
                             active = False)
