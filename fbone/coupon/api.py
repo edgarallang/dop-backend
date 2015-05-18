@@ -181,7 +181,7 @@ def process_payment():
       except conekta.ConektaError as e:
           return jsonify({ 'message': e.message_to_purchaser })
     #el pago no pudo ser procesado
-    if (charge.status == 'paid')
+    if (charge.status == 'paid'):
         create_coupon(request)
 
 
