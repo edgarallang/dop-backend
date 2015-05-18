@@ -54,6 +54,11 @@ def facebook_login():
                             birth_date = request.json['birth_date'],
                             facebook_key = request.json['facebook_key'])
         db.session.add(facebookUser)
+
+        userSession = UserSession(user_id=facebookUser.user_id,
+                                  email=request.json['email'])
+        db.session.add(userSession)
+
         db.session.commit()
     token = create_token(facebookUser)
 

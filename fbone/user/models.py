@@ -94,7 +94,16 @@ class UserLevel(db.Model, UserMixin):
     level_id = Column(db.Integer, db.ForeignKey('levels.level_id'), nullable=False)
     exp = Column(db.Integer, nullable=False)
 
+# ================================================================
+# User Session 
 
+class UserSession(db.Model,UserMixin):
+    __tablename__ = 'users_session'
+    user_session_id = Column(db.Integer, primary_key=True)
+    user_id = Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
+    email = Column(db.String(STRING_LEN))
+    password = Column(db.String(STRING_LEN))
+    
 # Serializer Schemas
 
 class UserSchema(Schema):
