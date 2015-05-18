@@ -32,14 +32,14 @@ def create_coupon(request):
                             # name = request.json['name'], 
                             # start_date = request.json['start_date'],
                             # end_date = request.json['end_date'],
-                            limit = request.json['limit'],
+                            limit = request.json['amountOfCoupon'],
                             # description = request.json['description'],
                             coupon_folio = "EAG",
                             # min_spent = request.json['min_spent'],
                             # coupon_category_id = request.json['coupon_category_id'],
                             available = 0,
                             deleted = False,
-                            active = request.json['active'])
+                            active = False)
         db.session.add(new_coupon)
         db.session.commit()
 
