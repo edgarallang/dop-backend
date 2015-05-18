@@ -55,6 +55,12 @@ def facebook_login():
                             facebook_key = request.json['facebook_key'])
         db.session.add(facebookUser)
         db.session.commit()
+
+        userSession = UserSession(user_id=facebookUser.user_id,
+                                  email=request.json['email'])
+        db.session.add(userSession)
+
+        db.session.commit()
     token = create_token(facebookUser)
 
     return jsonify(token=token)
