@@ -54,8 +54,7 @@ def create_bond():
         payload = parse_token(request)
 
         branch_id = BranchUser.query.get(payload['id']).branch_id
-        new_coupon = create_coupon(request, branch_id)
-        bondCoupon = BondCoupon(coupon_id = new_coupon.coupon_id, 
+        bondCoupon = BondCoupon(coupon_id = request.json['coupon_id'], 
                                 coupon_category_id = request.json['coupon_category_id'], 
                                 bond_size = request.json['bond_size'])
         db.session.add(bondCoupon)
