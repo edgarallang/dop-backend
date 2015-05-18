@@ -182,6 +182,6 @@ def process_payment():
           return jsonify({ 'message': e.message_to_purchaser })
     #el pago no pudo ser procesado
     if (charge.status == 'paid'):
-        create_coupon(request)
+        create_coupon(payment_data)
 
 
