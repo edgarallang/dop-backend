@@ -23,6 +23,7 @@ class Coupon(db.Model):
     coupon_category_id = Column(db.Integer, db.ForeignKey('coupons_category.coupon_category_id'),nullable=False)
     deleted = Column(db.Boolean)
     available = Column(db.Integer)
+    active = Column(db.Boolean)
 
     coupons_category = db.relationship('CouponCategory', uselist=False, backref="coupons")
     branches_coupons = db.relationship('Branch', uselist=False, backref="coupons")

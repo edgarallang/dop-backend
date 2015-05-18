@@ -24,23 +24,26 @@ def parse_token(req, token_index):
         token = req.headers.get('Authorization').split()[1]
     return jwt.decode(token, app.config['TOKEN_SECRET'])
 
-@coupon.route('/coupon/create', methods = ['POST'])
-def create_coupon(request, id):
-    new_coupon = Coupon(branch_id = id, 
-                        name = request.json['name'], 
-                        start_date = request.json['start_date'],
-                        end_date = request.json['end_date'],
-                        limit = request.json['limit'],
-                        description = request.json['description'],
-                        coupon_folio = "EAG",
-                        min_spent = request.json['min_spent'],
-                        coupon_category_id = request.json['coupon_category_id'],
-                        available = 0,
-                        deleted = False)
-    db.session.add(new_coupon)
-    db.session.commit()
+def create_coupon(request):
+    if request.headers.get('Authorization'):
+        payload = parse_token(request)
+        branch_id = BranchUser.query.get(payload['id']).branch_id
+        new_coupon = Coupon(branch_id = branch_id, 
+                            # name = request.json['name'], 
+                            # start_date = request.json['start_date'],
+                            # end_date = request.json['end_date'],
+                            limit = request.json['limit'],
+                            # description = request.json['description'],
+                            coupon_folio = "EAG",
+                            # min_spent = request.json['min_spent'],
+                            # coupon_category_id = request.json['coupon_category_id'],
+                            available = 0,
+                            deleted = False,
+                            active = request.json['active'])
+        db.session.add(new_coupon)
+        db.session.commit()
 
-    return "OK si se creo el cupon despues del pago"
+        return "OK si se creo el cupon despues del pago"
 
 # POST methods
 @coupon.route('/bond/create', methods = ['POST'])
@@ -178,6 +181,7 @@ def process_payment():
       except conekta.ConektaError as e:
           return jsonify({ 'message': e.message_to_purchaser })
     #el pago no pudo ser procesado
-    return jsonify({ 'message': charge.status })
+    if charge.status == 'paid'
+        create_coupon(request)
 
 
