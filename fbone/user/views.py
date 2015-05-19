@@ -65,4 +65,21 @@ def facebook_login():
 
     return jsonify(token=token)
 
+@user.route('/login/twitter',methods=['POST'])
+def twitter_login():
+    twitterUser = User.query.filter_by(twitter_key = request.json['twitter_key']).first()
+    if not twitterUser:
+        twitterUser = User(names = request.json['names'],
+                            surnames = request.json['surnames'],
+                            birth_date = request.json['birth_date'],
+                            twitter_key = request.json['twitter_key'])
+        db.session.add(twitterUser)
+        db.session.commit()
 
+        userSession = UserSession(user_id=twitterUser.user_id)
+        db.session.add(userSession)
+
+        db.session.commit()
+    token = create_token(twitterUser)
+
+    return jsonify(token=token)
