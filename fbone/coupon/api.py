@@ -163,40 +163,9 @@ def get_all_coupon_by_branch(branch_id):
                               .filter_by(branch_id = branch_id) \
                               .limit(6).all()
 
-    joined_coupon = Coupon.query.join(Coupon.bond_coupon) \
-                                .values(Coupon.coupon_id,
-                                        Coupon.name,
-                                        Coupon.coupon_folio,
-                                        Coupon.description,
-                                        Coupon.start_date,
-                                        Coupon.end_date,
-                                        Coupon.limit,
-                                        Coupon.min_spent,
-                                        Coupon.coupon_category_id,
-                                        Coupon.available,
-                                        Coupon.active,
-                                        BondCoupon.bond_id,
-                                        BondCoupon.bond_size).all()
-
-    resultlist = []
-    for coupon_id, name, coupon_folio, description, start_date, end_date, limit, min_spent, coupon_category_id, available, active, bond_id, bond_size in joined_coupon:
-        resultlist.append({'coupon_id': coupon_id,
-                           'name': name,
-                           'coupon_folio': coupon_folio,
-                           'description': description,
-                           'start_date': start_date,
-                           'end_date': end_date,
-                           'limit': limit,
-                           'min_spent': min_spent,
-                           'coupon_category_id': coupon_category_id,
-                           'available': available,
-                           'active': active,
-                           'bond_id': bond_id,
-                           'bond_size': bond_size })
-    import pdb; pdb.set_trace()
     selected_list_coupon = coupons_schema.dump(list_coupon)
-    return jsonify({'data': resultlist})
-    # return json.dumps(selected_list_coupon.data)
+
+    return json.dumps(selected_list_coupon.data)
 
 @coupon.route('/all/get', methods = ['GET'])
 def get_all_coupon():
