@@ -169,9 +169,9 @@ def get_all_coupon_by_branch(branch_id):
 
     selected_list_coupon = coupons_schema.dump(list_coupon)
     bondlist = bond_join_coupon_schema.dump(bond_coupons)
-    print bondlist
+    print bondlist.data
 
-    return json.dumps(result_data)
+    return json.dumps(selected_list_coupon.data)
 
 @coupon.route('/all/get', methods = ['GET'])
 def get_all_coupon():
