@@ -166,9 +166,14 @@ def get_all_coupon_by_branch(branch_id):
     bond_coupons = db.engine.execute('select * from coupons inner join bond_coupon on coupons.coupon_id = bond_coupon.coupon_id')
     discount_coupons = db.engine.execute('select * from coupons inner join discount_coupon on coupons.coupon_id = discount_coupon.coupon_id')
     nxn_coupons = db.engine.execute('select * from coupons inner join nxn_coupon on coupons.coupon_id = nxn_coupon.coupon_id')
-    import pdb; pdb.set_trace()
+
     selected_list_coupon = coupons_schema.dump(list_coupon)
 
+    bondlist = serialize_raw_sql(bond_coupons)
+    discountlist = serialize_raw_sql(discount_coupons)
+    nxnlist = serialize_raw_sql(nxn_coupons)
+
+    print bondlist
     return json.dumps(selected_list_coupon.data)
 
 @coupon.route('/all/get', methods = ['GET'])
@@ -213,5 +218,12 @@ def process_payment():
 
         return jsonify({ 'message': message })
     return jsonify({'message': 'Oops! algo salió mal, seguramente fue tu tarjeta sobregirada'})
+
+def serialize_raw_sql(result):
+    resultlist = []
+    for row in result:
+        resultlist.append(row)
+    return resultlist
+
 
 
