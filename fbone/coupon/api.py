@@ -214,4 +214,7 @@ def process_payment():
         return jsonify({ 'message': message })
     return jsonify({'message': 'Oops! algo salió mal, seguramente fue tu tarjeta sobregirada'})
 
+@coupon.route('used/<int:user_id>/get', methods=['GET'])
+def get_used_coupons_by_user(user_id):
+
 
