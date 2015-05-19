@@ -184,7 +184,7 @@ def get_all_coupon_by_branch(branch_id):
     for val in nxnlist:
         result_data.append(val)
 
-    return dumps(result_data)
+    return json.dumps(result_data)
 
 @coupon.route('/all/get', methods = ['GET'])
 def get_all_coupon():
@@ -232,7 +232,7 @@ def process_payment():
 def serialize_raw_sql(result):
     resultlist = []
     for row in result:
-        resultlist.append(row)
+        resultlist.append({'coupon':row})
     return resultlist
 
 
