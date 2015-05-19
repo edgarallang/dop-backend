@@ -175,13 +175,13 @@ def get_all_coupon_by_branch(branch_id):
 
     result_data = []
 
-    for val in bondlist
+    for val in bondlist:
         result_data.append(val)
 
-    for val in discountlist
+    for val in discountlist:
         result_data.append(val)
 
-    for val in nxnlist
+    for val in nxnlist:
         result_data.append(val)
 
     return result_data
