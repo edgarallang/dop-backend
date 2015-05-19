@@ -184,7 +184,7 @@ def get_all_coupon_by_branch(branch_id):
     for val in nxnlist:
         result_data.append(val)
 
-    return result_data
+    return dumps(result_data)
 
 @coupon.route('/all/get', methods = ['GET'])
 def get_all_coupon():
