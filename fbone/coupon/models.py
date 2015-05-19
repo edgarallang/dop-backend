@@ -25,7 +25,6 @@ class Coupon(db.Model):
     available = Column(db.Integer)
     active = Column(db.Boolean)
 
-    bond_coupon = db.relationship('BondCoupon', uselist="False", backref="coupons")
     coupons_category = db.relationship('CouponCategory', uselist=False, backref="coupons")
     branches_coupons = db.relationship('Branch', uselist=False, backref="coupons")
 
