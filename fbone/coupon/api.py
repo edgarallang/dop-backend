@@ -176,7 +176,7 @@ def get_all_coupon_by_branch(branch_id):
                                         Coupon.available,
                                         Coupon.active,
                                         BondCoupon.bond_id,
-                                        BondCoupon.bond_size)
+                                        BondCoupon.bond_size).all()
 
     resultlist = []
     for coupon_id, name, coupon_folio, description, start_date, end_date, limit, min_spent, coupon_category_id, available, active, bond_id, bond_size in joined_coupon:
