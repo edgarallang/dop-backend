@@ -83,4 +83,26 @@ def twitter_login():
     token = create_token(twitterUser)
 
     return jsonify(token=token)
-#Hi
+
+@user.route('/login/google',methods=['POST'])
+def google_login():
+    googleUser = User.query.filter_by(google_key = request.json['google_key']).first()
+    if not googleUser:
+        googleUser = User(names = request.json['names'],
+                            surnames = request.json['surnames'],
+                            birth_date = request.json['birth_date'],
+                            google_key = request.json['google_key'])
+        db.session.add(googleUser)
+        db.session.commit()
+
+        userSession = UserSession(user_id=googleUser.user_id)
+        db.session.add(userSession)
+        db.session.commit()
+
+        userSession = UserSession(user_id=googleUser.user_id,
+                                  email=request.json['email'])
+        db.session.add(userSession)
+        db.session.commit()
+    token = create_token(googleUser)
+
+    return jsonify(token=token)
