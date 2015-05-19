@@ -159,9 +159,16 @@ def get_coupon(coupon_id):
 
 @coupon.route('/all/<int:branch_id>/get', methods = ['GET'])
 def get_all_coupon_by_branch(branch_id):
-    list_coupon = Coupon.query.filter_by(deleted = False).filter_by(branch_id = branch_id).limit(6).all()
+    list_coupon = Coupon.query.filter_by(deleted = False) \
+                              .filter_by(branch_id = branch_id) \
+                              .limit(6).all()
 
+    bond_coupons = db.session.query(Coupon, BondCoupon).filter_by(BondCoupon.coupon_id = Coupon.coupon_id).all()
+    discount_coupons = db.session.query(Coupon, DiscountCoupon).filter_by(DiscountCoupon.coupon_id = Coupon.coupon_id).all()
+    nxn_coupons = db.session.query(Coupon, NxNCoupon).filter_by(NxNCoupon.coupon_id = Coupon.coupon_id).all()
+    import pdb; pdb.set_trace()
     selected_list_coupon = coupons_schema.dump(list_coupon)
+
     return json.dumps(selected_list_coupon.data)
 
 @coupon.route('/all/get', methods = ['GET'])
