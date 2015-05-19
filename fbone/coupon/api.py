@@ -12,6 +12,7 @@ from flask import current_app as app
 from flask.ext.login import login_required, current_user
 from jwt import DecodeError, ExpiredSignature
 from .models import *
+from ..user import *
 from ..extensions import db
 
 
@@ -163,13 +164,20 @@ def get_all_coupon_by_branch(branch_id):
                               .filter_by(branch_id = branch_id) \
                               .limit(6).all()
 
-    bond_coupons = db.session.query(Coupon, BondCoupon).filter_by(BondCoupon.coupon_id = Coupon.coupon_id).all()
-    discount_coupons = db.session.query(Coupon, DiscountCoupon).filter_by(DiscountCoupon.coupon_id = Coupon.coupon_id).all()
-    nxn_coupons = db.session.query(Coupon, NxNCoupon).filter_by(NxNCoupon.coupon_id = Coupon.coupon_id).all()
-    import pdb; pdb.set_trace()
-    selected_list_coupon = coupons_schema.dump(list_coupon)
+    bond_coupons = db.engine.execute('select * from coupons inner join bond_coupon on coupons.coupon_id = bond_coupon.coupon_id')
+    discount_coupons = db.engine.execute('select * from coupons inner join discount_coupon on coupons.coupon_id = discount_coupon.coupon_id')
+    nxn_coupons = db.engine.execute('select * from coupons inner join nxn_coupon on coupons.coupon_id = nxn_coupon.coupon_id')
 
-    return json.dumps(selected_list_coupon.data)
+    selected_list_coupon = coupons_schema.dump(list_coupon)
+    bondlist = bond_join_coupon_schema.dump(bond_coupons)
+    discountlist = discount_join_coupon_schema.dump(discount_coupons)
+    nxnlist = nxn_join_coupon_schema.dump(nxn_coupons)
+
+    result = jsonify({'bond': bondlist.data,
+                      'discount': discountlist.data,
+                      'nxn': nxnlist.data })
+
+    return json.dumps(result)
 
 @coupon.route('/all/get', methods = ['GET'])
 def get_all_coupon():
@@ -216,5 +224,7 @@ def process_payment():
 
 @coupon.route('used/<int:user_id>/get', methods=['GET'])
 def get_used_coupons_by_user(user_id):
+
+
 
 

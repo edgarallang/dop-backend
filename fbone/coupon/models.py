@@ -90,6 +90,52 @@ class CouponSchema(Schema):
                   'min_spent',
                   'coupon_category_id')
 
+class BondJoinCouponSchema(Schema):
+    class Meta:
+        fields = ('coupon_id',
+                  'branch_id',
+                  'name',
+                  'coupon_folio',
+                  'description',
+                  'start_date',
+                  'end_date',
+                  'limit',
+                  'min_spent',
+                  'coupon_category_id',
+                  'bond_id',
+                  'bond_size')
+
+class DiscountJoinCouponSchema(Schema):
+    class Meta:
+        fields = ('coupon_id',
+                  'branch_id',
+                  'name',
+                  'coupon_folio',
+                  'description',
+                  'start_date',
+                  'end_date',
+                  'limit',
+                  'min_spent',
+                  'coupon_category_id',
+                  'discount_coupon_id',
+                  'percent')
+
+class NxNJoinCouponSchema(Schema):
+    class Meta:
+        fields = ('coupon_id',
+                  'branch_id',
+                  'name',
+                  'coupon_folio',
+                  'description',
+                  'start_date',
+                  'end_date',
+                  'limit',
+                  'min_spent',
+                  'coupon_category_id',
+                  'nxn_id',
+                  'n1',
+                  'n2')
+
 class BondCouponSchema(Schema):
     class Meta:
         fields = ('bond_id',
@@ -114,6 +160,10 @@ class ClientsCouponSchema(Schema):
 
 coupon_schema = CouponSchema()
 coupons_schema = CouponSchema(many=True)
+
+bond_join_coupon_schema = BondJoinCouponSchema(many=True)
+discount_join_coupon_schema = DiscountJoinCouponSchema(many=True)
+nxn_join_coupon_schema = NxNJoinCouponSchema(many=True)
 
 bond_coupon_schema = BondCouponSchema()
 discount_coupon_schema = DiscountCouponSchema()
