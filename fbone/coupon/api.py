@@ -168,21 +168,8 @@ def get_all_coupon_by_branch(branch_id):
     nxn_coupons = db.engine.execute('select * from coupons inner join nxn_coupon on coupons.coupon_id = nxn_coupon.coupon_id')
 
     selected_list_coupon = coupons_schema.dump(list_coupon)
-
-    bondlist = serialize_raw_sql(bond_coupons)
-    discountlist = serialize_raw_sql(discount_coupons)
-    nxnlist = serialize_raw_sql(nxn_coupons)
-
-    result_data = []
-
-    for val in bondlist:
-        result_data.append(val)
-
-    for val in discountlist:
-        result_data.append(val)
-
-    for val in nxnlist:
-        result_data.append(val)
+    bondlist = bond_join_coupon_schema.dump(bond_coupons)
+    print bondlist
 
     return json.dumps(result_data)
 
@@ -229,11 +216,6 @@ def process_payment():
         return jsonify({ 'message': message })
     return jsonify({'message': 'Oops! algo salió mal, seguramente fue tu tarjeta sobregirada'})
 
-def serialize_raw_sql(result):
-    resultlist = []
-    for row in result:
-        resultlist.append({'coupon':row})
-    return resultlist
 
 
 
