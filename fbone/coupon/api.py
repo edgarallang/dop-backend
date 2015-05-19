@@ -173,11 +173,11 @@ def get_all_coupon_by_branch(branch_id):
     discountlist = discount_join_coupon_schema.dump(discount_coupons)
     nxnlist = nxn_join_coupon_schema.dump(nxn_coupons)
 
-    result = jsonify({'bond': bondlist.data,
-                      'discount': discountlist.data,
-                      'nxn': nxnlist.data })
+    return jsonify({'bond': bondlist.data,
+                    'discount': discountlist.data,
+                    'nxn': nxnlist.data })
 
-    return json.dumps(result)
+    
 
 @coupon.route('/all/get', methods = ['GET'])
 def get_all_coupon():
