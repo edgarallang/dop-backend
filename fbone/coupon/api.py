@@ -163,7 +163,7 @@ def get_all_coupon_by_branch(branch_id):
                               .filter_by(branch_id = branch_id) \
                               .limit(6).all()
 
-    bond_coupons = db.session.query(BondCoupon).join(BondCoupon.coupon)
+    bond_coupons = db.session.query(Coupon).join(Coupon.bond_coupon)
     discount_coupons = db.session.query(DiscountCoupon).join(DiscountCoupon.coupon)
     nxn_coupons = db.session.query(NxNCoupon).join(NxNCoupon.coupon)
     import pdb; pdb.set_trace()
