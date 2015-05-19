@@ -12,6 +12,7 @@ from flask import current_app as app
 from flask.ext.login import login_required, current_user
 from jwt import DecodeError, ExpiredSignature
 from .models import *
+from ..user import *
 from ..extensions import db
 
 
@@ -169,9 +170,14 @@ def get_all_coupon_by_branch(branch_id):
 
     selected_list_coupon = coupons_schema.dump(list_coupon)
     bondlist = bond_join_coupon_schema.dump(bond_coupons)
-    print bondlist.data
+    discountlist = discount_join_coupon_schema.dump(discount_coupons)
+    nxnlist = nxn_join_coupon_schema.dump(nxn_coupons)
 
-    return json.dumps(selected_list_coupon.data)
+    result = jsonify({'bond': bondlist.data,
+                      'discount': discountlist.data,
+                      'nxn': nxnlist.data })
+
+    return json.dumps(result)
 
 @coupon.route('/all/get', methods = ['GET'])
 def get_all_coupon():
