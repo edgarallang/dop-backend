@@ -173,8 +173,18 @@ def get_all_coupon_by_branch(branch_id):
     discountlist = serialize_raw_sql(discount_coupons)
     nxnlist = serialize_raw_sql(nxn_coupons)
 
-    print bondlist
-    return json.dumps(selected_list_coupon.data)
+    result_data = []
+
+    for val in bondlist
+        result_data.append(val)
+
+    for val in discountlist
+        result_data.append(val)
+
+    for val in nxnlist
+        result_data.append(val)
+
+    return result_data
 
 @coupon.route('/all/get', methods = ['GET'])
 def get_all_coupon():
