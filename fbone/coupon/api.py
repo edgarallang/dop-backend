@@ -163,6 +163,10 @@ def get_all_coupon_by_branch(branch_id):
                               .filter_by(branch_id = branch_id) \
                               .limit(6).all()
 
+    bond_coupons = Coupon.query.join(BondCoupon).filter_by(BondCoupon.coupon_id = Coupon.coupon_id).all()
+    discount_coupons = Coupon.query.join(DiscountCoupon).filter_by(DiscountCoupon.coupon_id = Coupon.coupon_id).all()
+    nxn_coupons = Coupon.query.join(NxNCoupon).filter_by(NxNCoupon.coupon_id = Coupon.coupon_id).all()
+    import pdb; pdb.set_trace()
     selected_list_coupon = coupons_schema.dump(list_coupon)
 
     return json.dumps(selected_list_coupon.data)
