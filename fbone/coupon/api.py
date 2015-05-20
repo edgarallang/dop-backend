@@ -173,11 +173,11 @@ def get_all_coupon_by_branch(branch_id):
     discountlist = discount_join_coupon_schema.dump(discount_coupons)
     nxnlist = nxn_join_coupon_schema.dump(nxn_coupons)
 
-    result = jsonify({'bond': bondlist.data,
-                      'discount': discountlist.data,
-                      'nxn': nxnlist.data })
+    return jsonify({'bond': bondlist.data,
+                    'discount': discountlist.data,
+                    'nxn': nxnlist.data })
 
-    return json.dumps(result)
+    
 
 @coupon.route('/all/get', methods = ['GET'])
 def get_all_coupon():
@@ -224,7 +224,9 @@ def process_payment():
 
 @coupon.route('used/<int:user_id>/get', methods=['GET'])
 def get_used_coupons_by_user(user_id):
+    user = db.session.query(ClientsCoupon).select_from(join(ClientsCoupon,User,ClientsCoupon.user_id))
 
-
+    print user
+    return jsonify({'message': 'Oops! algo salió mal, seguramente fue tu tarjeta sobregirada'})
 
 
