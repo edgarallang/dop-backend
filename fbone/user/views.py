@@ -60,7 +60,12 @@ def facebook_login():
                                   email=request.json['email'])
         db.session.add(userSession)
 
+        userImage = UserImage(user_id=facebookUser.user_id,
+                              main_image=request.json['main_image'])
+        db.session.add(userImage)
+        
         db.session.commit()
+
     token = create_token(facebookUser)
 
     return jsonify(token=token)
@@ -103,6 +108,7 @@ def google_login():
                                   email=request.json['email'])
         db.session.add(userSession)
         db.session.commit()
+
     token = create_token(googleUser)
 
     return jsonify(token=token)

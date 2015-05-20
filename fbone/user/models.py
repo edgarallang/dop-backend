@@ -103,7 +103,18 @@ class UserSession(db.Model,UserMixin):
     user_id = Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
     email = Column(db.String(STRING_LEN))
     password = Column(db.String(STRING_LEN))
-    
+
+# ================================================================
+# Friends 
+
+class Friends(db.Model,UserMixin):
+    __tablename__ = 'friends'
+    friends_id = Column(db.Integer, primary_key=True)
+    user_one_id = Column(db.Integer, nullable=False)
+    user_two_id = Column(db.Integer, nullable=False)
+    status = Column(db.Integer, nullable=False)
+    action_user_id = Column(db.Integer, nullable=False)   
+
 # Serializer Schemas
 
 class UserSchema(Schema):
@@ -116,10 +127,17 @@ class UserSchema(Schema):
                   'google_key',
                   'twitter_key')
 
+class FriendsSchema(Schema):
+    class Meta:
+        fields = ('user_one_id',
+                  'user_two_id',
+                  'status',
+                  'action_user_id')
+
 
 
 user_schema = UserSchema()
-
+friends_schema = FriendsSchema()
     # ================================================================
     # Class methods
 

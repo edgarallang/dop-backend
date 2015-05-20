@@ -228,7 +228,7 @@ def get_used_coupons_by_user(user_id):
                               INNER JOIN users ON clients_coupon.user_id=users.user_id ORDER BY taken_date DESC")
 
     users_list = user_join_exchanges_coupon_schema.dump(users)
-    
-    return jsonify({'data': users_list})
+
+    return jsonify({'data': users_list.data})
 
 
