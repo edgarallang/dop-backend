@@ -224,9 +224,10 @@ def process_payment():
 
 @coupon.route('/used/<int:user_id>/get', methods=['GET'])
 def get_used_coupons_by_user(user_id):
-    user = db.session.query(ClientsCoupon).select_from(join(ClientsCoupon,User,ClientsCoupon.user_id))
+    users = db.engine.execute("SELECT * FROM clients_coupon \
+                              INNER JOIN users ON clients_coupon.user_id=users.user_id ORDER BY taken_date DESC")
 
-    print user
+    print users
     return jsonify({'message': 'Oops! algo salió mal, seguramente fue tu tarjeta sobregirada'})
 
 
