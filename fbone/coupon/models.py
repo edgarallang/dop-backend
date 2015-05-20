@@ -160,7 +160,7 @@ class ClientsCouponSchema(Schema):
 
 class UserJoinExchanges(Schema):
     class Meta:
-        fields('user_id',
+        fields = ('user_id',
                 'coupon_id',
                 'exchange_date'.
                 'latitude',
