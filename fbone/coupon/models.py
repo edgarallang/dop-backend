@@ -162,7 +162,7 @@ class UserJoinExchanges(Schema):
     class Meta:
         fields = ('user_id',
                 'coupon_id',
-                'exchange_date'.
+                'exchange_date',
                 'latitude',
                 'longitude',
                 'names',
