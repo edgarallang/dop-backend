@@ -158,6 +158,17 @@ class ClientsCouponSchema(Schema):
                   'folio',
                   'taken_date')
 
+class UserJoinExchanges(Schema):
+    class Meta:
+        fields('user_id',
+                'coupon_id',
+                'exchange_date'.
+                'latitude',
+                'longitude',
+                'names',
+                'surnames')
+
+
 coupon_schema = CouponSchema()
 coupons_schema = CouponSchema(many=True)
 
@@ -170,6 +181,8 @@ discount_coupon_schema = DiscountCouponSchema()
 nxn_coupon_schema = NxNCouponSchema()
 
 clients_coupon_schema = ClientsCouponSchema()
+
+user_join_exchanges_coupon_schema = UserJoinExchanges(many=True)
 
 
 def baseN(num,b,numerals="0123456789abcdefghijklmnopqrstuvwxyz"):
