@@ -71,6 +71,9 @@ class ClientsCoupon(db.Model):
     coupon_id = Column(db.Integer, db.ForeignKey('coupons.coupon_id'), nullable=False)
     folio = Column(db.String(STRING_LEN), nullable=False)
     taken_date = Column(db.DateTime, nullable=False)
+    latitude = Column(db.Numeric, nullable=False)
+    longitude = Column(db.Numeric, nullable=False)
+
 
     coupons_user = db.relationship('User', uselist=False, backref='clients_coupon')
     clients_coupons = db.relationship('Coupon', uselist=False, backref='clients_coupon')
@@ -156,7 +159,9 @@ class ClientsCouponSchema(Schema):
         fields = ('clients_coupon_id',
                   'user_id',
                   'folio',
-                  'taken_date')
+                  'taken_date',
+                  'latitude',
+                  'longitude')
 
 class UserJoinExchanges(Schema):
     class Meta:

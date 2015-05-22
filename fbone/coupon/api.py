@@ -131,7 +131,9 @@ def take_coupon():
         user_take = ClientsCoupon(user_id = payload['id'],
                                   coupon_id = request.json['coupon_id'],
                                   folio = folio,
-                                  taken_date = request.json['taken_date'])
+                                  taken_date = request.json['taken_date'],
+                                  latitude = request.json['latitude'],
+                                  longitude = request.json['longitude'])
 
         db.session.add(user_take)
         db.session.commit()
