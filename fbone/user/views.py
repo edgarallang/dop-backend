@@ -63,7 +63,6 @@ def facebook_login():
         userImage = UserImage(user_id=facebookUser.user_id,
                               main_image=request.json['main_image'])
         db.session.add(userImage)
-        
         db.session.commit()
 
     token = create_token(facebookUser)
@@ -84,6 +83,9 @@ def twitter_login():
         userSession = UserSession(user_id=twitterUser.user_id)
         db.session.add(userSession)
 
+        userImage = UserImage(user_id=twitter.user_id,
+                              main_image=request.json['main_image'])
+        db.session.add(userImage)
         db.session.commit()
     token = create_token(twitterUser)
 
@@ -107,6 +109,10 @@ def google_login():
         userSession = UserSession(user_id=googleUser.user_id,
                                   email=request.json['email'])
         db.session.add(userSession)
+
+        userImage = UserImage(user_id=googleUser.user_id,
+                              main_image=request.json['main_image'])
+        db.session.add(userImage)
         db.session.commit()
 
     token = create_token(googleUser)
