@@ -83,7 +83,7 @@ def twitter_login():
         userSession = UserSession(user_id=twitterUser.user_id)
         db.session.add(userSession)
 
-        userImage = UserImage(user_id=twitter.user_id,
+        userImage = UserImage(user_id=twitterUser.user_id,
                               main_image=request.json['main_image'])
         db.session.add(userImage)
         db.session.commit()
