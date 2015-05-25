@@ -14,6 +14,13 @@ from ..extensions import db
 
 user = Blueprint('user', __name__, url_prefix='/user')
 
+def parse_token(req, token_index):
+    if token_index:
+        token = req.headers.get('Authorization').split()[0]
+    else:
+        token = req.headers.get('Authorization').split()[1]
+    return jwt.decode(token, app.config['TOKEN_SECRET'])
+
 def create_token(user):
     payload = {
         'id': user.user_id,
