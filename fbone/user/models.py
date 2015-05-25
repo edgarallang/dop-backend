@@ -137,7 +137,7 @@ class FriendsSchema(Schema):
 
 
 user_schema = UserSchema()
-friends_schema = FriendsSchema()
+friends_schema = FriendsSchema(many=True)
     # ================================================================
     # Class methods
 
