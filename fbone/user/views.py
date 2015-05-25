@@ -129,7 +129,7 @@ def get_friends():
         friends = db.engine.execute("SELECT * FROM friends \
                                    WHERE (user_one_id = "+user_id+" OR user_two_id = "+user_id+")\
                                    AND status = 1")
-
+        import pdb; pdb.set_trace()
         friends_list = friends_schema.dump(friends)
 
         return jsonify({'data': friends_list.data})
