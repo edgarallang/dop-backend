@@ -142,6 +142,6 @@ def get_friends():
                  AND status = 1' % (user_id, user_id, user_id, user_id, user_id)
 
         friends = db.engine.execute(query)
-        friends_list = friends_schema.dump(friends)
+        friends_list = user_join_friends.dump(friends)
         return jsonify({'data': friends_list.data})
     return jsonify({'message': 'Oops! algo salió mal :('})
