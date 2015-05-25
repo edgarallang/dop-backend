@@ -134,10 +134,17 @@ class FriendsSchema(Schema):
                   'status',
                   'action_user_id')
 
+class UserJoinFriends(Schema):
+    class Meta:
+        fields = ('user_id',
+                  'names',
+                  'surnames',
+                  'main_image')
 
 
 user_schema = UserSchema()
 friends_schema = FriendsSchema(many=True)
+user_join_friends = UserJoinFriends(many=True)
     # ================================================================
     # Class methods
 

@@ -126,18 +126,20 @@ def google_login():
 
     return jsonify(token=token)
 
-@user.route('/friends/get', methods=['POST'])
+@user.route('/friends/get', methods=['GET'])
 def get_friends():
     if request.headers.get('Authorization'):
         payload = parse_token(request, True)
 
         user_id = User.query.get(payload['id']).user_id
         
-        print user_id
-
         query = 'SELECT * FROM friends \
+                 INNER JOIN users ON (friends.user_one_id=user_id  AND friends.user_one_id!=%d) \
+                 OR (friends.user_two_id=user_id  AND friends.user_two_id!=%d) \
+                 INNER JOIN users_image ON (friends.user_one_id = users_image.user_id AND friends.user_one_id!=%d)\
+                 OR (friends.user_two_id = users_image.user_id AND friends.user_two_id!=33) \
                  WHERE (user_one_id = %d OR user_two_id = %d)\
-                 AND status = 1' % (user_id, user_id)
+                 AND status = 1' % (user_id, user_id, user_id, user_id)
 
         friends = db.engine.execute(query)
         friends_list = friends_schema.dump(friends)
