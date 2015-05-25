@@ -128,7 +128,6 @@ def google_login():
 
 @user.route('/friends/get', methods=['POST'])
 def get_friends():
-    import pdb; pdb.set_trace()
     if request.headers.get('Authorization'):
         payload = parse_token(request, True)
 
