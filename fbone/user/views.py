@@ -133,12 +133,13 @@ def get_friends():
 
         user_id = User.query.get(payload['id']).user_id
         
+        print user_id
+
         query = "SELECT * FROM friends \
                  WHERE (user_one_id = "+user_id+" OR user_two_id = "+user_id+")\
                  AND status = 1"
 
         friends = db.engine.execute(query)
         friends_list = friends_schema.dump(friends)
-
         return jsonify({'data': friends_list.data})
     return jsonify({'message': 'Oops! algo salió mal :('})
