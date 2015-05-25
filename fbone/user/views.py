@@ -135,9 +135,9 @@ def get_friends():
         
         print user_id
 
-        query = "SELECT * FROM friends \
-                 WHERE (user_one_id = "+user_id+" OR user_two_id = "+user_id+")\
-                 AND status = 1"
+        query = 'SELECT * FROM friends \
+                 WHERE (user_one_id = %d OR user_two_id = %d)\
+                 AND status = 1' % (user_id, user_id)
 
         friends = db.engine.execute(query)
         friends_list = friends_schema.dump(friends)
