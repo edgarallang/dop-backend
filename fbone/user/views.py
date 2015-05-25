@@ -139,7 +139,7 @@ def get_friends():
                  INNER JOIN users_image ON (friends.user_one_id = users_image.user_id AND friends.user_one_id!=%d)\
                  OR (friends.user_two_id = users_image.user_id AND friends.user_two_id!=33) \
                  WHERE (user_one_id = %d OR user_two_id = %d)\
-                 AND status = 1' % (user_id, user_id, user_id, user_id)
+                 AND status = 1' % (user_id, user_id, user_id, user_id, user_id)
 
         friends = db.engine.execute(query)
         friends_list = friends_schema.dump(friends)
