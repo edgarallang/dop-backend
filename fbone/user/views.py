@@ -45,7 +45,7 @@ def avatar(user_id, filename):
     dir_path = os.path.join(APP.config['UPLOAD_FOLDER'], 'user_%s' % user_id)
     return send_from_directory(dir_path, filename, as_attachment=True)
 
-@user.route('/login/facebook',methods=['POST'])
+@user.route('/login/facebook', methods=['POST'])
 def facebook_login():
     facebookUser = User.query.filter_by(facebook_key = request.json['facebook_key']).first()
     if not facebookUser:
@@ -69,7 +69,7 @@ def facebook_login():
 
     return jsonify(token=token)
 
-@user.route('/login/twitter',methods=['POST'])
+@user.route('/login/twitter', methods=['POST'])
 def twitter_login():
     twitterUser = User.query.filter_by(twitter_key = request.json['twitter_key']).first()
     if not twitterUser:
@@ -91,7 +91,7 @@ def twitter_login():
 
     return jsonify(token=token)
 
-@user.route('/login/google',methods=['POST'])
+@user.route('/login/google', methods=['POST'])
 def google_login():
     googleUser = User.query.filter_by(google_key = request.json['google_key']).first()
     if not googleUser:
@@ -118,3 +118,19 @@ def google_login():
     token = create_token(googleUser)
 
     return jsonify(token=token)
+
+@user.route('/friends/get', methods=['POST'])
+def get_friends():
+    if request.headers.get('Authorization'):
+        payload = parse_token(request, True)
+
+        user_id = User.query.get(payload['id']).user_id
+        
+        friends = db.engine.execute("SELECT * FROM friends \
+                                   WHERE (user_one_id = "+user_id+" OR user_two_id = "+user_id+")\
+                                   AND status = 1")
+
+        friends_list = friends_schema.dump(friends)
+
+        return jsonify({'data': friends_list.data})
+    return jsonify({'message': 'Oops! algo salió mal :('})
