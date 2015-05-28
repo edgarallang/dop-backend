@@ -226,6 +226,8 @@ def delete_friend():
 
         friendsRelationship = Friends.query.filter_by(friends_id=request.json['friends_id'])
 
+        print friendsRelationship
+        
         db.session.delete(friendsRelationship)
         
         db.session.commit()
