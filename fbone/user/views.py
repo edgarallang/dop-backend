@@ -175,6 +175,7 @@ def accept_friend():
         friendsRelationship = Friends.query.filter_by(friends_id=request.json['friends_id'])
 
         friendsRelationship.status = 1
+        friendsRelationship.action_user_id = user_id
 
         db.session.commit()
         
@@ -187,9 +188,12 @@ def decline_friend():
     if request.headers.get('Authorization'):
         payload = parse_token(request, True)
 
+        user_id = User.query.get(payload['id']).user_id
+
         friendsRelationship = Friends.query.filter_by(friends_id=request.json['friends_id'])
 
         friendsRelationship.status = 2
+        friendsRelationship.action_user_id = user_id
 
         db.session.commit()
 
@@ -202,9 +206,12 @@ def block_friend():
     if request.headers.get('Authorization'):
         payload = parse_token(request, True)
 
+        user_id = User.query.get(payload['id']).user_id
+
         friendsRelationship = Friends.query.filter_by(friends_id=request.json['friends_id'])
 
         friendsRelationship.status = 3
+        friendsRelationship.action_user_id = user_id
 
         db.session.commit()
 
@@ -212,7 +219,7 @@ def block_friend():
 
     return jsonify({'message': 'Oops! algo salió mal :('})
 
-@user.route('friends/delete', methods=['PUT'])
+@user.route('/friends/delete', methods=['PUT'])
 def delete_friend():
     if request.headers.get('Authorization'):
         payload = parse_token(request, True)
@@ -226,4 +233,4 @@ def delete_friend():
     return jsonify({'message': 'Oops! algo salió mal :('})
 
 
-"accept,decline,block & delete friend 
+ 
