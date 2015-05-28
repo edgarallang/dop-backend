@@ -145,3 +145,85 @@ def get_friends():
         friends_list = user_join_friends.dump(friends)
         return jsonify({'data': friends_list.data})
     return jsonify({'message': 'Oops! algo salió mal :('})
+
+@user.route('/friends/add', methods=['POST'])
+def add_friend():
+    if request.headers.get('Authorization'):
+        payload = parse_token(request, True)
+
+        user_id = User.query.get(payload['id']).user_id
+
+        friendsRelationship  = Friends(user_one_id=user_id,
+                                       user_two_id=request.json['user_two_id'],
+                                       status=0,
+                                       action_user_id=user_id)
+
+        db.session.add(friendsRelationship)
+        db.session.commit()
+
+        return jsonify({'data': 'Agregado correctamente'})
+
+    return jsonify({'message': 'Oops! algo salió mal :('})
+
+@user.route('/friends/accept', methods=['PUT'])
+def accept_friend():
+    if request.headers.get('Authorization'):
+        payload = parse_token(request, True)
+
+        user_id = User.query.get(payload['id']).user_id
+
+        friendsRelationship = Friends.query.filter_by(friends_id=request.json['friends_id'])
+
+        friendsRelationship.status = 1
+
+        db.session.commit()
+        
+        return jsonify({'data': 'Agregado correctamente'})
+
+    return jsonify({'message': 'Oops! algo salió mal :('})
+
+@user.route('/friends/decline', methods=['PUT'])
+def decline_friend():
+    if request.headers.get('Authorization'):
+        payload = parse_token(request, True)
+
+        friendsRelationship = Friends.query.filter_by(friends_id=request.json['friends_id'])
+
+        friendsRelationship.status = 2
+
+        db.session.commit()
+
+        return jsonify({'data': 'Usuario rechazado'})
+
+    return jsonify({'message': 'Oops! algo salió mal :('})
+
+@user.route('/friends/block', methods=['PUT'])
+def block_friend():
+    if request.headers.get('Authorization'):
+        payload = parse_token(request, True)
+
+        friendsRelationship = Friends.query.filter_by(friends_id=request.json['friends_id'])
+
+        friendsRelationship.status = 3
+
+        db.session.commit()
+
+        return jsonify({'data': 'Usuario bloqueado'})
+
+    return jsonify({'message': 'Oops! algo salió mal :('})
+
+@user.route('friends/delete', methods=['PUT'])
+def delete_friend():
+    if request.headers.get('Authorization'):
+        payload = parse_token(request, True)
+
+        friendsRelationship = Friends.query.filter_by(friends_id=request.json['friends_id']
+
+        db.session.delete(friendsRelationship)
+
+        return jsonify({'data': 'Usuario eliminado'})
+
+    return jsonify({'message': 'Oops! algo salió mal :('})
+
+
+"accept,decline,block & delete friend 
