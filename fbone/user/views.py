@@ -224,9 +224,9 @@ def delete_friend():
     if request.headers.get('Authorization'):
         payload = parse_token(request, True)
 
-        friendsRelationship = Friends.query.filter_by(friends_id=request.json['friends_id']
+        friendsRelationship = Friends.query.filter_by(friends_id=request.json['friends_id'])
 
-        #db.session.delete(friendsRelationship)
+        db.session.delete(friendsRelationship)
 
         return jsonify({'data': 'Usuario eliminado'})
 
