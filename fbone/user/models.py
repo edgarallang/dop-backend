@@ -136,7 +136,7 @@ class FriendsSchema(Schema):
 
 class UserJoinFriends(Schema):
     class Meta:
-        fields = ('friend_id',
+        fields = ('friends_id',
                   'user_id',
                   'names',
                   'surnames',
