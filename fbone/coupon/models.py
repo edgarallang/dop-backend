@@ -165,19 +165,18 @@ class ClientsCouponSchema(Schema):
 
 class UserJoinExchanges(Schema):
     class Meta:
-        fields = ('friend_id',
-                  'user_id',
-                  'branch_id'
+        fields = ('branch_id',
                   'coupon_id',
-                  'coupon_name',
-                  'branch_name',
-                  'exchange_date',
+                  'logo',
+                  'name',
                   'latitude',
                   'longitude',
                   'names',
                   'surnames',
-                  'user_image',
-                  'branch_image')
+                  'user_id',
+                  'main_image',
+                  'exchange_date',
+                  'friend_id')
 
 
 coupon_schema = CouponSchema()
