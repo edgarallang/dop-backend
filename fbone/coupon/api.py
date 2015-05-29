@@ -225,7 +225,7 @@ def process_payment():
     return jsonify({'message': 'Oops! algo salió mal, seguramente fue tu tarjeta sobregirada'})
 
 @coupon.route('/used/get', methods=['GET'])
-def get_used_coupons_by_user(user_id):
+def get_used_coupons_by_user():
     if request.headers.get('Authorization'):
         token_index = True
         payload = parse_token(request, token_index)
