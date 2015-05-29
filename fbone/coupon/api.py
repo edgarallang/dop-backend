@@ -132,7 +132,7 @@ def take_coupon():
                                   coupon_id = request.json['coupon_id'],
                                   folio = folio,
                                   taken_date = request.json['taken_date'],
-                                  latitude = request.json['latitude'],
+                                  latitude= request.json['latitude'],
                                   longitude = request.json['longitude'])
 
         db.session.add(user_take)
@@ -227,7 +227,9 @@ def process_payment():
 @coupon.route('/used/<int:user_id>/get', methods=['GET'])
 def get_used_coupons_by_user(user_id):
     users = db.engine.execute("SELECT * FROM clients_coupon \
-                              INNER JOIN users ON clients_coupon.user_id=users.user_id ORDER BY taken_date DESC")
+                               INNER JOIN users ON clients_coupon.user_id=users.user_id \
+                               INNER JOIN coupons ON clients_coupon.coupon_id = coupons.coupon_id \
+                               ORDER BY taken_date DESC")
 
     users_list = user_join_exchanges_coupon_schema.dump(users)
 
