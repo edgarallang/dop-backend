@@ -89,5 +89,35 @@ def update_branch_user(branchId):
     return jsonify({'data': ':P'})
 
 @company.route('/branch/nearest/<float:latitude>/<float:longitud>/<int:radio>/all', methods=['GET'])
-def nearest_branches(radio):
-    nearestBranches = db.engine.execute()
+def nearest_branches(latitude, longitude, radio):
+    query = 'SELECT branch_location_id, state, city, latitude, longitude, distance \
+                FROM (SELECT z.branch_location_id, z.state, z.city, \
+                    z.latitude, z.longitude, \
+                    p.radius, \
+                    p.distance_unit \
+                             * DEGREES(ACOS(COS(RADIANS(p.latpoint)) \
+                             * COS(RADIANS(z.latitude)) \
+                             * COS(RADIANS(p.longpoint - z.longitude)) \
+                             + SIN(RADIANS(p.latpoint)) \
+                             * SIN(RADIANS(z.latitude)))) AS distance \
+                FROM branches_location AS z \
+                JOIN (   /* these are the query parameters */ \
+                    SELECT  '+ latitude +'  AS latpoint,  '+ longitude +' AS longpoint, \
+                            '+ radio +' AS radius,      111.045 AS distance_unit \
+                ) AS p ON 1=1 \
+                WHERE z.latitude \
+                 BETWEEN p.latpoint  - (p.radius / p.distance_unit) \
+                     AND p.latpoint  + (p.radius / p.distance_unit) \
+                AND z.longitude \
+                 BETWEEN p.longpoint - (p.radius / (p.distance_unit * COS(RADIANS(p.latpoint)))) \
+                     AND p.longpoint + (p.radius / (p.distance_unit * COS(RADIANS(p.latpoint)))) \
+                ) AS d \
+                WHERE distance <= radius \
+                ORDER BY distance \
+                LIMIT 15'
+
+    nearestBranches = db.engine.execute(query)
+
+    print nearestBranches
+    return 'ok entró'
+
