@@ -176,7 +176,8 @@ class UserJoinExchanges(Schema):
                   'user_id',
                   'main_image',
                   'exchange_date',
-                  'friend_id')
+                  'friend_id',
+                  'branch_name')
 
 
 coupon_schema = CouponSchema()
