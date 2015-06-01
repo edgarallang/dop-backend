@@ -48,7 +48,7 @@ class BranchDesign(db.Model):
 
 class BranchLocation(db.Model):
     __tablename__ = 'branches_location'
-    user_location_id = Column(db.Integer, primary_key=True)
+    branch_location_id = Column(db.Integer, primary_key=True)
     branch_id = Column(db.Integer, db.ForeignKey('branches.branch_id'),nullable=False)
     state = Column(db.String(STRING_LEN), nullable=False)
     longitude = Column(db.Numeric, nullable=False)

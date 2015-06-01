@@ -87,3 +87,7 @@ def update_branch_user(branchId):
     Branch.query.filter_by(branch_id=branchId).update({"name": "Bob Marley"})
 
     return jsonify({'data': ':P'})
+
+@company.route('/branch/nearest/<float:latitude>/<float:longitud>/<int:radio>/all', methods=['GET'])
+def nearest_branches(radio):
+    nearestBranches = db.engine.execute()
