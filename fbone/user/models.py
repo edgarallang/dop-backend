@@ -74,7 +74,7 @@ class User(db.Model, UserMixin):
     google_key = Column(db.String(STRING_LEN))
     twitter_key = Column(db.String(STRING_LEN))
 
-    users_image_user_id = db.relationship("UserImage", uselist=False, backref="users")
+    # users_image_user_id = db.relationship("UserImage", uselist=False, backref="users")
 
     # Images 
 
