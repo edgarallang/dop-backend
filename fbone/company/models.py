@@ -56,6 +56,9 @@ class BranchLocation(db.Model):
     city = Column(db.String(STRING_LEN), nullable=False)
     address = Column(db.String(STRING_LEN), nullable=False)
 
+    branch = db.relationship('Branch',
+                        backref=db.backref("branches_location", lazy="dynamic"))
+
 # =====================================================================
 # Categories 
 
