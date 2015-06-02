@@ -46,8 +46,8 @@ def profile(userId):
     
     selectedUser = db.engine.execute(query)
 
+    import pdb; pdb.set_trace()
     userJoined = user_join_image.dump(selectedUser)
-    print userJoined.main_image
     
     return jsonify({'data': userJoined.data})
 
