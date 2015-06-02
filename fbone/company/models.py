@@ -139,7 +139,8 @@ class BranchesLocation(Schema):
                   'longitude',
                   'latitude',
                   'city',
-                  'address')
+                  'address',
+                  'distance')
 
 company_schema = CompanySchema()
 companies_schema = CompanySchema(many=True)
