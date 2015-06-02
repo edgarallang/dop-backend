@@ -40,10 +40,12 @@ def index():
     return render_template('user/index.html', user=current_user)
 
 
-@user.route('/<int:user_id>/profile')
-def profile(user_id):
-    user = User.get_by_id(user_id)
-    return render_template('user/profile.html', user=user)
+@user.route('/<int:userId>/profile')
+def profile(userId):
+    selectedUser = User.query.filter_by(user_id=userId).first()
+    user = user_schema.dump(selectedUser)
+
+    return jsonify({'data': user.data})
 
 
 @user.route('/<int:user_id>/avatar/<path:filename>')

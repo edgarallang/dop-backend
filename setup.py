@@ -5,15 +5,15 @@ from setuptools import setup
 project = "fbone"
 
 setup(
-    name=project,
-    version='0.1',
-    url='https://github.com/imwilsonxu/fbone',
-    description='Fbone (Flask bone) is a Flask (Python microframework) template/bootstrap/boilerplate application.',
-    author='Wilson Xu',
-    author_email='imwilsonxu@gmail.com',
-    packages=["fbone"],
-    include_package_data=True,
-    zip_safe=False,
+    name = project,
+    version = '0.1',
+    url = '',
+    description = '',
+    author = '',
+    author_email = '',
+    packages = ["fbone"],
+    include_package_data = True,
+    zip_safe = False,
     install_requires=[
         'Flask>=0.10.1',
         'Flask-SQLAlchemy',
@@ -28,8 +28,8 @@ setup(
         'nose',
         'fabric',
     ],
-    test_suite='tests',
-    classifiers=[
+    test_suite ='tests',
+    classifiers = [
         'Environment :: Web Environment',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: BSD License',

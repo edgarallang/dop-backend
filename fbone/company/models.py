@@ -48,7 +48,7 @@ class BranchDesign(db.Model):
 
 class BranchLocation(db.Model):
     __tablename__ = 'branches_location'
-    user_location_id = Column(db.Integer, primary_key=True)
+    branch_location_id = Column(db.Integer, primary_key=True)
     branch_id = Column(db.Integer, db.ForeignKey('branches.branch_id'),nullable=False)
     state = Column(db.String(STRING_LEN), nullable=False)
     longitude = Column(db.Numeric, nullable=False)
@@ -131,7 +131,19 @@ class BranchUserSchema(Schema):
                   'email',
                   'branch')
 
+class BranchesLocation(Schema):
+    class Meta:
+        fields = ('branch_location_id',
+                  'branch_id',
+                  'state',
+                  'longitude',
+                  'latitude',
+                  'city',
+                  'address',
+                  'distance')
+
 company_schema = CompanySchema()
 companies_schema = CompanySchema(many=True)
 branch_schema = BranchSchema()
 branch_user_schema = BranchUserSchema()
+branches_location_schema = BranchesLocation(many=True)
