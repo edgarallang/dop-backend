@@ -88,7 +88,7 @@ def update_branch_user(branchId):
 
     return jsonify({'data': ':P'})
 
-@company.route('/branch/nearest/<float:latitude>/<float:longitud>/<int:radio>/all', methods=['GET'])
+@company.route('/branch/nearest/<float:latitude>/<float:longitude>/<int:radio>/all', methods=['GET'])
 def nearest_branches(latitude, longitude, radio):
     query = 'SELECT branch_location_id, state, city, latitude, longitude, distance \
                 FROM (SELECT z.branch_location_id, z.state, z.city, \
