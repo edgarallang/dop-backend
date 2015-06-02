@@ -127,6 +127,17 @@ class UserSchema(Schema):
                   'google_key',
                   'twitter_key')
 
+class UserJoinImage(Schema):
+    class Meta:
+        fields = ('user_id',
+                  'names',
+                  'surnames',
+                  'birth_date',
+                  'facebook_key',
+                  'google_key',
+                  'twitter_key',
+                  'main_image')
+
 class FriendsSchema(Schema):
     class Meta:
         fields = ('user_one_id',
@@ -144,6 +155,7 @@ class UserJoinFriends(Schema):
 
 
 user_schema = UserSchema()
+user_join_image = UserJoinImage()
 friends_schema = FriendsSchema(many=True)
 user_join_friends = UserJoinFriends(many=True)
     # ================================================================

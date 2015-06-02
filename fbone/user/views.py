@@ -42,8 +42,11 @@ def index():
 
 @user.route('/<int:userId>/profile')
 def profile(userId):
-    selectedUser = User.query.filter_by(user_id=userId).first()
-    user = user_schema.dump(selectedUser)
+    query = "SELECT * FROM users INNER JOIN users_image ON users.user_id = users_image.user_id"
+
+    selectedUser = db.engine.execute(query)
+
+    user = user_join_image.dump(selectedUser)
 
     return jsonify({'data': user.data})
 
