@@ -40,10 +40,12 @@ def index():
     return render_template('user/index.html', user=current_user)
 
 
-@user.route('/<int:user_id>/profile')
-def profile(user_id):
-    user = User.get_by_id(user_id)
-    return render_template('user/profile.html', user=user)
+@user.route('/<int:userId>/profile')
+def profile(userId):
+    selectedUser = User.query.filter_by(user_id=userId).first()
+    user = user_schema.dump(selectedUser)
+
+    return jsonify({'data': user.data})
 
 
 @user.route('/<int:user_id>/avatar/<path:filename>')
@@ -172,7 +174,7 @@ def accept_friend():
 
         user_id = User.query.get(payload['id']).user_id
 
-        friendsRelationship = Friends.query.filter_by(friends_id=request.json['friends_id'])
+        friendsRelationship = Friends.query.filter_by(friends_id=request.json['friends_id']).first()
 
         friendsRelationship.status = 1
         friendsRelationship.action_user_id = user_id
@@ -190,7 +192,7 @@ def decline_friend():
 
         user_id = User.query.get(payload['id']).user_id
 
-        friendsRelationship = Friends.query.filter_by(friends_id=request.json['friends_id'])
+        friendsRelationship = Friends.query.filter_by(friends_id=request.json['friends_id']).first()
 
         friendsRelationship.status = 2
         friendsRelationship.action_user_id = user_id
@@ -208,7 +210,7 @@ def block_friend():
 
         user_id = User.query.get(payload['id']).user_id
 
-        friendsRelationship = Friends.query.filter_by(friends_id=request.json['friends_id'])
+        friendsRelationship = Friends.query.filter_by(friends_id=request.json['friends_id']).first()
 
         friendsRelationship.status = 3
         friendsRelationship.action_user_id = user_id
@@ -225,8 +227,6 @@ def delete_friend():
         payload = parse_token(request, True)
 
         friendsRelationship = Friends.query.filter_by(friends_id=request.json['friends_id']).first()
-
-        print friendsRelationship
 
         db.session.delete(friendsRelationship)
         
