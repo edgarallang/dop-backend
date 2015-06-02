@@ -94,8 +94,8 @@ def nearest_branches():
     longitude = request.args.get('longitude')
     radio = request.args.get('radio')
 
-    query = 'SELECT branch_id, state, city, latitude, longitude, distance, address \
-                FROM (SELECT z.branch_id, z.state, z.city, z.address \
+    query = 'SELECT branch_location_id, branch_id, state, city, latitude, longitude, distance, address \
+                FROM (SELECT z.branch_location_id, z.branch_id, z.state, z.city, z.address \
                     z.latitude, z.longitude, \
                     p.radius, \
                     p.distance_unit \

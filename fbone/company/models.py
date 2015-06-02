@@ -133,7 +133,8 @@ class BranchUserSchema(Schema):
 
 class BranchesLocation(Schema):
     class Meta:
-        fields = ('branch_id',
+        fields = ('branch_location_id',
+                  'branch_id',
                   'state',
                   'longitude',
                   'latitude',
