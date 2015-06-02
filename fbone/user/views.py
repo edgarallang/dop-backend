@@ -46,9 +46,9 @@ def profile(userId):
     
     selectedUser = db.engine.execute(query)
 
-    user = user_join_image.dump(selectedUser)
+    userJoined = user_join_image.dump(selectedUser)
 
-    return jsonify({'data': user.data})
+    return jsonify({'data': userJoined.data})
 
 
 @user.route('/<int:user_id>/avatar/<path:filename>')
