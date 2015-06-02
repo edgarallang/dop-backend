@@ -42,11 +42,10 @@ def index():
 
 @user.route('/<int:userId>/profile', methods=['GET'])
 def profile(userId):
-    query = 'SELECT * FROM users INNER JOIN users_image ON users.user_id = users_image.user_id WHERE users.user_id=%d' % (userId)
+    query = 'SELECT * FROM users INNER JOIN users_image ON users.user_id = users_image.user_id WHERE users.user_id=28'
     
     selectedUser = db.engine.execute(query)
 
-    import pdb; pdb.set_trace()
     userJoined = user_join_image.dump(selectedUser)
     
     return jsonify({'data': userJoined.data})
