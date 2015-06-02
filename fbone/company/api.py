@@ -94,8 +94,8 @@ def nearest_branches():
     longitude = request.args.get('longitude')
     radio = request.args.get('radio')
 
-    query = 'SELECT branch_location_id, state, city, latitude, longitude, distance \
-                FROM (SELECT z.branch_location_id, z.state, z.city, \
+    query = 'SELECT branch_location_id, state, city, latitude, longitude, distance, address \
+                FROM (SELECT z.branch_location_id, z.state, z.city, z.address \
                     z.latitude, z.longitude, \
                     p.radius, \
                     p.distance_unit \
@@ -121,7 +121,7 @@ def nearest_branches():
                 LIMIT 15'
 
     nearestBranches = db.engine.execute(query)
-
-    print nearestBranches
-    return 'ok entró'
+    nearest = branches_location_schema.dump(nearestBranches)
+    
+    return jsonify({'data': nearest.data})
 
