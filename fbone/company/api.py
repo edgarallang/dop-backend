@@ -82,7 +82,7 @@ def select_branch_user():
 
     return jsonify({'data': branchUser.data})
 
-@company.route('/branch/<int:branchId>/update', methods=['GET'])    
+@company.route('/branch/<int:branchId>/update ', methods=['GET'])    
 def update_branch_user(branchId):
     Branch.query.filter_by(branch_id=branchId).update({"name": "Bob Marley"})
 
