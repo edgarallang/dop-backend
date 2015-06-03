@@ -10,9 +10,6 @@ from flask.ext.login import login_required, current_user
 from jwt import DecodeError, ExpiredSignature
 from .models import *
 from ..extensions import db
-from sqlalchemy.ext.serializer import loads, dumps
-metadata = MetaData(bind=some_engine)
-Session = scoped_session(sessionmaker())
 
 
 
@@ -52,12 +49,8 @@ def profile(userId):
                     WHERE users.user_id = %d" % (userId)
 
     result = db.engine.execute(query)
-    resultSer =dumps(result)
-    serialized = loads(resultSer, metadata, Session)
-
-    print serialized.all()
-    user_with_image = user_joined_schema.dump(result)
-    return jsonify({'data': user_with_image.data})
+    user_with_image = user_joined_schema.dump(result).data
+    return jsonify({'data': user_with_image})
 
 
 @user.route('/<int:user_id>/avatar/<path:filename>')
