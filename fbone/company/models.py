@@ -56,8 +56,11 @@ class BranchLocation(db.Model):
     city = Column(db.String(STRING_LEN), nullable=False)
     address = Column(db.String(STRING_LEN), nullable=False)
 
-    # branch = db.relationship('Branch',
-    #                     backref=db.backref("branches_location", lazy="dynamic"))
+    branch = db.relationship('Branch',
+                        backref=db.backref("branches_location", lazy="dynamic"))
+
+    def __init__(self, branch):
+        self.branch = branch
 
 # =====================================================================
 # Categories 
@@ -78,8 +81,8 @@ class BranchUser(db.Model):
     branch_id = Column(db.Integer, db.ForeignKey('branches.branch_id'), nullable=False)
     name = Column(db.String(STRING_LEN), nullable=False, unique=True)
     email = Column(db.String(STRING_LEN), nullable=False, unique=True)
-
     password = Column('password', db.String(STRING_LEN), nullable=False)
+
     branch = db.relationship('Branch',
                         backref=db.backref("branches_user", lazy="dynamic"))
 
