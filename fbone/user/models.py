@@ -136,7 +136,7 @@ class UserJoinImage(Schema):
                   'facebook_key',
                   'google_key',
                   'twitter_key',
-                  'main_image',
+                  
                   'user_image_id')
 
 class FriendsSchema(Schema):
