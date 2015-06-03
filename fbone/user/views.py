@@ -46,7 +46,9 @@ def profile(userId):
     query = 'SELECT * FROM users INNER JOIN users_image \
              ON users.user_id = users_image.user_id WHERE users.user_id=' + userId
     
-    selectedUser = db.engine.execute(query)
+    selectedUser = session.query(User).\
+                   join(User.users_image_user_id).\
+                   filter_by(User.id== userId).first()
 
     userJoined = user_join_image.dump(selectedUser)
     
