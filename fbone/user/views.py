@@ -46,8 +46,9 @@ def profile(userId):
                     users.twitter_key, users_image.main_image, users_image.user_image_id\
                     FROM users INNER JOIN users_image ON users.user_id = users_image.user_id\
                     WHERE users.user_id = %d" % (userId)
-
+    print query
     selectedUser = db.execute.query(query)
+    print selectedUser
     userJoined = user_join_image.dump(selectedUser)
     
     return jsonify({'data': userJoined.data})
