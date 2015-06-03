@@ -46,9 +46,13 @@ def profile(userId):
     # query = 'SELECT * FROM users INNER JOIN users_image \
     #          ON users.user_id = users_image.user_id WHERE users.user_id=' + userId
     
+    main_image = db.session.query(UserImage).\
+                filter(UserImage.user_id == userId).\
+                subquery()
+
     selectedUser = db.session.query(User).\
-                   join(UserImage).\
-                   filter(User.user_id == userId).all()
+                   join(main_image, User.users_image_user_id)
+                   
 
     userJoined = user_join_image.dump(selectedUser)
     
