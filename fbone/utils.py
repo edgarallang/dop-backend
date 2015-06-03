@@ -43,7 +43,7 @@ SEX_TYPE = {
 }
 
 # Model
-STRING_LEN = 64
+STRING_LEN = 264
 
 
 def get_current_time():
