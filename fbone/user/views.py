@@ -43,7 +43,7 @@ def index():
 @user.route('/<int:userId>/profile', methods=['GET'])
 def profile(userId):
     query = 'SELECT * FROM users INNER JOIN users_image \
-             ON users.user_id = users_image.user_id WHERE users.user_id=' + userId
+             ON users.user_id = users_image.user_id WHERE users.user_id='+ userId + ''
     
     selectedUser = db.engine.execute(query)
 
