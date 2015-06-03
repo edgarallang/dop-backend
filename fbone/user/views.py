@@ -41,8 +41,8 @@ def index():
 
 
 @user.route('/<int:userId>/profile', methods=['GET'])
-def profile(userId):
-    query = 'SELECT * FROM users WHERE users.user_id=28'
+def get_profile(userId):
+    query = 'SELECT * FROM users WHERE user_id=28'
     
     selectedUser = db.engine.execute(query)
 
