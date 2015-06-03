@@ -136,7 +136,7 @@ class UserJoinImage(Schema):
                   'facebook_key',
                   'google_key',
                   'twitter_key',
-                  
+                  'main_image',
                   'user_image_id')
 
 class FriendsSchema(Schema):
@@ -156,7 +156,7 @@ class UserJoinFriends(Schema):
 
 
 user_schema = UserSchema()
-user_join_image = UserJoinImage()
+user_join_image = UserJoinImage(many=True)
 friends_schema = FriendsSchema(many=True)
 user_join_friends = UserJoinFriends(many=True)
     # ================================================================
