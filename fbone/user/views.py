@@ -47,7 +47,7 @@ def profile(userId):
     #          ON users.user_id = users_image.user_id WHERE users.user_id=' + userId
     
     selectedUser = db.session.query(User).\
-                   join(User.users_image_user_id).\
+                   join(UserImage).\
                    filter(User.user_id == userId).all()
 
     userJoined = user_join_image.dump(selectedUser)
