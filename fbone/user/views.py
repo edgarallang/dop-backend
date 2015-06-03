@@ -50,8 +50,7 @@ def profile(userId):
     selectedUser = db.execute.query(query)
     userJoined = user_join_image.dump(selectedUser)
     
-    return
-    # jsonify({'data': userJoined.data})
+    return jsonify({'data': userJoined.data})
 
 
 @user.route('/<int:user_id>/avatar/<path:filename>')
