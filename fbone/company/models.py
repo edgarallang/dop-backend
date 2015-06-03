@@ -11,10 +11,10 @@ from ..utils import get_current_time, SEX_TYPE, STRING_LEN
 
 class Company(db.Model):
     __tablename__ = 'companies'
-    company_id = Column(db.Integer, primary_key=True)
-    name = Column(db.String(STRING_LEN), nullable=False, unique=True)
+    company_id = Column(db.Integer, primary_key = True)
+    name = Column(db.String(STRING_LEN), nullable = False, unique = True)
 
-    branches = db.relationship("Branch", uselist=False, backref="companies")
+    branches = db.relationship("Branch", uselist = False, backref = "companies")
 
 # =====================================================================
 # Branches 
@@ -22,13 +22,13 @@ class Company(db.Model):
 class Branch(db.Model):
     __tablename__ = 'branches'
     branch_id = Column(db.Integer, primary_key=True)
-    company_id = Column(db.Integer, db.ForeignKey('companies.company_id'),nullable=False)
+    company_id = Column(db.Integer, db.ForeignKey('companies.company_id'), nullable = False)
     name = Column(db.String(STRING_LEN), nullable=False, unique=True)
-    category_id = Column(db.Integer, db.ForeignKey('categories.category_id'),nullable=False)
+    category_id = Column(db.Integer, db.ForeignKey('categories.category_id'), nullable = False)
 
-    branches_user_id = Column(db.Integer, db.ForeignKey("branches_user.branches_user_id"))
+    # branches_user_id = Column(db.Integer, db.ForeignKey("branches_user.branches_user_id"))
     branches_design = db.relationship("BranchDesign", uselist=False, backref="branches")
-    branches_location = db.relationship("BranchLocation", uselist=False, backref="branches")
+    branches_location_id = db.ForeignKey('branches_location.branches_location_id'))
 
 # =====================================================================
 # Branches Design
