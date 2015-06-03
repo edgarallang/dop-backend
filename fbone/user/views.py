@@ -10,7 +10,7 @@ from flask.ext.login import login_required, current_user
 from jwt import DecodeError, ExpiredSignature
 from .models import *
 from ..extensions import db
-from sqlalchemy.ext.serializer import loads, dumpss
+from sqlalchemy.ext.serializer import loads, dumps
 
 
 user = Blueprint('user', __name__, url_prefix='/user')
