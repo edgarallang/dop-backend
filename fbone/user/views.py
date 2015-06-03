@@ -12,7 +12,7 @@ from .models import *
 from ..extensions import db
 
 
-user = Blueprint('user', __name__, url_prefix='/api/user')
+user = Blueprint('user', __name__, url_prefix='/user')
 
 def parse_token(req, token_index):
     if token_index:

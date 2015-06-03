@@ -156,7 +156,7 @@ class UserJoinFriends(Schema):
 
 
 user_schema = UserSchema()
-user_join_image = UserJoinImage(skip_missing=True)
+user_join_image = UserJoinImage()
 friends_schema = FriendsSchema(many=True)
 user_join_friends = UserJoinFriends(many=True)
     # ================================================================
