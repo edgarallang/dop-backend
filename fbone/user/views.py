@@ -54,9 +54,10 @@ def profile(userId):
                    join(main_image, User.users_image_user_id)
                    
 
-    userJoined = user_join_image.dump(selectedUser)
+    # userJoined = user_join_image.dump(selectedUser)
     
-    return jsonify({'data': userJoined.data})
+    return selectedUser
+    # jsonify({'data': userJoined.data})
 
 
 @user.route('/<int:user_id>/avatar/<path:filename>')
