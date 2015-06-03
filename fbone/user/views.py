@@ -42,21 +42,15 @@ def index():
 
 @user.route('/<int:userId>/profile', methods=['GET'])
 def profile(userId):
-    # import pdb; pdb.set_trace()
-    # query = 'SELECT * FROM users INNER JOIN users_image \
-    #          ON users.user_id = users_image.user_id WHERE users.user_id=' + userId
-    
-    main_image = db.session.query(UserImage).\
-                filter(UserImage.user_id == userId).\
-                subquery()
+    query = 'SELECT users.user_id, users.names, users.surnames, users.birth_date, users.facebook_key, users.google_key,\
+                    users.twitter_key, users_image.main_image, users_image.user_image_id\
+                    FROM users INNER JOIN users_image ON users.user_id = users_image.user_id\
+                    WHERE users.user_id=' + userId
 
-    selectedUser = db.session.query(User).\
-                   join(main_image, User.users_image_user_id).first()
-                   
-
-    # userJoined = user_join_image.dump(selectedUser)
+    selectedUser = db.execute.query(query)
+    userJoined = user_join_image.dump(selectedUser)
     
-    return selectedUser
+    return
     # jsonify({'data': userJoined.data})
 
 
