@@ -49,7 +49,7 @@ def profile(userId):
 
     selectedUser = db.engine.execute(query)
     for row in selectedUser:
-        return row
+        return jsonify({'data': row})
     userJoined = user_join_image.dump(selectedUser)
     return jsonify({'data': userJoined.data})
 
