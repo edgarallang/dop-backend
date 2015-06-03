@@ -51,7 +51,7 @@ def profile(userId):
                 subquery()
 
     selectedUser = db.session.query(User).\
-                   join(main_image, User.users_image_user_id)
+                   join(main_image, User.users_image_user_id).first()
                    
 
     # userJoined = user_join_image.dump(selectedUser)
