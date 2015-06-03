@@ -42,13 +42,25 @@ def index():
 
 @user.route('/<int:userId>/profile', methods=['GET'])
 def get_profile(userId):
-    query = 'SELECT * FROM users WHERE user_id=28'
+    # query = 'SELECT * FROM users WHERE user_id=28'
     
-    selectedUser = db.engine.execute(query)
+    # selectedUser = db.engine.execute(query)
 
-    userJoined = user_schema.dump(selectedUser)
+    # userJoined = user_schema.dump(selectedUser)
     
-    return jsonify({'data': userJoined.data})
+    # return jsonify({'data': userJoined.data})
+    user_id = 32
+    query = 'SELECT * FROM friends \
+                 INNER JOIN users ON (friends.user_one_id=user_id  AND friends.user_one_id!=%d) \
+                 OR (friends.user_two_id=user_id  AND friends.user_two_id!=%d) \
+                 INNER JOIN users_image ON (friends.user_one_id = users_image.user_id AND friends.user_one_id!=%d)\
+                 OR (friends.user_two_id = users_image.user_id AND friends.user_two_id!=%d) \
+                 WHERE (user_one_id = %d OR user_two_id = %d)\
+                 AND status = 1' % (user_id, user_id, user_id, user_id, user_id, user_id)
+
+    friends = db.engine.execute(query)
+    friends_list = user_join_friends.dump(friends)
+    return jsonify({'data': friends_list.data})
 
 
 @user.route('/<int:user_id>/avatar/<path:filename>')
