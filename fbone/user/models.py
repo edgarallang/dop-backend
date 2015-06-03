@@ -81,7 +81,7 @@ class User(db.Model, UserMixin):
 class UserImage(db.Model, UserMixin):
     __tablename__ = 'users_image'
     user_image_id = Column(db.Integer, primary_key=True)
-    #user_id = Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
+    user_id = Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
     main_image = Column(db.String(STRING_LEN))
 
 # ================================================================
