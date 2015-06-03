@@ -42,7 +42,6 @@ def index():
 
 @user.route('/<int:userId>/profile', methods=['GET'])
 def profile(userId):
-
     query = "SELECT users.user_id, users.names, users.surnames, users.birth_date, users.facebook_key, users.google_key,\
                     users.twitter_key, users_image.main_image, users_image.user_image_id\
                     FROM users INNER JOIN users_image ON users.user_id = users_image.user_id\
