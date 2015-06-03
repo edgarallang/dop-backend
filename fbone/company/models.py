@@ -28,7 +28,7 @@ class Branch(db.Model):
 
     # branches_user_id = Column(db.Integer, db.ForeignKey("branches_user.branches_user_id"))
     branches_design = db.relationship("BranchDesign", uselist=False, backref="branches")
-    branches_location_id = db.ForeignKey('branches_location.branches_location_id')
+    # branches_location_id = db.ForeignKey('branches_location.branches_location_id')
 
 # =====================================================================
 # Branches Design
@@ -138,7 +138,7 @@ class BranchUserSchema(Schema):
                   'branch')
 
 class BranchesLocation(Schema):
-    branch = fields.Nested(BranchSchema, validate=must_not_be_blank)
+    # branch = fields.Nested(BranchSchema, validate=must_not_be_blank)
     class Meta:
         fields = ('branch_location_id',
                   'branch_id',
@@ -148,7 +148,7 @@ class BranchesLocation(Schema):
                   'city',
                   'address',
                   'distance',
-                  'branch')
+                  'name')
 
 company_schema = CompanySchema()
 companies_schema = CompanySchema(many=True)

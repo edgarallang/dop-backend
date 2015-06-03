@@ -94,9 +94,9 @@ def nearest_branches():
     longitude = request.args.get('longitude')
     radio = request.args.get('radio')
 
-    query = 'SELECT branch_location_id, branch_id, state, city, latitude, longitude, distance, address \
+    query = 'SELECT branch_location_id, branch_id, state, city, latitude, longitude, distance, address, name \
                 FROM (SELECT z.branch_location_id, z.branch_id, z.state, z.city, z.address, \
-                    z.latitude, z.longitude, \
+                    z.latitude, z.longitude, branches.name, \
                     p.radius, \
                     p.distance_unit \
                              * DEGREES(ACOS(COS(RADIANS(p.latpoint)) \
@@ -105,6 +105,7 @@ def nearest_branches():
                              + SIN(RADIANS(p.latpoint)) \
                              * SIN(RADIANS(z.latitude)))) AS distance \
                 FROM branches_location AS z \
+                JOIN branches on z.branch_id = branches.branch_id \
                 JOIN (   /* these are the query parameters */ \
                     SELECT  '+ latitude +'  AS latpoint,  '+ longitude +' AS longpoint, \
                             '+ radio +' AS radius,      111.045 AS distance_unit \
