@@ -47,11 +47,9 @@ def profile(userId):
                     FROM users INNER JOIN users_image ON users.user_id = users_image.user_id\
                     WHERE users.user_id = %d" % (userId)
 
-    selectedUser = db.engine.execute(query)
-    for row in selectedUser:
-        return jsonify({'data': row})
-    userJoined = user_join_image.dump(selectedUser)
-    return jsonify({'data': userJoined.data})
+    result = db.engine.execute(query)
+    user_with_image = user_joined_schema.dump(result)
+    return jsonify({'data': user_with_image.data})
 
 
 @user.route('/<int:user_id>/avatar/<path:filename>')
