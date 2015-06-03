@@ -49,7 +49,8 @@ def profile(userId):
 
     selectedUser = db.engine.execute(query)
     userJoined = user_join_image.dump(selectedUser)
-    print selectedUser.names
+    print selectedUser
+    print userJoined
     return jsonify({'data': userJoined.data})
 
 
