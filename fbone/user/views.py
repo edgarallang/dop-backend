@@ -12,7 +12,8 @@ from .models import *
 from ..extensions import db
 
 
-user = Blueprint('user', __name__, url_prefix='/api/user')
+
+user = Blueprint('user', __name__, url_prefix='/user')
 
 def parse_token(req, token_index):
     if token_index:
@@ -42,25 +43,14 @@ def index():
 
 @user.route('/<int:userId>/profile', methods=['GET'])
 def profile(userId):
-    import pdb; pdb.set_trace()
-    query = 'SELECT * FROM users INNER JOIN users_image \
-             ON users.user_id = users_image.user_id WHERE users.user_id=' + userId
-    # selectedUser = db.engine.execute(query)
-    # userJoined = user_schema.dump(selectedUser)
-    # return jsonify({'data': userJoined.data})
-    user_id = 32
-    query = 'SELECT * FROM friends \
-                 INNER JOIN users ON (friends.user_one_id=user_id  AND friends.user_one_id!=%d) \
-                 OR (friends.user_two_id=user_id  AND friends.user_two_id!=%d) \
-                 INNER JOIN users_image ON (friends.user_one_id = users_image.user_id AND friends.user_one_id!=%d)\
-                 OR (friends.user_two_id = users_image.user_id AND friends.user_two_id!=%d) \
-                 WHERE (user_one_id = %d OR user_two_id = %d)\
-                 AND status = 1' % (user_id, user_id, user_id, user_id, user_id, user_id)
+    query = "SELECT users.user_id, users.names, users.surnames, users.birth_date, users.facebook_key, users.google_key,\
+                    users.twitter_key, users_image.main_image, users_image.user_image_id\
+                    FROM users INNER JOIN users_image ON users.user_id = users_image.user_id\
+                    WHERE users.user_id = %d" % (userId)
 
-    friends = db.engine.execute(query)
-    friends_list = user_join_friends.dump(friends)
-    return jsonify({'data': friends_list.data})
-
+    result = db.engine.execute(query)
+    user_with_image = user_joined_schema.dump(result).data
+    return jsonify({'data': user_with_image})
 
 @user.route('/<int:user_id>/avatar/<path:filename>')
 @login_required
@@ -250,5 +240,19 @@ def delete_friend():
 
     return jsonify({'message': 'Oops! algo salió mal :('})
 
+@user.route('/<int:user_id>/profile/get', methods=['GET'])
+def get_profile():
+    user_id = 32
+    
+    query = 'SELECT * FROM friends \
+             INNER JOIN users ON (friends.user_one_id=user_id  AND friends.user_one_id!=%d) \
+             OR (friends.user_two_id=user_id  AND friends.user_two_id!=%d) \
+             INNER JOIN users_image ON (friends.user_one_id = users_image.user_id AND friends.user_one_id!=%d)\
+             OR (friends.user_two_id = users_image.user_id AND friends.user_two_id!=%d) \
+             WHERE (user_one_id = %d OR user_two_id = %d)\
+             AND status = 1' % (user_id, user_id, user_id, user_id, user_id, user_id)
 
+    friends = db.engine.execute(query)
+    friends_list = user_join_friends.dump(friends)
+    return jsonify({'data': friends_list.data})
  
