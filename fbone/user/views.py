@@ -50,6 +50,7 @@ def profile(userId):
 
     result = db.engine.execute(query)
     user_with_image = user_joined_schema.dump(result).data
+    
     return jsonify({'data': user_with_image})
 
 @user.route('/<int:user_id>/avatar/<path:filename>')
