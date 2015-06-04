@@ -244,9 +244,9 @@ def delete_friend():
 def get_profile(user_id):
     user_id = 32
     
-    query = 'SELECT names FROM users WHERE user_id = %d' % user_id
+    query = 'SELECT * FROM friends WHERE user_one_id = %d' % user_id
 
     friends = db.engine.execute(query)
-    friends_list = user_schema.dump(friends)
+    friends_list = friends_schema.dump(friends)
     return jsonify({'data': friends_list.data})
  
