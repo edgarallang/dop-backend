@@ -244,7 +244,7 @@ def delete_friend():
 def get_profile(user_id):
     user_id = 32
     
-    query = 'SELECT users.names,users.surnames,users.twitter_key,users.facebook_key,users.google_key,users_image.main_image FROM users\
+    query = 'SELECT users.user_id,users.names,users.surnames,users.twitter_key,users.facebook_key,users.google_key,users.birth_date,users_image.main_image FROM users\
              INNER JOIN users_image ON users.user_id = users_image.user_id WHERE users.user_id = %d' % user_id
 
     friends = db.engine.execute(query)
