@@ -241,7 +241,7 @@ def delete_friend():
     return jsonify({'message': 'Oops! algo salió mal :('})
 
 @user.route('/<int:user_id>/profile/get', methods=['GET'])
-def get_profile():
+def get_profile(user_id):
     user_id = 32
     
     query = 'SELECT * FROM friends \
