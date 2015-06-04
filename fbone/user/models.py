@@ -74,7 +74,7 @@ class User(db.Model, UserMixin):
     google_key = Column(db.String(STRING_LEN))
     twitter_key = Column(db.String(STRING_LEN))
 
-    users_image_user_id = db.relationship("UserImage", uselist=False, backref="users")
+    #users_image_user_id = db.relationship("UserImage", uselist=False, backref="users")
 
     # Images 
 
@@ -155,7 +155,7 @@ class UserJoinFriends(Schema):
                   'main_image')
 
 
-user_schema = UserSchema()
+user_schema = UserSchema(many=True)
 user_joined_schema = UserJoinImage()
 friends_schema = FriendsSchema(many=True)
 user_join_friends = UserJoinFriends(many=True)
