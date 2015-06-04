@@ -244,9 +244,10 @@ def delete_friend():
 def get_profile(user_id):
     user_id = 32
     
-    query = 'SELECT names,surnames FROM users WHERE user_id = %d' % user_id
+    query = 'SELECT users.names,users.surnames,users_image.main_image FROM users\
+             INNER JOIN users_image ON users.user_id = users_image.user_id WHERE users.user_id = %d' % user_id
 
     friends = db.engine.execute(query)
-    friends_list = user_schema.dump(friends)
+    friends_list = user_joined_schema.dump(friends)
     return jsonify({'data': friends_list.data})
  
