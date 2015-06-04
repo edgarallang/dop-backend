@@ -69,7 +69,7 @@ class User(db.Model, UserMixin):
     user_id = Column(db.Integer, primary_key=True)
     names = Column(db.String(STRING_LEN), nullable=False)
     surnames = Column(db.String(STRING_LEN), nullable=False)
-    birth_date = Column(db.Date,nullable=False)
+    birth_date = Column(db.Date)
     facebook_key = Column(db.String(STRING_LEN))
     google_key = Column(db.String(STRING_LEN))
     twitter_key = Column(db.String(STRING_LEN))
@@ -155,8 +155,8 @@ class UserJoinFriends(Schema):
                   'main_image')
 
 
-user_schema = UserSchema(many=True)
-user_joined_schema = UserJoinImage(many=True)
+user_schema = UserSchema()
+user_joined_schema = UserJoinImage()
 friends_schema = FriendsSchema(many=True)
 user_join_friends = UserJoinFriends(many=True)
     # ================================================================
