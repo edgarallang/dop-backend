@@ -69,7 +69,7 @@ class User(db.Model, UserMixin):
     user_id = Column(db.Integer, primary_key=True)
     names = Column(db.String(STRING_LEN), nullable=False)
     surnames = Column(db.String(STRING_LEN), nullable=False)
-    birth_date = Column(db.Date)
+    birth_date = Column(db.Date,nullable=False)
     facebook_key = Column(db.String(STRING_LEN))
     google_key = Column(db.String(STRING_LEN))
     twitter_key = Column(db.String(STRING_LEN))
