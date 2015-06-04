@@ -47,7 +47,7 @@ def create_app(config=None, app_name=None, blueprints=None):
     configure_hook(app)
     configure_blueprints(app, blueprints)
     configure_extensions(app)
-    configure_logging(app)
+    # configure_logging(app)
     configure_template_filters(app)
     configure_error_handlers(app)
     cors = CORS(app, resources={r"/api/*": {"origins": "*"}})

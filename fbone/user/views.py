@@ -12,7 +12,7 @@ from .models import *
 from ..extensions import db
 
 
-user = Blueprint('user', __name__, url_prefix='/user')
+user = Blueprint('user', __name__, url_prefix='/api/user')
 
 def parse_token(req, token_index):
     if token_index:
@@ -41,13 +41,12 @@ def index():
 
 
 @user.route('/<int:userId>/profile', methods=['GET'])
-def get_profile(userId):
-    # query = 'SELECT * FROM users WHERE user_id=28'
-    
+def profile(userId):
+    import pdb; pdb.set_trace()
+    query = 'SELECT * FROM users INNER JOIN users_image \
+             ON users.user_id = users_image.user_id WHERE users.user_id=' + userId
     # selectedUser = db.engine.execute(query)
-
     # userJoined = user_schema.dump(selectedUser)
-    
     # return jsonify({'data': userJoined.data})
     user_id = 32
     query = 'SELECT * FROM friends \
