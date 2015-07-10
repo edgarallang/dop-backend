@@ -80,7 +80,7 @@ def select_branch_profile(branchId):
     import pdb; pdb.set_trace()
     query = 'select * from branches inner join branches_location \
              on branches.branch_id = branches_location.branch_id \
-             where branch_id = ' + branchId
+             where branch_id = %d' % branchId
 
     selectedBranch = db.engine.execute(query)
     branch = branch_location_schema.dump(selectedBranch)

@@ -137,8 +137,7 @@ class BranchUserSchema(Schema):
                   'email',
                   'branch')
 
-class BranchesLocation(Schema):
-    branch = fields.Nested(BranchSchema, validate=must_not_be_blank)
+class BranchesProfile(Schema):
     class Meta:
         fields = ('branch_location_id',
                   'branch_id',
@@ -149,11 +148,25 @@ class BranchesLocation(Schema):
                   'address',
                   'distance',
                   'name',
-                  'branch')
+                  'category_id',
+                  'company_id')
+
+class BranchesLocation(Schema):
+    # branch = fields.Nested(BranchSchema, validate=must_not_be_blank)
+    class Meta:
+        fields = ('branch_location_id',
+                  'branch_id',
+                  'state',
+                  'longitude',
+                  'latitude',
+                  'city',
+                  'address',
+                  'distance',
+                  'name')
 
 company_schema = CompanySchema()
 companies_schema = CompanySchema(many=True)
 branch_schema = BranchSchema()
 branch_user_schema = BranchUserSchema()
-branch_location_schema = BranchesLocation()
+branch_profile_schema = BranchesProfile()
 branches_location_schema = BranchesLocation(many=True)
