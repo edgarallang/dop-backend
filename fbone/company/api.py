@@ -75,6 +75,15 @@ def select_branch(branchId):
     
     return jsonify({'data': branch.data})
 
+@company.route('/branch/<int:branchId>/profile/get', methods=['GET'])    
+def select_branch(branchId):
+    selectedBranch = db.engine.execute('select * from branches inner join branches_location \
+                                        on branches.branch_id = branches_location.branch_id \
+                                        where branch_id = ' + branchId)
+    branch = branch_location_schema.dump(selectedBranch)
+    
+    return jsonify({'data': branch.data})
+
 @company.route('/me', methods = ['POST'])    
 def select_branch_user():
     selectedBranchUser = BranchUser.query.get(request.json['branches_user_id'])
