@@ -76,7 +76,7 @@ def select_branch(branchId):
     return jsonify({'data': branch.data})
 
 @company.route('/branch/<int:branchId>/profile/get', methods=['GET'])    
-def select_branch(branchId):
+def select_branch_profile(branchId):
     selectedBranch = db.engine.execute('select * from branches inner join branches_location \
                                         on branches.branch_id = branches_location.branch_id \
                                         where branch_id = ' + branchId)
