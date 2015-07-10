@@ -77,10 +77,11 @@ def select_branch(branchId):
 
 @company.route('/branch/<int:branchId>/profile/get', methods=['GET'])    
 def select_branch_profile(branchId):
+    import pdb; pdb.set_trace()
     query = 'select * from branches inner join branches_location \
              on branches.branch_id = branches_location.branch_id \
              where branch_id = ' + branchId
-    import pdb; pdb.set_trace()
+
     selectedBranch = db.engine.execute(query)
     branch = branch_location_schema.dump(selectedBranch)
     
