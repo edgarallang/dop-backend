@@ -79,7 +79,7 @@ def select_branch(branchId):
 def select_branch_profile(branchId):
     query = 'SELECT * FROM branches INNER JOIN branches_location \
              ON branches.branch_id = branches_location.branch_id \
-             WHERE branch_id = %d' % branchId
+             WHERE branches.branch_id = %d' % branchId
 
     selectedBranch = db.engine.execute(query)
     branch = branch_profile_schema.dump(selectedBranch)
