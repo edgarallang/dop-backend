@@ -156,7 +156,7 @@ class UserJoinFriends(Schema):
 
 class FriendsCountSchema(Schema):
     class Meta:
-        fields('total')
+        fields = ('total')
 
 
 user_schema = UserSchema(many=True)
