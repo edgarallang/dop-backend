@@ -48,6 +48,16 @@ def profile(userId):
                     FROM users INNER JOIN users_image ON users.user_id = users_image.user_id\
                     WHERE users.user_id = %d" % (userId)
 
+    friends_query = 'SELECT COUNT(*) as total FROM friends \
+                 INNER JOIN users ON (friends.user_one_id=user_id  AND friends.user_one_id!=%d) \
+                 OR (friends.user_two_id=user_id  AND friends.user_two_id!=%d) \
+                 INNER JOIN users_image ON (friends.user_one_id = users_image.user_id AND friends.user_one_id!=%d)\
+                 OR (friends.user_two_id = users_image.user_id AND friends.user_two_id!=%d) \
+                 WHERE (user_one_id = %d OR user_two_id = %d)\
+                 AND status = 1' % (userId, userId, userId, userId, userId, userId)
+
+
+
     result = db.engine.execute(query)
     user_with_image = user_joined_schema.dump(result).data
 
