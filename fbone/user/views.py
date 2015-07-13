@@ -55,11 +55,11 @@ def profile(userId):
                  OR (friends.user_two_id = users_image.user_id AND friends.user_two_id!=%d) \
                  WHERE (user_one_id = %d OR user_two_id = %d)\
                  AND status = 1' % (userId, userId, userId, userId, userId, userId)
+    
+    
 
-
-
-    result = db.engine.execute(query)
-    user_with_image = user_joined_schema.dump(result).data
+    result = db.engine.execute(friends_query)
+    user_with_image = friends_count_schema.dump(result).data
 
     return jsonify({'data': user_with_image})
 
