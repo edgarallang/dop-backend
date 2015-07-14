@@ -163,7 +163,7 @@ user_schema = UserSchema(many=True)
 user_joined_schema = UserJoinImage(many=True)
 friends_schema = FriendsSchema(many=True)
 user_join_friends = UserJoinFriends(many=True)
-friends_count_schema = FriendsCountSchema()
+friends_count_schema = FriendsCountSchema(many=True)
 
     # ================================================================
     # Class methods
