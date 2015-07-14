@@ -156,7 +156,8 @@ class UserJoinFriends(Schema):
 
 class FriendsCountSchema(Schema):
     class Meta:
-        fields = ('friends_id')
+        fields = ('friends_id',
+                  'user_id')
 
 user_schema = UserSchema(many=True)
 user_joined_schema = UserJoinImage(many=True)
