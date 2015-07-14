@@ -154,14 +154,16 @@ class UserJoinFriends(Schema):
                   'surnames',
                   'main_image')
 
-
-
+class FriendsCountSchema(Schema):
+    class Meta:
+        fields = ('friends_id')
 
 
 user_schema = UserSchema(many=True)
 user_joined_schema = UserJoinImage(many=True)
 friends_schema = FriendsSchema(many=True)
 user_join_friends = UserJoinFriends(many=True)
+friends_count_schema = FriendsCountSchema()
 
     # ================================================================
     # Class methods
