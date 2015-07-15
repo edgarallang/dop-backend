@@ -50,9 +50,9 @@ def get_friends_by_id(userId):
                  WHERE (user_one_id = %d OR user_two_id = %d)\
                  AND status = 1' % (userId, userId, userId, userId, userId, userId)
     result = db.engine.execute(friends_query)
-    user_with_image = friends_count_schema.dump(result).data
+    total_friends = friends_count_schema.dump(result).data
 
-    return user_with_image
+    return total_friends
 
 @user.route('/<int:userId>/profile', methods=['GET'])
 def profile(userId):
@@ -61,14 +61,14 @@ def profile(userId):
                     FROM users INNER JOIN users_image ON users.user_id = users_image.user_id\
                     WHERE users.user_id = %d" % (userId)
 
-    friends_query = get_friends_by_id(userId)
+    total_friends = get_friends_by_id(userId)
     
     
 
-    #result = db.engine.execute(friends_query)
-    #user_with_image = friends_count_schema.dump(result).data
+    result = db.engine.execute(query)
+    user_with_image = user_joined_schema.dump(result).data
 
-    return jsonify({'data': friends_query})
+    return jsonify({'data': user_with_image})
 
 @user.route('/<int:user_id>/avatar/<path:filename>')
 @login_required
