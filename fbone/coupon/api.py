@@ -166,9 +166,9 @@ def get_all_coupon_by_branch(branch_id):
                               .filter_by(branch_id = branch_id) \
                               .limit(6).all()
 
-    bond_coupons = db.engine.execute('select * from coupons inner join bond_coupon on coupons.coupon_id = bond_coupon.coupon_id')
-    discount_coupons = db.engine.execute('select * from coupons inner join discount_coupon on coupons.coupon_id = discount_coupon.coupon_id')
-    nxn_coupons = db.engine.execute('select * from coupons inner join nxn_coupon on coupons.coupon_id = nxn_coupon.coupon_id')
+    bond_coupons = db.engine.execute('select * from coupons inner join bond_coupon on coupons.coupon_id = bond_coupon.coupon_id where bond_coupon.branch_id = %d' % branch_id)
+    discount_coupons = db.engine.execute('select * from coupons inner join discount_coupon on coupons.coupon_id = discount_coupon.coupon_id where discount_coupon.branch_id = %d' % branch_id')
+    nxn_coupons = db.engine.execute('select * from coupons inner join nxn_coupon on coupons.coupon_id = nxn_coupon.coupon_id where nxn_coupon.branch_id = %d' % branch_id)
 
     selected_list_coupon = coupons_schema.dump(list_coupon)
     bondlist = bond_join_coupon_schema.dump(bond_coupons)
