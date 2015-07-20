@@ -184,6 +184,7 @@ class UserJoinExchanges(Schema):
 coupon_schema = CouponSchema()
 coupons_schema = CouponSchema(many=True)
 
+
 bond_join_coupon_schema = BondJoinCouponSchema(many=True)
 discount_join_coupon_schema = DiscountJoinCouponSchema(many=True)
 nxn_join_coupon_schema = NxNJoinCouponSchema(many=True)
