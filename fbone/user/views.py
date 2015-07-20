@@ -41,13 +41,7 @@ def index():
     return render_template('user/index.html', user=current_user)
 
 
-@user.route('/<int:userId>/profile', methods=['GET'])
-def profile(userId):
-    query = "SELECT users.user_id, users.names, users.surnames, users.birth_date, users.facebook_key, users.google_key,\
-                    users.twitter_key, users_image.main_image, users_image.user_image_id\
-                    FROM users INNER JOIN users_image ON users.user_id = users_image.user_id\
-                    WHERE users.user_id = %d" % (userId)
-
+def get_friends_by_id(userId):
     friends_query = 'SELECT COUNT(*) as total FROM friends \
                  INNER JOIN users ON (friends.user_one_id=user_id  AND friends.user_one_id!=%d) \
                  OR (friends.user_two_id=user_id  AND friends.user_two_id!=%d) \
@@ -55,13 +49,26 @@ def profile(userId):
                  OR (friends.user_two_id = users_image.user_id AND friends.user_two_id!=%d) \
                  WHERE (user_one_id = %d OR user_two_id = %d)\
                  AND status = 1' % (userId, userId, userId, userId, userId, userId)
+    result = db.engine.execute(friends_query)
+    total_friends = friends_count_schema.dump(result).data
+
+    return total_friends
+
+@user.route('/<int:userId>/profile', methods=['GET'])
+def profile(userId):
+    query = "SELECT users.user_id, users.names, users.surnames, users.birth_date, users.facebook_key, users.google_key,\
+                    users.twitter_key, users_image.main_image, users_image.user_image_id\
+                    FROM users INNER JOIN users_image ON users.user_id = users_image.user_id\
+                    WHERE users.user_id = %d" % (userId)
+
+    total_friends = get_friends_by_id(userId)
     
     
 
     result = db.engine.execute(query)
     user_with_image = user_joined_schema.dump(result).data
 
-    return jsonify({'data': user_with_image})
+    return jsonify({'data': user_with_image,'friends':total_friends})
 
 @user.route('/<int:user_id>/avatar/<path:filename>')
 @login_required
