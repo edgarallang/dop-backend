@@ -178,6 +178,9 @@ def get_all_coupon_by_branch(branch_id):
                  ON coupons.coupon_id = nxn_coupon.coupon_id WHERE coupons.branch_id = %d' % branch_id
     nxn_coupons = db.engine.execute(nxn_query)
 
+    import pdb; pdb.set_trace()
+    
+
     selected_list_coupon = coupons_schema.dump(list_coupon)
     bondlist = bond_join_coupon_schema.dump(bond_coupons)
     discountlist = discount_join_coupon_schema.dump(discount_coupons)
