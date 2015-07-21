@@ -91,8 +91,7 @@ class CouponSchema(Schema):
                   'end_date',
                   'limit',
                   'min_spent',
-                  'coupon_category_id',
-                  'logo')
+                  'coupon_category_id')
 
 class BondJoinCouponSchema(Schema):
     class Meta:
