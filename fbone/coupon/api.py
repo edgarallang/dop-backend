@@ -165,13 +165,17 @@ def get_all_coupon_by_branch(branch_id):
     list_coupon = Coupon.query.filter_by(deleted = False) \
                               .filter_by(branch_id = branch_id) \
                               .filter_by(coupon_category_id = 0).all()
-    bond_query = 'SELECT * FROM coupons INNER JOIN bond_coupon ON coupons.coupon_id = bond_coupon.coupon_id WHERE coupons.branch_id = %d' % branch_id
+
+    bond_query = 'SELECT * FROM coupons INNER JOIN bond_coupon \
+                  ON coupons.coupon_id = bond_coupon.coupon_id WHERE coupons.branch_id = %d' % branch_id
     bond_coupons = db.engine.execute(bond_query)
 
-    discount_query = 'SELECT * FROM coupons INNER JOIN discount_coupon ON coupons.coupon_id = discount_coupon.coupon_id WHERE coupons.branch_id = %d' % branch_id
+    discount_query = 'SELECT * FROM coupons INNER JOIN discount_coupon \
+                      ON coupons.coupon_id = discount_coupon.coupon_id WHERE coupons.branch_id = %d' % branch_id
     discount_coupons = db.engine.execute(discount_query)
 
-    nxn_query = 'SELECT * FROM coupons INNER JOIN nxn_coupon ON coupons.coupon_id = nxn_coupon.coupon_id WHERE coupons.branch_id = %d' % branch_id
+    nxn_query = 'SELECT * FROM coupons INNER JOIN nxn_coupon \
+                 ON coupons.coupon_id = nxn_coupon.coupon_id WHERE coupons.branch_id = %d' % branch_id
     nxn_coupons = db.engine.execute(nxn_query)
 
     selected_list_coupon = coupons_schema.dump(list_coupon)
