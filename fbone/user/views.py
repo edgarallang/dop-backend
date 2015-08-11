@@ -259,9 +259,7 @@ def delete_friend():
     return jsonify({'message': 'Oops! algo salió mal :('})
 
 @user.route('/<int:user_id>/profile/get', methods=['GET'])
-def get_profile(user_id):
-    user_id = 32
-    
+def get_profile(user_id):    
     query = 'SELECT users.names,users.surnames,users.twitter_key, users.facebook_key, users.google_key, users.user_id,\
                     users.birth_date, users_image.main_image FROM users\
              INNER JOIN users_image ON users.user_id = users_image.user_id WHERE users.user_id = %d' % user_id
