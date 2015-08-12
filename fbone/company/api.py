@@ -22,7 +22,6 @@ def create_token(user):
     }
 
     token = jwt.encode(payload, app.config['TOKEN_SECRET'])
-    import pdb; pdb.set_trace()
     return token.decode('unicode_escape')
 
 def parse_token(req):
