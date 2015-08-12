@@ -38,7 +38,7 @@ def create_coupon(request):
                             # description = request.json['description'],
                             coupon_folio = "EAG",
                             # min_spent = request.json['min_spent'],
-                            coupon_category_id = 0,
+                            coupon_category_id = 1,
                             available = 0,
                             deleted = False,
                             active = False)
@@ -164,7 +164,7 @@ def get_coupon(coupon_id):
 def get_all_coupon_by_branch(branch_id):
     list_coupon = Coupon.query.filter_by(deleted = False) \
                               .filter_by(branch_id = branch_id) \
-                              .filter_by(coupon_category_id = 0).all()
+                              .filter_by(coupon_category_id = 1).all()
 
     bond_query = 'SELECT * FROM coupons INNER JOIN bond_coupon \
                   ON coupons.coupon_id = bond_coupon.coupon_id WHERE coupons.branch_id = %d' % branch_id
