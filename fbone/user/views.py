@@ -78,7 +78,6 @@ def avatar(user_id, filename):
 
 @user.route('/login/facebook', methods=['POST'])
 def facebook_login():
-    import pdb; pdb.set_trace()
     facebookUser = User.query.filter_by(facebook_key = request.json['facebook_key']).first()
     if not facebookUser:
         facebookUser = User(names = request.json['names'],
@@ -91,6 +90,7 @@ def facebook_login():
         userSession = UserSession(user_id=facebookUser.user_id,
                                   email=request.json['email'])
         db.session.add(userSession)
+        db.session.commit()
 
         userImage = UserImage(user_id=facebookUser.user_id,
                               main_image=request.json['main_image'])
