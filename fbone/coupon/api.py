@@ -217,6 +217,7 @@ def create_bond(request):
                                    coupon_category_id = request.json['coupon_category_id'], 
                                    bond_size = request.json['bond_size'])
         coupon = Coupon.query.get(request.json['coupon_id'])
+        coupon.coupon_category_id = request.json['coupon_category_id']
         coupon.name = request.json['name']
         coupon.description = request.json['description']
         coupon.min_spent = request.json['min_spent']
@@ -243,6 +244,7 @@ def create_discount(request):
                                            coupon_category_id = request.json['coupon_category_id'], 
                                            percent = request.json['percent'])
         coupon = Coupon.query.get(request.json['coupon_id'])
+        coupon.coupon_category_id = request.json['coupon_category_id']
         coupon.name = request.json['name']
         coupon.description = request.json['description']
         coupon.min_spent = request.json['min_spent']
@@ -270,6 +272,7 @@ def create_nxn(request):
                                  n1 = request.json['n1'],
                                  n2 = request.json['n2'])
         coupon = Coupon.query.get(request.json['coupon_id'])
+        coupon.coupon_category_id = request.json['coupon_category_id']
         coupon.name = request.json['name']
         coupon.description = request.json['description']
         coupon.min_spent = request.json['min_spent']
