@@ -257,4 +257,20 @@ def get_used_coupons_by_user():
 
     return jsonify({'message': 'Oops! algo salió mal'})
 
+@coupon.route('/coupon/like',methods=['POST'])
+def like_coupon(coupon_id):
+
+    if request.headers.get('Authorization'):
+        token_index = True
+        payload = parse_token(request, token_index)
+
+        user_like = CouponLike(coupon_id = request.json['coupon_id']
+                                  user_id = payload['id'],
+                                  date = request.json['date'])
+
+        db.session.add(user_like)
+        db.session.commit()
+
+        return jsonify({'message': 'El like se asigno con éxito','folio': folio})
+    return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
