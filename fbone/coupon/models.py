@@ -108,6 +108,7 @@ class CouponLogoSchema(Schema):
     class Meta:
         fields = ('coupon_id',
                   'branch_id',
+                  'company_id',
                   'name',
                   'coupon_folio',
                   'description',

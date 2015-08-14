@@ -38,7 +38,7 @@ def create_coupon(request):
                             # description = request.json['description'],
                             coupon_folio = "EAG",
                             # min_spent = request.json['min_spent'],
-                            coupon_category_id = 0,
+                            coupon_category_id = 1,
                             available = 0,
                             deleted = False,
                             active = False)
@@ -48,76 +48,6 @@ def create_coupon(request):
         return "OK si se creo el cupon despues del pago"
 
 # POST methods
-@coupon.route('/bond/create', methods = ['POST'])
-def create_bond():
-    
-    if request.headers.get('Authorization'):
-        payload = parse_token(request, False)
-
-        branch_id = BranchUser.query.get(payload['id']).branch_id
-
-        bondCoupon = BondCoupon.query.filter_by(coupon_id = request.json['coupon_id']).first()
-        if not bondCoupon:
-            newBondCoupon = BondCoupon(coupon_id = request.json['coupon_id'], 
-                                    coupon_category_id = request.json['coupon_category_id'], 
-                                    bond_size = request.json['bond_size'])
-            coupon = Coupon.query.get(request.json['coupon_id'])
-            coupon.name = request.json['name']
-            coupon.start_date = request.json['start_date']
-            coupon.end_date = request.json['end_date']
-            coupon.description = request.json['description']
-            coupon.min_spent = request.json['min_spent']
-            db.session.add(newBondCoupon)
-            db.session.commit()
-
-            return jsonify({'message': 'El cupon se creo con exito, ten, toma una galleta'})
-        else: 
-            bondCoupon.bond_size = request.json['bond_size']
-            coupon = Coupon.query.get(request.json['coupon_id'])
-            coupon.name = request.json['name']
-            coupon.start_date = request.json['start_date']
-            coupon.end_date = request.json['end_date']
-            coupon.description = request.json['description']
-            coupon.min_spent = request.json['min_spent']
-            db.session.commit()
-
-            return jsonify({'message': 'El cupon se modificó con exito, ten, toma una galleta'})
-    return jsonify({'message': 'Oops! algo salió mal :('})
-
-@coupon.route('/discount/create', methods = ['POST'])
-def create_discount():
-    
-    if request.headers.get('Authorization'):
-        payload = parse_token(request, False)
-
-        branch_id = BranchUser.query.get(payload['id']).branch_id
-        new_coupon = create_coupon(request, branch_id)
-        discountCoupon = DiscountCoupon(coupon_id = new_coupon.coupon_id,
-                                        coupon_category_id = request.json['coupon_category_id'],
-                                        percent = request.json['discount'])
-        db.session.add(discountCoupon)
-        db.session.commit()
-
-        return jsonify({'message': 'El cupon se creo con exito, ten, toma una galleta'})
-    return jsonify({'message': 'Oops! algo salió mal :('})
-
-@coupon.route('/nxn/create', methods = ['POST'])
-def create_nxn():
-
-    if request.headers.get('Authorization'):
-        payload = parse_token(request)
-
-        branch_id = BranchUser.query.get(payload['id']).branch_id
-        new_coupon = create_coupon(request)
-        nxnCoupon = NxNCoupon(coupon_id = new_coupon.coupon_id,
-                              coupon_category_id = request.json['coupon_category_id'],
-                              n1 = request.json['n1'],
-                              n2 = request.json['n2'])
-        db.session.add(nxnCoupon)
-        db.session.commit()
-
-        return jsonify({'message': 'El cupon se creo con exito, ten, toma una galleta'})
-    return jsonify({'message': 'Oops! algo salió mal :('})
 
 @coupon.route('/user/take',methods=['POST'])
 def take_coupon():
@@ -164,7 +94,7 @@ def get_coupon(coupon_id):
 def get_all_coupon_by_branch(branch_id):
     list_coupon = Coupon.query.filter_by(deleted = False) \
                               .filter_by(branch_id = branch_id) \
-                              .filter_by(coupon_category_id = 0).all()
+                              .filter_by(coupon_category_id = 1).all()
 
     bond_query = 'SELECT * FROM coupons INNER JOIN bond_coupon \
                   ON coupons.coupon_id = bond_coupon.coupon_id WHERE coupons.branch_id = %d' % branch_id
@@ -194,7 +124,11 @@ def get_all_coupon_by_branch(branch_id):
 @coupon.route('/all/get', methods = ['GET'])
 def get_all_coupon():
 
-    list_coupon = db.engine.execute("SELECT * FROM coupons INNER JOIN branches_design ON coupons.branch_id = branches_design.branch_id WHERE deleted=false LIMIT 6")
+    list_coupon = db.engine.execute("SELECT * FROM coupons INNER JOIN branches_design ON \
+                                        coupons.branch_id = branches_design.branch_id \
+                                    INNER JOIN branches ON \
+                                        coupons.branch_id = branches.branch_id \
+                                    WHERE deleted=false")
 
     selected_list_coupon = coupons_logo_schema.dump(list_coupon)
     return jsonify({'data': selected_list_coupon.data})
@@ -273,4 +207,110 @@ def like_coupon(coupon_id):
 
         return jsonify({'message': 'El like se asigno con éxito','folio': folio})
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
+
+@coupon.route('/customize', methods=['POST'])
+def custom_coupon():
+    if request.headers.get('Authorization'):
+        payload = parse_token(request, False)
+
+        branch_id = BranchUser.query.get(payload['id']).branch_id
+        coupon_category = request.json['coupon_category_id'] 
+        if (coupon_category == 2):
+            success = create_bond(request)
+        elif (coupon_category == 3):
+            success = create_discount(request)
+        elif (coupon_category == 4):
+            success = create_nxn(request)
+
+        if success:
+            return jsonify({'message': 'La promoción se modifico con éxito'})
+        return jsonify({'message': 'Oops! algo salió mal :('})
+
+    return jsonify({'message': 'Oops! algo salió mal :('})
+
+
+
+def create_bond(request):
+    customizationSuccess = False
+    bondCoupon = BondCoupon.query.filter_by(coupon_id = request.json['coupon_id']).first()
+    if not bondCoupon:
+        newBondCoupon = BondCoupon(coupon_id = request.json['coupon_id'], 
+                                   coupon_category_id = request.json['coupon_category_id'], 
+                                   bond_size = request.json['bond_size'])
+        coupon = Coupon.query.get(request.json['coupon_id'])
+        coupon.coupon_category_id = request.json['coupon_category_id']
+        coupon.name = request.json['name']
+        coupon.description = request.json['description']
+        coupon.min_spent = request.json['min_spent']
+        db.session.add(newBondCoupon)
+        db.session.commit()
+        customizationSuccess = True
+        return customizationSuccess
+    else: 
+        bondCoupon.bond_size = request.json['bond_size']
+        coupon = Coupon.query.get(request.json['coupon_id'])
+        coupon.name = request.json['name']
+        coupon.description = request.json['description']
+        coupon.min_spent = request.json['min_spent']
+        db.session.commit()
+
+        return customizationSuccess
+    return customizationSuccess
+
+def create_discount(request):
+    customizationSuccess = False
+    discountCoupon = DiscountCoupon.query.filter_by(coupon_id = request.json['coupon_id']).first()
+    if not discountCoupon:
+        newDiscountCoupon = DiscountCoupon(coupon_id = request.json['coupon_id'], 
+                                           coupon_category_id = request.json['coupon_category_id'], 
+                                           percent = request.json['percent'])
+        coupon = Coupon.query.get(request.json['coupon_id'])
+        coupon.coupon_category_id = request.json['coupon_category_id']
+        coupon.name = request.json['name']
+        coupon.description = request.json['description']
+        coupon.min_spent = request.json['min_spent']
+        db.session.add(newDiscountCoupon)
+        db.session.commit()
+        customizationSuccess = True
+        return customizationSuccess
+    else: 
+        discountCoupon.percent = request.json['percent']
+        coupon = Coupon.query.get(request.json['coupon_id'])
+        coupon.name = request.json['name']
+        coupon.description = request.json['description']
+        coupon.min_spent = request.json['min_spent']
+        db.session.commit()
+
+        return customizationSuccess
+    return customizationSuccess
+
+def create_nxn(request):
+    customizationSuccess = False
+    nxnCoupon = NxNCoupon.query.filter_by(coupon_id = request.json['coupon_id']).first()
+    if not nxnCoupon:
+        newNxNCoupon = NxNCoupon(coupon_id = request.json['coupon_id'], 
+                                 coupon_category_id = request.json['coupon_category_id'], 
+                                 n1 = request.json['n1'],
+                                 n2 = request.json['n2'])
+        coupon = Coupon.query.get(request.json['coupon_id'])
+        coupon.coupon_category_id = request.json['coupon_category_id']
+        coupon.name = request.json['name']
+        coupon.description = request.json['description']
+        coupon.min_spent = request.json['min_spent']
+        db.session.add(newNxNCoupon)
+        db.session.commit()
+        customizationSuccess = True
+        return customizationSuccess
+    else: 
+        nxnCoupon.n1 = request.json['n1']
+        nxnCoupon.n2 = request.json['n2']
+        coupon = Coupon.query.get(request.json['coupon_id'])
+        coupon.name = request.json['name']
+        coupon.description = request.json['description']
+        coupon.min_spent = request.json['min_spent']
+        db.session.commit()
+
+        return customizationSuccess
+    return customizationSuccess
+
 
