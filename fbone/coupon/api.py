@@ -191,14 +191,14 @@ def get_used_coupons_by_user():
 
     return jsonify({'message': 'Oops! algo salió mal'})
 
-@coupon.route('/coupon/like',methods=['POST'])
+@coupon.route('/like',methods=['POST'])
 def like_coupon(request):
 
     if request.headers.get('Authorization'):
         token_index = True
         payload = parse_token(request, token_index)
 
-        user_like = CouponLike(coupon_id = request.json['coupon_id']
+        user_like = CouponLike(coupon_id = request.json['coupon_id'],
                                   user_id = payload['id'],
                                   date = request.json['date'])
 
