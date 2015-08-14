@@ -124,7 +124,11 @@ def get_all_coupon_by_branch(branch_id):
 @coupon.route('/all/get', methods = ['GET'])
 def get_all_coupon():
 
-    list_coupon = db.engine.execute("SELECT * FROM coupons INNER JOIN branches_design ON coupons.branch_id = branches_design.branch_id WHERE deleted=false LIMIT 6")
+    list_coupon = db.engine.execute("SELECT * FROM coupons INNER JOIN branches_design ON \
+                                        coupons.branch_id = branches_design.branch_id \
+                                    INNER JOIN branches ON \
+                                        coupons.branch_id = branches.branch_id \
+                                    WHERE deleted=falseWHERE deleted=false LIMIT 6")
 
     selected_list_coupon = coupons_logo_schema.dump(list_coupon)
     return jsonify({'data': selected_list_coupon.data})
