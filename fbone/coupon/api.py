@@ -198,7 +198,7 @@ def like_coupon(request):
         token_index = True
         payload = parse_token(request, token_index)
 
-        user_like = CouponLike(coupon_id = request.json['coupon_id'],
+        user_like = CouponsLikes(coupon_id = request.json['coupon_id'],
                                   user_id = payload['id'],
                                   date = request.json['date'])
 
