@@ -78,6 +78,17 @@ class ClientsCoupon(db.Model):
     coupons_user = db.relationship('User', uselist=False, backref='clients_coupon')
     clients_coupons = db.relationship('Coupon', uselist=False, backref='clients_coupon')
 
+class CouponsLikes(db.Model):
+    __tablename__ = 'coupons_likes'
+    coupon_like_id = Column(db.Integer, primary_key=True)
+    user_id = Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
+    coupon_id = Column(db.Integer, db.ForeignKey('coupons.coupon_id'), nullable=False)
+    date = Column(db.DateTime, nullable=False)
+
+
+    coupons_user = db.relationship('User', uselist=False, backref='coupons_likes')
+    clients_coupons = db.relationship('Coupon', uselist=False, backref='coupons_likes')
+
 # Serializer Schemas
 
 class CouponSchema(Schema):
@@ -194,6 +205,12 @@ class UserJoinExchanges(Schema):
                   'friend_id',
                   'branch_name')
 
+class CouponLike(Schema):
+    class Meta:
+        fields = ('coupon_like_id',
+                  'coupon_id',
+                  'user_id',
+                  'date')
 
 coupon_schema = CouponSchema()
 coupons_schema = CouponSchema(many=True)
@@ -212,6 +229,8 @@ nxn_coupon_schema = NxNCouponSchema()
 clients_coupon_schema = ClientsCouponSchema()
 
 user_join_exchanges_coupon_schema = UserJoinExchanges(many=True)
+
+coupons_likes_schema = CouponLike(many=True)
 
 
 def baseN(num,b,numerals="0123456789abcdefghijklmnopqrstuvwxyz"):
