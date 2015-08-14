@@ -128,7 +128,7 @@ def get_all_coupon():
                                         coupons.branch_id = branches_design.branch_id \
                                     INNER JOIN branches ON \
                                         coupons.branch_id = branches.branch_id \
-                                    WHERE deleted=falseWHERE deleted=false LIMIT 6")
+                                    WHERE deleted=false")
 
     selected_list_coupon = coupons_logo_schema.dump(list_coupon)
     return jsonify({'data': selected_list_coupon.data})
