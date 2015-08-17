@@ -206,11 +206,11 @@ def like_coupon():
 
             db.session.add(user_like)
             db.session.commit()
+        return jsonify({'message': 'El like se asigno con éxito'})
         else:
             db.session.delete(userLike)
             db.session.commit()
-
-        return jsonify({'message': 'El like se asigno con éxito'})
+        return jsonify({'message': 'El like se elimino con éxito'})
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
 @coupon.route('/customize', methods=['POST'])
