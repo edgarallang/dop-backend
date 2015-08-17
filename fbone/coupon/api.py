@@ -198,12 +198,17 @@ def like_coupon():
         token_index = True
         payload = parse_token(request, token_index)
 
-        user_like = CouponsLikes(coupon_id = request.json['coupon_id'],
-                                  user_id = payload['id'],
-                                  date = request.json['date'])
+        userLike = CouponsLikes.query.filter_by(coupon_id = request.json['coupon_id'],user_id = payload['id']).first()
+        if not userLike:
+            user_like = CouponsLikes(coupon_id = request.json['coupon_id'],
+                                      user_id = payload['id'],
+                                      date = request.json['date'])
 
-        db.session.add(user_like)
-        db.session.commit()
+            db.session.add(user_like)
+            db.session.commit()
+        elif:
+            db.session.delete(userLike)
+            db.session.commit()
 
         return jsonify({'message': 'El like se asigno con éxito'})
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
