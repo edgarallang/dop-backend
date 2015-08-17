@@ -122,7 +122,8 @@ def get_all_coupon_by_branch(branch_id):
 
 @coupon.route('/all/get/user', methods = ['GET'])
 def get_all_coupon_user():
-    user_id = request.args.get('user_id')
+    #user_id = request.args.get('user_id')
+    payload = parse_token(request, token_index)
 
     list_coupon = db.engine.execute('SELECT *, \
                                     (SELECT COUNT(*)  FROM coupons_likes WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes, \
@@ -130,7 +131,7 @@ def get_all_coupon_user():
                                     FROM coupons INNER JOIN branches_design ON \
                                     coupons.branch_id = branches_design.branch_id \
                                     INNER JOIN branches ON coupons.branch_id = branches.branch_id \
-                                    WHERE deleted = false' % user_id)
+                                    WHERE deleted = false' % payload['id'])
 
 
 
