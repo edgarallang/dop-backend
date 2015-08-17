@@ -206,7 +206,7 @@ def like_coupon():
 
             db.session.add(user_like)
             db.session.commit()
-        elif :
+        else:
             db.session.delete(userLike)
             db.session.commit()
 
