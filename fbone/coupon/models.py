@@ -102,7 +102,9 @@ class CouponSchema(Schema):
                   'end_date',
                   'limit',
                   'min_spent',
-                  'coupon_category_id')
+                  'coupon_category_id',
+                  'total_likes',
+                  'user_like')
 
 class CouponLogoSchema(Schema):
     class Meta:
