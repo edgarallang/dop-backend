@@ -207,7 +207,9 @@ class UserJoinExchanges(Schema):
                   'main_image',
                   'exchange_date',
                   'friend_id',
-                  'branch_name')
+                  'branch_name',
+                  'total_likes',
+                  'user_like')
 
 class CouponLike(Schema):
     class Meta:
