@@ -127,8 +127,10 @@ def get_all_coupon_user():
     payload = parse_token(request, token_index)
 
     list_coupon = db.engine.execute('SELECT *, \
-                                    (SELECT COUNT(*)  FROM coupons_likes WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes, \
-                                    (SELECT COUNT(*)  FROM coupons_likes WHERE coupons_likes.user_id = %d AND coupons.coupon_id = coupons_likes.coupon_id) AS user_like \
+                                    (SELECT COUNT(*)  FROM coupons_likes \
+                                        WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes, \
+                                    (SELECT COUNT(*)  FROM coupons_likes \
+                                        WHERE coupons_likes.user_id = %d AND coupons.coupon_id = coupons_likes.coupon_id) AS user_like \
                                     FROM coupons INNER JOIN branches_design ON \
                                     coupons.branch_id = branches_design.branch_id \
                                     INNER JOIN branches ON coupons.branch_id = branches.branch_id \
@@ -143,7 +145,8 @@ def get_all_coupon_user():
 def get_all_coupon():
 
     list_coupon = db.engine.execute('SELECT *, \
-                                    (SELECT COUNT(*)  FROM coupons_likes WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes \
+                                    (SELECT COUNT(*)  FROM coupons_likes \
+                                        WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes \
                                     FROM coupons INNER JOIN branches_design ON \
                                     coupons.branch_id = branches_design.branch_id \
                                     INNER JOIN branches ON coupons.branch_id = branches.branch_id \
