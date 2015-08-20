@@ -135,7 +135,7 @@ def get_all_coupon_user():
                                     coupons.branch_id = branches_design.branch_id \
                                     INNER JOIN branches ON coupons.branch_id = branches.branch_id \
                                     INNER JOIN branches_location on coupons.branch_id = branches_location.branch_id \
-                                    WHERE deleted = false' % payload['id'])
+                                    WHERE deleted = false ORDER BY start_date DESC' % payload['id'])
 
 
 
