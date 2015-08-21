@@ -83,8 +83,8 @@ class BranchesLikes(db.Model):
     user_id = Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
     date = Column(db.DateTime, nullable=False)
 
-    branches_likes = db.relationship("Branch", uselist=False, backref="branches")
-    branches_user = db.relationship('User', uselist=False, backref='users')
+    branches_likes = db.relationship("Branch", uselist=False, backref="branches_likes")
+    branches_user = db.relationship('User', uselist=False, backref='branches_likes')
 # =====================================================================
 
 # Branches user is the person geting into the system from that specific branch
