@@ -136,7 +136,7 @@ def nearest_branches():
     
     return jsonify({'data': nearest.data})
 
-@coupon.route('/branch/like',methods=['POST'])
+@company.route('/branch/like',methods=['POST'])
 def like_branch():
     if request.headers.get('Authorization'):
         token_index = True
@@ -144,7 +144,7 @@ def like_branch():
 
         branchLike = BranchesLikes.query.filter_by(branch_id = request.json['branch_id'],user_id = payload['id']).first()
         if not branchLike:
-            branch_like = BranchesLikes(branch_id = request.json['coupon_id'],
+            branch_like = BranchesLikes(branch_id = request.json['branch_id'],
                                       user_id = payload['id'],
                                       date = request.json['date'])
 
