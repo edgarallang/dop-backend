@@ -136,3 +136,24 @@ def nearest_branches():
     
     return jsonify({'data': nearest.data})
 
+@coupon.route('/branch/like',methods=['POST'])
+def like_branch():
+    if request.headers.get('Authorization'):
+        token_index = True
+        payload = parse_token(request, token_index)
+
+        branchLike = BranchesLikes.query.filter_by(branch_id = request.json['branch_id'],user_id = payload['id']).first()
+        if not branchLike:
+            branch_like = BranchesLikes(branch_id = request.json['coupon_id'],
+                                      user_id = payload['id'],
+                                      date = request.json['date'])
+
+            db.session.add(branch_like)
+            db.session.commit()
+            return jsonify({'message': 'El like se asigno con éxito'})
+        else:
+            db.session.delete(branchLike)
+            db.session.commit()
+            return jsonify({'message': 'El like se elimino con éxito'})
+    return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
+
