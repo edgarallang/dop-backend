@@ -24,8 +24,11 @@ def create_token(user):
     token = jwt.encode(payload, app.config['TOKEN_SECRET'])
     return token.decode('unicode_escape')
 
-def parse_token(req):
-    token = req.headers.get('Authorization').split()[1]
+def parse_token(req, token_index):
+    if token_index:
+        token = req.headers.get('Authorization').split()[0]
+    else:
+        token = req.headers.get('Authorization').split()[1]
     return jwt.decode(token, app.config['TOKEN_SECRET'])
 
 @company.route('/auth/signup', methods=['POST'])
