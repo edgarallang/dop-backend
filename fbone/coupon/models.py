@@ -69,7 +69,7 @@ class ClientsCoupon(db.Model):
     clients_coupon_id = Column(db.Integer, primary_key=True)
     user_id = Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
     coupon_id = Column(db.Integer, db.ForeignKey('coupons.coupon_id'), nullable=False)
-    folio = Column(db.String(STRING_LEN), nullable=False)
+    folio = Column(db.String(STRING_LEN))
     taken_date = Column(db.DateTime, nullable=False)
     latitude = Column(db.Numeric, nullable=False)
     longitude = Column(db.Numeric, nullable=False)
@@ -235,10 +235,6 @@ clients_coupon_schema = ClientsCouponSchema()
 user_join_exchanges_coupon_schema = UserJoinExchanges(many=True)
 
 coupons_likes_schema = CouponLike(many=True)
-
-
-def baseN(num,b,numerals="0123456789abcdefghijklmnopqrstuvwxyz"):
-    return ((num == 0) and numerals[0]) or (baseN(num // b, b, numerals).lstrip(numerals[0]) + numerals[num % b])
 
 
 
