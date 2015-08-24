@@ -66,6 +66,7 @@ def take_coupon():
         db.session.commit()
         folio = request.json['branch_id'] + user_take.clients_coupon_id + request.json['taken_date']
         user_take.folio = folio
+        import pdb; pdb.set_trace()
         db.session.commit()
 
         return jsonify({'message': 'El cupon se tomó con éxito','folio': folio})
