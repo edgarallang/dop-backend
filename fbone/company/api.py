@@ -24,8 +24,11 @@ def create_token(user):
     token = jwt.encode(payload, app.config['TOKEN_SECRET'])
     return token.decode('unicode_escape')
 
-def parse_token(req):
-    token = req.headers.get('Authorization').split()[1]
+def parse_token(req, token_index):
+    if token_index:
+        token = req.headers.get('Authorization').split()[0]
+    else:
+        token = req.headers.get('Authorization').split()[1]
     return jwt.decode(token, app.config['TOKEN_SECRET'])
 
 @company.route('/auth/signup', methods=['POST'])
@@ -135,4 +138,25 @@ def nearest_branches():
     nearest = branches_location_schema.dump(nearestBranches)
     
     return jsonify({'data': nearest.data})
+
+@company.route('/branch/like',methods=['POST'])
+def like_branch():
+    if request.headers.get('Authorization'):
+        token_index = True
+        payload = parse_token(request, token_index)
+
+        branchLike = BranchesLikes.query.filter_by(branch_id = request.json['branch_id'],user_id = payload['id']).first()
+        if not branchLike:
+            branch_like = BranchesLikes(branch_id = request.json['branch_id'],
+                                      user_id = payload['id'],
+                                      date = request.json['date'])
+
+            db.session.add(branch_like)
+            db.session.commit()
+            return jsonify({'message': 'El like se asigno con éxito'})
+        else:
+            db.session.delete(branchLike)
+            db.session.commit()
+            return jsonify({'message': 'El like se elimino con éxito'})
+    return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 

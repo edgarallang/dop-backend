@@ -73,6 +73,20 @@ class Category(db.Model):
     branches_category = db.relationship("Branch", uselist=False, backref="branches")
 
 # =====================================================================
+
+# Branches likes 
+
+class BranchesLikes(db.Model):
+    __tablename__ = 'branches_likes'
+    branch_like_id = Column(db.Integer, primary_key=True)
+    branch_id = Column(db.Integer, db.ForeignKey('branches.branch_id'), nullable=False)
+    user_id = Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
+    date = Column(db.DateTime, nullable=False)
+
+    branches_likes = db.relationship("Branch", uselist=False, backref="branches_likes")
+    branches_user = db.relationship('User', uselist=False, backref='branches_likes')
+# =====================================================================
+
 # Branches user is the person geting into the system from that specific branch
 
 class BranchUser(db.Model):
