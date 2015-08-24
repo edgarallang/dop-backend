@@ -146,7 +146,7 @@ def nearest_branches():
     
     return jsonify({'data': nearest.data})
 
-@company.route('/branch/like',methods=['POST'])
+@company.route('/branch/follow',methods=['POST'])
 def like_branch():
     if request.headers.get('Authorization'):
         token_index = True

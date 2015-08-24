@@ -55,17 +55,18 @@ def take_coupon():
     if request.headers.get('Authorization'):
         token_index = True
         payload = parse_token(request, token_index)
-        mangled = (request.json['coupon_id']*1679979167)%(36**6)
-        folio = baseN(mangled, 36)
-
         user_take = ClientsCoupon(user_id = payload['id'],
                                   coupon_id = request.json['coupon_id'],
-                                  folio = folio,
+                                  folio = '',
                                   taken_date = request.json['taken_date'],
                                   latitude= request.json['latitude'],
                                   longitude = request.json['longitude'])
 
+
         db.session.add(user_take)
+        db.session.commit()
+        folio = '%d%s%d' % (request.json['branch_id'], request.json['folio_date'], user_take.clients_coupon_id)
+        user_take.folio = folio
         db.session.commit()
 
         return jsonify({'message': 'El cupon se tomó con éxito','folio': folio})
