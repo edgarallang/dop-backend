@@ -57,6 +57,7 @@ def take_coupon():
         payload = parse_token(request, token_index)
         user_take = ClientsCoupon(user_id = payload['id'],
                                   coupon_id = request.json['coupon_id'],
+                                  folio = '',
                                   taken_date = request.json['taken_date'],
                                   latitude= request.json['latitude'],
                                   longitude = request.json['longitude'])
