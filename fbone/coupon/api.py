@@ -65,7 +65,6 @@ def take_coupon():
 
         db.session.add(user_take)
         db.session.commit()
-        import pdb; pdb.set_trace()
         folio = '%d%s%d' % (request.json['branch_id'], request.json['folio_date'], user_take.clients_coupon_id)
         user_take.folio = folio
         db.session.commit()
