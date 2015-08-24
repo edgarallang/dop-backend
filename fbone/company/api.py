@@ -31,6 +31,13 @@ def parse_token(req, token_index):
         token = req.headers.get('Authorization').split()[1]
     return jwt.decode(token, app.config['TOKEN_SECRET'])
 
+def parse_token(req, token_index):
+    if token_index:
+        token = req.headers.get('Authorization').split()[0]
+    else:
+        token = req.headers.get('Authorization').split()[1]
+    return jwt.decode(token, app.config['TOKEN_SECRET'])
+
 @company.route('/auth/signup', methods=['POST'])
 def signup():
     branchUser = BranchUser(email = request.json['email'],
@@ -139,7 +146,7 @@ def nearest_branches():
     
     return jsonify({'data': nearest.data})
 
-@company.route('/branch/like',methods=['POST'])
+@company.route('/branch/follow',methods=['POST'])
 def like_branch():
     if request.headers.get('Authorization'):
         token_index = True
