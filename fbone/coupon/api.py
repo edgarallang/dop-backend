@@ -250,7 +250,7 @@ def get_used_coupons_by_coupon():
         payload = parse_token(request, token_index)
         user_id = User.query.get(payload['id']).user_id
 
-        users = db.engine.execute('SELECT coupons.branch_id,coupons.coupon_id,branches_design.logo,coupons.name,clients_coupon.clients_coupon_id,clients_coupon.latitude,clients_coupon.longitude \
+        query = 'SELECT coupons.branch_id,coupons.coupon_id,branches_design.logo,coupons.name,clients_coupon.clients_coupon_id,clients_coupon.latitude,clients_coupon.longitude \
                                     , users.names, users.surnames, users.user_id, users_image.main_image, branches.name AS branch_name, \
                                     (SELECT COUNT(*)  FROM clients_coupon_likes WHERE clients_coupon.clients_coupon_id = clients_coupon_likes.clients_coupon_id) AS total_likes, \
                                     (SELECT COUNT(*)  FROM clients_coupon_likes WHERE clients_coupon_likes.user_id = %d AND clients_coupon_likes.clients_coupon_id = clients_coupon.clients_coupon_id) AS user_like \
@@ -260,7 +260,9 @@ def get_used_coupons_by_coupon():
                                     INNER JOIN coupons ON clients_coupon.coupon_id = coupons.coupon_id WHERE coupons.coupon_id = %d\
                                     INNER JOIN branches ON coupons.branch_id = branches.branch_id  \
                                     INNER JOIN branches_design ON coupons.branch_id = branches_design.branch_id \
-                                    ORDER BY taken_date DESC' % (payload['id'],11))
+                                    ORDER BY taken_date DESC' % (payload['id'],11)
+
+        users = db.engine.execute(query)
 
         users_list = user_join_exchanges_coupon_schema.dump(users)
 
