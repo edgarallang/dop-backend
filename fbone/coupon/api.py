@@ -257,7 +257,7 @@ def get_used_coupons_by_coupon():
                                     FROM clients_coupon \
                                     INNER JOIN users ON clients_coupon.user_id=users.user_id  \
                                     INNER JOIN users_image ON users.user_id = users_image.user_id \
-                                    INNER JOIN coupons ON clients_coupon.coupon_id = coupons.coupon_id WHERE coupons.coupon_id = %d\
+                                    INNER JOIN coupons ON clients_coupon.coupon_id = coupons.coupon_id AND coupons.coupon_id = %d\
                                     INNER JOIN branches ON coupons.branch_id = branches.branch_id  \
                                     INNER JOIN branches_design ON coupons.branch_id = branches_design.branch_id \
                                     ORDER BY taken_date DESC' % (payload['id'],11)
