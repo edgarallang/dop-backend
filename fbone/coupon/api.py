@@ -256,8 +256,6 @@ def get_used_coupons_by_coupon():
                                 INNER JOIN branches ON coupons.branch_id = branches.branch_id  \
                                 INNER JOIN branches_design ON coupons.branch_id = branches_design.branch_id \
                                 ORDER BY taken_date DESC'
-    users = db.engine.execute(query)
-    users_list = user_join_exchanges_coupon_schema.dump(users)
 
     return jsonify({'message': 'Oops! algo salió mal'})
 
