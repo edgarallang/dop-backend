@@ -260,7 +260,7 @@ def get_used_coupons_by_coupon():
                                     INNER JOIN coupons ON clients_coupon.coupon_id = coupons.coupon_id AND coupons.coupon_id = %d\
                                     INNER JOIN branches ON coupons.branch_id = branches.branch_id  \
                                     INNER JOIN branches_design ON coupons.branch_id = branches_design.branch_id \
-                                    ORDER BY taken_date DESC' % (payload['id'],11)
+                                    ORDER BY taken_date DESC' % (user_id,11)
 
         users = db.engine.execute(query)
 
