@@ -243,18 +243,17 @@ def get_used_coupons_by_user_likes():
 
     return jsonify({'message': 'Oops! algo salió mal'})
 
-@coupon.route('/used/get/bycoupon', methods=['POST'])
+@coupon.route('/used/get/bycoupon', methods=['GET'])
 def get_used_coupons_by_coupon():
-    if request.headers.get('Authorization'):
-        token_index = True
-        payload = parse_token(request, token_index)
+    token_index = True
+    payload = parse_token(request, token_index)
 
 
-        #users = db.engine.execute(query)
 
-        #users_list = user_join_exchanges_coupon_schema.dump(users)
+    #users = db.engine.execute(query)
 
-        return jsonify({'data':' users_list.data'})
+    #users_list = user_join_exchanges_coupon_schema.dump(users)
+
 
     return jsonify({'message': 'Oops! algo salió mal'})
 
