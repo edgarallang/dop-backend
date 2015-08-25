@@ -245,7 +245,6 @@ def get_used_coupons_by_user_likes():
 
 @coupon.route('/used/get/bycoupon', methods=['POST'])
 def get_used_coupons_by_coupon():
-
     return jsonify({'message': 'Oops! algo salió mal'})
 
 @coupon.route('/used/like',methods=['POST'])
