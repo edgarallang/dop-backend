@@ -248,7 +248,7 @@ def get_used_coupons_by_coupon():
     if request.headers.get('Authorization'):
         token_index = True
         payload = parse_token(request, token_index)
-        coupon_id = 11
+        coupon_id = "11"
         query = 'SELECT coupons.branch_id,coupons.coupon_id,branches_design.logo,coupons.name,clients_coupon.clients_coupon_id,clients_coupon.latitude,clients_coupon.longitude \
                                     , users.names, users.surnames, users.user_id, users_image.main_image, branches.name AS branch_name, \
                                     (SELECT COUNT(*)  FROM clients_coupon_likes WHERE clients_coupon.clients_coupon_id = clients_coupon_likes.clients_coupon_id) AS total_likes, \
