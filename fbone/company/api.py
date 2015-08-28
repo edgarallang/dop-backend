@@ -118,7 +118,7 @@ def nearest_branches():
     filterArray = request.json['filterArray']
 
     if filterArray:
-        for val in filterArray
+        for val in filterArray:
             filterQuery = prefixFilterQuery + `val` + ' '
 
     query = 'SELECT branch_location_id, branch_id, state, city, latitude, longitude, distance, address, name \
