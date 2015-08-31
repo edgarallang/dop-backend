@@ -121,10 +121,11 @@ def get_all_coupon_by_branch(branch_id):
                     'nxn': nxnlist.data })
     
 
-@coupon.route('/all/get/user/<int:offset>', methods = ['GET'])
-def get_all_coupon_user(offset):
+@coupon.route('/all/get/user', methods = ['GET'])
+def get_all_coupon_user():
     #user_id = request.args.get('user_id')
     token_index = True
+    offset = request.args.get('offset')
     payload = parse_token(request, token_index)
 
     list_coupon = db.engine.execute('SELECT *, \
@@ -136,7 +137,7 @@ def get_all_coupon_user(offset):
                                     coupons.branch_id = branches_design.branch_id \
                                     INNER JOIN branches ON coupons.branch_id = branches.branch_id \
                                     INNER JOIN branches_location on coupons.branch_id = branches_location.branch_id \
-                                    WHERE deleted = false ORDER BY start_date DESC LIMIT 1 OFFSET 3' % payload['id'])
+                                    WHERE deleted = false ORDER BY start_date DESC LIMIT 1 OFFSET %d' % payload['id'],offset)
 
 
 
