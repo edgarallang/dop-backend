@@ -113,6 +113,12 @@ def nearest_branches():
     latitude = request.args.get('latitude')
     longitude = request.args.get('longitude')
     radio = request.args.get('radio')
+    filterQuery = ''
+    prefixFilterQuery = 'AND branches_subcategory.subcategory_id = ANY(ARRAY'
+    filterArray = request.json['filterArray']
+
+    if filterArray:
+        filterQuery = prefixFilterQuery + `filterArray` + ')'
 
     query = 'SELECT branch_location_id, branch_id, state, city, latitude, longitude, distance, address, name \
                 FROM (SELECT z.branch_location_id, z.branch_id, z.state, z.city, z.address, \
@@ -126,6 +132,7 @@ def nearest_branches():
                              * SIN(RADIANS(z.latitude)))) AS distance \
                 FROM branches_location AS z \
                 JOIN branches on z.branch_id = branches.branch_id \
+                JOIN branches_subcategory on z.branch_id = branches_subcategory.branch_id \
                 JOIN (   /* these are the query parameters */ \
                     SELECT  '+ latitude +'  AS latpoint,  '+ longitude +' AS longpoint, \
                             '+ radio +' AS radius,      111.045 AS distance_unit \
@@ -136,6 +143,7 @@ def nearest_branches():
                 AND z.longitude \
                  BETWEEN p.longpoint - (p.radius / (p.distance_unit * COS(RADIANS(p.latpoint)))) \
                      AND p.longpoint + (p.radius / (p.distance_unit * COS(RADIANS(p.latpoint)))) \
+                ' + filterQuery + ' \
                 ) AS d \
                 WHERE distance <= radius \
                 ORDER BY distance \
