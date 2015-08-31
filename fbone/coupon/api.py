@@ -121,7 +121,7 @@ def get_all_coupon_by_branch(branch_id):
                     'nxn': nxnlist.data })
     
 
-@coupon.route('/all/get/user', methods = ['GET'])
+@coupon.route('/all/get/user/', methods = ['GET'])
 def get_all_coupon_user():
     #user_id = request.args.get('user_id')
     token_index = True
