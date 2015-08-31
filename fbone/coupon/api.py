@@ -125,7 +125,7 @@ def get_all_coupon_by_branch(branch_id):
 def get_all_coupon_user():
     #user_id = request.args.get('user_id')
     token_index = True
-    offset = 3
+    offset = request.args.get('offset')
     payload = parse_token(request, token_index)
 
     list_coupon = db.engine.execute('SELECT *, \
