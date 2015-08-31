@@ -114,12 +114,11 @@ def nearest_branches():
     longitude = request.args.get('longitude')
     radio = request.args.get('radio')
     filterQuery = ''
-    prefixFilterQuery = 'AND branches_subcategory.subcategory_id = '
+    prefixFilterQuery = 'AND branches_subcategory.subcategory_id = ANY(ARRAY'
     filterArray = request.json['filterArray']
 
     if filterArray:
-        for val in filterArray:
-            filterQuery = prefixFilterQuery + `val` + ' '
+        filterQuery = prefixFilterQuery + `filterArray` + ')'
 
     query = 'SELECT branch_location_id, branch_id, state, city, latitude, longitude, distance, address, name \
                 FROM (SELECT z.branch_location_id, z.branch_id, z.state, z.city, z.address, \
