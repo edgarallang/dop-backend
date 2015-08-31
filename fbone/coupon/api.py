@@ -120,7 +120,6 @@ def get_all_coupon_by_branch(branch_id):
                     'discount': discountlist.data,
                     'nxn': nxnlist.data })
     
-
 @coupon.route('/all/get/user/', methods = ['GET'])
 def get_all_coupon_user():
     #user_id = request.args.get('user_id')
@@ -138,6 +137,30 @@ def get_all_coupon_user():
                                     INNER JOIN branches ON coupons.branch_id = branches.branch_id \
                                     INNER JOIN branches_location on coupons.branch_id = branches_location.branch_id \
                                     WHERE deleted = false ORDER BY start_date DESC LIMIT 1 OFFSET %s' % (payload['id'],offset))
+
+
+
+    selected_list_coupon = coupons_logo_schema.dump(list_coupon)
+    return jsonify({'data': selected_list_coupon.data})
+
+@coupon.route('/all/get/user/offset', methods = ['GET'])
+def get_all_coupon_user():
+    #user_id = request.args.get('user_id')
+    token_index = True
+    offset = request.args.get('offset')
+    coupon_id = request.args.get('coupon_id')
+    payload = parse_token(request, token_index)
+
+    list_coupon = db.engine.execute('SELECT *, \
+                                    (SELECT COUNT(*)  FROM coupons_likes \
+                                        WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes, \
+                                    (SELECT COUNT(*)  FROM coupons_likes \
+                                        WHERE coupons_likes.user_id = %d AND coupons.coupon_id = coupons_likes.coupon_id) AS user_like \
+                                    FROM coupons INNER JOIN branches_design ON \
+                                    coupons.branch_id = branches_design.branch_id \
+                                    INNER JOIN branches ON coupons.branch_id = branches.branch_id \
+                                    INNER JOIN branches_location on coupons.branch_id = branches_location.branch_id \
+                                    WHERE deleted = false AND coupons.coupon_id < %s ORDER BY start_date DESC LIMIT 1 OFFSET %s' % (payload['id'],coupon_id,offset))
 
 
 
