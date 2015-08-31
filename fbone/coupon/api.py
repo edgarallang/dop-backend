@@ -124,7 +124,7 @@ def get_all_coupon_by_branch(branch_id):
 def get_all_coupon_user():
     #user_id = request.args.get('user_id')
     token_index = True
-    limit = "6"
+    limit = 6
     payload = parse_token(request, token_index)
 
     list_coupon = db.engine.execute('SELECT *, \
@@ -136,7 +136,7 @@ def get_all_coupon_user():
                                     coupons.branch_id = branches_design.branch_id \
                                     INNER JOIN branches ON coupons.branch_id = branches.branch_id \
                                     INNER JOIN branches_location on coupons.branch_id = branches_location.branch_id \
-                                    WHERE deleted = false ORDER BY coupons.couopn_id DESC LIMIT %s OFFSET 0' % (payload['id'],limit))
+                                    WHERE deleted = false ORDER BY coupons.couopn_id DESC LIMIT %d OFFSET 0' % (payload['id'],limit))
 
 
 
