@@ -143,8 +143,8 @@ def get_all_coupon_user():
     selected_list_coupon = coupons_logo_schema.dump(list_coupon)
     return jsonify({'data': selected_list_coupon.data})
 
-@coupon.route('/all/get/user/offset', methods = ['GET'])
-def get_all_coupon_user():
+@coupon.route('/all/get/user/offset/', methods = ['GET'])
+def get_all_coupon_user_offset():
     #user_id = request.args.get('user_id')
     token_index = True
     offset = request.args.get('offset')
