@@ -93,7 +93,7 @@ class BranchUser(db.Model):
     __tablename__ = 'branches_user'
     branches_user_id = Column(db.Integer, primary_key=True)
     branch_id = Column(db.Integer, db.ForeignKey('branches.branch_id'), nullable=False)
-    name = Column(db.String(STRING_LEN), nullable=False, unique=True)
+    name = Column(db.String(STRING_LEN), nullable=False)
     email = Column(db.String(STRING_LEN), nullable=False, unique=True)
     password = Column('password', db.String(STRING_LEN), nullable=False)
 

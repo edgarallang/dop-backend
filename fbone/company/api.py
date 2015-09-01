@@ -113,6 +113,7 @@ def nearest_branches():
     latitude = request.args.get('latitude')
     longitude = request.args.get('longitude')
     radio = request.args.get('radio')
+    
     filterQuery = ''
     prefixFilterQuery = 'AND branches_subcategory.subcategory_id = ANY(ARRAY'
     filterArray = request.json['filterArray']
@@ -146,8 +147,7 @@ def nearest_branches():
                 ' + filterQuery + ' \
                 ) AS d \
                 WHERE distance <= radius \
-                ORDER BY distance \
-                LIMIT 15'
+                ORDER BY distance'
 
     nearestBranches = db.engine.execute(query)
     nearest = branches_location_schema.dump(nearestBranches)
