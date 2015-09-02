@@ -112,8 +112,8 @@ class Friends(db.Model,UserMixin):
     friends_id = Column(db.Integer, primary_key=True)
     user_one_id = Column(db.Integer, nullable=False)
     user_two_id = Column(db.Integer, nullable=False)
-    status = Column(db.Integer, nullable=False)
-    action_user_id = Column(db.Integer, nullable=False)   
+    operation_id = Column(db.Integer, nullable=False)
+    launcher_user_id = Column(db.Integer, nullable=False)   
 
 # Serializer Schemas
 
