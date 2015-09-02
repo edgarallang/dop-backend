@@ -98,6 +98,7 @@ def select_branch_profile(branchId):
 @company.route('/me', methods = ['POST'])    
 def select_branch_user():
     selectedBranchUser = BranchUser.query.get(request.json['branches_user_id'])
+    import pdb; pdb.set_trace()
     branchUser = branch_user_schema.dump(selectedBranchUser)
 
     return jsonify({'data': branchUser.data})
