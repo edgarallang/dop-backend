@@ -69,8 +69,6 @@ class Category(db.Model):
     category_id = Column(db.Integer, primary_key=True)
     name = Column(db.String(STRING_LEN), nullable=False, unique=True)
 
-    branches_category = db.relationship("Branch", uselist=False, backref="branches")
-
 # =====================================================================
 
 # Branches likes 
@@ -160,7 +158,6 @@ class BranchesProfile(Schema):
                   'address',
                   'distance',
                   'name',
-                  'category_id',
                   'company_id')
 
 class BranchesLocation(Schema):
