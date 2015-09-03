@@ -43,12 +43,12 @@ def index():
 
 def get_friends_by_id(userId):
     friends_query = 'SELECT COUNT(*) as total FROM friends \
-                 INNER JOIN users ON (friends.user_one_id=user_id  AND friends.user_one_id!=%d) \
-                 OR (friends.user_two_id=user_id  AND friends.user_two_id!=%d) \
-                 INNER JOIN users_image ON (friends.user_one_id = users_image.user_id AND friends.user_one_id!=%d)\
-                 OR (friends.user_two_id = users_image.user_id AND friends.user_two_id!=%d) \
+                 INNER JOIN users ON (friends.user_one_id = user_id  AND friends.user_one_id != %d) \
+                 OR (friends.user_two_id = user_id  AND friends.user_two_id != %d) \
+                 INNER JOIN users_image ON (friends.user_one_id = users_image.user_id AND friends.user_one_id != %d)\
+                 OR (friends.user_two_id = users_image.user_id AND friends.user_two_id != %d) \
                  WHERE (user_one_id = %d OR user_two_id = %d)\
-                 AND status = 1' % (userId, userId, userId, userId, userId, userId)
+                 AND operation_id = 1' % (userId, userId, userId, userId, userId, userId)
     result = db.engine.execute(friends_query)
     total_friends = friends_count_schema.dump(result).data
 
@@ -151,7 +151,7 @@ def google_login():
 
     return jsonify(token=token)
 
-@user.route('/friends/get', methods=['GET'])
+@user.route('/friends/get', methods = ['GET'])
 def get_friends():
     if request.headers.get('Authorization'):
         payload = parse_token(request, True)
@@ -159,12 +159,12 @@ def get_friends():
         user_id = User.query.get(payload['id']).user_id
         
         query = 'SELECT * FROM friends \
-                 INNER JOIN users ON (friends.user_one_id=user_id  AND friends.user_one_id!=%d) \
+                 INNER JOIN users ON (friends.user_one_id = user_id  AND friends.user_one_id != %d) \
                  OR (friends.user_two_id=user_id  AND friends.user_two_id!=%d) \
-                 INNER JOIN users_image ON (friends.user_one_id = users_image.user_id AND friends.user_one_id!=%d)\
-                 OR (friends.user_two_id = users_image.user_id AND friends.user_two_id!=%d) \
+                 INNER JOIN users_image ON (friends.user_one_id = users_image.user_id AND friends.user_one_id != %d)\
+                 OR (friends.user_two_id = users_image.user_id AND friends.user_two_id != %d) \
                  WHERE (user_one_id = %d OR user_two_id = %d)\
-                 AND status = 1' % (user_id, user_id, user_id, user_id, user_id, user_id)
+                 AND operation_id = 1' % (user_id, user_id, user_id, user_id, user_id, user_id)
 
         friends = db.engine.execute(query)
         friends_list = user_join_friends.dump(friends)
@@ -178,10 +178,10 @@ def add_friend():
 
         user_id = User.query.get(payload['id']).user_id
 
-        friendsRelationship  = Friends(user_one_id=user_id,
-                                       user_two_id=request.json['user_two_id'],
-                                       status=0,
-                                       action_user_id=user_id)
+        friendsRelationship  = Friends(user_one_id = user_id,
+                                       user_two_id = request.json['user_two_id'],
+                                       operation_id = 0,
+                                       launcher_user_id = user_id)
 
         db.session.add(friendsRelationship)
         db.session.commit()
@@ -199,8 +199,8 @@ def accept_friend():
 
         friendsRelationship = Friends.query.filter_by(friends_id=request.json['friends_id']).first()
 
-        friendsRelationship.status = 1
-        friendsRelationship.action_user_id = user_id
+        friendsRelationship.operation_id = 1
+        friendsRelationship.launcher_user_id = user_id
 
         db.session.commit()
         
@@ -217,8 +217,8 @@ def decline_friend():
 
         friendsRelationship = Friends.query.filter_by(friends_id=request.json['friends_id']).first()
 
-        friendsRelationship.status = 2
-        friendsRelationship.action_user_id = user_id
+        friendsRelationship.operation_id = 2
+        friendsRelationship.launcher_user_id = user_id
 
         db.session.commit()
 
@@ -235,8 +235,8 @@ def block_friend():
 
         friendsRelationship = Friends.query.filter_by(friends_id=request.json['friends_id']).first()
 
-        friendsRelationship.status = 3
-        friendsRelationship.action_user_id = user_id
+        friendsRelationship.operation_id = 3
+        friendsRelationship.launcher_user_id = user_id
 
         db.session.commit()
 

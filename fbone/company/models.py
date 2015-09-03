@@ -24,7 +24,6 @@ class Branch(db.Model):
     branch_id = Column(db.Integer, primary_key=True)
     company_id = Column(db.Integer, db.ForeignKey('companies.company_id'), nullable = False)
     name = Column(db.String(STRING_LEN), nullable=False, unique=True)
-    category_id = Column(db.Integer, db.ForeignKey('categories.category_id'), nullable = False)
 
     # branches_user_id = Column(db.Integer, db.ForeignKey("branches_user.branches_user_id"))
     branches_design = db.relationship("BranchDesign", uselist=False, backref="branches")
@@ -69,8 +68,6 @@ class Category(db.Model):
     __tablename__ = 'categories'
     category_id = Column(db.Integer, primary_key=True)
     name = Column(db.String(STRING_LEN), nullable=False, unique=True)
-
-    branches_category = db.relationship("Branch", uselist=False, backref="branches")
 
 # =====================================================================
 
@@ -135,8 +132,7 @@ class BranchSchema(Schema):
     class Meta:
         fields = ('branch_id',
                   'company_id',
-                  'name',
-                  'category_id')
+                  'name')
 
 def must_not_be_blank(data):
     if not data:
@@ -162,7 +158,6 @@ class BranchesProfile(Schema):
                   'address',
                   'distance',
                   'name',
-                  'category_id',
                   'company_id')
 
 class BranchesLocation(Schema):
