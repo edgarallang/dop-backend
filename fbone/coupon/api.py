@@ -476,7 +476,7 @@ def search_all_coupon_user_offset():
     offset = request.json['offset']
     coupon_id = request.json['coupon_id']
     #text = request.json['text']
-    text = "Co"
+    text = 'Co'
     payload = parse_token(request, token_index)
 
     query = "SELECT *, \
@@ -488,7 +488,7 @@ def search_all_coupon_user_offset():
             coupons.branch_id = branches_design.branch_id \
             INNER JOIN branches ON coupons.branch_id = branches.branch_id \
             INNER JOIN branches_location on coupons.branch_id = branches_location.branch_id \
-            WHERE deleted = false AND coupons.name ILIKE '%s' ORDER BY start_date DESC" % (payload['id'],"%"+text+"%")
+            WHERE deleted = false AND coupons.name ILIKE '%s' ORDER BY start_date DESC" % (payload['id'],'%'+text+'%')
 
     list_coupon = db.engine.execute(query)
 
