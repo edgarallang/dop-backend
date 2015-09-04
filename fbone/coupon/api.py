@@ -469,7 +469,7 @@ def create_nxn(request):
     return customizationSuccess
 
 #SEARCH API
-@coupon.route('/search/get/user/offset/', methods = ['POST'])
+@coupon.route('/search', methods = ['POST'])
 def search_all_coupon_user_offset():
     #user_id = request.args.get('user_id')
     token_index = True
