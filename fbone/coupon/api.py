@@ -475,8 +475,8 @@ def search_all_coupon_user_offset():
     token_index = True
     offset = request.json['offset']
     coupon_id = request.json['coupon_id']
-    #text = request.json['text']
-    text = 'Co'
+    text = request.json['text']
+    
     payload = parse_token(request, token_index)
 
     list_coupon = "SELECT *, \
@@ -491,7 +491,7 @@ def search_all_coupon_user_offset():
             WHERE deleted = false AND coupons.name ILIKE %s" % (payload['id'],"%" + "sta" + "%",)
 
     #list_coupon = db.engine.execute(query)
-    list_coupon = db.engine.execute("SELECT * FROM branches WHERE name ILIKE %s LIMIT 1", ("%" + "sta" + "%",))
+    list_coupon = db.engine.execute("SELECT * FROM coupons WHERE name ILIKE %s ", ("%" + text + "%",))
 
     selected_list_coupon = coupons_logo_schema.dump(list_coupon)
     return jsonify({'data': selected_list_coupon.data})
