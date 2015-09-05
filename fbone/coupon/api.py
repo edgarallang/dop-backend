@@ -491,7 +491,7 @@ def search_all_coupon_user_offset():
             WHERE deleted = false AND coupons.name ILIKE '%s' ORDER BY start_date DESC" % (payload['id'],"%"+text+"%")
 
     #list_coupon = db.engine.execute(query)
-
+    db.engine.execute("SELECT * FROM branches WHERE name ILIKE %s LIMIT 1", ("%" + "sta" + "%",))
 
     #selected_list_coupon = coupons_logo_schema.dump(list_coupon)
     #selected_list_coupon.data
