@@ -479,7 +479,7 @@ def search_all_coupon_user_offset():
     text = 'Co'
     payload = parse_token(request, token_index)
 
-    list_coupon = db.engine.execute("SELECT *, \
+    list_coupon = "SELECT *, \
             (SELECT COUNT(*)  FROM coupons_likes \
             WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes, \
             (SELECT COUNT(*)  FROM coupons_likes \
@@ -488,10 +488,10 @@ def search_all_coupon_user_offset():
             coupons.branch_id = branches_design.branch_id \
             INNER JOIN branches ON coupons.branch_id = branches.branch_id \
             INNER JOIN branches_location on coupons.branch_id = branches_location.branch_id \
-            WHERE deleted = false AND coupons.name ILIKE %s" % (payload['id'],"%" + "sta" + "%",))
+            WHERE deleted = false AND coupons.name ILIKE %s" % (payload['id'],"%" + "sta" + "%",)
 
     #list_coupon = db.engine.execute(query)
-    #list_coupon = db.engine.execute("SELECT * FROM branches WHERE name ILIKE %s LIMIT 1", ("%" + "sta" + "%",))
+    list_coupon = db.engine.execute("SELECT * FROM branches WHERE name ILIKE %s LIMIT 1", ("%" + "sta" + "%",))
 
     selected_list_coupon = coupons_logo_schema.dump(list_coupon)
     return jsonify({'data': selected_list_coupon.data})
