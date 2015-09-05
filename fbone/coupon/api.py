@@ -488,10 +488,11 @@ def search_all_coupon_user_offset():
             coupons.branch_id = branches_design.branch_id \
             INNER JOIN branches ON coupons.branch_id = branches.branch_id \
             INNER JOIN branches_location on coupons.branch_id = branches_location.branch_id \
-            WHERE deleted = false AND coupons.name ILIKE %s ORDER BY start_date DESC" % (payload['id'],"%"+text+"%")
+            WHERE deleted = false AND coupons.name ILIKE '%s' ORDER BY start_date DESC" % (payload['id'],"%"+text+"%")
 
     list_coupon = db.engine.execute(query)
 
 
-    selected_list_coupon = coupons_logo_schema.dump(list_coupon)
-    return jsonify({'data': selected_list_coupon.data})
+    #selected_list_coupon = coupons_logo_schema.dump(list_coupon)
+    #selected_list_coupon.data
+    return jsonify({'data': 'hola'})
