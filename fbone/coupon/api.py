@@ -490,7 +490,7 @@ def search_all_coupon_user_offset():
             INNER JOIN branches_location on coupons.branch_id = branches_location.branch_id \
             WHERE deleted = false AND coupons.name ILIKE '%s' ORDER BY start_date DESC" % (payload['id'],"%"+text+"%")
 
-    list_coupon = db.engine.execute(query)
+    #list_coupon = db.engine.execute(query)
 
 
     #selected_list_coupon = coupons_logo_schema.dump(list_coupon)
