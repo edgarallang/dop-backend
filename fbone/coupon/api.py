@@ -488,7 +488,7 @@ def search_all_coupon_user_offset():
             coupons.branch_id = branches_design.branch_id \
             INNER JOIN branches ON coupons.branch_id = branches.branch_id \
             INNER JOIN branches_location on coupons.branch_id = branches_location.branch_id \
-            WHERE deleted = false AND coupons.name ILIKE '%s' ORDER BY start_date DESC" , (payload['id'],"%" + "sta" + "%",))
+            WHERE deleted = false AND coupons.name ILIKE %s ORDER BY start_date DESC" , (payload['id'],"%" + "sta" + "%",))
 
     #list_coupon = db.engine.execute(query)
     #list_coupon = db.engine.execute("SELECT * FROM branches WHERE name ILIKE %s LIMIT 1", ("%" + "sta" + "%",))
