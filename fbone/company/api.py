@@ -175,3 +175,17 @@ def like_branch():
             return jsonify({'message': 'El like se elimino con éxito'})
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
+#SEARCH API
+@coupon.route('/branch/search', methods = ['GET'])
+def search_branch():
+    #user_id = request.args.get('user_id')
+    token_index = True
+    #text = request.json['text']
+    
+    #payload = parse_token(request, token_index)
+    #list_coupon = db.engine.execute(query)
+    branches = db.engine.execute("SELECT * FROM branches WHERE name ILIKE %s ", ("%" + text + "%",))
+
+    selected_list_branch = branches_location_schema.dump(branches)
+    return jsonify({'data': selected_list_coupon.data})
+
