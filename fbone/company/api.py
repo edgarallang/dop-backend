@@ -176,7 +176,7 @@ def like_branch():
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
 #SEARCH API
-@coupon.route('/branch/search', methods = ['GET'])
+@company.route('/branch/search', methods = ['GET'])
 def search_branch():
     #user_id = request.args.get('user_id')
     token_index = True
