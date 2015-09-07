@@ -184,8 +184,8 @@ def search_branch():
     
     #payload = parse_token(request, token_index)
     #list_coupon = db.engine.execute(query)
-    branches = db.engine.execute("SELECT * FROM branches WHERE name ILIKE %s ", ("%" + text + "%",))
+    branches = db.engine.execute("SELECT * FROM branches WHERE name ILIKE %s " % ("%" + text + "%"))
 
     selected_list_branch = branches_location_schema.dump(branches)
-    return jsonify({'data': selected_list_coupon.data})
+    return jsonify({'data': selected_list_branch.data})
 
