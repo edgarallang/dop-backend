@@ -186,6 +186,6 @@ def search_branch():
     #list_coupon = db.engine.execute(query)
     branches = db.engine.execute("SELECT * FROM branches WHERE name ILIKE %s " % ("%" + text + "%"))
 
-    selected_list_branch = branches_location_schema.dump(branches)
+    selected_list_branch = branch_profile_schema.dump(branches)
     return jsonify({'data': selected_list_branch.data})
 
