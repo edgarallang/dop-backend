@@ -176,7 +176,7 @@ def like_branch():
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
 #SEARCH API
-@company.route('/branch/search/', methods = ['GET'])
+@company.route('/branch/search/', methods = ['POST'])
 def search_branch():
     token_index = True
     text = request.json['text']
