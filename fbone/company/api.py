@@ -178,11 +178,10 @@ def like_branch():
 #SEARCH API
 @company.route('/branch/search/', methods = ['GET'])
 def search_branch():
-    text = request.args.get('text')
     token_index = True
-    #text = request.json['text']
-    latitude = request.args.get('lat')
-    longitude = request.args.get('long')
+    text = request.json['text']
+    latitude = request.json['latitude']
+    longitude = request.json['longitude']
 
     #payload = parse_token(request, token_index)
     #list_coupon = db.engine.execute(query)
