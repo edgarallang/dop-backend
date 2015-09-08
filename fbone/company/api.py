@@ -180,7 +180,7 @@ def like_branch():
 def search_branch():
     if request.headers.get('Authorization'):
         token_index = True
-        text = request.json['text']
+        text = request.args.get('text')
         latitude = request.args.get('latitude')
         longitude = request.args.get('longitude')
 
