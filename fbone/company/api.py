@@ -214,7 +214,6 @@ def search_branch():
             branches = db.engine.execute(query)
 
             selected_list_branch = branch_profile_schema.dump(branches)
-            selected_list_branch.data.distance = "34"
             return jsonify({'data': selected_list_branch.data})
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
