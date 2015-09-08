@@ -180,11 +180,41 @@ def like_branch():
 def search_branch():
     text = request.args.get('text')
     token_index = True
+    latitude = 0
+    longitude = 0
+    radio = 1000000
     #text = request.json['text']
     
     #payload = parse_token(request, token_index)
     #list_coupon = db.engine.execute(query)
-    branches = db.engine.execute("SELECT * FROM branches WHERE name ILIKE '%s' " % ('%%' + text + '%%' ))
+    query = 'SELECT branch_location_id, branch_id, state, city, latitude, longitude, distance, address, name \
+                FROM (SELECT z.branch_location_id, z.branch_id, z.state, z.city, z.address, \
+                    z.latitude, z.longitude, branches.name, \
+                    p.radius, \
+                    p.distance_unit \
+                             * DEGREES(ACOS(COS(RADIANS(p.latpoint)) \
+                             * COS(RADIANS(z.latitude)) \
+                             * COS(RADIANS(p.longpoint - z.longitude)) \
+                             + SIN(RADIANS(p.latpoint)) \
+                             * SIN(RADIANS(z.latitude)))) AS distance \
+                FROM branches_location AS z \
+                JOIN branches on z.branch_id = branches.branch_id \
+                JOIN branches_subcategory on z.branch_id = branches_subcategory.branch_id \
+                JOIN (   /* these are the query parameters */ \
+                    SELECT  '+ latitude +'  AS latpoint,  '+ longitude +' AS longpoint, \
+                            '+ radio +' AS radius,      111.045 AS distance_unit \
+                ) AS p ON 1=1 \
+                WHERE z.latitude \
+                 BETWEEN p.latpoint  - (p.radius / p.distance_unit) \
+                     AND p.latpoint  + (p.radius / p.distance_unit) \
+                AND z.longitude \
+                 BETWEEN p.longpoint - (p.radius / (p.distance_unit * COS(RADIANS(p.latpoint)))) \
+                     AND p.longpoint + (p.radius / (p.distance_unit * COS(RADIANS(p.latpoint)))) \
+                ' + filterQuery + ' \
+                ) AS d \
+                WHERE branches.name ILIKE "%s" \
+                ORDER BY distance' % ('%%' + text + '%%' )
+    branches = db.engine.execute(query)
 
     selected_list_branch = branch_profile_schema.dump(branches)
     return jsonify({'data': selected_list_branch.data})
