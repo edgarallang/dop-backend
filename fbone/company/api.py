@@ -184,7 +184,7 @@ def search_branch():
     
     #payload = parse_token(request, token_index)
     #list_coupon = db.engine.execute(query)
-    query = 'SELECT branch_location_id, branch_id, state, city, latitude, longitude, distance, address, name \
+    query = "SELECT branch_location_id, branch_id, state, city, latitude, longitude, distance, address, name \
                 FROM (SELECT z.branch_location_id, z.branch_id, z.state, z.city, z.address, \
                     z.latitude, z.longitude, branches.name, \
                     p.distance_unit \
@@ -200,9 +200,9 @@ def search_branch():
                     SELECT  0  AS latpoint,  0 AS longpoint, \
                                  111.045 AS distance_unit \
                 ) AS p ON 1=1 \
-                 WHERE branches.name ILIKE "%%st%%"\
+                 WHERE branches.name ILIKE '%%st%%'\
                 ) AS d \
-                ORDER BY distance'
+                ORDER BY distance"
     #branches = db.engine.execute("SELECT * FROM branches WHERE name ILIKE '%s' " % ('%%' + text + '%%' ))
     branches = db.engine.execute(query)
     selected_list_branch = branch_profile_schema.dump(branches)
