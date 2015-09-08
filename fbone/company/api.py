@@ -212,7 +212,7 @@ def search_branch():
                         ORDER BY distance" % ('%%'+ text +'%%' )
             #branches = db.engine.execute("SELECT * FROM branches WHERE name ILIKE '%s' " % ('%%' + text + '%%' ))
             branches = db.engine.execute(query)
-            branches.distance = 43
+            branches.distance = "43"
             selected_list_branch = branch_profile_schema.dump(branches)
 
             return jsonify({'data': selected_list_branch.data})
