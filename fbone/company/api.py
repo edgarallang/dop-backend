@@ -181,6 +181,8 @@ def search_branch():
     text = request.args.get('text')
     token_index = True
     #text = request.json['text']
+    latitude = request.args.get('lat')
+    longitude = request.args.get('long')
     
     #payload = parse_token(request, token_index)
     #list_coupon = db.engine.execute(query)
@@ -197,10 +199,10 @@ def search_branch():
                 JOIN branches on z.branch_id = branches.branch_id \
                 JOIN branches_subcategory on z.branch_id = branches_subcategory.branch_id \
                 JOIN (   /* these are the query parameters */ \
-                    SELECT  0  AS latpoint,  0 AS longpoint, \
+                    SELECT  "+latitude+"  AS latpoint,  "+longitude+" AS longpoint, \
                                  111.045 AS distance_unit \
                 ) AS p ON 1=1 \
-                 WHERE branches.name ILIKE '%s'\
+                WHERE branches.name ILIKE '%s' \
                 ) AS d \
                 ORDER BY distance" % ('%%'+ text +'%%' )
     #branches = db.engine.execute("SELECT * FROM branches WHERE name ILIKE '%s' " % ('%%' + text + '%%' ))
