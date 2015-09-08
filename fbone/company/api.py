@@ -176,13 +176,13 @@ def like_branch():
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
 #SEARCH API
-@company.route('/branch/search', methods = ['GET','POST'])
+@company.route('/branch/search/', methods = ['GET','POST'])
 def search_branch():
     if request.headers.get('Authorization'):
         token_index = True
         text = request.json['text']
-        latitude = request.json['latitude']
-        longitude = request.json['longitude']
+        latitude = request.args.get('latitude')
+        longitude = request.args.get('longitude')
 
         #payload = parse_token(request, token_index)
         #list_coupon = db.engine.execute(query)
