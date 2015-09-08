@@ -186,7 +186,7 @@ def search_branch():
 
     #payload = parse_token(request, token_index)
     #list_coupon = db.engine.execute(query)
-    if not latitude or longitude:
+    if not latitude or not longitude:
         branches = db.engine.execute("SELECT * FROM branches WHERE name ILIKE '%s' " % ('%%' + text + '%%' ))
         selected_list_branch = branch_profile_schema.dump(branches)
         return jsonify({'data': selected_list_branch.data})
