@@ -200,9 +200,9 @@ def search_branch():
                     SELECT  0  AS latpoint,  0 AS longpoint, \
                                  111.045 AS distance_unit \
                 ) AS p ON 1=1 \
-                 WHERE branches.name ILIKE '%%st%%'\
+                 WHERE branches.name ILIKE '%s'\
                 ) AS d \
-                ORDER BY distance"
+                ORDER BY distance" % ('%%'+ text +'%%' )
     #branches = db.engine.execute("SELECT * FROM branches WHERE name ILIKE '%s' " % ('%%' + text + '%%' ))
     branches = db.engine.execute(query)
     selected_list_branch = branch_profile_schema.dump(branches)
