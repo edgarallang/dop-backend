@@ -182,3 +182,46 @@ def like_branch():
             return jsonify({'message': 'El like se elimino con éxito'})
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
+#SEARCH API
+@company.route('/branch/search/', methods = ['GET','POST'])
+def search_branch():
+    if request.headers.get('Authorization'):
+        token_index = True
+        text = request.args.get('text')
+        latitude = request.args.get('latitude')
+        longitude = request.args.get('longitude')
+
+        #payload = parse_token(request, token_index)
+        #list_coupon = db.engine.execute(query)
+        if not latitude or not longitude or latitude == '0':
+            branches = db.engine.execute("SELECT * FROM branches WHERE name ILIKE '%s' " % ('%%' + text + '%%' ))
+            selected_list_branch = branch_profile_schema.dump(branches)
+            return jsonify({'data': selected_list_branch.data})
+        else:
+            query = "SELECT branch_location_id, branch_id, state, city, latitude, longitude, distance, address, name \
+                        FROM (SELECT z.branch_location_id, z.branch_id, z.state, z.city, z.address, \
+                            z.latitude, z.longitude, branches.name, \
+                            p.distance_unit \
+                                     * DEGREES(ACOS(COS(RADIANS(p.latpoint)) \
+                                     * COS(RADIANS(z.latitude)) \
+                                     * COS(RADIANS(p.longpoint - z.longitude)) \
+                                     + SIN(RADIANS(p.latpoint)) \
+                                     * SIN(RADIANS(z.latitude)))) AS distance \
+                        FROM branches_location AS z \
+                        JOIN branches on z.branch_id = branches.branch_id \
+                        JOIN branches_subcategory on z.branch_id = branches_subcategory.branch_id \
+                        JOIN (   /* these are the query parameters */ \
+                            SELECT  "+latitude+"  AS latpoint,  "+longitude+" AS longpoint, \
+                                         111.045 AS distance_unit \
+                        ) AS p ON 1=1 \
+                        WHERE branches.name ILIKE '%s' \
+                        ) AS d \
+                        ORDER BY distance" % ('%%'+ text +'%%' )
+            #branches = db.engine.execute("SELECT * FROM branches WHERE name ILIKE '%s' " % ('%%' + text + '%%' ))
+            branches = db.engine.execute(query)
+
+            selected_list_branch = branch_profile_schema.dump(branches)
+            return jsonify({'data': selected_list_branch.data})
+    return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
+
+
