@@ -88,6 +88,7 @@ def select_branch(branchId):
     @sched.scheduled_job('interval', minutes=1)
     def timed_job():
         print('me ejecuto cada minuto, como ves?')
+    sched.start()
     
     return jsonify({'data': branch.data})
 
