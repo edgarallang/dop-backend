@@ -5,11 +5,13 @@ import jwt
 import json
 import requests
 from flask import Blueprint, current_app, request, jsonify
+from apscheduler.schedulers.blocking import BlockingScheduler
 from flask import current_app as app
 from flask.ext.login import login_required, current_user
 from jwt import DecodeError, ExpiredSignature
 from .models import *
 from ..extensions import db
+
 
 
 company = Blueprint('company', __name__, url_prefix='/api/company')
@@ -81,6 +83,11 @@ def select_company(companyId):
 def select_branch(branchId):
     selectedBranch = Branch.query.get(branchId)
     branch = branch_schema.dump(selectedBranch)
+    sched = BlockingScheduler()
+
+    @sched.scheduled_job('interval', minutes=1)
+    def timed_job():
+        print('me ejecuto cada minuto, como ves?')
     
     return jsonify({'data': branch.data})
 
