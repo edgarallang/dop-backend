@@ -16,6 +16,7 @@ class BaseConfig(object):
 
     DEBUG = False
     TESTING = False
+    use_reloader = False
 
     ADMINS = ['edgarallan182@gmail.com']
 
