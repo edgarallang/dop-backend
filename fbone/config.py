@@ -72,7 +72,7 @@ class DefaultConfig(BaseConfig):
     JOBS = [
         {
             'id': 'job_function',
-            'func': 'fbone:company:job_function',
+            'func': '__main__:company:job_function',
             'args': (1, 2),
             'trigger': {
                 'type': 'cron',
