@@ -245,7 +245,7 @@ scheduler = BackgroundScheduler(jobstores=jobstores,
                                 job_defaults=job_defaults)
 scheduler.start()
 
-@sched.interval_schedule(seconds=5)
+@scheduler.interval_schedule(seconds=5)
 def job_function():
     print "Hello World"
     print(datetime.datetime.now())
