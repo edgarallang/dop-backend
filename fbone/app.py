@@ -4,6 +4,8 @@ import os
 
 from flask import Flask, request, render_template
 from flask.ext.babel import Babel
+from flask_apscheduler import APScheduler
+from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 
 from .config import DefaultConfig
 from .badge import Badge
@@ -47,6 +49,7 @@ def create_app(config=None, app_name=None, blueprints=None):
     configure_hook(app)
     configure_blueprints(app, blueprints)
     configure_extensions(app)
+    configure_scheduler(app)
     # configure_logging(app)
     configure_template_filters(app)
     configure_error_handlers(app)
@@ -107,6 +110,11 @@ def configure_blueprints(app, blueprints):
     for blueprint in blueprints:
         app.register_blueprint(blueprint)
 
+def configure_scheduler(app):
+    scheduler = APScheduler()
+    scheduler.init_app(app)
+    scheduler.start()
+
 def configure_template_filters(app):
 
     @app.template_filter()
@@ -164,7 +172,6 @@ def configure_hook(app):
     @app.before_request
     def before_request():
         pass
-
 
 def configure_error_handlers(app):
 

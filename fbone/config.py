@@ -68,6 +68,34 @@ class DefaultConfig(BaseConfig):
     OPENID_FS_STORE_PATH = os.path.join(INSTANCE_FOLDER_PATH, 'openid')
     make_dir(OPENID_FS_STORE_PATH)
 
+    JOBS = [
+        {
+            'id': 'job_function',
+            'func': 'fbone:company:job_function',
+            'args': (1, 2),
+            'trigger': {
+                'type': 'cron',
+                'second': 5
+            }
+        }
+    ]
+
+    SCHEDULER_JOBSTORES = {
+        'default': SQLAlchemyJobStore(url='postgresql://postgres:doprocks@localhost:5432/dopdb')
+    }
+
+    SCHEDULER_EXECUTORS = {
+        'default': {'type': 'threadpool', 'max_workers': 20}
+    }
+
+    SCHEDULER_JOB_DEFAULTS = {
+        'coalesce': False,
+        'max_instances': 3
+    }
+
+    SCHEDULER_VIEWS_ENABLED = True
+
+
 
 class TestConfig(BaseConfig):
     TESTING = True
@@ -75,3 +103,4 @@ class TestConfig(BaseConfig):
 
     SQLALCHEMY_ECHO = False
     SQLALCHEMY_DATABASE_URI = 'sqlite://'
+    
