@@ -244,11 +244,11 @@ scheduler = BackgroundScheduler(jobstores=jobstores,
                                 executors=executors,
                                 job_defaults=job_defaults)
 
-@scheduler.add_job('interval', seconds=5)
+@scheduler.scheduled_job('interval', seconds=5)
 def job_function():
     print "Hello World"
     # print(datetime.now())
-scheduler.start()
+scheduler.start()g
 
 
 ###################################################
