@@ -220,12 +220,12 @@ def search_branch():
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
 # -Triggers- ######################################
-sched = BlockingScheduler()
+# sched = BlockingScheduler()
 
-@sched.scheduled_job('interval', minutes=1)
-def timed_job():
-    print(datetime.datetime.now())
-sched.start()
+# @sched.scheduled_job('interval', minutes=1)
+# def timed_job():
+#     print(datetime.datetime.now())
+# sched.start()
 
 
 ###################################################
