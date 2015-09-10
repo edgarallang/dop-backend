@@ -16,6 +16,16 @@ from ..extensions import db
 
 company = Blueprint('company', __name__, url_prefix='/api/company')
 
+# -Triggers- ######################################
+sched = BlockingScheduler()
+
+@sched.scheduled_job('interval', minutes=1)
+def timed_job():
+    print(datetime.datetime.now())
+sched.start()
+
+
+###################################################
 def create_token(user):
     payload = {
         'id': user.branches_user_id,
@@ -83,12 +93,6 @@ def select_company(companyId):
 def select_branch(branchId):
     selectedBranch = Branch.query.get(branchId)
     branch = branch_schema.dump(selectedBranch)
-    sched = BlockingScheduler()
-
-    @sched.scheduled_job('interval', minutes=1)
-    def timed_job():
-        print('me ejecuto cada minuto, como ves?')
-    sched.start()
     
     return jsonify({'data': branch.data})
 
