@@ -74,9 +74,9 @@ class DefaultConfig(BaseConfig):
         {
             'id': 'first_job',
             'func': 'fbone.company.api:job_function',
-            'args': (1, 2),
+            'args': (),
             'trigger': {
-                'type': 'cron',
+                'type': 'interval',
                 'second': 5
             }
         }

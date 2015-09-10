@@ -9,7 +9,7 @@ project = "fbone"
 # the user to use for the remote commands
 env.user = ''
 # the servers where the commands are executed
-env.hosts = ['104.236.141.44']
+env.hosts = ['45.55.7.118']
 
 
 def reset():
