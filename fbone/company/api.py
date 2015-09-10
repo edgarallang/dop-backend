@@ -229,26 +229,26 @@ def search_branch():
 #     print(datetime.datetime.now())
 # sched.start()
 
-jobstores = {
-    'default': SQLAlchemyJobStore(url='postgresql://postgres:doprocks@localhost:5432/dopdb')
-}
-executors = {
-    'default': ThreadPoolExecutor(20),
-    'processpool': ProcessPoolExecutor(5)
-}
-job_defaults = {
-    'coalesce': False
-}
+# jobstores = {
+#     'default': SQLAlchemyJobStore(url='postgresql://postgres:doprocks@localhost:5432/dopdb')
+# }
+# executors = {
+#     'default': ThreadPoolExecutor(20),
+#     'processpool': ProcessPoolExecutor(5)
+# }
+# job_defaults = {
+#     'coalesce': False
+# }
 
-scheduler = BackgroundScheduler(jobstores=jobstores,
-                                executors=executors,
-                                job_defaults=job_defaults)
+# scheduler = BackgroundScheduler(jobstores=jobstores,
+#                                 executors=executors,
+#                                 job_defaults=job_defaults)
 
-@scheduler.scheduled_job('interval', seconds=5)
-def job_function():
-    print "Hello World"
-    # print(datetime.now())
-scheduler.start()
+# @scheduler.scheduled_job('interval', seconds=5)
+# def job_function():
+#     print "Hello World"
+#     # print(datetime.now())
+# scheduler.start()
 
 
 ###################################################
