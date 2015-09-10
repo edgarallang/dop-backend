@@ -16,16 +16,6 @@ from ..extensions import db
 
 company = Blueprint('company', __name__, url_prefix='/api/company')
 
-# -Triggers- ######################################
-sched = BlockingScheduler()
-
-@sched.scheduled_job('interval', minutes=1)
-def timed_job():
-    print(datetime.datetime.now())
-sched.start()
-
-
-###################################################
 def create_token(user):
     payload = {
         'id': user.branches_user_id,
@@ -228,5 +218,16 @@ def search_branch():
             selected_list_branch = branch_profile_schema.dump(branches)
             return jsonify({'data': selected_list_branch.data})
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
+
+# -Triggers- ######################################
+sched = BlockingScheduler()
+
+@sched.scheduled_job('interval', minutes=1)
+def timed_job():
+    print(datetime.datetime.now())
+sched.start()
+
+
+###################################################
 
 
