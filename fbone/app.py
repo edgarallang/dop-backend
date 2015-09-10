@@ -112,6 +112,7 @@ def configure_blueprints(app, blueprints):
 def configure_scheduler(app):
     scheduler = APScheduler()
     scheduler.init_app(app)
+    print "me ejecuto dos veces"
     scheduler.start()
 
 def configure_template_filters(app):
