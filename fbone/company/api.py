@@ -248,7 +248,7 @@ scheduler = BackgroundScheduler(jobstores=jobstores,
 def job_function():
     print "Hello World"
     # print(datetime.now())
-scheduler.start()g
+scheduler.start()
 
 
 ###################################################
