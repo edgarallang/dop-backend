@@ -237,7 +237,7 @@ executors = {
     'processpool': ProcessPoolExecutor(5)
 }
 job_defaults = {
-    'coalesce': False=
+    'coalesce': False
 }
 
 scheduler = BackgroundScheduler(jobstores=jobstores,
