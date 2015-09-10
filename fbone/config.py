@@ -3,6 +3,7 @@
 import os
 
 from utils import make_dir, INSTANCE_FOLDER_PATH
+from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 
 
 class BaseConfig(object):

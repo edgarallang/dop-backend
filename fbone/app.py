@@ -5,7 +5,6 @@ import os
 from flask import Flask, request, render_template
 from flask.ext.babel import Babel
 from flask_apscheduler import APScheduler
-from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 
 from .config import DefaultConfig
 from .badge import Badge
