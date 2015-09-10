@@ -7,7 +7,7 @@ import requests
 from flask import Blueprint, current_app, request, jsonify
 from flask import current_app as app
 from flask.ext.login import login_required, current_user
-from apscheduler.schedulers.blocking import BlockingScheduler
+from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 from apscheduler.executors.pool import ThreadPoolExecutor, ProcessPoolExecutor
 from jwt import DecodeError, ExpiredSignature
