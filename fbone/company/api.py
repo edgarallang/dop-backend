@@ -242,8 +242,7 @@ job_defaults = {
 
 scheduler = BackgroundScheduler(jobstores=jobstores,
                                 executors=executors,
-                                job_defaults=job_defaults,
-                                timezone=utc)
+                                job_defaults=job_defaults)
 job = scheduler.add_job(first_job, 'interval', seconds=5)
 scheduler.start()
 
