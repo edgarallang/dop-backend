@@ -5,9 +5,11 @@ import jwt
 import json
 import requests
 from flask import Blueprint, current_app, request, jsonify
-from apscheduler.schedulers.blocking import BlockingScheduler
 from flask import current_app as app
 from flask.ext.login import login_required, current_user
+from apscheduler.schedulers.blocking import BlockingScheduler
+from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
+from apscheduler.executors.pool import ThreadPoolExecutor, ProcessPoolExecutor
 from jwt import DecodeError, ExpiredSignature
 from .models import *
 from ..extensions import db
@@ -227,6 +229,26 @@ def search_branch():
 #     print(datetime.datetime.now())
 # sched.start()
 
+jobstores = {
+    'default': SQLAlchemyJobStore(url='postgresql://postgres:doprocks@localhost:5432/dopdb')
+}
+executors = {
+    'default': ThreadPoolExecutor(20),
+    'processpool': ProcessPoolExecutor(5)
+}
+job_defaults = {
+    'coalesce': False=
+}
+
+scheduler = BackgroundScheduler(jobstores=jobstores,
+                                executors=executors,
+                                job_defaults=job_defaults,
+                                timezone=utc)
+job = scheduler.add_job(first_job, 'interval', seconds=5)
+scheduler.start()
+
+def first_job():
+    print(datetime.datetime.now())
 
 ###################################################
 
