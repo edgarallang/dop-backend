@@ -248,7 +248,7 @@ scheduler.start()
 @scheduler.add_job('interval', seconds=5)
 def job_function():
     print "Hello World"
-    print(datetime.datetime.now())
+    print(datetime.now())
 
 
 
