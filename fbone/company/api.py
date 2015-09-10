@@ -243,13 +243,12 @@ job_defaults = {
 scheduler = BackgroundScheduler(jobstores=jobstores,
                                 executors=executors,
                                 job_defaults=job_defaults)
-scheduler.start()
 
 @scheduler.add_job('interval', seconds=5)
 def job_function():
     print "Hello World"
-    print(datetime.now())
-
+    # print(datetime.now())
+scheduler.start()
 
 
 ###################################################
