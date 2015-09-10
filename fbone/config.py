@@ -38,7 +38,7 @@ class BaseConfig(object):
 class DefaultConfig(BaseConfig):
 
     DEBUG = False
-
+    use_reloader=False
     # Flask-Sqlalchemy: http://packages.python.org/Flask-SQLAlchemy/config.html
     SQLALCHEMY_ECHO = True
     # SQLITE for prototyping.
