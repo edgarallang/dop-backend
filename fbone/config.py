@@ -71,7 +71,7 @@ class DefaultConfig(BaseConfig):
 
     JOBS = [
         {
-            'id': 'job_function',
+            'id': 'first_job',
             'func': 'fbone.company.api:job_function',
             'args': (1, 2),
             'trigger': {
