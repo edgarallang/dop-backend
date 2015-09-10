@@ -43,7 +43,7 @@ class DefaultConfig(BaseConfig):
     SQLALCHEMY_ECHO = True
     # SQLITE for prototyping.
     # SQLALCHEMY_DATABASE_URI = 'sqlite:///' + INSTANCE_FOLDER_PATH + '/db.sqlite'
-    # MYSQL for production.
+    # PostgreSQL for production.
     SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:doprocks@localhost:5432/dopdb'
 
     # Flask-babel: http://pythonhosted.org/Flask-Babel/
