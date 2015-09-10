@@ -243,12 +243,13 @@ job_defaults = {
 scheduler = BackgroundScheduler(jobstores=jobstores,
                                 executors=executors,
                                 job_defaults=job_defaults)
+scheduler.start()
 
-def first_job():
+@sched.interval_schedule(seconds=5)
+def job_function():
+    print "Hello World"
     print(datetime.datetime.now())
 
-job = scheduler.add_job(first_job, 'interval', id="calis", seconds=5)
-scheduler.start()
 
 
 ###################################################
