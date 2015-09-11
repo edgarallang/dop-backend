@@ -25,7 +25,7 @@ def initdb():
     """Init/reset database."""
 
     # db.drop_all()
-    db.create_all()
+    db.create_all(app=create_app)
 
     #admin = BranchUser(
     #        branch_id=2,
