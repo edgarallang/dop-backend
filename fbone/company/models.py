@@ -72,8 +72,7 @@ class BranchAd(db.Model):
     marketing_package_id = Column(db.Integer, db.ForeignKey('marketing_package.marketing_package_id'), nullable = False)
     duration = Column(db.Integer)
 
-    branch = db.relationship('Branch',
-                            backref = db.backref('branch_ad'), lazy = 'dynamic')
+    branch = db.relationship('Branch', uselist=False, backref = 'branchAd')
 
 # =====================================================================
 # Categories 
