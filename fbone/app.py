@@ -23,7 +23,7 @@ from .utils import INSTANCE_FOLDER_PATH
 
 
 # For import *
-__all__ = ['create_app', 'configure_scheduler']
+__all__ = ['create_app']
 
 DEFAULT_BLUEPRINTS = (
     frontend,
@@ -110,11 +110,6 @@ def configure_blueprints(app, blueprints):
 
     for blueprint in blueprints:
         app.register_blueprint(blueprint)
-
-def configure_scheduler(app):
-    scheduler = APScheduler()
-    scheduler.init_app(app)
-    scheduler.start()
 
 def configure_template_filters(app):
 
