@@ -4,7 +4,8 @@ import os
 import jwt
 import json
 import requests
-from flask import Blueprint, current_app, request, jsonify, create_app
+from flask import Blueprint, current_app, request, jsonify
+from fbone import create_app
 APSapp = create_app()
 APSapp.test_request_context().push()
 from flask import current_app as app
