@@ -23,7 +23,7 @@ from .utils import INSTANCE_FOLDER_PATH
 
 
 # For import *
-__all__ = ['create_app']
+__all__ = ['create_app', 'configure_scheduler']
 
 DEFAULT_BLUEPRINTS = (
     frontend,
