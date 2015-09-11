@@ -3,7 +3,7 @@ from ..extensions import db
 
 # -Company- ######################################
 
-def job_function:
+def job_function():
     @copy_current_request_context
     def first_job():
         print 'bale berga la bida'
