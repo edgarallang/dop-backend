@@ -39,7 +39,7 @@ def d():
     Debug.
     """
 
-    reset()
+    # reset()
     local("python manage.py run")
 
 
