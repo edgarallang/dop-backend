@@ -9,7 +9,6 @@ from fbone.utils import MALE
 
 
 app = create_app()
-app.test_request_context().push()
 manager = Manager(app)
 
 
@@ -25,7 +24,7 @@ def initdb():
     """Init/reset database."""
 
     # db.drop_all()
-    db.create_all(app=create_app)
+    db.create_all(app=create_app())
 
     #admin = BranchUser(
     #        branch_id=2,
