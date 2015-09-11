@@ -36,7 +36,7 @@ class BaseConfig(object):
 
 
 class DefaultConfig(BaseConfig):
-
+    PRESERVE_CONTEXT_ON_EXCEPTION = False
     DEBUG = False
     use_reloader=False
     # Flask-Sqlalchemy: http://packages.python.org/Flask-SQLAlchemy/config.html
@@ -104,7 +104,7 @@ class DefaultConfig(BaseConfig):
 class TestConfig(BaseConfig):
     TESTING = True
     WTF_CSRF_ENABLED = False
-
+    PRESERVE_CONTEXT_ON_EXCEPTION = False
     SQLALCHEMY_ECHO = False
     SQLALCHEMY_DATABASE_URI = 'sqlite://'
     
