@@ -6,7 +6,6 @@ logging.basicConfig()
 
 from flask import Flask, request, render_template
 from flask.ext.babel import Babel
-from flask_apscheduler import APScheduler
 
 from .config import DefaultConfig
 from .badge import Badge

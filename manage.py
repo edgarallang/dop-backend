@@ -4,6 +4,7 @@ from flask.ext.script import Manager
 
 from fbone import create_app
 from fbone.extensions import db
+from flask_apscheduler import APScheduler
 from fbone.user import User, UserImage, UserLevel, ADMIN, ACTIVE
 from fbone.utils import MALE
 
