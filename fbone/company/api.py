@@ -7,9 +7,6 @@ import requests
 from flask import Blueprint, current_app, request, jsonify
 from flask import current_app as app
 from flask.ext.login import login_required, current_user
-from apscheduler.schedulers.background import BackgroundScheduler
-from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
-from apscheduler.executors.pool import ThreadPoolExecutor, ProcessPoolExecutor
 from jwt import DecodeError, ExpiredSignature
 from .models import *
 from ..extensions import db
@@ -220,25 +217,5 @@ def search_branch():
             selected_list_branch = branch_profile_schema.dump(branches)
             return jsonify({'data': selected_list_branch.data})
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
-
-# -Triggers- ######################################
-
-def job_function():
-    @app.before_request
-    def before_request():
-            g.db = connect_db()
-            print current_app.name
-            print app.name
-        # adArray = BranchAd.query.all()
-
-        # for ad in branchesArray:
-        #     branch = Branch.query.get(ad.branch_id)
-        #     print branch.name
-
-
-
-
-
-###################################################
 
 
