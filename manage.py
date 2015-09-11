@@ -11,7 +11,6 @@ from fbone.utils import MALE
 
 app = create_app()
 scheduler = APScheduler()
-scheduler.start()
 manager = Manager(app)
 
 
