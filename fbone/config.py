@@ -77,7 +77,7 @@ class DefaultConfig(BaseConfig):
             'args': (),
             'trigger': {
                 'type': 'interval',
-                'hours': 24
+                'seconds': 30
             },
             'replace_existing': True
 
