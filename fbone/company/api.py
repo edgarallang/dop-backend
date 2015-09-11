@@ -224,7 +224,7 @@ def search_branch():
 # -Triggers- ######################################
 
 def job_function():
-    with app():
+    with app.app_context():
         adArray = BranchAd.query.all()
 
         for ad in branchesArray:
