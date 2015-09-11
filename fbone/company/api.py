@@ -13,6 +13,7 @@ from apscheduler.executors.pool import ThreadPoolExecutor, ProcessPoolExecutor
 from jwt import DecodeError, ExpiredSignature
 from .models import *
 from ..extensions import db
+from ..utils import ctx
 
 
 
@@ -223,7 +224,7 @@ def search_branch():
 
 # -Triggers- ######################################
 def job_function():
-    with app():
+    with ctx:
         adArray = BranchAd.query.all()
 
         for ad in branchesArray:
