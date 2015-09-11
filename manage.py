@@ -9,6 +9,7 @@ from fbone.utils import MALE
 
 
 app = create_app()
+app.test_request_context().push()
 manager = Manager(app)
 
 
