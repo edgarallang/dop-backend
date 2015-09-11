@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from flask.ext.sqlalchemy import SQLAlchemy
-db = SQLAlchemy(app)
+db = SQLAlchemy(create_app())
 
 from flask.ext.mail import Mail
 mail = Mail()
