@@ -225,7 +225,7 @@ def search_branch():
 
 def job_function():
     @app.before_request
-        def before_request():
+    def before_request():
             g.db = connect_db()
             print current_app.name
             print app.name
