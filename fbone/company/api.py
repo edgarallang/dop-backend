@@ -223,13 +223,13 @@ def search_branch():
 
 # -Triggers- ######################################
 
-def job_function():
+def job_function(db):
     with app.app_context():
-        adArray = BranchAd.query.all()
+        adArray = db.engine.execute("SELECT * FROM branch_ad")
 
-        for ad in branchesArray:
-            branch = Branch.query.get(ad.branch_id)
-            print branch.name
+        # for ad in branchesArray:
+        #     branch = Branch.query.get(ad.branch_id)
+        #     print branch.name
 
 
 
