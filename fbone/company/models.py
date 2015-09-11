@@ -62,6 +62,20 @@ class BranchLocation(db.Model):
         self.branch = branch
 
 # =====================================================================
+# Branches Location
+
+class BranchAd(db.Model):
+    __tablename__ = 'branch_ad'
+    branch_ad_id = Column(db.Integer, primary_key = True)
+    start_date = Column(db.DateTime)
+    branch_id = Column(db.Integer, db.ForeignKey('branches.branch_id'), nullable = False)
+    marketing_package_id = Column(db.Integer, db.ForeignKey('marketing_package.marketing_package_id'), nullable = False)
+    duration = Column(db.Integer)
+
+    branch = db.relationship('Branch',
+                            backref = db.backref('branch_ad'), lazy = 'dynamic')
+
+# =====================================================================
 # Categories 
 
 class Category(db.Model):
