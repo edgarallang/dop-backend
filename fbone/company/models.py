@@ -27,6 +27,7 @@ class Branch(db.Model):
 
     # branches_user_id = Column(db.Integer, db.ForeignKey("branches_user.branches_user_id"))
     branches_design = db.relationship("BranchDesign", uselist=False, backref="branches")
+    branch = db.relationship('BranchAd', uselist=False, backref = 'branches')
     # branches_location_id = db.ForeignKey('branches_location.branches_location_id')
 
 # =====================================================================
@@ -71,8 +72,6 @@ class BranchAd(db.Model):
     branch_id = Column(db.Integer, db.ForeignKey('branches.branch_id'), nullable = False)
     marketing_package_id = Column(db.Integer, db.ForeignKey('marketing_package.marketing_package_id'), nullable = False)
     duration = Column(db.Integer)
-
-    branch = db.relationship('Branch', uselist=False, backref = 'branchAd')
 
 # =====================================================================
 # Categories 
