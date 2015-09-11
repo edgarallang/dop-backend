@@ -4,7 +4,9 @@ import os
 import jwt
 import json
 import requests
-from flask import Blueprint, current_app, request, jsonify
+from flask import Blueprint, current_app, request, jsonify, create_app
+     APSapp = create_app()
+     APSapp.test_request_context().push()
 from flask import current_app as app
 from flask.ext.login import login_required, current_user
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -223,11 +225,12 @@ def search_branch():
 
 # -Triggers- ######################################
 def job_function():
-    adArray = BranchAd.query.all()
+    with APSapp():
+        adArray = BranchAd.query.all()
 
-    for ad in branchesArray:
-        branch = Branch.query.get(ad.branch_id)
-        print branch.name
+        for ad in branchesArray:
+            branch = Branch.query.get(ad.branch_id)
+            print branch.name
 
 
 
