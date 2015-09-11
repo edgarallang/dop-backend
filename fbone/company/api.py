@@ -230,8 +230,14 @@ def search_branch():
 # sched.start()
 
 def job_function():
-    print "Hello World"
-    print(datetime.now())
+    adArray = BranchAd.query.all()
+
+    for ad in branchesArray:
+        branch = Branch.query.get(ad.branch_id)
+        print branch.name
+
+
+
 
 
 ###################################################
