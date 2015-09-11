@@ -10,6 +10,7 @@ from fbone.utils import MALE
 
 
 app = create_app()
+app.test_request_context().push()
 scheduler = APScheduler()
 manager = Manager(app)
 
