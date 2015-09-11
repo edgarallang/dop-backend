@@ -19,7 +19,7 @@ def run():
     """Run in local machine."""
     scheduler.init_app(app)
     app.run(host='0.0.0.0', use_reloader=False)
-    
+    scheduler.start()
 
 @manager.command
 def initdb():
