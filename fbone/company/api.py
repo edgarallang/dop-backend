@@ -224,8 +224,11 @@ def search_branch():
 # -Triggers- ######################################
 
 def job_function():
-    print current_app.name
-    print app.name
+    @app.before_request
+        def before_request():
+            g.db = connect_db()
+            print current_app.name
+            print app.name
         # adArray = BranchAd.query.all()
 
         # for ad in branchesArray:
