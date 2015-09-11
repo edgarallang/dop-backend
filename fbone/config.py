@@ -77,7 +77,7 @@ class DefaultConfig(BaseConfig):
             'args': (),
             'trigger': {
                 'type': 'cron',
-                'minute': 1
+                'second': '*'
             },
             'replace_existing': True
 
