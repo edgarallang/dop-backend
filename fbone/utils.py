@@ -44,7 +44,6 @@ SEX_TYPE = {
 
 # Model
 STRING_LEN = 264
-ctx = None
 
 def get_current_time():
     return datetime.utcnow()

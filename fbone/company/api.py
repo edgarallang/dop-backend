@@ -13,7 +13,6 @@ from apscheduler.executors.pool import ThreadPoolExecutor, ProcessPoolExecutor
 from jwt import DecodeError, ExpiredSignature
 from .models import *
 from ..extensions import db
-from ..utils import ctx
 
 
 
@@ -223,6 +222,8 @@ def search_branch():
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
 # -Triggers- ######################################
+ctx = app.app_context()
+ctx.push()
 def job_function():
     with ctx:
         adArray = BranchAd.query.all()
