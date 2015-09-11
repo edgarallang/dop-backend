@@ -19,7 +19,7 @@ from .frontend import frontend
 from .api import api
 from .admin import admin
 from .extensions import db, mail, cache, login_manager, oid, CORS
-from .utils import INSTANCE_FOLDER_PATH, ctx
+from .utils import INSTANCE_FOLDER_PATH
 
 
 # For import *
