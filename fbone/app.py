@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import os
+import logging
+logging.basicConfig()
 
 from flask import Flask, request, render_template
 from flask.ext.babel import Babel
