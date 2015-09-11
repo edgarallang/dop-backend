@@ -19,7 +19,7 @@ from .frontend import frontend
 from .api import api
 from .admin import admin
 from .extensions import db, mail, cache, login_manager, oid, CORS
-from .utils import INSTANCE_FOLDER_PATH
+from .utils import INSTANCE_FOLDER_PATH, ctx
 
 
 # For import *
@@ -50,6 +50,8 @@ def create_app(config=None, app_name=None, blueprints=None):
     configure_hook(app)
     configure_blueprints(app, blueprints)
     configure_extensions(app)
+    ctx = app.app_context()
+    ctx.push()
     configure_scheduler(app)
     # configure_logging(app)
     configure_template_filters(app)
