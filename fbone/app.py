@@ -78,7 +78,6 @@ def configure_app(app, config=None):
 def configure_extensions(app):
     # flask-sqlalchemy
     db.init_app(app)
-    db.create_all(app)
 
     # flask-mail
     mail.init_app(app)
