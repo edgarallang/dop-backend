@@ -1,4 +1,5 @@
 from flask import current_app as app
+from flask import copy_current_request_context
 from ..extensions import db
 
 # -Company- ######################################
