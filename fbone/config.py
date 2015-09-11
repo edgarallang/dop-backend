@@ -73,7 +73,7 @@ class DefaultConfig(BaseConfig):
     JOBS = [
         {
             'id': 'first_job',
-            'func': 'fbone.company.api:job_function',
+            'func': 'fbone.trigger.job:job_function',
             'args': (),
             'trigger': {
                 'type': 'interval',
