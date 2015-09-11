@@ -50,8 +50,6 @@ def create_app(config=None, app_name=None, blueprints=None):
     configure_hook(app)
     configure_blueprints(app, blueprints)
     configure_extensions(app)
-    ctx = app.app_context()
-    ctx.push()
     configure_scheduler(app)
     # configure_logging(app)
     configure_template_filters(app)
