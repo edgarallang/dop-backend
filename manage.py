@@ -2,13 +2,14 @@
 
 from flask.ext.script import Manager
 
-from fbone import create_app
+from fbone import create_app, configure_scheduler
 from fbone.extensions import db
 from fbone.user import User, UserImage, UserLevel, ADMIN, ACTIVE
 from fbone.utils import MALE
 
 
 app = create_app()
+configure_scheduler(app)
 manager = Manager(app)
 
 
