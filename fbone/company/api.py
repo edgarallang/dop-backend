@@ -222,7 +222,7 @@ def search_branch():
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
 # -Triggers- ######################################
-app.test_request_context().push()
+
 def job_function():
     with app():
         adArray = BranchAd.query.all()

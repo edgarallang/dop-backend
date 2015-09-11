@@ -46,6 +46,7 @@ def create_app(config=None, app_name=None, blueprints=None):
         blueprints = DEFAULT_BLUEPRINTS
 
     app = Flask(app_name, instance_path=INSTANCE_FOLDER_PATH, instance_relative_config=True)
+    app.test_request_context().push()
     configure_app(app, config)
     configure_hook(app)
     configure_blueprints(app, blueprints)
