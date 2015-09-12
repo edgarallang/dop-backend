@@ -3,9 +3,9 @@ from ..extensions import db
 
 # -Company- ######################################
 
-def job_function():
+def job_function(current_app):
     print 'bale berga la bida'
-    print app.name
+    print current_app.name
             # adArray = BranchAd.query.all()
 
             # for ad in branchesArray:
