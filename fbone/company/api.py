@@ -220,6 +220,6 @@ def search_branch():
 
 
 # - Triggers - ###########
-@company.route('/first/trigger', methods = ['GET, PUT'])
+@company.route('/first/trigger', methods = ['GET', 'PUT'])
 def fisrt_job():
     print "I've made it"
