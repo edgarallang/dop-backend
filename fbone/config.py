@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 import os
-import requests
 from utils import make_dir, INSTANCE_FOLDER_PATH
 from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 from flask import current_app
@@ -75,7 +74,6 @@ class DefaultConfig(BaseConfig):
         {
             'id': 'first_job',
             'func': 'fbone.trigger.jobs:job_function',
-            'args': (requests),
             'trigger': {
                 'type': 'cron',
                 'second': '*'
