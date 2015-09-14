@@ -222,4 +222,14 @@ def search_branch():
 # - Triggers - ###########
 @company.route('/first/trigger', methods = ['GET', 'PUT'])
 def fisrt_job():
-    print "I've made it"
+    adArray = BranchAd.query.all()
+
+    for ad in branchesArray:
+        branch = Branch.query.get(ad.branch_id)
+        print branch.name
+    return jsonify({'message': 'todo bien :D'})
+
+
+
+
+
