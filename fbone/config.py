@@ -77,7 +77,7 @@ class DefaultConfig(BaseConfig):
             'trigger': {
                 'type': 'cron',
                 'day_of_week': '*',
-                'hour': '1'
+                'hour': '4'
             },
             'replace_existing': True
 
