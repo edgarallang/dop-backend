@@ -219,3 +219,7 @@ def search_branch():
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
 
+# - Triggers - ###########
+@compayn.route('first/trigger', methods = ['GET, PUT'])
+def fisrt_job():
+    print "I've made it"
