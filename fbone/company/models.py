@@ -63,6 +63,16 @@ class BranchLocation(db.Model):
         self.branch = branch
 
 # =====================================================================
+# Marketing Package
+
+class MarketingPackage(db.Model):
+    __tablename__ = 'marketing_package'
+    marketing_package_id = Column(db.Integer, primary_key = True)
+    duration  = Column(db.Integer)
+
+    branchAd = db.relationship('BranchAd', uselist=False, backref = 'marketing_package')
+
+# =====================================================================
 # Branches Location
 
 class BranchAd(db.Model):
