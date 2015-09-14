@@ -76,7 +76,7 @@ class DefaultConfig(BaseConfig):
             'func': 'fbone.trigger.jobs:job_function',
             'trigger': {
                 'type': 'cron',
-                'second': '*'
+                'minute': '*'
             },
             'replace_existing': True
 

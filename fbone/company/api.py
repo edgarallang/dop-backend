@@ -222,11 +222,13 @@ def search_branch():
 # - Triggers - ###########
 @company.route('/first/trigger', methods = ['GET', 'PUT'])
 def fisrt_job():
-    adArray = BranchAd.query.all()
+    adArray = BranchAd.query.filter(BranchAd.duration > 0).all()
 
     for ad in adArray:
-        branch = Branch.query.get(ad.branch_id)
-        print branch.name
+        if (ad.duration == 0):
+            ad.duration = ad.duration - 1
+            print ad.branch_id
+    db.session.commit()
     return jsonify({'message': 'todo bien :D'})
 
 
