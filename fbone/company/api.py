@@ -225,7 +225,7 @@ def fisrt_job():
     adArray = BranchAd.query.filter(BranchAd.duration > 0).all()
 
     for ad in adArray:
-        if (ad.duration == 0):
+        if not (ad.duration == 0):
             ad.duration = ad.duration - 1
             print ad.branch_id
     db.session.commit()
