@@ -224,7 +224,7 @@ def search_branch():
 def fisrt_job():
     adArray = BranchAd.query.all()
 
-    for ad in branchesArray:
+    for ad in adArray:
         branch = Branch.query.get(ad.branch_id)
         print branch.name
     return jsonify({'message': 'todo bien :D'})
