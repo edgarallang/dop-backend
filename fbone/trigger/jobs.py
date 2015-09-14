@@ -3,7 +3,8 @@ from ..extensions import db
 
 # -Company- ######################################
 
-def job_function(requests):
+def job_function():
+    import requests
     requests.put("http://localhost:5000/api/company/first/trigger")
             # adArray = BranchAd.query.all()
 
