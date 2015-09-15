@@ -73,10 +73,11 @@ class DefaultConfig(BaseConfig):
     JOBS = [
         {
             'id': 'first_job',
-            'func': 'fbone.trigger.jobs:job_function',
+            'func': 'fbone.trigger.jobs:ad_day_subtraction',
             'trigger': {
                 'type': 'cron',
-                'minute': '*'
+                'day_of_week': '*',
+                'hour': '4'
             },
             'replace_existing': True
 

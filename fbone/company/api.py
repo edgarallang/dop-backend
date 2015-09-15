@@ -229,7 +229,7 @@ def fisrt_job():
             ad.duration = ad.duration - 1
             print ad.branch_id
     db.session.commit()
-    return jsonify({'message': 'todo bien :D'})
+    return jsonify({'message': 'the trigger went well'})
 
 @company.route('/branch/dashboard', methods = ['GET'])
 def dashboard_branches():
