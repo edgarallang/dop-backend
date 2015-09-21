@@ -42,6 +42,7 @@ class BranchDesign(db.Model):
     color_a = Column(db.String(STRING_LEN), nullable=False)
     color_b = Column(db.String(STRING_LEN), nullable=False)
     color_c = Column(db.String(STRING_LEN), nullable=False)
+    banner = Column(db.String(STRING_LEN), nullable=False)
 
 # =====================================================================
 # Branches Location
@@ -180,7 +181,8 @@ class BranchesProfile(Schema):
                   'address',
                   'distance',
                   'name',
-                  'company_id')
+                  'company_id',
+                  'banner')
 
 class BranchesLocation(Schema):
     # branch = fields.Nested(BranchSchema, validate=must_not_be_blank)
