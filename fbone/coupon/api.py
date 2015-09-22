@@ -190,7 +190,7 @@ def get_all_taken_coupon_for_user():
     return jsonify({'data': selected_list_coupon.data})
 
 @coupon.route('/all/taken/for/user/offset/get/', methods = ['GET'])
-def get_all_coupon_for_user_offset():
+def get_all_taken_coupon_for_user_offset():
     token_index = True
     offset = request.args.get('offset')
     coupon_id = request.args.get('coupon_id')
