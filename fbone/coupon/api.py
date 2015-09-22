@@ -166,7 +166,7 @@ def get_all_coupon_for_user_offset():
     selected_list_coupon = coupons_logo_schema.dump(list_coupon)
     return jsonify({'data': selected_list_coupon.data})
 
-@coupon.route('/all/taken/for/user/get', methods = ['GET'])
+@coupon.route('/all/taken/for/user/get/', methods = ['GET'])
 def get_all_taken_coupon_for_user():
     token_index = True
     limit = request.args.get('limit')
