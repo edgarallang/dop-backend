@@ -183,8 +183,8 @@ def get_all_taken_coupon():
                                     coupons.branch_id = branches_design.branch_id \
                                     INNER JOIN branches ON coupons.branch_id = branches.branch_id \
                                     INNER JOIN branches_location on coupons.branch_id = branches_location.branch_id \
-                                    INNER JOIN clients_coupon on coupons.coupon_id = clients_coupon.coupon_id on used = false \
-                                    WHERE deleted = false ORDER BY coupons.coupon_id DESC LIMIT %s OFFSET 0' % (payload['id'], limit))
+                                    INNER JOIN clients_coupon on coupons.coupon_id = clients_coupon.coupon_id WHERE used = false \
+                                    AND deleted = false ORDER BY coupons.coupon_id DESC LIMIT %s OFFSET 0' % (payload['id'], limit))
 
 
 
