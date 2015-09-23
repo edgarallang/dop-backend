@@ -122,9 +122,9 @@ def nearest_branches():
     if filterArray:
         filterQuery = prefixFilterQuery + `filterArray` + ')'
 
-    query = 'SELECT branch_location_id, branch_id, state, city, latitude, longitude, distance, address, name \
+    query = 'SELECT branch_location_id, branch_id, state, city, latitude, longitude, distance, address, name, category_id \
                 FROM (SELECT z.branch_location_id, z.branch_id, z.state, z.city, z.address, \
-                    z.latitude, z.longitude, branches.name, \
+                    z.latitude, z.longitude, branches.name, subcategory.category_id, \
                     p.radius, \
                     p.distance_unit \
                              * DEGREES(ACOS(COS(RADIANS(p.latpoint)) \
@@ -135,6 +135,7 @@ def nearest_branches():
                 FROM branches_location AS z \
                 JOIN branches on z.branch_id = branches.branch_id \
                 JOIN branches_subcategory on z.branch_id = branches_subcategory.branch_id \
+                JOIN subcategory on subcategory.subcategory_id = branches_subcategory.subcategory_id\
                 JOIN (   /* these are the query parameters */ \
                     SELECT  '+ latitude +'  AS latpoint,  '+ longitude +' AS longpoint, \
                             '+ radio +' AS radius,      111.045 AS distance_unit \
