@@ -195,7 +195,8 @@ class BranchesLocation(Schema):
                   'city',
                   'address',
                   'distance',
-                  'name')
+                  'name',
+                  'category_id')
 
 company_schema = CompanySchema()
 companies_schema = CompanySchema(many=True)
