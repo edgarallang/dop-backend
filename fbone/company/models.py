@@ -174,6 +174,7 @@ class BranchesProfile(Schema):
     class Meta:
         fields = ('branch_location_id',
                   'branch_id',
+                  'category_id',
                   'state',
                   'longitude',
                   'latitude',
