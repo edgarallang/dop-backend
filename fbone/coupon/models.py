@@ -131,7 +131,8 @@ class CouponLogoSchema(Schema):
                   'total_likes',
                   'user_like',
                   'latitude',
-                  'longitude')
+                  'longitude',
+                  'banner')
 
 class BondJoinCouponSchema(Schema):
     class Meta:
