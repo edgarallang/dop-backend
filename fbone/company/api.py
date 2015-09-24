@@ -87,8 +87,13 @@ def select_branch(branchId):
 
 @company.route('/branch/<int:branchId>/profile/get', methods=['GET'])    
 def select_branch_profile(branchId):
-    query = 'SELECT * FROM branches INNER JOIN branches_location \
-             ON branches.branch_id = branches_location.branch_id \
+    query = 'SELECT branches.branch_id, state, category_id, longitude, latitude,  \
+                    city, address, branches.name, branches.company_id, banner  \
+                FROM branches JOIN branches_location \
+                    ON branches.branch_id = branches_location.branch_id \
+                JOIN branches_design ON branches_design.branch_id = branches.branch_id \
+                JOIN branches_subcategory ON branches_subcategory.branch_id = branches.branch_id \
+                JOIN subcategory ON subcategory.subcategory_id = branches_subcategory.subcategory_id \
              WHERE branches.branch_id = %d' % branchId
 
     selectedBranch = db.engine.execute(query)
