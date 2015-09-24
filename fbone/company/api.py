@@ -87,7 +87,7 @@ def select_branch(branchId):
 
 @company.route('/branch/<int:branchId>/profile/get', methods=['GET'])    
 def select_branch_profile(branchId):
-    query = 'SELECT branches.branch_id, state, category_id, longitude, latitude,  \
+    query = 'SELECT branches.branch_id, state, category_id, longitude, latitude, logo,  \
                     city, address, branches.name, branches.company_id, banner  \
                 FROM branches JOIN branches_location \
                     ON branches.branch_id = branches_location.branch_id \

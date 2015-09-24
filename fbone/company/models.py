@@ -183,7 +183,8 @@ class BranchesProfile(Schema):
                   'distance',
                   'name',
                   'company_id',
-                  'banner')
+                  'banner',
+                  'logo')
 
 class BranchesLocation(Schema):
     # branch = fields.Nested(BranchSchema, validate=must_not_be_blank)
