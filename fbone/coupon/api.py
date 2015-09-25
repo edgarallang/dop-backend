@@ -215,7 +215,7 @@ def get_all_taken_coupon_for_user_offset():
     selected_list_coupon = coupons_logo_schema.dump(list_coupon)
     return jsonify({'data': selected_list_coupon.data})
 
-@coupon.route('/trending/get', methods = ['GET'])
+@coupon.route('/trending/get/', methods = ['GET'])
 def get_trending_coupons():
     if request.headers.get('Authorization'):
         token_index = True
