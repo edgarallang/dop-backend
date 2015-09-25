@@ -218,8 +218,7 @@ def get_all_taken_coupon_for_user_offset():
 @coupon.route('/trending/get/', methods = ['GET'])
 def get_trending_coupons():
     if request.headers.get('Authorization'):
-
-        token_index = False
+        token_index = True
         payload = parse_token(request, token_index)
 
         list_coupon = db.engine.execute('SELECT *,\
