@@ -136,6 +136,8 @@ def get_all_coupon_for_user():
                                     coupons.branch_id = branches_design.branch_id \
                                     INNER JOIN branches ON coupons.branch_id = branches.branch_id \
                                     INNER JOIN branches_location on coupons.branch_id = branches_location.branch_id \
+                                    JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.branch_id \
+                                    JOIN subcategory ON subcategory.subcategory_id = branches_subcategory.subcategory_id \
                                     WHERE deleted = false ORDER BY coupons.coupon_id DESC LIMIT %s OFFSET 0' % (payload['id'],limit))
 
 
