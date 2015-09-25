@@ -219,7 +219,7 @@ def get_all_taken_coupon_for_user_offset():
 def get_trending_coupons():
     if request.headers.get('Authorization'):
 
-        token_index = True
+        token_index = False
         payload = parse_token(request, token_index)
 
         list_coupon = db.engine.execute('SELECT *,\
