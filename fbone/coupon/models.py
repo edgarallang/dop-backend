@@ -132,7 +132,8 @@ class CouponLogoSchema(Schema):
                   'user_like',
                   'latitude',
                   'longitude',
-                  'banner')
+                  'banner',
+                  'category_id')
 
 class BondJoinCouponSchema(Schema):
     class Meta:
