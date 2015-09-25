@@ -218,7 +218,7 @@ def get_all_taken_coupon_for_user_offset():
 @coupon.route('/trending/get/', methods = ['GET'])
 def get_trending_coupons():
     token_index = True
-    payload = parse_token(request, token_index)
+    #payload = parse_token(request, token_index)
 
     list_coupon = db.engine.execute('SELECT *,\
                                     (SELECT COUNT(*) FROM coupons_likes  WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes, \
@@ -228,7 +228,7 @@ def get_trending_coupons():
                                     coupons.branch_id = branches_design.branch_id \
                                     INNER JOIN branches ON coupons.branch_id = branches.branch_id \
                                     INNER JOIN branches_location on coupons.branch_id = branches_location.branch_id \
-                                    WHERE deleted = false ORDER BY total_value DESC LIMIT 8' % (payload['id']))
+                                    WHERE deleted = false ORDER BY total_value DESC LIMIT 8' % (3)
 
 
 
