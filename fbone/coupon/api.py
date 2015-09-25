@@ -228,7 +228,7 @@ def get_trending_coupons():
                                     coupons.branch_id = branches_design.branch_id \
                                     INNER JOIN branches ON coupons.branch_id = branches.branch_id \
                                     INNER JOIN branches_location on coupons.branch_id = branches_location.branch_id \
-                                    WHERE deleted = false ORDER BY total_value DESC LIMIT 8' % (3)
+                                    WHERE deleted = false ORDER BY total_value DESC LIMIT 8' % 3)
 
 
 
