@@ -127,7 +127,8 @@ def get_all_coupon_for_user():
     limit = request.args.get('limit')
     payload = parse_token(request, token_index)
 
-    list_coupon = db.engine.execute('SELECT *, \
+    list_coupon = db.engine.execute('SELECT coupon_id, branches.branch_id, company_id, branches.name, coupon_folio, description, start_date, \
+                                            end_date, limit, min_spent, coupon_category_id, logo, latitude, longitude, banner, category_id, \
                                     (SELECT COUNT(*)  FROM coupons_likes \
                                         WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes, \
                                     (SELECT COUNT(*)  FROM coupons_likes \
