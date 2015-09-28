@@ -178,7 +178,7 @@ def get_all_taken_coupon_for_user():
     limit = request.args.get('limit')
     payload = parse_token(request, token_index)
 
-    list_coupon = db.engine.execute('SELECT coupon_id, branches.branch_id, company_id, branches.name, coupon_folio, description, start_date, \
+    list_coupon = db.engine.execute('SELECT coupons.coupon_id, branches.branch_id, company_id, branches.name, coupon_folio, description, start_date, \
                                             end_date, coupons.limit, min_spent, coupon_category_id, logo, latitude, longitude, banner, category_id, \
                                     (SELECT COUNT(*)  FROM coupons_likes \
                                         WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes, \
@@ -205,7 +205,7 @@ def get_all_taken_coupon_for_user_offset():
     coupon_id = request.args.get('coupon_id')
     payload = parse_token(request, token_index)
 
-    list_coupon = db.engine.execute('SELECT coupon_id, branches.branch_id, company_id, branches.name, coupon_folio, description, start_date, \
+    list_coupon = db.engine.execute('SELECT coupons.coupon_id, branches.branch_id, company_id, branches.name, coupon_folio, description, start_date, \
                                             end_date, coupons.limit, min_spent, coupon_category_id, logo, latitude, longitude, banner, category_id, \
                                     (SELECT COUNT(*)  FROM coupons_likes \
                                         WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes, \
@@ -217,7 +217,7 @@ def get_all_taken_coupon_for_user_offset():
                                     INNER JOIN branches_location on coupons.branch_id = branches_location.branch_id \
                                     INNER JOIN clients_coupon on coupons.coupon_id = clients_coupon.coupon_id \
                                     JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.branch_id \
-                                    JOIN subcategory ON subcategory.subcategory_id = branches_subcategory.subcategory_id WHERE used = false \
+                                    JOIN subcategory ON subcategory.subcategory_id = branches_subcategory.subcategory_id WHERE used = false g\
                                     AND deleted = false AND coupons.coupon_id < %s ORDER BY start_date DESC LIMIT 6 OFFSET %s' % (payload['id'],coupon_id,offset))
 
 
