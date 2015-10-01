@@ -311,14 +311,12 @@ def get_almost_expired_coupons():
 
         list_coupon = db.engine.execute('SELECT *,\
                                         (SELECT COUNT(*) FROM coupons_likes  WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes, \
-                                        ((SELECT COUNT(*) FROM coupons_likes  WHERE coupons.coupon_id = coupons_likes.coupon_id)*.30 + (SELECT COUNT(*) FROM clients_coupon WHERE coupons.coupon_id = clients_coupon.coupon_id)*.70)as total_value,\
                                         (SELECT COUNT(*)  FROM coupons_likes  WHERE coupons_likes.user_id = %d AND coupons.coupon_id = coupons_likes.coupon_id) AS user_like \
                                         FROM coupons INNER JOIN branches_design ON \
                                         coupons.branch_id = branches_design.branch_id \
                                         INNER JOIN branches ON coupons.branch_id = branches.branch_id \
                                         INNER JOIN branches_location on coupons.branch_id = branches_location.branch_id \
-                                        WHERE deleted = false ORDER BY total_value DESC LIMIT 30' % payload['id'])
-
+                                        WHERE deleted = false AND coupons.end_date>now() ORDER BY coupons.end_date ASC LIMIT 8' % payload['id'])
 
         selected_list_coupon = coupons_logo_schema.dump(list_coupon)
         return jsonify({'data': selected_list_coupon.data})
