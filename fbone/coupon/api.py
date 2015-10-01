@@ -317,7 +317,7 @@ def get_almost_expired_coupons():
                                         coupons.branch_id = branches_design.branch_id \
                                         INNER JOIN branches ON coupons.branch_id = branches.branch_id \
                                         INNER JOIN branches_location on coupons.branch_id = branches_location.branch_id \
-                                        WHERE deleted = false ORDER BY total_value DESC LIMIT 8' % payload['id'])
+                                        WHERE deleted = false ORDER BY total_value DESC LIMIT 30' % payload['id'])
 
 
         selected_list_coupon = coupons_logo_schema.dump(list_coupon)
