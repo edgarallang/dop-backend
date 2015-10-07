@@ -322,6 +322,47 @@ def get_almost_expired_coupons():
         return jsonify({'data': selected_list_coupon.data})
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
+@company.route('/nearest/get/', methods=['GET', 'POST'])
+def nearest_coupons():
+    latitude = request.args.get('latitude')
+    longitude = request.args.get('longitude')
+    radio = request.args.get('radio')
+    
+
+
+    query = 'SELECT branch_location_id, branch_id, state, city, latitude, longitude, distance, address, name, category_id \
+                FROM (SELECT z.branch_location_id, z.branch_id, z.state, z.city, z.address, \
+                    z.latitude, z.longitude, branches.name, subcategory.category_id, \
+                    p.radius, \
+                    p.distance_unit \
+                             * DEGREES(ACOS(COS(RADIANS(p.latpoint)) \
+                             * COS(RADIANS(z.latitude)) \
+                             * COS(RADIANS(p.longpoint - z.longitude)) \
+                             + SIN(RADIANS(p.latpoint)) \
+                             * SIN(RADIANS(z.latitude)))) AS distance \
+                FROM branches_location AS z \
+                JOIN branches on z.branch_id = branches.branch_id \
+                JOIN branches_subcategory on z.branch_id = branches_subcategory.branch_id \
+                JOIN subcategory on subcategory.subcategory_id = branches_subcategory.subcategory_id\
+                JOIN (   /* these are the query parameters */ \
+                    SELECT  '+ latitude +'  AS latpoint,  '+ longitude +' AS longpoint, \
+                            '+ radio +' AS radius,      111.045 AS distance_unit \
+                ) AS p ON 1=1 \
+                WHERE z.latitude \
+                 BETWEEN p.latpoint  - (p.radius / p.distance_unit) \
+                     AND p.latpoint  + (p.radius / p.distance_unit) \
+                AND z.longitude \
+                 BETWEEN p.longpoint - (p.radius / (p.distance_unit * COS(RADIANS(p.latpoint)))) \
+                     AND p.longpoint + (p.radius / (p.distance_unit * COS(RADIANS(p.latpoint)))) \
+                ) AS d \
+                WHERE distance <= radius \
+                ORDER BY distance'
+
+    nearestBranches = db.engine.execute(query)
+    nearest = branches_location_schema.dump(nearestBranches)
+    
+    return jsonify({'data': nearest.data})
+
 @coupon.route('/all/get', methods = ['GET'])
 def get_all_coupon():
 
