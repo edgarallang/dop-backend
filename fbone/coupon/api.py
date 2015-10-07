@@ -328,12 +328,7 @@ def nearest_coupons():
     longitude = request.args.get('longitude')
     radio = request.args.get('radio')
     
-    filterQuery = ''
-    prefixFilterQuery = 'AND branches_subcategory.subcategory_id = ANY(ARRAY'
-    filterArray = request.json['filterArray']
 
-    if filterArray:
-        filterQuery = prefixFilterQuery + `filterArray` + ')'
 
     query = 'SELECT branch_location_id, branch_id, state, city, latitude, longitude, distance, address, name, category_id \
                 FROM (SELECT z.branch_location_id, z.branch_id, z.state, z.city, z.address, \
@@ -359,7 +354,6 @@ def nearest_coupons():
                 AND z.longitude \
                  BETWEEN p.longpoint - (p.radius / (p.distance_unit * COS(RADIANS(p.latpoint)))) \
                      AND p.longpoint + (p.radius / (p.distance_unit * COS(RADIANS(p.latpoint)))) \
-                ' + filterQuery + ' \
                 ) AS d \
                 WHERE distance <= radius \
                 ORDER BY distance'
