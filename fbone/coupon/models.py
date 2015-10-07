@@ -231,6 +231,20 @@ class CouponLike(Schema):
                   'user_id',
                   'date')
 
+class CouponsLocation(Schema):
+    # branch = fields.Nested(BranchSchema, validate=must_not_be_blank)
+    class Meta:
+        fields = ('branch_location_id',
+                  'branch_id',
+                  'state',
+                  'longitude',
+                  'latitude',
+                  'city',
+                  'address',
+                  'distance',
+                  'name',
+                  'category_id')
+
 coupon_schema = CouponSchema()
 coupons_schema = CouponSchema(many=True)
 
@@ -250,6 +264,8 @@ clients_coupon_schema = ClientsCouponSchema()
 user_join_exchanges_coupon_schema = UserJoinExchanges(many=True)
 
 coupons_likes_schema = CouponLike(many=True)
+
+coupons_location_schema = CouponsLocation(many=True)
 
 
 

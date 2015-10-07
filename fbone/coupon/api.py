@@ -359,7 +359,7 @@ def nearest_coupons():
                 ORDER BY distance'
 
     nearestBranches = db.engine.execute(query)
-    nearest = branches_location_schema.dump(nearestBranches)
+    nearest = coupons_location_schema.dump(nearestBranches)
     
     return jsonify({'data': nearest.data})
 
