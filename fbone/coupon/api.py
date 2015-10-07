@@ -323,7 +323,7 @@ def get_almost_expired_coupons():
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
 @company.route('/nearest/get/', methods=['GET', 'POST'])
-def nearest_branches():
+def nearest_coupons():
     latitude = request.args.get('latitude')
     longitude = request.args.get('longitude')
     radio = request.args.get('radio')
