@@ -330,10 +330,10 @@ def nearest_coupons():
     
 
 
-    query = 'SELECT branch_location_id, branch_id, state, city, latitude, longitude, distance, address, name, category_id \
-                FROM (SELECT z.branch_location_id, z.branch_id, z.state, z.city, z.address, \
+    query = 'SELECT branch_location_id, branch_id, state, city, latitude, longitude, distance, address, name, category_id, coupon_name, coupon_id \
+                FROM (SELECT coupons.name as coupon_name, coupons.coupon_id, z.branch_location_id, z.branch_id, z.state, z.city, z.address, \
                     z.latitude, z.longitude, branches.name, subcategory.category_id, \
-                    p.radius, \
+                    p.radius,\
                     p.distance_unit \
                              * DEGREES(ACOS(COS(RADIANS(p.latpoint)) \
                              * COS(RADIANS(z.latitude)) \
@@ -343,10 +343,11 @@ def nearest_coupons():
                 FROM branches_location AS z \
                 JOIN branches on z.branch_id = branches.branch_id \
                 JOIN branches_subcategory on z.branch_id = branches_subcategory.branch_id \
-                JOIN subcategory on subcategory.subcategory_id = branches_subcategory.subcategory_id\
+                JOIN subcategory on subcategory.subcategory_id = branches_subcategory.subcategory_id \
+                JOIN coupons on branches.branch_id = coupons.branch_id AND deleted = false AND coupons.end_date>now() \
                 JOIN (   /* these are the query parameters */ \
-                    SELECT  '+ latitude +'  AS latpoint,  '+ longitude +' AS longpoint, \
-                            '+ radio +' AS radius,      111.045 AS distance_unit \
+                    SELECT '+ latitude +'  AS latpoint, '+ longitude +' AS longpoint, \
+                           '+ radio +' AS radius,      111.045 AS distance_unit \
                 ) AS p ON 1=1 \
                 WHERE z.latitude \
                  BETWEEN p.latpoint  - (p.radius / p.distance_unit) \
@@ -358,8 +359,8 @@ def nearest_coupons():
                 WHERE distance <= radius \
                 ORDER BY distance'
 
-    nearestBranches = db.engine.execute(query)
-    nearest = coupons_location_schema.dump(nearestBranches)
+    nearestCoupons = db.engine.execute(query)
+    nearest = coupons_location_schema.dump(nearestCoupons)
     
     return jsonify({'data': nearest.data})
 
