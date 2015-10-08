@@ -235,20 +235,20 @@ class CouponsLocation(Schema):
     class Meta:
         fields = ('coupon_id',
                   'branch_id',
-                  'coupon_id',
-                  'logo',
+                  'company_id',
                   'name',
+                  'distance',
+                  'description',
+                  'start_date',
+                  'end_date',
+                  'limit',
+                  'min_spent',
+                  'coupon_category_id',
+                  'total_likes',
+                  'user_like',
                   'latitude',
                   'longitude',
-                  'names',
-                  'surnames',
-                  'user_id',
-                  'main_image',
-                  'exchange_date',
-                  'friend_id',
-                  'branch_name',
-                  'total_likes',
-                  'user_like')
+                  'category_id')
 
 coupon_schema = CouponSchema()
 coupons_schema = CouponSchema(many=True)
