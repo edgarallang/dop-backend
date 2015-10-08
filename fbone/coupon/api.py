@@ -357,7 +357,7 @@ def nearest_coupons():
                      AND p.longpoint + (p.radius / (p.distance_unit * COS(RADIANS(p.latpoint)))) \
                 ) AS d \
                 WHERE distance <= radius \
-                ORDER BY distance'
+                ORDER BY distance LIMIT 8'
 
     nearestCoupons = db.engine.execute(query)
     nearest = coupons_location_schema.dump(nearestCoupons)
