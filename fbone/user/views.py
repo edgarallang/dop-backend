@@ -269,4 +269,9 @@ def get_profile(user_id):
     friends = db.engine.execute(query)
     friends_list = user_joined_schema.dump(friends)
     return jsonify({'data': friends_list.data})
+
+@user.route('/notification/test', methods=['GET'])
+def notification():
+    jug = Juggernaut()
+    jug.publish('channel', 'The message')
  
