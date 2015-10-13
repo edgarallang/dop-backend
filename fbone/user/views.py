@@ -12,7 +12,7 @@ from .models import *
 from ..extensions import db
 from juggernaut import Juggernaut
 import redis
-
+import flask
 
 user = Blueprint('user', __name__, url_prefix='/api/user')
 red = redis.StrictRedis()
@@ -284,7 +284,7 @@ def event_stream():
         yield 'data: %s\n\n' % message['data']
 
 
-@user.route('/notification/post', methods=['POST'])
+@user.route('/notification/post', methods=['GET'])
 def post():
     message = flask.request.form['message']
     user = flask.session.get('user', 'anonymous')
