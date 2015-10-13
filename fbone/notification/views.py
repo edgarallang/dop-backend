@@ -55,7 +55,7 @@ def test_message(message):
 def test_message(message):
     emit('my response', {'data': message['data']}, broadcast=True)
 
-@socketio.on('connect', namespace='/test')
+@socketio.on('connect')
 def test_connect():
     print "conectado"
     #emit('my response', {'data': 'Connected'})
