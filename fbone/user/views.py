@@ -10,11 +10,9 @@ from flask.ext.login import login_required, current_user
 from jwt import DecodeError, ExpiredSignature
 from .models import *
 from ..extensions import db
-from juggernaut import Juggernaut
-from flask.ext.socketio import SocketIO, emit, join_room, leave_room, close_room, disconnect
+
 
 user = Blueprint('user', __name__, url_prefix='/api/user')
-socketio = SocketIO(app)
 
 
 
@@ -271,21 +269,3 @@ def get_profile(user_id):
     friends_list = user_joined_schema.dump(friends)
     return jsonify({'data': friends_list.data})
 
-
-
-@socketio.on('my event', namespace='/test')
-def test_message(message):
-    emit('my response', {'data': message['data']})
-
-@socketio.on('my broadcast event', namespace='/test')
-def test_message(message):
-    emit('my response', {'data': message['data']}, broadcast=True)
-
-@socketio.on('connect', namespace='/test')
-def test_connect():
-    emit('my response', {'data': 'Connected'})
-
-@socketio.on('disconnect', namespace='/test')
-def test_disconnect():
-    print('Client disconnected')
- 
