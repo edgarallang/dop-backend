@@ -14,7 +14,6 @@ from juggernaut import Juggernaut
 from flask.ext.socketio import SocketIO, emit
 
 user = Blueprint('user', __name__, url_prefix='/api/user')
-app = Flask(__name__)
 socketio = SocketIO(app)
 
 def parse_token(req, token_index):
