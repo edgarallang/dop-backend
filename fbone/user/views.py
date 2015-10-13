@@ -271,6 +271,11 @@ def get_profile(user_id):
     friends_list = user_joined_schema.dump(friends)
     return jsonify({'data': friends_list.data})
 
+
+@user.route('/testing', methods=['GET'])
+def run():
+    socketio.run(app)
+
 @socketio.on('my event', namespace='/test')
 def test_message(message):
     emit('my response', {'data': message['data']})
