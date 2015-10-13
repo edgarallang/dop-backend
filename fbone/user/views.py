@@ -11,10 +11,21 @@ from jwt import DecodeError, ExpiredSignature
 from .models import *
 from ..extensions import db
 from juggernaut import Juggernaut
-from flask.ext.socketio import SocketIO, emit
+from flask.ext.socketio import SocketIO, emit, join_room, leave_room, close_room, disconnect
 
 user = Blueprint('user', __name__, url_prefix='/api/user')
 socketio = SocketIO(app)
+thread = None
+
+def background_thread():
+    """Example of how to send server generated events to clients."""
+    count = 0
+    while True:
+        time.sleep(10)
+        count += 1
+        socketio.emit('my response',
+                      {'data': 'Server generated event', 'count': count},
+                      namespace='/test')
 
 def parse_token(req, token_index):
     if token_index:
@@ -35,6 +46,9 @@ def create_token(user):
     return token.decode('unicode_escape')
 
 @user.route('/')
+def lel():
+    socketio.run(app)
+    
 @login_required
 def index():
     if not current_user.is_authenticated():
