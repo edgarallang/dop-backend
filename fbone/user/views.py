@@ -11,7 +11,7 @@ from jwt import DecodeError, ExpiredSignature
 from .models import *
 from ..extensions import db
 from juggernaut import Juggernaut
-
+import redis
 
 
 user = Blueprint('user', __name__, url_prefix='/api/user')
@@ -275,3 +275,23 @@ def notification():
     jug = Juggernaut()
     jug.publish('channel', 'The message')
  
+def event_stream():
+    pubsub = red.pubsub()
+    pubsub.subscribe('chat')
+    for message in pubsub.listen():
+        print message
+        yield 'data: %s\n\n' % message['data']
+
+
+@user.route('/notification/post', methods=['POST'])
+def post():
+    message = flask.request.form['message']
+    user = flask.session.get('user', 'anonymous')
+    now = datetime.datetime.now().replace(microsecond=0).time()
+    red.publish('chat', u'[%s] %s: %s' % (now.isoformat(), user, message))
+
+
+@user.route('/notification/stream')
+def stream():
+    return flask.Response(event_stream(),
+                          mimetype="text/event-stream")
