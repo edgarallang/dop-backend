@@ -11,9 +11,11 @@ from jwt import DecodeError, ExpiredSignature
 from .models import *
 from ..extensions import db
 from juggernaut import Juggernaut
-from flask.ext.socketio import SocketIO
+from flask.ext.socketio import SocketIO, emit
 
 user = Blueprint('user', __name__, url_prefix='/api/user')
+app = Flask(__name__)
+socketio = SocketIO(app)
 
 def parse_token(req, token_index):
     if token_index:
@@ -269,8 +271,19 @@ def get_profile(user_id):
     friends_list = user_joined_schema.dump(friends)
     return jsonify({'data': friends_list.data})
 
-@user.route('/notification/test', methods=['GET'])
-def notification():
-    jug = Juggernaut()
-    jug.publish('channel', 'The message')
+@socketio.on('my event', namespace='/test')
+def test_message(message):
+    emit('my response', {'data': message['data']})
+
+@socketio.on('my broadcast event', namespace='/test')
+def test_message(message):
+    emit('my response', {'data': message['data']}, broadcast=True)
+
+@socketio.on('connect', namespace='/test')
+def test_connect():
+    emit('my response', {'data': 'Connected'})
+
+@socketio.on('disconnect', namespace='/test')
+def test_disconnect():
+    print('Client disconnected')
  
