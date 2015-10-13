@@ -47,4 +47,4 @@ manager.add_option('-c', '--config',
 
 if __name__ == "__main__":
     manager.run()
-    socketio.run()
+    socketio.run(host='127.0.0.1', port=5000, policy_server=False, transports='websocket, xhr-polling, xhr-multipart')
