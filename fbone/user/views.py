@@ -10,6 +10,7 @@ from flask.ext.login import login_required, current_user
 from jwt import DecodeError, ExpiredSignature
 from .models import *
 from ..extensions import db
+from juggernaut import Juggernaut
 
 
 
