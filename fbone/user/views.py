@@ -36,10 +36,6 @@ def create_token(user):
 
     return token.decode('unicode_escape')
 
-@user.route('/')
-def lel():
-    socketio.run(app)
-
 @login_required
 def index():
     if not current_user.is_authenticated():
