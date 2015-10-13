@@ -11,7 +11,7 @@ from jwt import DecodeError, ExpiredSignature
 from .models import *
 from ..extensions import db
 from juggernaut import Juggernaut
-
+from flask.ext.socketio import SocketIO
 
 user = Blueprint('user', __name__, url_prefix='/api/user')
 
