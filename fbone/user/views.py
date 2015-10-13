@@ -272,9 +272,6 @@ def get_profile(user_id):
     return jsonify({'data': friends_list.data})
 
 
-@user.route('/testing', methods=['GET'])
-def run():
-    socketio.run(app)
 
 @socketio.on('my event', namespace='/test')
 def test_message(message):
