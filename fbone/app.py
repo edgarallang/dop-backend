@@ -19,7 +19,7 @@ from .settings import settings
 from .frontend import frontend
 from .api import api
 from .admin import admin
-from .extensions import db, mail, cache, login_manager, oid, CORS
+from .extensions import db, mail, cache, login_manager, oid, CORS, socketio
 from .utils import INSTANCE_FOLDER_PATH
 
 
@@ -88,6 +88,8 @@ def configure_extensions(app):
 
     # flask-babel
     babel = Babel(app)
+
+    socketio.init_app(app)
 
     @babel.localeselector
     def get_locale():

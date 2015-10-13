@@ -15,6 +15,9 @@ login_manager = LoginManager()
 from flask.ext.openid import OpenID
 oid = OpenID()
 
+from flask.ext.socketio import SocketIO, emit, join_room, leave_room, close_room, disconnect
+socketio = SocketIO()
+
 # from flask.ext.jwt import JWT
 # jwt = JWT()
 
