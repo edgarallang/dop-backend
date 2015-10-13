@@ -7,6 +7,7 @@ logging.basicConfig()
 from flask import Flask, request, render_template
 from flask.ext.babel import Babel
 
+
 from .config import DefaultConfig
 from .badge import Badge
 from .level import Level, level
@@ -121,7 +122,6 @@ def configure_template_filters(app):
     @app.template_filter()
     def format_date(value, format='%Y-%m-%d'):
         return value.strftime(format)
-
 
 def configure_logging(app):
     """Configure file(info) and email(error) logging."""

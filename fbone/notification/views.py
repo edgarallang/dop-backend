@@ -11,10 +11,9 @@ from jwt import DecodeError, ExpiredSignature
 #from .models import *
 from ..extensions import db
 from juggernaut import Juggernaut
-from flask.ext.socketio import SocketIO, emit, join_room, leave_room, close_room, disconnect
 
 notification = Blueprint('notification', __name__, url_prefix='/api/notification')
-socketio = SocketIO(app)
+
 
 
 

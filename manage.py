@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from flask.ext.script import Manager
+from flask.ext.socketio import SocketIO, emit, join_room, leave_room, close_room, disconnect
 
 from fbone import create_app
 from fbone.extensions import db
@@ -13,6 +14,7 @@ app = create_app()
 app.test_request_context().push()
 scheduler = APScheduler()
 scheduler.init_app(app)
+socketio = SocketIO(app)
 manager = Manager(app)
 
 
@@ -20,6 +22,7 @@ manager = Manager(app)
 def run():
     """Run in local machine."""
     scheduler.start()
+    socketio.run()
     app.run(host='0.0.0.0', use_reloader=False)
 
 @manager.command
