@@ -11,6 +11,7 @@ from jwt import DecodeError, ExpiredSignature
 #from .models import *
 from ..extensions import db, socketio
 from juggernaut import Juggernaut
+from gevent import monkey
 
 notification = Blueprint('notification', __name__, url_prefix='/api/notification')
 
