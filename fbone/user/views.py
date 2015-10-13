@@ -15,6 +15,7 @@ import redis
 
 
 user = Blueprint('user', __name__, url_prefix='/api/user')
+red = redis.StrictRedis()
 
 def parse_token(req, token_index):
     if token_index:
