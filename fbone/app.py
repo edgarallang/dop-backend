@@ -90,6 +90,7 @@ def configure_extensions(app):
     babel = Babel(app)
 
     socketio.init_app(app)
+    socketio.run(app, host='127.0.0.1', port=5000, policy_server=False, transports='websocket, xhr-polling, xhr-multipart')
 
     @babel.localeselector
     def get_locale():
