@@ -8,7 +8,7 @@ from flask import Blueprint, request, jsonify
 from flask import current_app as app
 from flask.ext.login import login_required, current_user
 from jwt import DecodeError, ExpiredSignature
-from .models import *
+#from .models import *
 from ..extensions import db
 from juggernaut import Juggernaut
 from flask.ext.socketio import SocketIO, emit, join_room, leave_room, close_room, disconnect
