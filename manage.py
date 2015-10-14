@@ -22,6 +22,7 @@ manager = Manager(app)
 def run():
     """Run in local machine."""
     scheduler.start()
+    socketio.run()
     app.run(host='0.0.0.0', use_reloader=False,threaded=True)
 
 @manager.command
@@ -46,5 +47,4 @@ manager.add_option('-c', '--config',
                    help="config file")
 
 if __name__ == "__main__":
-    socketio.run()
     manager.run()
