@@ -8,7 +8,7 @@ from fbone.extensions import db, socketio
 from flask_apscheduler import APScheduler
 from fbone.user import User, UserImage, UserLevel, ADMIN, ACTIVE
 from fbone.utils import MALE
-from gevent import monkey
+
 
 app = create_app()
 app.test_request_context().push()
@@ -46,5 +46,5 @@ manager.add_option('-c', '--config',
                    help="config file")
 
 if __name__ == "__main__":
-    manager.run()
+    manager.run(threaded=True)
     socketio.run(host='127.0.0.1', port=5000, policy_server=False, transports='websocket, xhr-polling, xhr-multipart')
