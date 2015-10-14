@@ -126,7 +126,8 @@ class UserSchema(Schema):
                   'birth_date',
                   'facebook_key',
                   'google_key',
-                  'twitter_key')
+                  'twitter_key',
+                  'privacy_status')
 
 class UserJoinImage(Schema):
     class Meta:
