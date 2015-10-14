@@ -47,4 +47,4 @@ manager.add_option('-c', '--config',
                    help="config file")
 
 if __name__ == "__main__":
-    manager.run(threaded=True)
+    manager.run()
