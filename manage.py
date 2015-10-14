@@ -46,5 +46,5 @@ manager.add_option('-c', '--config',
                    help="config file")
 
 if __name__ == "__main__":
-    socketio.run(host='127.0.0.1', port=5000)
+    socketio.run()
     manager.run()
