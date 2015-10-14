@@ -83,7 +83,7 @@ def facebook_login():
         facebookUser = User(names = request.json['names'],
                             surnames = request.json['surnames'],
                             birth_date = request.json['birth_date'],
-                            facebook_key = request.json['facebook_key']
+                            facebook_key = request.json['facebook_key'],
                             privacy_status = 0)
         db.session.add(facebookUser)
         db.session.commit()
