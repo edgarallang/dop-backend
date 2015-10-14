@@ -73,6 +73,7 @@ class User(db.Model, UserMixin):
     facebook_key = Column(db.String(STRING_LEN))
     google_key = Column(db.String(STRING_LEN))
     twitter_key = Column(db.String(STRING_LEN))
+    privacy_status = Column(db.Integer)
 
     #users_image_user_id = db.relationship("UserImage", uselist=False, backref="users")
 
