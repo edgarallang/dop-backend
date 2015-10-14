@@ -90,6 +90,7 @@ def configure_extensions(app):
     babel = Babel(app)
 
     socketio.init_app(app)
+    
 
     @babel.localeselector
     def get_locale():

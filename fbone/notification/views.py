@@ -11,6 +11,7 @@ from jwt import DecodeError, ExpiredSignature
 #from .models import *
 from ..extensions import db, socketio
 from juggernaut import Juggernaut
+from gevent import socket
 
 notification = Blueprint('notification', __name__, url_prefix='/api/notification')
 
@@ -55,8 +56,9 @@ def test_message(message):
 def test_message(message):
     emit('my response', {'data': message['data']}, broadcast=True)
 
-@socketio.on('connect', namespace='/test')
+@socketio.on('connect')
 def test_connect():
+    print "conectado"
     emit('my response', {'data': 'Connected'})
 
 @socketio.on('disconnect', namespace='/test')
