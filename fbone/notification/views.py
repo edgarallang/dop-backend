@@ -61,7 +61,7 @@ def test_message(message):
 @socketio.on('connect')
 def test_connect():
     print "conectado"
-    emit('my response', {'data': 'Connected'})
+    #emit('my response', {'data': 'Connected'})
 
 @socketio.on('disconnect', namespace='/test')
 def test_disconnect():
