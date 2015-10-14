@@ -23,7 +23,7 @@ def run():
     """Run in local machine."""
     scheduler.start()
     # app.run(host='0.0.0.0', use_reloader=False,threaded=True)
-    socketio.run(app, host="0.0.0.0",threaded=True)
+    socketio.run(app, host="0.0.0.0")
 
 @manager.command
 def initdb():
@@ -47,4 +47,4 @@ manager.add_option('-c', '--config',
                    help="config file")
 
 if __name__ == "__main__":
-    manager.run()
+    manager.run(threaded=True)
