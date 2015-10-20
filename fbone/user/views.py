@@ -271,8 +271,8 @@ def get_profile(user_id):
     return jsonify({'data': friends_list.data})
 
 #SEARCH API
-@company.route('/people/search/', methods = ['GET','POST'])
-def search_branch():
+@user.route('/people/search/', methods = ['GET','POST'])
+def search_people():
     if request.headers.get('Authorization'):
         token_index = True
         text = request.args.get('text')
@@ -281,7 +281,7 @@ def search_branch():
         #list_coupon = db.engine.execute(query)
         people = db.engine.execute("SELECT * FROM users \
                                     INNER JOIN users_image on users.user_id = users_image.user_id \
-                                    WHERE name ILIKE '%s' " % ('%%' + text + '%%' ))
+                                    WHERE users.names ILIKE '%s' " % ('%%' + text + '%%' ))
         selected_list_people = people_schema.dump(branches)
         return jsonify({'data': selected_list_people.data})
     return jsonify({'message': 'Oops! algo salió mal :('})
