@@ -178,7 +178,7 @@ def add_friend():
         payload = parse_token(request, True)
 
         user_id = User.query.get(payload['id']).user_id
-
+        
         friendsRelationship  = Friends(user_one_id = user_id,
                                        user_two_id = request.json['user_two_id'],
                                        operation_id = 0,
@@ -269,4 +269,22 @@ def get_profile(user_id):
     friends = db.engine.execute(query)
     friends_list = user_joined_schema.dump(friends)
     return jsonify({'data': friends_list.data})
+
+#SEARCH API
+@company.route('/people/search/', methods = ['GET','POST'])
+def search_branch():
+    if request.headers.get('Authorization'):
+        token_index = True
+        text = request.args.get('text')
+
+        #payload = parse_token(request, token_index)
+        #list_coupon = db.engine.execute(query)
+        people = db.engine.execute("SELECT * FROM users \
+                                    INNER JOIN users_image on users.user_id = users_image.user_id \
+                                    WHERE name ILIKE '%s' " % ('%%' + text + '%%' ))
+        selected_list_people = people_schema.dump(branches)
+        return jsonify({'data': selected_list_people.data})
+    return jsonify({'message': 'Oops! algo salió mal :('})
+
+
 
