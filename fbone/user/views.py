@@ -282,7 +282,7 @@ def search_people():
         people = db.engine.execute("SELECT * FROM users \
                                     INNER JOIN users_image on users.user_id = users_image.user_id \
                                     WHERE users.names ILIKE '%s' " % ('%%' + text + '%%' ))
-        selected_list_people = people_schema.dump(branches)
+        selected_list_people = people_schema.dump(people)
         return jsonify({'data': selected_list_people.data})
     return jsonify({'message': 'Oops! algo salió mal :('})
 
