@@ -161,11 +161,22 @@ class FriendsCountSchema(Schema):
         fields = ('friends_id',
                   'total')
 
+class PeopleSchema(Schema):
+    class Meta:
+        fields = ('user_id',
+                  'names',
+                  'surnames',
+                  'birth_date',
+                  'facebook_key',
+                  'privacy_status',
+                  'main_image')
+
 user_schema = UserSchema(many=True)
 user_joined_schema = UserJoinImage(many=True)
 friends_schema = FriendsSchema(many=True)
 user_join_friends = UserJoinFriends(many=True)
 friends_count_schema = FriendsCountSchema(many=True)
+people_schema = PeopleSchema(many = True)
 
     # ================================================================
     # Class methods
