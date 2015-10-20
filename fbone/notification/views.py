@@ -52,16 +52,18 @@ def get_profile(user_id):
 
 @socketio.on('my event', namespace='/test')
 def test_message(message):
-    emit('my response', {'data': message['data']})
+    print "test"
+    #emit('my response', {'data': message['data']})
 
 @socketio.on('my broadcast event', namespace='/test')
 def test_message(message):
-    emit('my response', {'data': message['data']}, broadcast=True)
+    print "test"
+    #emit('my response', {'data': message['data']}, broadcast=True)
 
 @socketio.on('connect')
 def test_connect():
     print "conectado"
-    emit('my response', {'data': 'Connected'})
+    #emit('my response', {'data': 'Connected'})
 
 @socketio.on('disconnect', namespace='/test')
 def test_disconnect():
