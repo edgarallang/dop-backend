@@ -16,7 +16,7 @@ context.use_certificate_file('/etc/ssl/websitessl/inmoon.crt')
 
 app = create_app()
 app.test_request_context().push()
-app.ssl_context = context
+
 scheduler = APScheduler()
 scheduler.init_app(app)
 
@@ -27,8 +27,8 @@ manager = Manager(app)
 def run():
     """Run in local machine."""
     scheduler.start()
-    # app.run(host='0.0.0.0', use_reloader=False,threaded=True)
-    socketio.run(app, host="0.0.0.0" )
+    app.run(host='0.0.0.0', use_reloader=False,threaded=True)
+    #socketio.run(app, host="0.0.0.0" )
 
 @manager.command
 def initdb():
