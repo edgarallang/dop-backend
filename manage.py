@@ -16,7 +16,6 @@ from OpenSSL import SSL
 context = ('/etc/ssl/websitessl/inmoon.crt', '/etc/ssl/websitessl/inmoon.key')
 
 app = create_app()
-app.ssl_context = context
 app.test_request_context().push()
 
 scheduler = APScheduler()
