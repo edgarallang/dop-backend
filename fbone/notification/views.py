@@ -48,7 +48,18 @@ def get_profile(user_id):
     friends_list = user_joined_schema.dump(friends)
     return jsonify({'data': friends_list.data})
 
-
+@notification.route('/sslinfo')
+def sslinfo():
+    return """I know the following things about the certificate you provided:
+Host: {}
+X-SSL-Verified: {}
+X-SSL-DN: {}
+X-SSL-Client-Cert: {}
+""".format(
+    request.headers.get('Host'),
+    request.headers.get('X-SSL-Verified'),
+    request.headers.get('X-SSL-DN'),
+    request.headers.get('X-SSL-Client-Cert'))
 
 @socketio.on('my event', namespace='/test')
 def test_message(message):
