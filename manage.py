@@ -16,6 +16,7 @@ from OpenSSL import SSL
 context = ('/etc/ssl/websitessl/inmoon.crt', '/etc/ssl/websitessl/inmoon.key')
 
 app = create_app()
+app.ssl_context = context
 app.test_request_context().push()
 
 scheduler = APScheduler()
@@ -29,7 +30,7 @@ def run():
     """Run in local machine."""
     scheduler.start()
     #app.run(host='0.0.0.0', use_reloader=False,ssl_context=context, threaded=True, debug=True)
-    socketio.run(app, host="0.0.0.0", ssl_context=context)
+    socketio.run(app, host="0.0.0.0")
 
 @manager.command
 def initdb():
