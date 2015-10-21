@@ -10,9 +10,10 @@ from fbone.user import User, UserImage, UserLevel, ADMIN, ACTIVE
 from fbone.utils import MALE
 from OpenSSL import SSL
 
-context = SSL.Context(SSL.SSLv23_METHOD)
-context.use_privatekey_file('/etc/ssl/websitessl/inmoon.key')
-context.use_certificate_file('/etc/ssl/websitessl/inmoon.crt')
+#context = SSL.Context(SSL.SSLv23_METHOD)
+#context.use_privatekey_file('/etc/ssl/websitessl/inmoon.key')
+#context.use_certificate_file('/etc/ssl/websitessl/inmoon.crt')
+context = ('/etc/ssl/websitessl/inmoon.crt', '/etc/ssl/websitessl/inmoon.key')
 
 app = create_app()
 app.test_request_context().push()
@@ -27,7 +28,7 @@ manager = Manager(app)
 def run():
     """Run in local machine."""
     scheduler.start()
-    app.run(host='0.0.0.0', use_reloader=False,ssl_context = context)
+    app.run(host='0.0.0.0', use_reloader=False,ssl_context=context, threaded=True, debug=True)
     #socketio.run(app, host="0.0.0.0" )
 
 @manager.command
