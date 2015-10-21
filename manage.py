@@ -28,8 +28,8 @@ manager = Manager(app)
 def run():
     """Run in local machine."""
     scheduler.start()
-    app.run(host='0.0.0.0', use_reloader=False,ssl_context=context, threaded=True, debug=True)
-    #socketio.run(app, host="0.0.0.0" )
+    #app.run(host='0.0.0.0', use_reloader=False,ssl_context=context, threaded=True, debug=True)
+    socketio.run(app, host="0.0.0.0", ssl_context=context)
 
 @manager.command
 def initdb():
