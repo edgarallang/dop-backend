@@ -37,7 +37,7 @@ class BaseConfig(object):
 
 
 class DefaultConfig(BaseConfig):
-    ssl_context = context
+    # ssl_context = context
     PRESERVE_CONTEXT_ON_EXCEPTION = False
     DEBUG = False
     use_reloader=False
