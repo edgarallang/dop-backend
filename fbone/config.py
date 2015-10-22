@@ -5,6 +5,7 @@ from utils import make_dir, INSTANCE_FOLDER_PATH
 from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 from flask import current_app
 
+context = ('/etc/ssl/websitessl/inmoon.crt', '/etc/ssl/websitessl/inmoon.key')
 
 class BaseConfig(object):
 
@@ -36,6 +37,7 @@ class BaseConfig(object):
 
 
 class DefaultConfig(BaseConfig):
+    ssl_context = context
     PRESERVE_CONTEXT_ON_EXCEPTION = False
     DEBUG = False
     use_reloader=False
