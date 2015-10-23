@@ -63,7 +63,7 @@ def sslinfo():
 
 @socketio.on('my event', namespace='/test')
 def test_message(message):
-    print "test"
+    emit('my response', {"message": "hola"}, namespace='/test')
     #emit('my response', {'data': message['data']})
 
 @socketio.on('my broadcast event', namespace='/test')
