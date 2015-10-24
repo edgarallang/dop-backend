@@ -28,6 +28,9 @@ def parse_token(req, token_index):
         token = req.headers.get('Authorization').split()[1]
     return jwt.decode(token, app.config['TOKEN_SECRET'])
 
+def parse_token_socket(token):
+    return jwt.decode(token, app.config['TOKEN_SECRET'])
+
 def create_token(user):
     payload = {
         'id': user.user_id,
@@ -64,7 +67,8 @@ def sslinfo():
 
 @socketio.on('check_notification', namespace='/test')
 def test_message(message):
-    emit('my response', {"message": message["id"]}, namespace='/test')
+    user = parse_token_socket(message)
+    emit('my response', {"message": user["id"]}, namespace='/test')
     print datetime.now()
 
 @socketio.on('my broadcast event', namespace='/test')
