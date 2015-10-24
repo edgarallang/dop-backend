@@ -62,9 +62,9 @@ def sslinfo():
         request.headers.get('X-SSL-DN'),
         request.headers.get('X-SSL-Client-Cert'))
 
-@socketio.on('my event', namespace='/test')
+@socketio.on('check_notification', namespace='/test')
 def test_message(message):
-    emit('my response', {"message": "hola"}, namespace='/test')
+    emit('my response', {"message": message}, namespace='/test')
     print datetime.now()
 
 @socketio.on('my broadcast event', namespace='/test')
