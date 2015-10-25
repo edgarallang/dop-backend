@@ -9,7 +9,7 @@ from flask import current_app as app
 from flask.ext.login import login_required, current_user
 from flask.ext.socketio import send, emit
 from jwt import DecodeError, ExpiredSignature
-#from .models import *
+from .models import *
 from ..extensions import db, socketio
 from juggernaut import Juggernaut
 from gevent import socket, monkey
