@@ -74,7 +74,7 @@ def test_message(message):
 
     notifications_list = notifications_schema.dump(notifications)
 
-    emit('my response', {'data': notifications_list.data}, namespace='/test')
+    emit('my response', {'data': notifications_list.data}, broadcast=True)
     print datetime.now()
 
 @socketio.on('my broadcast event', namespace='/test')
