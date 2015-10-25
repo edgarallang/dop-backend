@@ -75,7 +75,7 @@ def test_message(message):
     notifications_list = notifications_schema.dump(notifications)
 
     emit('my response', {'data': notifications_list.data}, broadcast=True)
-    print datetime.now()
+    print session["id"]
 
 @socketio.on('my broadcast event', namespace='/test')
 def test_message(message):
@@ -84,6 +84,7 @@ def test_message(message):
 
 @socketio.on('connect', namespace="/test")
 def test_connect():
+    session['id'] = 5
     print "conectado"
     #emit('my response', {'data': 'Connected'})
 
