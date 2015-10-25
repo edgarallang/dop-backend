@@ -67,7 +67,13 @@ def sslinfo():
 
 @socketio.on('check_notification', namespace='/test')
 def test_message(message):
-    user = parse_token_socket(message)
+    payload = parse_token_socket(message)
+
+    notifications = db.engine.execute('SELECT * FROM notifications WHERE user_id = %d AND readed = 0' % (payload['id']))
+
+
+    notifications_list = notifications_schema.dump(notifications)
+
     emit('my response', {"message": user["id"]}, namespace='/test')
     print datetime.now()
 
