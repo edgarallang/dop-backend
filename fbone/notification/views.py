@@ -7,7 +7,7 @@ import requests
 from flask import Blueprint, request, jsonify, session
 from flask import current_app as app
 from flask.ext.login import login_required, current_user
-from flask.ext.socketio import send, emit, join_room, leave_room
+from flask.ext.socketio import SocketIO, send, emit, join_room, leave_room
 from jwt import DecodeError, ExpiredSignature
 from .models import *
 from ..extensions import db, socketio
