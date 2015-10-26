@@ -99,7 +99,6 @@ def facebook_login():
         db.session.commit()
 
     token = create_token(facebookUser)
-    session["token"] = token
 
     return jsonify(token=token)
 

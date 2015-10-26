@@ -65,19 +65,22 @@ def sslinfo():
         request.headers.get('X-SSL-DN'),
         request.headers.get('X-SSL-Client-Cert'))
 
-@socketio.on('check_notification', namespace='/test')
-def test_message(message):
+@socketio.on('join_room', namespace='/app')
+def join_room(message):
     payload = parse_token_socket(message)
+    session["id"] = payload["id"]
+    join_room(session["id"])
 
     notifications = db.engine.execute('SELECT * FROM notifications WHERE user_id = %d AND readed = 0' % (payload['id']))
 
 
     notifications_list = notifications_schema.dump(notifications)
 
-    emit('my response', {'data': notifications_list.data}, broadcast=True)
+    emit('my response', {'data': notifications_list.data}, broadcast=True, room = session["id"])
+    
     print session["id"]
 
-@socketio.on('my broadcast event', namespace='/test')
+@socketio.on('my broadcast event', namespace='/app')
 def test_message(message):
     print "test"
     #emit('my response', {'data': message['data']}, broadcast=True)
@@ -90,7 +93,7 @@ def test_connect():
     print "conectado "
     #emit('my response', {'data': 'Connected'})
 
-@socketio.on('disconnect', namespace='/test')
+@socketio.on('disconnect', namespace='/app')
 def test_disconnect():
     leave_room(session["id"])
     print('Client disconnected')
