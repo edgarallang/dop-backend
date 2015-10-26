@@ -7,7 +7,7 @@ import requests
 from flask import Blueprint, request, jsonify, session
 from flask import current_app as app
 from flask.ext.login import login_required, current_user
-from flask.ext.socketio import send, emit
+from flask.ext.socketio import send, emit, join_room, leave_room
 from jwt import DecodeError, ExpiredSignature
 from .models import *
 from ..extensions import db, socketio
@@ -83,12 +83,15 @@ def test_message(message):
     #emit('my response', {'data': message['data']}, broadcast=True)
 
 @socketio.on('connect', namespace="/test")
-def test_connect():
+def test_connect(user_token):
     session["id"] = 5
-    print "conectado"
+    #join_room(session["id"])
+    #send(' has entered the room.', room=session["id"])
+    print "conectado "+user_token
     #emit('my response', {'data': 'Connected'})
 
 @socketio.on('disconnect', namespace='/test')
 def test_disconnect():
+    leave_room(session["id"])
     print('Client disconnected')
  
