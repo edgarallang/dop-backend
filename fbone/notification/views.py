@@ -69,7 +69,9 @@ def sslinfo():
 def join_room(message):
     payload = parse_token_socket(message)
     session["id"] = payload["id"]
-    join_room(session["id"])
+    room = session["id"]
+    print room
+    join_room(room)
 
     notifications = db.engine.execute('SELECT * FROM notifications WHERE user_id = %d AND readed = 0' % (payload['id']))
 
