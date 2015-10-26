@@ -71,7 +71,7 @@ def join_room(message):
     session["id"] = payload["id"]
     room = session["id"]
     print room
-    join_room(room)
+    #join_room(room)
 
     notifications = db.engine.execute('SELECT * FROM notifications WHERE user_id = %d AND readed = 0' % (payload['id']))
 
