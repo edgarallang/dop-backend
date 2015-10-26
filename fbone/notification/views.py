@@ -71,7 +71,7 @@ def join_room(message):
     session["id"] = payload["id"]
     room = session["id"]
     print room
-    #join_room(room)
+    join_room("hola")
 
     notifications = db.engine.execute('SELECT * FROM notifications WHERE user_id = %d AND readed = 0' % (payload['id']))
 
@@ -80,7 +80,7 @@ def join_room(message):
 
     emit('my response', {'data': notifications_list.data}, room = room)
     
-    print session["id"]
+    print room
 
 @socketio.on('my broadcast event', namespace='/app')
 def test_message(message):
