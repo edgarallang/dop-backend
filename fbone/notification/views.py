@@ -73,17 +73,17 @@ def sslinfo():
 @socketio.on('join room', namespace='/app')
 def on_join_room(message):
    print "na"
-   # payload = parse_token_socket(message)
-   # session["id"] = payload["id"]
-   # room = session["id"]
-   # join_room(room)
+    payload = parse_token_socket(message)
+    session["id"] = payload["id"]
+    room = session["id"]
+    join_room(room)
 
-   # notifications = db.engine.execute('SELECT * FROM notifications WHERE user_id = %d AND readed = 0' % (payload['id']))
+    notifications = db.engine.execute('SELECT * FROM notifications WHERE user_id = %d AND readed = 0' % (payload['id']))
 
 
-   # notifications_list = notifications_schema.dump(notifications)
+    notifications_list = notifications_schema.dump(notifications)
 
-   # emit('my response', {'data': notifications_list.data}, room = room)
+    emit('my response', {'data': notifications_list.data}, room = room)
     
     #print room
 
@@ -99,8 +99,6 @@ def test_message(message):
 
 @socketio.on('connect', namespace='/app')
 def test_connect():
-    socketio.join_room("hola")
-
     print "conectado "
     #emit('my response', {'data': 'Connected'})
 
