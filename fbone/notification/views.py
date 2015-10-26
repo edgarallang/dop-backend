@@ -78,7 +78,7 @@ def join_room(message):
 
     notifications_list = notifications_schema.dump(notifications)
 
-    emit('my response', {'data': notifications_list.data}, broadcast=True, room = session["id"])
+    emit('my response', {'data': notifications_list.data}, room = room)
     
     print session["id"]
 
