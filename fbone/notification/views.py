@@ -42,6 +42,11 @@ def create_token(user):
 
     return token.decode('unicode_escape')
 
+def send_notification(event,message,namespace,room):
+    socketio.emit(event,{'data': message}, namespace='/app',room=liked_user.user_id)
+
+
+
 @notification.route('/<int:user_id>/profile/get', methods=['GET'])
 def get_profile(user_id):    
     query = 'SELECT users.names,users.surnames,users.twitter_key, users.facebook_key, users.google_key, users.user_id,\
@@ -67,17 +72,17 @@ def sslinfo():
 
 @socketio.on('join room', namespace='/app')
 def on_join_room(message):
-    payload = parse_token_socket(message)
-    session["id"] = payload["id"]
-    room = session["id"]
-    join_room(room)
+   # payload = parse_token_socket(message)
+   # session["id"] = payload["id"]
+   # room = session["id"]
+   # join_room(room)
 
-    notifications = db.engine.execute('SELECT * FROM notifications WHERE user_id = %d AND readed = 0' % (payload['id']))
+   # notifications = db.engine.execute('SELECT * FROM notifications WHERE user_id = %d AND readed = 0' % (payload['id']))
 
 
-    notifications_list = notifications_schema.dump(notifications)
+   # notifications_list = notifications_schema.dump(notifications)
 
-    emit('my response', {'data': notifications_list.data}, room = room)
+   # emit('my response', {'data': notifications_list.data}, room = room)
     
     #print room
 
