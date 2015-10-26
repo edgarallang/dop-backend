@@ -83,7 +83,7 @@ def test_message(message):
     #emit('my response', {'data': message['data']}, broadcast=True)
 
 @socketio.on('connect', namespace="/test")
-def test_connect():
+def test_connect(user_token):
     session["id"] = 5
     #join_room(session["id"])
     #send(' has entered the room.', room=session["id"])
