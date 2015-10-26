@@ -523,11 +523,15 @@ def like_used_coupon():
         token_index = True
         payload = parse_token(request, token_index)
 
+
         userLike = CouponsUsedLikes.query.filter_by(clients_coupon_id = request.json['clients_coupon_id'],user_id = payload['id']).first()
         if not userLike:
             user_like = CouponsUsedLikes(clients_coupon_id = request.json['clients_coupon_id'],
                                       user_id = payload['id'],
                                       date = request.json['date'])
+
+            emit('notification', {'data': 'Alguien dio like a tu actividad!'}, room = request.json['clients_coupon_id'])
+
 
             db.session.add(user_like)
             db.session.commit()
