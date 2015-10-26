@@ -531,7 +531,9 @@ def like_used_coupon():
                                       user_id = payload['id'],
                                       date = request.json['date'])
 
-            socketio.emit('notification',{'data': 'someone triggered me'},namespace='/app',room=request.json['clients_coupon_id'])
+            liked_user = ClientsCoupon.query.filter_by(clients_coupon_id = request.json['clients_coupon_id']).first()
+
+            socketio.emit('notification',{'data': 'someone triggered me'},namespace='/app',room=liked_user.user_id)
 
 
             db.session.add(user_like)
