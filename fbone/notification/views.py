@@ -99,9 +99,8 @@ def test_message(message):
 
 @socketio.on('connect', namespace='/app')
 def test_connect():
-    #room = session["token"]
-    #join_room(session["id"])
-    #send(' has entered the room.', room=session["id"])
+    socketio.join_room("hola")
+
     print "conectado "
     #emit('my response', {'data': 'Connected'})
 

@@ -99,7 +99,6 @@ def facebook_login():
         db.session.commit()
 
     token = create_token(facebookUser)
-    socketio.join_room("hola")
 
     return jsonify(token=token)
 
