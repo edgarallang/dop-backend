@@ -13,7 +13,7 @@ from flask.ext.login import login_required, current_user
 from jwt import DecodeError, ExpiredSignature
 from .models import *
 from ..user import *
-from ..extensions import db,socketio
+from ..extensions import db, socketio
 from flask.ext.socketio import SocketIO, send, emit, join_room, leave_room
 
 
@@ -531,7 +531,7 @@ def like_used_coupon():
                                       user_id = payload['id'],
                                       date = request.json['date'])
 
-            socketio.emit('response',{'data': 'someone triggered me'},namespace='/app',room=5)
+            socketio.emit('notification',{'data': 'someone triggered me'},namespace='/app',room=request.json['clients_coupon_id'])
 
 
             db.session.add(user_like)
