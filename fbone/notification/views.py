@@ -80,7 +80,7 @@ def on_join_room(message):
 
     #emit('my response', {'data': notifications_list.data}, room = room)
     
-    print room
+    #print room
 
 @socketio.on('my broadcast event', namespace='/app')
 def test_message(message):
