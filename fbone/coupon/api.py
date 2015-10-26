@@ -13,7 +13,7 @@ from flask.ext.login import login_required, current_user
 from jwt import DecodeError, ExpiredSignature
 from .models import *
 from ..user import *
-from ..extensions import db
+from ..extensions import db,socketio
 from flask.ext.socketio import SocketIO, send, emit, join_room, leave_room
 
 
