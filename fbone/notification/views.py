@@ -65,7 +65,7 @@ def sslinfo():
         request.headers.get('X-SSL-DN'),
         request.headers.get('X-SSL-Client-Cert'))
 
-@socketio.on('join_room', namespace='/app')
+@socketio.on('join room', namespace='/app')
 def join_room(message):
     payload = parse_token_socket(message)
     session["id"] = payload["id"]
@@ -73,12 +73,12 @@ def join_room(message):
     print room
     join_room("hola")
 
-    notifications = db.engine.execute('SELECT * FROM notifications WHERE user_id = %d AND readed = 0' % (payload['id']))
+    #notifications = db.engine.execute('SELECT * FROM notifications WHERE user_id = %d AND readed = 0' % (payload['id']))
 
 
-    notifications_list = notifications_schema.dump(notifications)
+    #notifications_list = notifications_schema.dump(notifications)
 
-    emit('my response', {'data': notifications_list.data}, room = room)
+    #emit('my response', {'data': notifications_list.data}, room = room)
     
     print room
 
