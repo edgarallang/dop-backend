@@ -4,7 +4,7 @@ import os
 import jwt
 import json
 import requests
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, session
 from flask import current_app as app
 from flask.ext.login import login_required, current_user
 from jwt import DecodeError, ExpiredSignature
@@ -99,6 +99,7 @@ def facebook_login():
         db.session.commit()
 
     token = create_token(facebookUser)
+    session["token"] = token
 
     return jsonify(token=token)
 
