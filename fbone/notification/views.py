@@ -84,10 +84,10 @@ def test_message(message):
 
 @socketio.on('connect', namespace="/test")
 def test_connect():
-    room = parse_token_socket(session["token"])
+    #room = parse_token_socket(session["token"])
     #join_room(session["id"])
     #send(' has entered the room.', room=session["id"])
-    print "conectado "+room
+    print "conectado "
     #emit('my response', {'data': 'Connected'})
 
 @socketio.on('disconnect', namespace='/test')
