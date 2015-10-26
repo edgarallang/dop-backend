@@ -91,8 +91,9 @@ def on_leave(data):
     room = session['id']
     leave_room(room)
 
-@socketio.on('my broadcast event', namespace='/app')
+@socketio.on('notification', namespace='/app')
 def test_message(message):
+    emit('my response', {'data': 'data'}, broadcast = True)
     print "test"
     #emit('my response', {'data': message['data']}, broadcast=True)
 
