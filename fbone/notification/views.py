@@ -66,7 +66,7 @@ def sslinfo():
         request.headers.get('X-SSL-Client-Cert'))
 
 @socketio.on('join room', namespace='/app')
-def join_room(message):
+def on_join_room(message):
     #payload = parse_token_socket(message)
     #session["id"] = payload["id"]
     #room = session["id"]
