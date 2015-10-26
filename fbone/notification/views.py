@@ -87,7 +87,7 @@ def test_connect(user_token):
     session["id"] = 5
     #join_room(session["id"])
     #send(' has entered the room.', room=session["id"])
-    print "conectado "+user_token
+    print "conectado "
     #emit('my response', {'data': 'Connected'})
 
 @socketio.on('disconnect', namespace='/test')
