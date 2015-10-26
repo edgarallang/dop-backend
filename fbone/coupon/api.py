@@ -14,6 +14,7 @@ from jwt import DecodeError, ExpiredSignature
 from .models import *
 from ..user import *
 from ..extensions import db
+from flask.ext.socketio import SocketIO, send, emit, join_room, leave_room
 
 
 coupon = Blueprint('coupon', __name__, url_prefix='/api/coupon')
