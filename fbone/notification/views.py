@@ -77,6 +77,7 @@ def join_room(message):
     notifications_list = notifications_schema.dump(notifications)
 
     emit('my response', {'data': notifications_list.data}, broadcast=True, room = session["id"])
+    
     print session["id"]
 
 @socketio.on('my broadcast event', namespace='/app')
