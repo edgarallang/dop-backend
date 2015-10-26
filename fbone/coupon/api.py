@@ -531,7 +531,7 @@ def like_used_coupon():
                                       user_id = payload['id'],
                                       date = request.json['date'])
 
-            emit('notification', {'data': 'Alguien dio like a tu actividad!'}, room = request.json['clients_coupon_id'])
+            emit('notification', {'data': 'Alguien dio like a tu actividad!'}, room = 5)
 
 
             db.session.add(user_like)
