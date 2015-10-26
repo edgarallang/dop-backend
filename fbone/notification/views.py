@@ -84,7 +84,7 @@ def test_message(message):
 
 @socketio.on('connect')
 def test_connect():
-    room = session["token"]
+    #room = session["token"]
     #join_room(session["id"])
     #send(' has entered the room.', room=session["id"])
     print "conectado "
