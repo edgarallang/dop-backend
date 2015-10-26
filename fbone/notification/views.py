@@ -67,10 +67,10 @@ def sslinfo():
 
 @socketio.on('join room', namespace='/app')
 def join_room(message):
-    payload = parse_token_socket(message)
-    session["id"] = payload["id"]
-    room = session["id"]
-    print room
+    #payload = parse_token_socket(message)
+    #session["id"] = payload["id"]
+    #room = session["id"]
+    #print room
     join_room("hola")
 
     #notifications = db.engine.execute('SELECT * FROM notifications WHERE user_id = %d AND readed = 0' % (payload['id']))
