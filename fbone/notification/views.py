@@ -75,14 +75,14 @@ def on_join_room(message):
     payload = parse_token_socket(message)
     session["id"] = payload["id"]
     room = session["id"]
-    join_room(room)
+    #join_room(room)
 
     notifications = db.engine.execute('SELECT * FROM notifications WHERE user_id = %d AND readed = 0' % (payload['id']))
 
 
     notifications_list = notifications_schema.dump(notifications)
 
-    emit('my response', {'data': notifications_list.data}, room = room)
+    emit('my response', {'data': notifications_list.data}, broadcast = True)
     
     #print room
 
