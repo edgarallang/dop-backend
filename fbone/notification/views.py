@@ -72,7 +72,6 @@ def sslinfo():
 
 @socketio.on('join room', namespace='/app')
 def on_join_room(message):
-   print "na"
     payload = parse_token_socket(message)
     session["id"] = payload["id"]
     room = session["id"]
