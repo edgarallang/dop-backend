@@ -81,6 +81,11 @@ def on_join_room(message):
     
     #print room
 
+@socketio.on('leave')
+def on_leave(data):
+    room = session['id']
+    leave_room(room)
+
 @socketio.on('my broadcast event', namespace='/app')
 def test_message(message):
     print "test"
@@ -96,6 +101,5 @@ def test_connect():
 
 @socketio.on('disconnect', namespace='/app')
 def test_disconnect():
-    leave_room(session["id"])
     print('Client disconnected')
  
