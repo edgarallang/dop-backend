@@ -63,10 +63,10 @@ def get_notifications():
         token_index = True
         payload = parse_token(request, token_index)
 
-        notifications_query = 'SELECT * FROM notifications \
-                              LEFT JOIN clients_coupon ON notifications.object_id = clients_coupon.clients_coupon_id AND notifications.type="newsfeed" \
-                              LEFT JOIN friends ON notifications.object_id = friends.friends_id AND notifications.type="friend" \
-                              WHERE notifications.user_id = %d AND notifications.readed = 0 ORDER BY notification_date DESC' % (payload['id'])
+        notifications_query = "SELECT * FROM notifications \
+                              LEFT JOIN clients_coupon ON notifications.object_id = clients_coupon.clients_coupon_id AND notifications.type='newsfeed'\
+                              LEFT JOIN friends ON notifications.object_id = friends.friends_id AND notifications.type='friend' \
+                              WHERE notifications.user_id = %d AND notifications.readed = 0 ORDER BY notification_date DESC" % (payload['id'])
         notifications = db.engine.execute(notifications_query)
 
         notifications_list = notifications_schema.dump(notifications)
