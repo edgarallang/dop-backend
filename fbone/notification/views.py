@@ -62,13 +62,13 @@ def get_notifications():
     if request.headers.get('Authorization'):
         token_index = True
         payload = parse_token(request, token_index)
-        
-        notifications = db.engine.execute('SELECT * FROM notifications WHERE user_id = %d AND readed = 0' % (payload['id']))
+        notifications = Notification.query.filter_by(user_id = payload['id'],readed = 0)
+        #notifications = db.engine.execute('SELECT * FROM notifications WHERE user_id = %d AND readed = 0' % (payload['id']))
 
         notifications_list = notifications_schema.dump(notifications)
 
         return jsonify({'data': notifications_list})
-        
+
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
 @socketio.on('join room', namespace='/app')
