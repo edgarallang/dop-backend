@@ -76,7 +76,7 @@ def get_notifications():
 
         notifications_list = notifications_schema.dump(notifications)
 
-        return jsonify({'data': notifications_list})
+        return jsonify({'data': notifications_list.data})
 
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
