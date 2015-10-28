@@ -22,9 +22,14 @@ class Notification(db.Model):
 class Notifications(Schema):
     class Meta:
         fields = ('notification_id',
-                  'user_id',
-                  'object_id',
                   'type',
-                  'readed')
+                  'user_name',
+                  'user_surnames',
+                  'launcher_name',
+                  'launcher_surnames',
+                  'launcher_id',
+                  'friendship_status',
+                  'newsfeed_activity'
+                  )
 
 notifications_schema = Notifications(many=True)
