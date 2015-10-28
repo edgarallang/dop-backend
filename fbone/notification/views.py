@@ -63,7 +63,7 @@ def get_notifications():
         token_index = True
         payload = parse_token(request, token_index)
 
-        notifications_query = "SELECT notifications.notification_id,notifications.type, users.names AS 'user_name',users.surnames AS 'user_surnames',launcher_user.names AS 'launcher_name',\
+        notifications_query = "SELECT notifications.notification_id,notifications.type, users.names AS "+ "user_name" +",users.surnames AS 'user_surnames',launcher_user.names AS 'launcher_name',\
                                 launcher_user.surnames AS 'launcher_surnames',launcher_user.user_id AS 'launcher_id',friends.operation_id AS 'friendship_status',\
                                 branches.name AS 'newsfeed_activity' FROM notifications\
                                 LEFT JOIN clients_coupon ON notifications.object_id = clients_coupon.clients_coupon_id AND notifications.type= 'newsfeed'\
