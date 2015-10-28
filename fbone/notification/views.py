@@ -82,12 +82,12 @@ def on_join_room(message):
     room = session["id"]
     join_room(room)
 
-    notifications = db.engine.execute('SELECT * FROM notifications WHERE user_id = %d AND readed = 0' % (payload['id']))
+    #notifications = db.engine.execute('SELECT * FROM notifications WHERE user_id = %d AND readed = 0' % (payload['id']))
 
 
-    notifications_list = notifications_schema.dump(notifications)
+    #notifications_list = notifications_schema.dump(notifications)
 
-    emit('my response', {'data': notifications_list.data}, broadcast = True)
+    #emit('my response', {'data': notifications_list.data}, broadcast = True)
     
     #print room
 
