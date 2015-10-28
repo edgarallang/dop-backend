@@ -72,7 +72,7 @@ def get_notifications():
                                 LEFT JOIN friends ON notifications.object_id = friends.friends_id AND notifications.type= %s\
                                 INNER JOIN users ON notifications.user_id = users.user_id \
                                 INNER JOIN users AS launcher_user ON notifications.launcher_id = launcher_user.user_id \
-                                WHERE notifications.user_id = %d AND notifications.readed = 0 ORDER BY notification_date DESC ' % (payload['id'],'newsfeed','friend')
+                                WHERE notifications.user_id = %d AND notifications.readed = 0 ORDER BY notification_date DESC ' % (payload['id'],"newsfeed","friend")
         notifications = db.engine.execute(notifications_query)
 
         notifications_list = notifications_schema.dump(notifications)
