@@ -332,7 +332,8 @@ def get_used_coupons_by_user_likes_offset():
                                     INNER JOIN coupons ON clients_coupon.coupon_id = coupons.coupon_id \
                                     INNER JOIN branches ON coupons.branch_id = branches.branch_id \
                                     INNER JOIN branches_design ON coupons.branch_id = branches_design.branch_id \
-                                    WHERE clients_coupon.clients_coupon_id < %s ORDER BY clients_coupon.clients_coupon_id DESC LIMIT 6 OFFSET %s' % (payload['id'], client_coupon_id , offset))
+                                    WHERE users.user_id = %d \
+                                    AND clients_coupon.clients_coupon_id < %s ORDER BY clients_coupon.clients_coupon_id DESC LIMIT 6 OFFSET %s' % (payload['id'], payload['id'], client_coupon_id , offset))
 
         users_list = user_join_exchanges_coupon_schema.dump(users)
 
