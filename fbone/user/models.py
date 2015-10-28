@@ -171,10 +171,30 @@ class PeopleSchema(Schema):
                   'privacy_status',
                   'main_image')
 
+class UserJoinExchanges(Schema):
+    class Meta:
+        fields = ('clients_coupon_id',
+                  'branch_id',
+                  'coupon_id',
+                  'logo',
+                  'name',
+                  'latitude',
+                  'longitude',
+                  'names',
+                  'surnames',
+                  'user_id',
+                  'main_image',
+                  'exchange_date',
+                  'friend_id',
+                  'branch_name',
+                  'total_likes',
+                  'user_like')
+
 user_schema = UserSchema(many=True)
 user_joined_schema = UserJoinImage(many=True)
 friends_schema = FriendsSchema(many=True)
 user_join_friends = UserJoinFriends(many=True)
+user_join_exchanges_coupon_schema = UserJoinExchanges(many=True)
 friends_count_schema = FriendsCountSchema(many=True)
 people_schema = PeopleSchema(many = True)
 
