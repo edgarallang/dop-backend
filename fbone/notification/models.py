@@ -23,8 +23,6 @@ class Notifications(Schema):
     class Meta:
         fields = ('notification_id',
                   'type',
-                  'user_name',
-                  'user_surnames',
                   'launcher_name',
                   'launcher_surnames',
                   'launcher_id',
