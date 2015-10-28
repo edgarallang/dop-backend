@@ -13,7 +13,8 @@ from flask.ext.login import login_required, current_user
 from jwt import DecodeError, ExpiredSignature
 from .models import *
 from ..user import *
-from ..extensions import db
+from ..extensions import db, socketio
+from flask.ext.socketio import SocketIO, send, emit, join_room, leave_room
 
 
 coupon = Blueprint('coupon', __name__, url_prefix='/api/coupon')
@@ -523,11 +524,17 @@ def like_used_coupon():
         token_index = True
         payload = parse_token(request, token_index)
 
+
         userLike = CouponsUsedLikes.query.filter_by(clients_coupon_id = request.json['clients_coupon_id'],user_id = payload['id']).first()
         if not userLike:
             user_like = CouponsUsedLikes(clients_coupon_id = request.json['clients_coupon_id'],
                                       user_id = payload['id'],
                                       date = request.json['date'])
+
+            liked_user = ClientsCoupon.query.filter_by(clients_coupon_id = request.json['clients_coupon_id']).first()
+
+            socketio.emit('notification',{'data': 'someone triggered me'},namespace='/app',room=liked_user.user_id)
+
 
             db.session.add(user_like)
             db.session.commit()
