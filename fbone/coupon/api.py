@@ -536,9 +536,9 @@ def like_used_coupon():
             notification = Notification(user_id = liked_user.user_id,
                                         object_id = request.json['clients_coupon_id'],
                                         type = "newsfeed",
-                                        readed = 0,
                                         notification_date = datetime.now(),
-                                        launcher_id = payload['id']
+                                        launcher_id = payload['id'],
+                                        readed = false
                                         )
 
             socketio.emit('notification',{'data': 'someone triggered me'},namespace='/app',room=liked_user.user_id)
