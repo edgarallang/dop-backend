@@ -57,6 +57,14 @@ def get_profile(user_id):
     friends_list = user_joined_schema.dump(friends)
     return jsonify({'data': friends_list.data})
 
+@coupon.route('/set/readed', methods = ['PUT'])
+def set_readed():
+    if request.headers.get('Authorization'):
+        token_index = True
+        payload = parse_token(request, token_index)
+
+        notifications_query = ""
+
 @notification.route('/all/get', methods=['GET'])
 def get_notifications():
     if request.headers.get('Authorization'):
