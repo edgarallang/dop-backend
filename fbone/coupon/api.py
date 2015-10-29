@@ -537,7 +537,7 @@ def like_used_coupon():
                                         object_id = request.json['clients_coupon_id'],
                                         type = "newsfeed",
                                         readed = 0,
-                                        notification_date = datetime.now(),,
+                                        notification_date = datetime.now(),
                                         launcher_id = payload['id']
                                         )
 
