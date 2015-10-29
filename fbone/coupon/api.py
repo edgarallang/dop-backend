@@ -545,6 +545,7 @@ def like_used_coupon():
 
 
             db.session.add(user_like)
+            db.session.add(notification)
             db.session.commit()
             return jsonify({'message': 'El like se asigno con éxito'})
         else:
