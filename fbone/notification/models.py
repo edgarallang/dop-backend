@@ -15,9 +15,9 @@ class Notification(db.Model):
     user_id = Column(db.Integer, db.ForeignKey('users.user_id'),nullable=False)
     object_id = Column(db.Integer)
     type = Column(db.String(STRING_LEN))
-    readed = Column(db.Integer)
     notification_date = Column(db.DateTime, nullable=False)
     launcher_id = Column(db.Integer)
+    readed = Column(db.Boolean)
 
     notification_user = db.relationship('User', uselist=False, backref="notifications")
 
