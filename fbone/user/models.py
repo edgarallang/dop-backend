@@ -175,6 +175,7 @@ class UserJoinExchanges(Schema):
     class Meta:
         fields = ('clients_coupon_id',
                   'branch_id',
+                  'company_id',
                   'coupon_id',
                   'logo',
                   'name',
