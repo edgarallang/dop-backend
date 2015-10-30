@@ -195,7 +195,7 @@ def add_friend():
                                     launcher_id = user_id,
                                     read = False
                                     )
-        socketio.emit('notification',{'data': 'someone triggered me'},namespace='/app',room=liked_user.user_id)
+        socketio.emit('notification',{'data': 'someone triggered me'},namespace='/app',room=request.json['user_two_id'])
         
         db.session.add(notification)
 
