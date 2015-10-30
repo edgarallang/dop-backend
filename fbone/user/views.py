@@ -182,7 +182,7 @@ def add_friend():
         user_id = User.query.get(payload['id']).user_id
         user_to_add = request.json['user_two_id']
 
-        friendshipExist = Friends.query.filter(((Friends.user_one_id == user_id) & (Friends.user_two_id == user_to_add)) | ((Friends.user_one_id == user_to_add) & (Friends.user_two_id == user_id)))
+        friendshipExist = Friends.query.filter(((Friends.user_one_id == user_id) & (Friends.user_two_id == user_to_add)) | ((Friends.user_one_id == user_to_add) & (Friends.user_two_id == user_id))).all()
 
         if not friendshipExist:
             friendsRelationship  = Friends(user_one_id = user_id,
@@ -208,7 +208,7 @@ def add_friend():
             socketio.emit('notification',{'data': 'someone triggered me'},namespace='/app',room = user_to_add)
 
             return jsonify({'message': 'Agregado correctamente'})
-        return jsonify({'message': friendshipExist.user_one_id})
+        return jsonify({'message': 'registro existente'})
     return jsonify({'message': 'Oops! algo salió mal :('})
 
 @user.route('/friends/accept', methods=['PUT'])
