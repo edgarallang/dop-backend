@@ -190,7 +190,7 @@ def add_friend():
         db.session.add(friendsRelationship)
 
         notification = Notification(user_id = request.json['user_two_id'],
-                                    object_id = friendsRelationship.friends_id,
+                                    object_id = friendsRelationship.inserted_primary_key,
                                     type = "friend",
                                     notification_date = datetime.now(),
                                     launcher_id = user_id,
