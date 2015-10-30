@@ -182,7 +182,7 @@ def add_friend():
         user_id = User.query.get(payload['id']).user_id
         user_to_add = request.json['user_two_id']
 
-        friendshipExist = Friends.query.filter((user_one_id = user_id,user_two_id = user_to_add) | (user_one_id = user_to_add,user_two_id = user_id))
+        friendshipExist = Friends.query.filter(user_one_id = user_id,user_two_id = user_to_add)
 
         if not friendshipExist:
             friendsRelationship  = Friends(user_one_id = user_id,
