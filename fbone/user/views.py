@@ -188,7 +188,6 @@ def add_friend():
         db.session.add(friendsRelationship)
 
      
-        db.session.add(notification)
 
         db.session.commit()
 
