@@ -103,9 +103,9 @@ def facebook_login():
         db.session.commit()
 
         userFirstEXP = UserFirstEXP(user_id = facebookUser.user_id,
-                                    first_following = False
-                                    first_follower = False
-                                    first_company_fav = False
+                                    first_following = False,
+                                    first_follower = False, 
+                                    first_company_fav = False, 
                                     first_using = False)
 
         db.session.add(userFirstEXP)
