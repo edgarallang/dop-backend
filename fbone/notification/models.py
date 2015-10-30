@@ -17,7 +17,7 @@ class Notification(db.Model):
     type = Column(db.String(STRING_LEN))
     notification_date = Column(db.DateTime, nullable=False)
     launcher_id = Column(db.Integer)
-    readed = Column(db.Boolean)
+    read = Column(db.Boolean)
 
     notification_user = db.relationship('User', uselist=False, backref="notifications")
 
@@ -30,7 +30,7 @@ class Notifications(Schema):
                   'launcher_id',
                   'friendship_status',
                   'newsfeed_activity',
-                  'readed'
+                  'read'
                   )
 
 notifications_schema = Notifications(many=True)
