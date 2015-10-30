@@ -95,7 +95,7 @@ def get_notifications():
 
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
-@notification.route('/all/get/offset', methods=['GET'])
+@notification.route('/all/offset/get', methods=['GET'])
 def get_notifications_offset():
     if request.headers.get('Authorization'):
         token_index = True
