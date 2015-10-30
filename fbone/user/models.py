@@ -114,7 +114,15 @@ class Friends(db.Model,UserMixin):
     user_one_id = Column(db.Integer, nullable=False)
     user_two_id = Column(db.Integer, nullable=False)
     operation_id = Column(db.Integer, nullable=False)
-    launcher_user_id = Column(db.Integer, nullable=False)   
+    launcher_user_id = Column(db.Integer, nullable=False)  
+
+class UserFirstEXP(db.Model, UserMixin):
+    __tablename__ = 'user_first_exp'
+    user_first_exp = Column(db.Integer, primary_key = True)
+    user_id = Column(db.Integer, nullable = False)
+    exp_name = Column(db.String(STRING_LEN))
+    happened = Column(db.Boolean nullable = False)
+
 
 # Serializer Schemas
 
@@ -190,6 +198,7 @@ class UserJoinExchanges(Schema):
                   'branch_name',
                   'total_likes',
                   'user_like')
+
 
 user_schema = UserSchema(many=True)
 user_joined_schema = UserJoinImage(many=True)
