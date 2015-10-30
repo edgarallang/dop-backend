@@ -320,6 +320,7 @@ def get_used_coupons_by_user_likes_offset():
         payload = parse_token(request, token_index)
         user_id = User.query.get(payload['id']).user_id
         offset = request.args.get('offset')
+        client_coupon_id = request.args.get('client_coupon_id')
         user_profile_id = request.args.get('user_profile_id')
 
         users = db.engine.execute('SELECT coupons.branch_id, coupons.coupon_id, branches_design.logo, coupons.name, \
@@ -334,7 +335,7 @@ def get_used_coupons_by_user_likes_offset():
                                     INNER JOIN branches ON coupons.branch_id = branches.branch_id \
                                     INNER JOIN branches_design ON coupons.branch_id = branches_design.branch_id \
                                     WHERE users.user_id = %s \
-                                    ORDER BY clients_coupon.clients_coupon_id DESC LIMIT 6 OFFSET %s' % (payload['id'], user_profile_id, offset))
+                                    AND clients_coupon.clients_coupon_id < %s ORDER BY clients_coupon.clients_coupon_id DESC LIMIT 6 OFFSET %s' % (payload['id'], user_profile_id, client_coupon_id , offset))
 
         users_list = user_join_exchanges_coupon_schema.dump(users)
 
