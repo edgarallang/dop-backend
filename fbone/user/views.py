@@ -299,7 +299,7 @@ def search_people():
         return jsonify({'data': selected_list_people.data})
     return jsonify({'message': 'Oops! algo salió mal :('})
 
-@user.route('/activity/get/user', methods=['GET'])
+@user.route('/activity/get/user/', methods=['GET'])
 def get_coupons_activity_by_user_likes():
     if request.headers.get('Authorization'):
         token_index = True
