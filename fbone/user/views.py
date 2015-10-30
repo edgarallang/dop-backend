@@ -187,16 +187,7 @@ def add_friend():
 
         db.session.add(friendsRelationship)
 
-        notification = Notification(user_id = request.json['user_two_id'],
-                                    object_id = 1,
-                                    type = "friend",
-                                    notification_date = datetime.now(),
-                                    launcher_id = user_id,
-                                    readed = False
-                                    )
-
-        socketio.emit('notification',{'data': 'someone triggered me'},namespace='/app',room=liked_user.user_id)
-        
+     
         db.session.add(notification)
 
         db.session.commit()
