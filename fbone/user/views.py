@@ -319,7 +319,7 @@ def get_coupons_activity_by_user_likes():
                                     INNER JOIN branches ON coupons.branch_id = branches.branch_id \
                                     INNER JOIN branches_design ON coupons.branch_id = branches_design.branch_id \
                                     WHERE users.user_id = %d \
-                                    ORDER BY start_date DESC LIMIT %s OFFSET 0 ORDER BY clients_coupon.clients_coupon_id DESC' % payload['id'], user_profile_id, limit)
+                                    ORDER BY clients_coupon.clients_coupon_id DESC LIMIT %s OFFSET 0' % payload['id'], user_profile_id, limit)
 
         users_list = user_join_exchanges_coupon_schema.dump(users)
 
