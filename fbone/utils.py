@@ -45,6 +45,20 @@ SEX_TYPE = {
 # Model
 STRING_LEN = 264
 
+############# EXP CONSTANTS ################
+
+SHARE = 5
+LIKE = 10
+INVITE = 20
+USING = 5
+FIRST_FOLLOWING = 3
+FIRST_FOLLOWER = 3
+FIRST_COMPANY_FAV = 3
+FIRST_USING = 5
+FACEBOOK_LOGIN = 5
+
+############################################
+
 def get_current_time():
     return datetime.utcnow()
 
