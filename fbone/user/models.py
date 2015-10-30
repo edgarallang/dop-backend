@@ -121,7 +121,7 @@ class UserFirstEXP(db.Model, UserMixin):
     user_first_exp = Column(db.Integer, primary_key = True)
     user_id = Column(db.Integer, nullable = False)
     exp_name = Column(db.String(STRING_LEN))
-    happened = Column(db.Boolean nullable = False)
+    happened = Column(db.Boolean, nullable = False)
 
 
 # Serializer Schemas
