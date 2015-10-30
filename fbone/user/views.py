@@ -200,11 +200,10 @@ def add_friend():
                                     launcher_id = user_id,
                                     read = False
                                     )
-        socketio.emit('notification',{'data': 'someone triggered me'},namespace='/app',room = user_to_add)
-        
         db.session.add(notification)
-
         db.session.commit()
+
+        socketio.emit('notification',{'data': 'someone triggered me'},namespace='/app',room = user_to_add)
 
         return jsonify({'data': 'Agregado correctamente'})
 
