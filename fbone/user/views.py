@@ -208,7 +208,7 @@ def add_friend():
             socketio.emit('notification',{'data': 'someone triggered me'},namespace='/app',room = user_to_add)
 
             return jsonify({'data': 'Agregado correctamente'})
-
+        return jsonify({'data': 'registro existente'})
     return jsonify({'message': 'Oops! algo salió mal :('})
 
 @user.route('/friends/accept', methods=['PUT'])
