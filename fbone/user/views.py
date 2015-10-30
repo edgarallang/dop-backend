@@ -180,32 +180,34 @@ def add_friend():
         payload = parse_token(request, True)
 
         user_id = User.query.get(payload['id']).user_id
-        
         user_to_add = request.json['user_two_id']
 
-        friendsRelationship  = Friends(user_one_id = user_id,
-                                       user_two_id = user_to_add,
-                                       operation_id = 0,
-                                       launcher_user_id = user_id)
+        friendshipExist = Friends.query.filter((user_one_id = user_id,user_two_id = user_to_add) | (user_one_id = user_to_add,user_two_id = user_id))
+
+        if not friendshipExist:
+            friendsRelationship  = Friends(user_one_id = user_id,
+                                           user_two_id = user_to_add,
+                                           operation_id = 0,
+                                           launcher_user_id = user_id)
 
 
-        db.session.add(friendsRelationship)
-        
-        db.session.commit()
+            db.session.add(friendsRelationship)
+            
+            db.session.commit()
 
-        notification = Notification(user_id = user_to_add,
-                                    object_id = friendsRelationship.friends_id,
-                                    type = "friend",
-                                    notification_date = datetime.now(),
-                                    launcher_id = user_id,
-                                    read = False
-                                    )
-        db.session.add(notification)
-        db.session.commit()
+            notification = Notification(user_id = user_to_add,
+                                        object_id = friendsRelationship.friends_id,
+                                        type = "friend",
+                                        notification_date = datetime.now(),
+                                        launcher_id = user_id,
+                                        read = False
+                                        )
+            db.session.add(notification)
+            db.session.commit()
 
-        socketio.emit('notification',{'data': 'someone triggered me'},namespace='/app',room = user_to_add)
+            socketio.emit('notification',{'data': 'someone triggered me'},namespace='/app',room = user_to_add)
 
-        return jsonify({'data': 'Agregado correctamente'})
+            return jsonify({'data': 'Agregado correctamente'})
 
     return jsonify({'message': 'Oops! algo salió mal :('})
 
