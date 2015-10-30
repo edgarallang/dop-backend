@@ -95,12 +95,13 @@ def get_notifications():
 
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
-@notification.route('/all/offset/get', methods=['GET'])
+@notification.route('/all/offset/get/', methods=['GET'])
 def get_notifications_offset():
     if request.headers.get('Authorization'):
         token_index = True
         payload = parse_token(request, token_index)
         offset = request.args.get('offset')
+
         #notification_id = request.args.get('notification_id')
 
         notifications_query = "SELECT notifications.notification_id,notifications.type, launcher_user.names AS "+"launcher_name"+",\
