@@ -120,9 +120,10 @@ class UserFirstEXP(db.Model, UserMixin):
     __tablename__ = 'user_first_exp'
     user_first_exp = Column(db.Integer, primary_key = True)
     user_id = Column(db.Integer, nullable = False)
-    exp_name = Column(db.String(STRING_LEN))
-    happened = Column(db.Boolean, nullable = False)
-
+    first_following = Column(db.Boolean, nullable = False)
+    first_follower = Column(db.Boolean, nullable = False)
+    first_company_fav = Column(db.Boolean, nullable = False)
+    first_using = Column(db.Boolean, nullable = False)
 
 # Serializer Schemas
 
