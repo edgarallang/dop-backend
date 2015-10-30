@@ -172,7 +172,7 @@ def get_friends():
         return jsonify({'data': friends_list.data})
     return jsonify({'message': 'Oops! algo salió mal :('})
 
-@user.route('/friends/add', methods=['POST'])
+@user.route('/friends/add', methods=['PUT'])
 def add_friend():
     if request.headers.get('Authorization'):
         payload = parse_token(request, True)
