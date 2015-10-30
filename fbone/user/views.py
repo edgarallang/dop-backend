@@ -192,7 +192,7 @@ def add_friend():
                                     type = "friend",
                                     notification_date = datetime.now(),
                                     launcher_id = user_id,
-                                    readed = False
+                                    read = False
                                     )
         socketio.emit('notification',{'data': 'someone triggered me'},namespace='/app',room=liked_user.user_id)
         
