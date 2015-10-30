@@ -10,6 +10,8 @@ from flask.ext.login import login_required, current_user
 from jwt import DecodeError, ExpiredSignature
 from .models import *
 from ..extensions import db, socketio
+from ..notification import Notification
+from flask.ext.socketio import SocketIO, send, emit, join_room, leave_room
 
 
 user = Blueprint('user', __name__, url_prefix='/api/user')
@@ -188,13 +190,13 @@ def add_friend():
         db.session.add(friendsRelationship)
 
         notification = Notification(user_id = request.json['user_two_id'],
-                                    object_id = 1,
+                                    object_id = friendsRelationship.friends_id,
                                     type = "friend",
                                     notification_date = datetime.now(),
                                     launcher_id = user_id,
                                     read = False
                                     )
-        socketio.emit('notification',{'data': 'someone triggered me'},namespace='/app',room=liked_user.user_id)
+        socketio.emit('notification',{'data': 'someone triggered me'},namespace='/app',room=request.json['user_two_id'])
         
         db.session.add(notification)
 
