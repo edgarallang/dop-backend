@@ -87,17 +87,28 @@ def facebook_login():
                             birth_date = request.json['birth_date'],
                             facebook_key = request.json['facebook_key'],
                             privacy_status = 0)
+
         db.session.add(facebookUser)
         db.session.commit()
 
         userSession = UserSession(user_id=facebookUser.user_id,
                                   email=request.json['email'])
+
         db.session.add(userSession)
         db.session.commit()
 
         userImage = UserImage(user_id=facebookUser.user_id,
                               main_image=request.json['main_image'])
         db.session.add(userImage)
+        db.session.commit()
+
+        userFirstEXP = UserFirstEXP(user_id = facebookUser.user_id,
+                                    first_following = False
+                                    first_follower = False
+                                    first_company_fav = False
+                                    first_using = False)
+
+        db.session.add(userFirstEXP)
         db.session.commit()
 
     token = create_token(facebookUser)
@@ -235,9 +246,7 @@ def decline_friend():
         payload = parse_token(request, True)
 
         user_id = User.query.get(payload['id']).user_id
-
         friendsRelationship = Friends.query.filter_by(friends_id=request.json['friends_id']).first()
-
         friendsRelationship.operation_id = 2
         friendsRelationship.launcher_user_id = user_id
 
