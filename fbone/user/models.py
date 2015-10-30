@@ -7,6 +7,7 @@ from flask.ext.login import UserMixin
 from ..extensions import db
 from ..utils import get_current_time, SEX_TYPE, STRING_LEN
 from .constants import USER, USER_ROLE, ADMIN, INACTIVE, USER_STATUS
+from ..notification import Notification
 
 
 class DenormalizedText(Mutable, types.TypeDecorator):
