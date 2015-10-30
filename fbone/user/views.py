@@ -188,8 +188,8 @@ def add_friend():
 
 
         db.session.add(friendsRelationship)
-        db.session.save(friendsRelationship)
-        db.session.flush()
+        
+        ad.session.save(friendsRelationship)
 
         notification = Notification(user_id = request.json['user_two_id'],
                                     object_id = friendsRelationship.friends_id,
