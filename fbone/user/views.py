@@ -181,8 +181,10 @@ def add_friend():
 
         user_id = User.query.get(payload['id']).user_id
         
+        user_to_add = request.json['user_two_id']
+
         friendsRelationship  = Friends(user_one_id = user_id,
-                                       user_two_id = request.json['user_two_id'],
+                                       user_two_id = user_to_add,
                                        operation_id = 0,
                                        launcher_user_id = user_id)
 
@@ -191,14 +193,14 @@ def add_friend():
         
         db.session.commit()
 
-        notification = Notification(user_id = request.json['user_two_id'],
+        notification = Notification(user_id = user_to_add,
                                     object_id = friendsRelationship.friends_id,
                                     type = "friend",
                                     notification_date = datetime.now(),
                                     launcher_id = user_id,
                                     read = False
                                     )
-        socketio.emit('notification',{'data': 'someone triggered me'},namespace='/app',room=request.json['user_two_id'])
+        socketio.emit('notification',{'data': 'someone triggered me'},namespace='/app',room = user_to_add)
         
         db.session.add(notification)
 
