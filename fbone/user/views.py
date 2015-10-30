@@ -203,7 +203,7 @@ def add_friend():
         db.session.add(notification)
         db.session.commit()
 
-            socketio.emit('notification',{'data': 'someone triggered me'},namespace='/app',room="5")
+            socketio.emit('notification',{'data': 'someone triggered me'},namespace='/app',room = 5)
 
         return jsonify({'data': 'Agregado correctamente'})
 
