@@ -74,6 +74,7 @@ class ClientsCoupon(db.Model):
     taken_date = Column(db.DateTime, nullable=False)
     latitude = Column(db.Numeric, nullable=False)
     longitude = Column(db.Numeric, nullable=False)
+    used = Column(db.Boolean, nullable = False)
 
 
     coupons_user = db.relationship('User', uselist=False, backref='clients_coupon')
