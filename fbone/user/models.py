@@ -114,7 +114,16 @@ class Friends(db.Model,UserMixin):
     user_one_id = Column(db.Integer, nullable=False)
     user_two_id = Column(db.Integer, nullable=False)
     operation_id = Column(db.Integer, nullable=False)
-    launcher_user_id = Column(db.Integer, nullable=False)   
+    launcher_user_id = Column(db.Integer, nullable=False)  
+
+class UserFirstEXP(db.Model, UserMixin):
+    __tablename__ = 'user_first_exp'
+    user_first_exp = Column(db.Integer, primary_key = True)
+    user_id = Column(db.Integer, nullable = False)
+    first_following = Column(db.Boolean, nullable = False)
+    first_follower = Column(db.Boolean, nullable = False)
+    first_company_fav = Column(db.Boolean, nullable = False)
+    first_using = Column(db.Boolean, nullable = False)
 
 # Invited Friends 
 
@@ -198,6 +207,7 @@ class UserJoinExchanges(Schema):
                   'branch_name',
                   'total_likes',
                   'user_like')
+
 
 user_schema = UserSchema(many=True)
 user_joined_schema = UserJoinImage(many=True)
