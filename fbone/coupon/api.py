@@ -341,7 +341,7 @@ def get_all_used_coupon_for_myself_offset():
     selected_list_coupon = coupons_logo_schema.dump(list_coupon)
     return jsonify({'data': selected_list_coupon.data})
 
-@coupon.route('/all/for/user//by/branch/get/', methods = ['GET'])
+@coupon.route('/all/for/user/by/branch/get/', methods = ['GET'])
 def get_all_coupon_for_user_by_branch():
     token_index = True
     branch_id = request.args.get('branch_id')
@@ -360,7 +360,6 @@ def get_all_coupon_for_user_by_branch():
                                     JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.branch_id \
                                     JOIN subcategory ON subcategory.subcategory_id = branches_subcategory.subcategory_id \
                                     WHERE coupons.branch_id = %s AND deleted = false ORDER BY start_date DESC LIMIT 6 OFFSET 0' % (payload['id'],branch_id))
-
 
 
     selected_list_coupon = coupons_logo_schema.dump(list_coupon)
