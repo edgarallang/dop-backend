@@ -338,7 +338,6 @@ def get_coupons_activity_by_user_likes():
                                     ORDER BY clients_coupon.clients_coupon_id DESC LIMIT %s OFFSET 0' % (user_profile_id, user_profile_id, limit))
 
         users_list = user_join_exchanges_coupon_schema.dump(users)
-
         return jsonify({'data': users_list.data})
 
     return jsonify({'message': 'Oops! algo salió mal'})
