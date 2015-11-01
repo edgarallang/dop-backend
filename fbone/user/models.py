@@ -125,6 +125,14 @@ class UserFirstEXP(db.Model, UserMixin):
     first_company_fav = Column(db.Boolean, nullable = False)
     first_using = Column(db.Boolean, nullable = False)
 
+# Invited Friends 
+
+class InvitedFriends(db.Model,UserMixin):
+    __tablename__ = 'invited_friends'
+    user_id = Column(db.Integer, primary_key=True)
+    facebook_key = Column(db.String(STRING_LEN))
+    email = Column(db.String(STRING_LEN))
+
 # Serializer Schemas
 
 class UserSchema(Schema):
