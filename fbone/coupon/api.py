@@ -341,6 +341,31 @@ def get_all_used_coupon_for_myself_offset():
     selected_list_coupon = coupons_logo_schema.dump(list_coupon)
     return jsonify({'data': selected_list_coupon.data})
 
+@coupon.route('/all/by/branch/get/', methods = ['GET'])
+def get_all_coupon_by_branch():
+    token_index = True
+    branch_id = request.args.get('branch_id')
+    payload = parse_token(request, token_index)
+
+    list_coupon = db.engine.execute('SELECT coupon_id, branches.branch_id, company_id, branches.name, coupon_folio, description, start_date, \
+                                            end_date, coupons.limit, min_spent, coupon_category_id, logo, latitude, longitude, banner, category_id, \
+                                    (SELECT COUNT(*)  FROM coupons_likes \
+                                        WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes, \
+                                    (SELECT COUNT(*)  FROM coupons_likes \
+                                        WHERE coupons_likes.user_id = %d AND coupons.coupon_id = coupons_likes.coupon_id) AS user_like \
+                                    FROM coupons INNER JOIN branches_design ON \
+                                    coupons.branch_id = branches_design.branch_id \
+                                    INNER JOIN branches ON coupons.branch_id = branches.branch_id \
+                                    INNER JOIN branches_location on coupons.branch_id = branches_location.branch_id \
+                                    JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.branch_id \
+                                    JOIN subcategory ON subcategory.subcategory_id = branches_subcategory.subcategory_id \
+                                    WHERE coupons.branch_id = %s AND deleted = false  ORDER BY start_date DESC LIMIT 6' % (payload['id'],branch_id))
+
+
+
+    selected_list_coupon = coupons_logo_schema.dump(list_coupon)
+    return jsonify({'data': selected_list_coupon.data})
+
 @coupon.route('/all/by/branch/offset/get/', methods = ['GET'])
 def get_all_coupon_by_branch_offset():
     token_index = True
