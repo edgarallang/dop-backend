@@ -1,0 +1,206 @@
+@import url('fonts.css');
+
+body {
+  font-family: "Nunito", sans-serif;
+  min-height: 100%;
+}
+*:focus {
+    outline: 0;
+}
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 300;
+  width: 100%;
+  background: white;
+  min-height: 80px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+
+  /* font properties */
+  font-family: "Nunito", helvetica;
+  font-weight: 300;
+  color: grey;
+
+  /* header style */
+  margin: 10px 15px 10px 15px;
+  padding: 0 15px 20px 15px;
+}
+
+.container {
+  position: relative;
+  width: 980px;
+  margin: 0 auto;
+  margin-top: 7%;
+  padding: 0 10px;
+}
+
+.logo {
+  width: 15%;
+  left: 10%;
+  position: relative;
+  margin: 18px auto;
+}
+
+#min-logo img {
+  margin: 0 auto;
+  width: 40%;
+}
+
+#app-description {
+  line-height: 1.7;
+  color: grey;
+  margin: 0px 40px auto;
+  font-weight: 300;
+}
+.app-name {
+  color: rgb(205, 210, 210) !important;
+  margin-bottom: -10px !important;
+}
+
+#section-0 {
+  display: flex;
+  box-sizing: border-box;
+}
+
+.left-appearing {
+  left: 0% !important;
+  opacity: 1 !important;
+  position: relative !important;
+}
+
+#left-side {
+  width: 50%;
+  left: -20%;
+  text-align: center;
+  transition: all 1.5s;
+  opacity: 0;
+}
+
+.right-appearing {
+  right: 0% !important;
+  opacity: 1 !important;
+  position: relative !important;
+}
+
+#right-side {
+  width: 50%;
+  text-align: center;
+  margin: 7% auto;
+  right: -20%;
+  transition: all 1.5s;
+  opacity: 0;
+}
+
+#app-link {
+    border: 2px solid;
+    border-color: #FB30A8;
+    background-color: white;
+    color: #FB30A8;
+    height: 40px;
+    border-radius: 20px;
+    width: 200px;
+    margin-top: 50px;
+    transition: all 0.8s;
+}
+
+#app-link:hover {
+    border-color: #DE0A80;
+    background-color: #DE0A80;
+    color: white;
+}
+
+#platforms i {
+  color: rgb(110,110,110);
+  margin: 15px;
+}
+
+#platforms .fa-2 {
+  font-size: 2em;
+}
+
+section.about{
+  background-image: linear-gradient( 90deg, #2e2c7e,  #a3195b );
+  display: inline-block;
+  padding: 2em 0;
+  text-align: center;
+  width: 100%;
+}
+section.about div div.title{
+  display: inline-block;
+  width: 100%;
+  color: #fff;
+}
+section.about div div.title h4{
+  font-weight: 200;
+  color: #fff;
+}
+section.about div div.services{
+  display: flex;
+  color: #fff;
+}
+section.about div div.services figure{
+  display: inline-block;
+  width: 33%;
+}
+section.about div div.services figure figcaption h4{
+  font-weight: 600;
+  color: #fff;
+}
+section.contact{
+  display: inline-block;
+  padding: 2em 0;
+  text-align: center;
+  width: 100%;
+  background: #f3f5f5;
+}
+section.contact h1{
+  color: #a3195b;
+  font-size: 3em;
+  margin: 0;
+  padding: 0;
+}
+section.contact h4{
+  padding: 0;
+  margin-top: 0.5em;
+}
+section.contact p{
+  color: gray;
+  margin-bottom: 2em;
+  margin-top:0;
+}
+section.contact form input[type="text"]{
+  border-radius: 1.5em;
+  padding: 0.8em;
+  border: 1px solid rgb(210,215,215);
+  font-size: 0.8em;
+  width: 25%;
+  color: gray;
+}
+section.contact form div{
+  width: 100%;
+  display: inline-block;
+  margin-top: 1em;
+}
+section.contact form div input{
+  background: #2e2c7e;
+  border: none;
+  color: #fff;
+  padding: 0.4em;
+  width: 10%;
+  border-radius: 1em;
+}
+footer{
+  background: #fff;
+  text-align: center;
+  color: gray;
+  padding: 4em 0;
+}
