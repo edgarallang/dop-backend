@@ -1,93 +1,128 @@
-<!DOCTYPE HTML>
-<html>
-<head>
-    <title>Flask-SocketIO Test</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js"></script>
-    <script type="text/javascript" charset="utf-8">
-        $(document).ready(function(){
-            namespace = '/test'; // change to an empty string to use the global namespace
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>inMoon</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-            // the socket.io documentation recommends sending an explicit package upon connection
-            // this is specially important when using the global namespace
-            var socket = io.connect('https://' + document.domain  + location.port + namespace);
-            socket.on('connect', function() {
-                console.log('Connected');
-                socket.emit('my event', {data: 'I\'m connected!'});
+        <link rel="stylesheet" type="text/css" href="style/normalize.css" />
+        <link rel="stylesheet" type="text/css" href="style/style.css" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+        <link href='https://fonts.googleapis.com/css?family=Nunito:400,300,700' rel='stylesheet' type='text/css'>
 
-            });
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
 
-            // event handler for server sent data
-            // the data is displayed in the "Received" section of the page
-            socket.on('my response', function(msg) {
-                $('#log').append('<br>Received #' + msg.count + ': ' + msg.data);
-            });
+        <header class="clearfix">
+            <div class="header-container">
+                <div class="col-xs-2">
+                    <img src="assets/inmoon-logo.png" class="logo">
+                </div>
+            </div>
+        </header>
 
-            // handlers for the different forms in the page
-            // these send data to the server in a variety of ways
-            $('form#emit').submit(function(event) {
-                socket.emit('my event', {data: $('#emit_data').val()});
-                return false;
-            });
-            $('form#broadcast').submit(function(event) {
-                socket.emit('my broadcast event', {data: $('#broadcast_data').val()});
-                return false;
-            });
-            $('form#join').submit(function(event) {
-                socket.emit('join', {room: $('#join_room').val()});
-                return false;
-            });
-            $('form#leave').submit(function(event) {
-                socket.emit('leave', {room: $('#leave_room').val()});
-                return false;
-            });
-            $('form#send_room').submit(function(event) {
-                socket.emit('my room event', {room: $('#room_name').val(), data: $('#room_data').val()});
-                return false;
-            });
-            $('form#close').submit(function(event) {
-                socket.emit('close room', {room: $('#close_room').val()});
-                return false;
-            });
-            $('form#disconnect').submit(function(event) {
-                socket.emit('disconnect request');
-                return false;
-            });
-        });
-    </script>
-</head>
-<body>
-    <h1>Flask-SocketIO Test</h1>
-    <h2>Send:</h2>
-    <form id="emit" method="POST" action='#'>
-        <input type="text" name="emit_data" id="emit_data" placeholder="Message">
-        <input type="submit" value="Echo">
-    </form>
-    <form id="broadcast" method="POST" action='#'>
-        <input type="text" name="broadcast_data" id="broadcast_data" placeholder="Message">
-        <input type="submit" value="Broadcast">
-    </form>
-    <form id="join" method="POST" action='#'>
-        <input type="text" name="join_room" id="join_room" placeholder="Room Name">
-        <input type="submit" value="Join Room">
-    </form>
-    <form id="leave" method="POST" action='#'>
-        <input type="text" name="leave_room" id="leave_room" placeholder="Room Name">
-        <input type="submit" value="Leave Room">
-    </form>
-    <form id="send_room" method="POST" action='#'>
-        <input type="text" name="room_name" id="room_name" placeholder="Room Name">
-        <input type="text" name="room_data" id="room_data" placeholder="Message">
-        <input type="submit" value="Send to Room">
-    </form>
-    <form id="close" method="POST" action="#">
-        <input type="text" name="close_room" id="close_room" placeholder="Room Name">
-        <input type="submit" value="Close Room">
-    </form>
-    <form id="disconnect" method="POST" action="#">
-        <input type="submit" value="Disconnect">
-    </form>
-    <h2>Receive:</h2>
-    <div id="log"></div>
-</body>
+        <div class="">
+            <section id="section-0" class="container">
+                <div id="left-side" class="">
+                    <img src="assets/iphone-dop.png"> 
+                </div>
+                <div id="right-side">
+                    <div id="min-logo">
+                        <img src="assets/white-dop-logo.png">
+                        <h1 class="app-name">D O P</h1>
+                    </div>
+                    <div id="app-description">
+                        Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde 
+                    </div>
+
+                    <button id="app-link">
+                        PROXIMAMENTE
+                    </button>
+
+                    <div id="platforms" class="">
+                        <i class="fa fa-apple fa-2"></i>
+                        <i class="fa fa-android fa-2"></i>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <section class="about">
+            <div class="container">
+                <div class="title">
+                    <h4>Desarrollo de Apps que cautivan, funcionan y venden.</h4>
+                    <p>Somos una empresa mexicana de jóvenes ingenieros y no ingenieros apasionados por la tecnología. Durente más de cuatro años nos hemos especializado en el desarrollo móvil y web.</p>
+                </div>
+                <div class="services">
+                    <figure>
+                        <img src="assets/webapps.png">
+                        <figcaption>
+                            <h4>Webapps</h4>
+                            <p>Now that there is the Tec-9, a crappy spray gun from South Miami. This gun is advertised as the most popular gun in American crime. Do you believe that shit? It actually says that in the little book that comes with it: the most popular gun in American crime. Like they're actually proud of that shit. </p>
+                        </figcaption>
+                    </figure>
+                    <figure>
+                        <img src="assets/multiplataforma.png">
+                        <figcaption>
+                            <h4>Multiplataforma</h4>
+                            <p>Now that there is the Tec-9, a crappy spray gun from South Miami. This gun is advertised as the most popular gun in American crime. Do you believe that shit? It actually says that in the little book that comes with it: the most popular gun in American crime. Like they're actually proud of that shit. </p>
+                        </figcaption>
+                    </figure>
+                    <figure>
+                        <img src="assets/puntuales.png">
+                        <figcaption>
+                            <h4>Puntuales</h4>
+                            <p>Now that there is the Tec-9, a crappy spray gun from South Miami. This gun is advertised as the most popular gun in American crime. Do you believe that shit? It actually says that in the little book that comes with it: the most popular gun in American crime. Like they're actually proud of that shit. </p>
+                        </figcaption>
+                    </figure>
+                </div>
+            </div>
+        </section>
+
+        <section class="contact">
+            <h1>
+                <i class="fa fa-envelope-o"></i>
+            </h1>
+            <h4>¡Contáctanos!</h4>
+            <p>¿Tienes alguna idea para reinventar un negocio? ¡Escríbenos!</p>
+            <form>
+                <input type="text" placeholder="Tu nombre" name="user_name" /> 
+                <input type="text" placeholder="Tu email" name="user_email" /> 
+                <div>
+                    <input type="submit" title="ENVIAR" />
+                </div>
+            </form>
+        </section>
+
+        <footer>
+            <p> Copyright &copy; 2016 INMOON - Design
+        </footer>
+        <!-- Add your site or application content here -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $('#left-side').addClass('left-appearing');
+                $('#right-side').addClass('right-appearing');
+            })
+        </script>
+        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+        <script>
+            (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+            function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+            e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+            e.src='https://www.google-analytics.com/analytics.js';
+            r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+            ga('create','UA-XXXXX-X');ga('send','pageview');
+        </script>
+    </body>
 </html>
