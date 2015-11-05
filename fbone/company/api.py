@@ -239,12 +239,15 @@ def fisrt_job():
 
 @company.route('/branch/dashboard', methods = ['GET'])
 def dashboard_branches():
-    query = 'SELECT * FROM branches\
+    adBranches = 'SELECT * FROM branches\
              INNER JOIN branches_design ON branches.branch_id = branches_design.branch_id\
              INNER JOIN branch_ad ON branches.branch_id = branch_ad.branch_id\
              WHERE branch_ad.duration>0 ORDER BY branch_ad.start_date LIMIT 8'
 
-    branches = db.engine.execute(query)
+    branches = db.engine.execute(adBranches)
+
+    if not branches:
+        print "Empty"
 
     selected_list_branch = branch_profile_schema.dump(branches)
     return jsonify({'data': selected_list_branch.data})
