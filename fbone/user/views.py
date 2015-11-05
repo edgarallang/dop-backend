@@ -192,18 +192,22 @@ def add_friend():
 
         user_id = User.query.get(payload['id']).user_id
         user_to_add = request.json['user_two_id']
-
+        user_two = User.query.get(user_to_add)
         friendshipExist = Friends.query.filter(((Friends.user_one_id == user_id) & (Friends.user_two_id == user_to_add)) | 
                                                ((Friends.user_one_id == user_to_add) & (Friends.user_two_id == user_id))).all()
         if not friendshipExist:
+            user_two = User.query.get(user_to_add)
+            if user_two.privacy_status == 0 :
+                operation_id = 1
+            elif user_two.privacy_status == 1 :
+                operation_id = 0
             friendsRelationship  = Friends(user_one_id = user_id,
                                            user_two_id = user_to_add,
-                                           operation_id = 0,
+                                           operation_id = operation_id,
                                            launcher_user_id = user_id)
 
 
             db.session.add(friendsRelationship)
-            
             db.session.commit()
 
             notification = Notification(user_id = user_to_add,
