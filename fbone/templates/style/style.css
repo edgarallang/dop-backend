@@ -165,13 +165,13 @@ section.about div div.services figure{
   display: inline-block;
   width: 33%;
 }
-section.about div div.services figure figcaption h4{
+section.about div div.services figure figcaption h4 {
   font-weight: 100;
   color: #fff;
-  padding-bottom: 0;
+  padding-bottom: 20px;
   font-size: 1.4em
 }
-section.about div div.services figure figcaption p{
+section.about div div.services figure figcaption p {
   font-weight: 100;
 }
 section.contact{
@@ -229,4 +229,8 @@ footer{
 }
 footer p{
   font-weight: 100;
+}
+
+figure img {
+  width: 30% !important;
 }
