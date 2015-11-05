@@ -140,10 +140,13 @@ section.about div div.title{
   color: #fff;
 }
 section.about div div.title h4{
-  font-weight: 200;
+  font-weight: 100;
   color: #fff;
-  font-size: 1.4em;
+  font-size: 1.6em;
   padding-bottom: 0
+}
+section.about div div.title p{
+  font-weight: 100;
 }
 section.about div div.services{
   display: flex;
@@ -154,9 +157,13 @@ section.about div div.services figure{
   width: 33%;
 }
 section.about div div.services figure figcaption h4{
-  font-weight: 600;
+  font-weight: 100;
   color: #fff;
   padding-bottom: 0;
+  font-size: 1.4em
+}
+section.about div div.services figure figcaption p{
+  font-weight: 100;
 }
 section.contact{
   display: inline-block;
@@ -209,5 +216,8 @@ footer{
   text-align: center;
   color: #b8bdbd;
   padding: 4em 0;
+  font-weight: 100;
+}
+footer p{
   font-weight: 100;
 }
