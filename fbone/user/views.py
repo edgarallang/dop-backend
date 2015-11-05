@@ -82,27 +82,33 @@ def avatar(user_id, filename):
 def facebook_login():
     facebookUser = User.query.filter_by(facebook_key = request.json['facebook_key']).first()
     if not facebookUser:
-        wasInvited = InvitedFriends.query.filter_by(facebook_key = request.json['facebook_key']).first()
-
-        #if wasInvited:
-            ######
-
         facebookUser = User(names = request.json['names'],
                             surnames = request.json['surnames'],
                             birth_date = request.json['birth_date'],
                             facebook_key = request.json['facebook_key'],
                             privacy_status = 0)
+
         db.session.add(facebookUser)
         db.session.commit()
 
         userSession = UserSession(user_id=facebookUser.user_id,
                                   email=request.json['email'])
+
         db.session.add(userSession)
         db.session.commit()
 
         userImage = UserImage(user_id=facebookUser.user_id,
                               main_image=request.json['main_image'])
         db.session.add(userImage)
+        db.session.commit()
+
+        userFirstEXP = UserFirstEXP(user_id = facebookUser.user_id,
+                                    first_following = False,
+                                    first_follower = False, 
+                                    first_company_fav = False, 
+                                    first_using = False)
+
+        db.session.add(userFirstEXP)
         db.session.commit()
 
     token = create_token(facebookUser)
@@ -240,9 +246,7 @@ def decline_friend():
         payload = parse_token(request, True)
 
         user_id = User.query.get(payload['id']).user_id
-
         friendsRelationship = Friends.query.filter_by(friends_id=request.json['friends_id']).first()
-
         friendsRelationship.operation_id = 2
         friendsRelationship.launcher_user_id = user_id
 
@@ -321,20 +325,19 @@ def get_coupons_activity_by_user_likes():
         user_profile_id = request.args.get('user_profile_id')
         
         users = db.engine.execute('SELECT coupons.branch_id,coupons.coupon_id,branches_design.logo,coupons.name,clients_coupon.clients_coupon_id,clients_coupon.latitude,clients_coupon.longitude \
-                                    , users.names, users.surnames, users.user_id, users_image.main_image, branches.name AS branch_name, \
+                                    , users.names, users.surnames, users.user_id, users_image.main_image, branches.name AS branch_name, branches.company_id, \
                                     (SELECT COUNT(*)  FROM clients_coupon_likes WHERE clients_coupon.clients_coupon_id = clients_coupon_likes.clients_coupon_id) AS total_likes, \
-                                    (SELECT COUNT(*)  FROM clients_coupon_likes WHERE clients_coupon_likes.user_id = %d AND clients_coupon_likes.clients_coupon_id = clients_coupon.clients_coupon_id) AS user_like \
+                                    (SELECT COUNT(*)  FROM clients_coupon_likes WHERE clients_coupon_likes.user_id = %s AND clients_coupon_likes.clients_coupon_id = clients_coupon.clients_coupon_id) AS user_like \
                                     FROM clients_coupon \
                                     INNER JOIN users ON clients_coupon.user_id=users.user_id  \
                                     INNER JOIN users_image ON users.user_id = users_image.user_id \
                                     INNER JOIN coupons ON clients_coupon.coupon_id = coupons.coupon_id \
                                     INNER JOIN branches ON coupons.branch_id = branches.branch_id \
                                     INNER JOIN branches_design ON coupons.branch_id = branches_design.branch_id \
-                                    WHERE users.user_id = %d \
-                                    ORDER BY clients_coupon.clients_coupon_id DESC LIMIT %s OFFSET 0' % (payload['id'], user_profile_id, limit))
+                                    WHERE users.user_id = %s \
+                                    ORDER BY clients_coupon.clients_coupon_id DESC LIMIT %s OFFSET 0' % (user_profile_id, user_profile_id, limit))
 
         users_list = user_join_exchanges_coupon_schema.dump(users)
-
         return jsonify({'data': users_list.data})
 
     return jsonify({'message': 'Oops! algo salió mal'})
