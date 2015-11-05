@@ -168,7 +168,7 @@ section.about div div.services figure{
 section.about div div.services figure figcaption h4 {
   font-weight: 100;
   color: #fff;
-  padding-bottom: 20px;
+  padding: 20px;
   font-size: 1.4em
 }
 section.about div div.services figure figcaption p {
