@@ -256,7 +256,6 @@ def dashboard_branches():
         extra_branches = db.engine.execute(remainingBranches)
 
         selected_list_extra = branch_profile_schema.dump(extra_branches)
-        return jsonify({'data':"Empty"})
 
     selected_list_branch = branch_profile_schema.dump(branches)
     return jsonify({'data': selected_list_branch.data + selected_list_extra.data})
