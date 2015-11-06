@@ -246,7 +246,7 @@ def dashboard_branches():
 
     branches = db.engine.execute(adBranches)
 
-    if not branches:
+    if branches == 0:
         print "Empty"
         return jsonify({'data':"Empty"})
 
