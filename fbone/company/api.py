@@ -248,6 +248,7 @@ def dashboard_branches():
 
     if not branches:
         print "Empty"
+        return jsonify({'data':"Empty"})
 
     selected_list_branch = branch_profile_schema.dump(branches)
     return jsonify({'data': selected_list_branch.data})
