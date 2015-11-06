@@ -258,7 +258,7 @@ def dashboard_branches():
         selected_list_extra = branch_profile_schema.dump(extra_branches)
 
     selected_list_branch = branch_profile_schema.dump(branches)
-    return jsonify({'data': selected_list_branch.data + selected_list_extra.data})
+    return jsonify({'data': selected_list_extra.data + selected_list_branch.data})
 
 def number_of_rows(query):
     result = 0
