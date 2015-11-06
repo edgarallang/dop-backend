@@ -265,7 +265,9 @@ def dashboard_branches():
 
 def number_of_rows(query):
     result = 0
+    print "METODO"
     for row in query:
+        print "ENTRO"
         result += 1
     return result
 
