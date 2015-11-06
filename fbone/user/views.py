@@ -378,9 +378,7 @@ def get_used_coupons_by_user_likes_offset():
 
     return jsonify({'message': 'Oops! algo salió mal'})
 
-@user.route('/<int:user_id>/<string:exp>/set', methods=['GET','PUT'])
+@user.route('/<int:user_id>/<int:exp>/set', methods=['GET','PUT'])
 def set_experience(user_id,exp):
-    exp = "test"
-    exec(exp + " = exp")
 
-    return jsonify({'message': 'experiencia asignada %s' % test })
+    return jsonify({'message': 'experiencia asignada %d' % exp })
