@@ -12,7 +12,7 @@ from .models import *
 from ..extensions import db, socketio
 from ..notification import Notification
 from flask.ext.socketio import SocketIO, send, emit, join_room, leave_room
-import .utils
+from ..utils import *
 
 user = Blueprint('user', __name__, url_prefix='/api/user')
 
