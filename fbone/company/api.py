@@ -251,6 +251,8 @@ def dashboard_branches():
 
     remaining = 8-result
 
+    print "Remaining "+remaining
+
     if remaining>0:
         remainingBranches = 'SELECT * FROM branches\
                               JOIN branches_design ON branches.branch_id = branches_design.branch_id\
