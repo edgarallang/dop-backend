@@ -246,11 +246,20 @@ def dashboard_branches():
 
     branches = db.engine.execute(adBranches)
     result = number_of_rows(branches)
-    if result == 0:
+
+    remaining = 8-result
+
+    if remaining>0:
+        remainingBranches = 'SELECT * FROM branches\
+                              JOIN branches_design ON branches.branch_id = branches_design.branch_id\
+                              ORDER BY RANDOM() LIMIT 8'
+        extra_branches = db.engine.execute(remainingBranches)
+
+        selected_list_extra = branch_profile_schema.dump(extra_branches)
         return jsonify({'data':"Empty"})
 
     selected_list_branch = branch_profile_schema.dump(branches)
-    return jsonify({'data': selected_list_branch.data})
+    return jsonify({'data': selected_list_branch.data + selected_list_extra.data})
 
 def number_of_rows(query):
     result = 0
