@@ -245,7 +245,7 @@ def dashboard_branches():
              WHERE branch_ad.duration>0 ORDER BY branch_ad.start_date LIMIT 8'
 
     branches = db.engine.execute(adBranches)
-    print "branches "+branches
+
     if branches == 0:
         print "Empty"
         return jsonify({'data':"Empty"})
