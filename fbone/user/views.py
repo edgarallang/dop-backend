@@ -12,7 +12,7 @@ from .models import *
 from ..extensions import db, socketio
 from ..notification import Notification
 from flask.ext.socketio import SocketIO, send, emit, join_room, leave_room
-
+from ..utils import *
 
 user = Blueprint('user', __name__, url_prefix='/api/user')
 
@@ -378,4 +378,6 @@ def get_used_coupons_by_user_likes_offset():
 
     return jsonify({'message': 'Oops! algo salió mal'})
 
-
+@user.route('/<int:user_id>/<string:exp>/set', methods=['GET'])
+def set_experience(user_id,exp):
+    return jsonify({'message': 'experiencia asignada %d' % exp })
