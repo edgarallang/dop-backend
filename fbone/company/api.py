@@ -246,9 +246,9 @@ def dashboard_branches():
 
     branches = db.engine.execute(adBranches)
 
-    if branches == 0:
-        print "Empty"
-        return jsonify({'data':"Empty"})
+    #if branches == 0:
+    print "Empty"
+    return jsonify({'data':"Empty"})
 
     selected_list_branch = branch_profile_schema.dump(branches)
     return jsonify({'data': selected_list_branch.data})
