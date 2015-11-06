@@ -197,12 +197,12 @@ def add_friend():
                                                ((Friends.user_one_id == user_to_add) & (Friends.user_two_id == user_id))).all()
         if not friendshipExist:
             user_two = User.query.get(user_to_add)
-            print user_two.privacy_status
+
             if user_two.privacy_status == 0:
                 operation_id = 1
             elif user_two.privacy_status == 1:
                 operation_id = 0
-                
+
             friendsRelationship  = Friends(user_one_id = user_id,
                                            user_two_id = user_to_add,
                                            operation_id = operation_id,
@@ -378,8 +378,8 @@ def get_used_coupons_by_user_likes_offset():
 
     return jsonify({'message': 'Oops! algo salió mal'})
 
-@user.route('/<int:user_id>/<string:exp>/set', methods=['GET'])
+@user.route('/<int:user_id>/<string:exp>/set', methods=['GET','PUT'])
 def set_experience(user_id,exp):
-    exec(exp + " = 'something else'")
+    exec(exp + " = 'blabla'")
 
     return jsonify({'message': 'experiencia asignada %s' % exp })
