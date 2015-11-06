@@ -4,7 +4,7 @@ import os
 import jwt
 import json
 import requests
-from flask import Blueprint, request, jsonify, session, utils
+from flask import Blueprint, request, jsonify, session
 from flask import current_app as app
 from flask.ext.login import login_required, current_user
 from jwt import DecodeError, ExpiredSignature
@@ -12,7 +12,7 @@ from .models import *
 from ..extensions import db, socketio
 from ..notification import Notification
 from flask.ext.socketio import SocketIO, send, emit, join_room, leave_room
-
+import utils
 
 user = Blueprint('user', __name__, url_prefix='/api/user')
 
