@@ -252,7 +252,7 @@ def dashboard_branches():
     if remaining>0:
         remainingBranches = 'SELECT * FROM branches\
                               JOIN branches_design ON branches.branch_id = branches_design.branch_id\
-                              ORDER BY RANDOM() LIMIT 8'
+                              ORDER BY RANDOM() LIMIT %d' % (remaining)
         extra_branches = db.engine.execute(remainingBranches)
 
         selected_list_extra = branch_profile_schema.dump(extra_branches)
