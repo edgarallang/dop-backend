@@ -251,7 +251,7 @@ def dashboard_branches():
 
     remaining = 8-result
 
-    print "Remaining "+remaining
+    print 'Remaining %d' % remaining
 
     if remaining>0:
         remainingBranches = 'SELECT * FROM branches\
