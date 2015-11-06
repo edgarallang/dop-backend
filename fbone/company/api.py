@@ -255,6 +255,6 @@ def dashboard_branches():
 def number_of_rows(query):
     result = 0
     for row in query:
-        result++
+        result += 1
     return result
 
