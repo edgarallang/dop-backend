@@ -245,11 +245,16 @@ def dashboard_branches():
              WHERE branch_ad.duration>0 ORDER BY branch_ad.start_date LIMIT 8'
 
     branches = db.engine.execute(adBranches)
-
-    if branches:
+    result = number_of_rows(branches)
+    if result == 0:
         return jsonify({'data':"Empty"})
 
     selected_list_branch = branch_profile_schema.dump(branches)
     return jsonify({'data': selected_list_branch.data})
 
+def number_of_rows(query):
+    result = 0
+    for row in query:
+        result++
+    return result
 
