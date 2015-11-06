@@ -247,7 +247,7 @@ def dashboard_branches():
     branches = db.engine.execute(adBranches)
     selected_list_branch = branch_profile_schema.dump(branches)
 
-    result = number_of_rows(selected_list_branch)
+    result = number_of_rows(selected_list_branch.data)
 
     remaining = 8-result
 
