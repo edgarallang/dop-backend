@@ -6,6 +6,7 @@
 import string
 import random
 import os
+import requests
 
 from datetime import datetime
 
@@ -48,7 +49,7 @@ STRING_LEN = 264
 ############# EXP CONSTANTS ################
 
 SHARE = 5
-LIKE = 10
+PAGE_LIKE = 10
 INVITE = 20
 USING = 5
 FIRST_FOLLOWING = 3
@@ -58,6 +59,9 @@ FIRST_USING = 5
 FACEBOOK_LOGIN = 5
 
 ############################################
+
+def assign_exp(user_id, exp):
+    requests.put("https://inmoon.com.mx/api/user/"+user_id+"/"+ exp +"/set")
 
 def get_current_time():
     return datetime.utcnow()
