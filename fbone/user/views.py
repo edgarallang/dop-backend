@@ -4,7 +4,7 @@ import os
 import jwt
 import json
 import requests
-from flask import Blueprint, request, jsonify, session
+from flask import Blueprint, request, jsonify, session, utils
 from flask import current_app as app
 from flask.ext.login import login_required, current_user
 from jwt import DecodeError, ExpiredSignature
@@ -380,4 +380,5 @@ def get_used_coupons_by_user_likes_offset():
 
 @user.route('/<int:user_id>/<string:exp>/set', methods=['GET'])
 def set_experience(user_id,exp):
+
     return jsonify({'message': 'experiencia asignada'})
