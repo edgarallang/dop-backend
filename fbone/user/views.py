@@ -381,7 +381,7 @@ def get_used_coupons_by_user_likes_offset():
 @user.route('/<int:user_id>/<int:exp>/set', methods=['GET','PUT'])
 def set_experience(user_id,exp):
     user = User.query.filter_by(user_id = user_id).first()
-    user.exp = user.exp + exp
+    user.exp = 5#user.exp + exp
 
     db.session.commit()
     
