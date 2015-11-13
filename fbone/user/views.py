@@ -386,3 +386,18 @@ def set_experience(user_id,exp):
     db.session.commit()
     
     return jsonify({'message': 'experiencia asignada %d' % exp })
+
+@user.route('/privacy_status/set', methods=['POST'])
+def set_privacy():
+    if request.headers.get('Authorization'):
+        token_index = True
+        payload = parse_token(request, token_index)
+        privacy_status = request.json['privacy_status']
+        user = User.query.get(payload['id'])
+        user.privacy_status = privacy_status
+
+        db.session.commit()
+
+        return jsonify({'message': 'user privacy is set :D'})
+    return jsonify({'message': 'Oops! algo salió mal'})
+
