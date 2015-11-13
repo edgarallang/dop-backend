@@ -314,7 +314,10 @@ def search_people():
 
         #payload = parse_token(request, token_index)
         #list_coupon = db.engine.execute(query)
-        people = db.engine.execute("SELECT * FROM users \
+        people = db.engine.execute("SELECT *, \
+                                    (SELECT EXISTS (SELECT * FROM friends \
+                                        WHERE friends.user_one_id = 3 and friends.user_two_id = users.user_id)::bool) AS friend \
+                                    FROM users \
                                     INNER JOIN users_image on users.user_id = users_image.user_id \
                                     WHERE users.names ILIKE '%s' " % ('%%' + text + '%%' ))
         selected_list_people = people_schema.dump(people)
