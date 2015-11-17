@@ -314,7 +314,10 @@ def search_people():
 
         #payload = parse_token(request, token_index)
         #list_coupon = db.engine.execute(query)
-        people = db.engine.execute("SELECT * FROM users \
+        people = db.engine.execute("SELECT *, \
+                                    (SELECT EXISTS (SELECT * FROM friends \
+                                        WHERE friends.user_one_id = 3 and friends.user_two_id = users.user_id)::bool) AS friend \
+                                    FROM users \
                                     INNER JOIN users_image on users.user_id = users_image.user_id \
                                     WHERE users.names ILIKE '%s' " % ('%%' + text + '%%' ))
         selected_list_people = people_schema.dump(people)
@@ -385,3 +388,18 @@ def set_experience(user_id,exp):
     db.session.commit()
     
     return jsonify({'message': 'experiencia asignada %d' % exp })
+
+@user.route('/privacy_status/set', methods=['POST'])
+def set_privacy():
+    if request.headers.get('Authorization'):
+        token_index = True
+        payload = parse_token(request, token_index)
+        privacy_status = request.json['privacy_status']
+        user = User.query.get(payload['id'])
+        user.privacy_status = privacy_status
+
+        db.session.commit()
+
+        return jsonify({'message': 'user privacy is set :D'})
+    return jsonify({'message': 'Oops! algo salió mal'})
+

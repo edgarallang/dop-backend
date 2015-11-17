@@ -186,7 +186,8 @@ class PeopleSchema(Schema):
                   'birth_date',
                   'facebook_key',
                   'privacy_status',
-                  'main_image')
+                  'main_image',
+                  'friend')
 
 class UserJoinExchanges(Schema):
     class Meta:
