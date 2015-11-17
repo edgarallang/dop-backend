@@ -32,7 +32,8 @@ class Notifications(Schema):
                   'launcher_id',
                   'friendship_status',
                   'newsfeed_activity',
-                  'read'
+                  'read',
+                  'notification_date'
                   )
 
 notifications_schema = Notifications(many=True)

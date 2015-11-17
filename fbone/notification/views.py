@@ -106,7 +106,7 @@ def get_notifications_offset():
 
         notifications_query = "SELECT notifications.notification_id,notifications.type, launcher_user.names AS "+"launcher_name"+",\
                                 launcher_user.surnames AS "+"launcher_surnames"+",launcher_user.user_id AS "+"launcher_id"+",friends.operation_id AS "+"friendship_status"+",\
-                                branches.name AS "+"newsfeed_activity"+", notifications.read FROM notifications\
+                                branches.name AS "+"newsfeed_activity"+", notifications.read, notifications.notification_date FROM notifications\
                                 LEFT JOIN clients_coupon ON notifications.object_id = clients_coupon.clients_coupon_id AND notifications.type= 'newsfeed'\
                                 LEFT JOIN coupons ON clients_coupon.coupon_id = coupons.coupon_id\
                                 LEFT JOIN branches ON coupons.branch_id = branches.branch_id\
