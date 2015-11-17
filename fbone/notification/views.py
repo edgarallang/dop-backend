@@ -91,7 +91,7 @@ def get_notifications():
 
         notifications_list = notifications_schema.dump(notifications)
 
-        print notifications_list.data.notification_date
+        print notifications_list.data['notification_date']
         return jsonify({'data': notifications_list.data})
 
 
