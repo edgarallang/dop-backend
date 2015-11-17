@@ -91,6 +91,8 @@ def get_notifications():
 
         notifications_list = notifications_schema.dump(notifications)
 
+        print notifications.notification_date
+
         return jsonify({'data': notifications_list.data})
 
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
@@ -117,7 +119,6 @@ def get_notifications_offset():
 
         notifications_list = notifications_schema.dump(notifications)
 
-        print "Hey la fecha es %s" % notifications.notification_date
 
         return jsonify({'data': notifications_list.data})
 
