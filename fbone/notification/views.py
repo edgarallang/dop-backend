@@ -117,7 +117,7 @@ def get_notifications_offset():
 
         notifications_list = notifications_schema.dump(notifications)
 
-        print notifications.notification_date
+        print "Hey la fecha es %s" % notifications.notification_date
 
         return jsonify({'data': notifications_list.data})
 
