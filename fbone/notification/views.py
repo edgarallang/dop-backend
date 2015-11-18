@@ -86,7 +86,7 @@ def get_notifications():
                                 LEFT JOIN branches ON coupons.branch_id = branches.branch_id\
                                 LEFT JOIN friends ON notifications.object_id = friends.friends_id AND notifications.type= 'friend'\
                                 INNER JOIN users AS launcher_user ON notifications.launcher_id = launcher_user.user_id \
-                                WHERE notifications.user_id = %d ORDER BY notification_date DESC LIMIT 11" % (payload['id'])
+                                WHERE notifications.user_id = %d ORDER BY notification_date DESC LIMIT 11" % (payload)
         notifications = db.engine.execute(notifications_query)
 
         notifications_list = notifications_schema.dump(notifications)
