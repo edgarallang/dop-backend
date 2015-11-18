@@ -100,7 +100,7 @@ def get_notifications():
 
 @notification.route('/all/offset/get/', methods=['GET'])
 def get_notifications_offset():
-    if request.headers.get('Authorization'):
+    # if request.headers.get('Authorization'):
         token_index = True
         payload = parse_token(request, token_index)
         offset = request.args.get('offset')
@@ -123,7 +123,7 @@ def get_notifications_offset():
         print notifications_list.data
         return jsonify({'data': notifications_list.data})
 
-    return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
+    # return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
 @socketio.on('join room', namespace='/app')
 def on_join_room(message):
