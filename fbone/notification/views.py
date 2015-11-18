@@ -120,7 +120,7 @@ def get_notifications_offset():
 
         notifications_list = notifications_schema.dump(notifications)
 
-
+        print notifications_list.data
         return jsonify({'data': notifications_list.data})
 
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
