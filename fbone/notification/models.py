@@ -25,7 +25,7 @@ class Notification(db.Model):
 
 class Notifications(Schema):
     class Meta:
-        dateformat = "UTC"
+        dateformat = "iso"
         fields = ('notification_id',
                   'type',
                   'launcher_name',
