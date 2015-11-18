@@ -25,7 +25,7 @@ class Notification(db.Model):
 
 class Notifications(Schema):
     class Meta:
-        dateformat = '%Y-%m-%d'
+        dateformat = "%Y-%m-%d"
         fields = ('notification_id',
                   'type',
                   'launcher_name',
