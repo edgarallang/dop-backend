@@ -16,6 +16,7 @@ from OpenSSL import SSL
 context = ('/etc/ssl/websitessl/inmoon.crt', '/etc/ssl/websitessl/inmoon.key')
 
 app = create_app()
+app.json_encoder = CustomJSONEncoder
 app.test_request_context().push()
 
 scheduler = APScheduler()
@@ -54,3 +55,21 @@ manager.add_option('-c', '--config',
 
 if __name__ == "__main__":
     manager.run()
+
+class CustomJSONEncoder(JSONEncoder):
+    def default(self, obj):
+        try:
+            if isinstance(obj, datetime):
+                if obj.utcoffset() is not None:
+                    obj = obj - obj.utcoffset()
+                millis = int(
+                    calendar.timegm(obj.timetuple()) * 1000 +
+                    obj.microsecond / 1000
+                )
+                return millis
+            iterable = iter(obj)
+        except TypeError:
+            pass
+        else:
+            return list(iterable)
+        return JSONEncoder.default(self, obj)
