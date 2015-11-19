@@ -35,6 +35,6 @@ class Notifications(Schema):
                   'read',
                   'notification_date'
                   )
-        dateformat = ("iso8601")
+        dateformat = ("rfc822")
 
 notifications_schema = Notifications(many=True)
