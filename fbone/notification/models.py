@@ -36,8 +36,7 @@ class Notifications(Schema):
                   'read',
                   'notification_date'
                   )
-        exclude = ("read", "newsfeed_activity")
-        dateformat = ({'format':'str'})
+        dateformat = ('format'='rfc')
 
 
 notifications_schema = Notifications(many=True)
