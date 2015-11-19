@@ -74,9 +74,9 @@ def set_read():
 
 @notification.route('/all/get', methods=['GET'])
 def get_notifications():
-    if request.headers.get('Authorization'):
+    #if request.headers.get('Authorization'):
         token_index = True
-        payload = parse_token(request, token_index)
+        payload = 5 #parse_token(request, token_index)
 
         notifications_query = "SELECT notifications.notification_id,notifications.type, launcher_user.names AS "+"launcher_name"+",\
                                 launcher_user.surnames AS "+"launcher_surnames"+",launcher_user.user_id AS "+"launcher_id"+",friends.operation_id AS "+"friendship_status"+",\
@@ -86,7 +86,7 @@ def get_notifications():
                                 LEFT JOIN branches ON coupons.branch_id = branches.branch_id\
                                 LEFT JOIN friends ON notifications.object_id = friends.friends_id AND notifications.type= 'friend'\
                                 INNER JOIN users AS launcher_user ON notifications.launcher_id = launcher_user.user_id \
-                                WHERE notifications.user_id = %d ORDER BY notification_date DESC LIMIT 11" % (payload['id'])
+                                WHERE notifications.user_id = %d ORDER BY notification_date DESC LIMIT 11" % (payload)
         notifications = db.engine.execute(notifications_query)
 
         notifications_list = notifications_schema.dump(notifications)
@@ -96,7 +96,7 @@ def get_notifications():
         return jsonify({'data': notifications_list.data})
 
 
-    return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
+   # return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
 @notification.route('/all/offset/get/', methods=['GET'])
 def get_notifications_offset():
@@ -120,7 +120,7 @@ def get_notifications_offset():
 
         notifications_list = notifications_schema.dump(notifications)
 
-
+        print notifications_list.data
         return jsonify({'data': notifications_list.data})
 
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})

@@ -25,6 +25,7 @@ class Notification(db.Model):
 
 class Notifications(Schema):
     class Meta:
+        dateformat = "iso"
         fields = ('notification_id',
                   'type',
                   'launcher_name',
@@ -36,5 +37,6 @@ class Notifications(Schema):
                   'notification_date'
                   )
         dateformat = ({'format':'str'})
+
 
 notifications_schema = Notifications(many=True)
