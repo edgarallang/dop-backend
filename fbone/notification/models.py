@@ -6,6 +6,7 @@ from ..extensions import db
 from ..utils import get_current_time, SEX_TYPE, STRING_LEN
 from ..user import User
 from ..company import Branch, BranchUser
+import datetime as dt
 
 
 # =====================================================================
@@ -36,7 +37,7 @@ class Notifications(Schema):
                   'read',
                   'notification_date'
                   )
-        datexformat = ('rfc')
+        dateformat = ('rfc')
 
 
 notifications_schema = Notifications(many=True)
