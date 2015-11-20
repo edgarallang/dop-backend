@@ -245,8 +245,7 @@ class CouponsLocation(Schema):
                   'city',
                   'category_id',
                   'latitude',
-                  'longitude',
-                  'category_id')
+                  'longitude')
 
 coupon_schema = CouponSchema()
 coupons_schema = CouponSchema(many=True)
