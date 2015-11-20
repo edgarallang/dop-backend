@@ -242,7 +242,6 @@ class CouponsLocation(Schema):
                   'address',
                   'distance',
                   'description',
-                  'limit',
                   'city',
                   'category_id',
                   'latitude',
