@@ -237,7 +237,6 @@ class CouponsLocation(Schema):
     class Meta:
         fields = ('coupon_id',
                   'branch_id',
-                  'company_id',
                   'coupon_name',
                   'name',
                   'address',
