@@ -161,17 +161,12 @@ class NearestCouponSchema(Schema):
     class Meta:
         fields = ('coupon_id',
                   'branch_id',
-                  'company_id',
                   'name',
-                  'coupon_folio',
                   'description',
                   'start_date',
                   'end_date',
                   'limit',
                   'min_spent',
-                  'coupon_category_id',
-                  'total_likes',
-                  'user_like',
                   'latitude',
                   'longitude')
 

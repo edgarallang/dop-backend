@@ -443,7 +443,7 @@ def nearest_coupons():
 
 
     query = 'SELECT branch_location_id, branch_id, state, city, latitude, longitude, distance, address, name, category_id, coupon_name, coupon_id, description \
-                FROM (SELECT coupons.name as coupon_name, coupons.coupon_id, coupons.description, z.branch_location_id, z.branch_id, z.state, z.city, z.address, \
+                FROM (SELECT coupons.name as coupon_name, coupons.coupon_id, coupons.start_date,coupons.end_date,coupons.limit,coupons.min_spent, coupons.description, z.branch_location_id, z.branch_id, z.state, z.city, z.address, \
                     z.latitude, z.longitude, branches.name, subcategory.category_id, \
                     p.radius,\
                     p.distance_unit \
