@@ -296,7 +296,7 @@ def get_all_used_coupon_for_myself():
 
     list_coupon = db.engine.execute('SELECT coupons.coupon_id, branches.branch_id, company_id, branches.name, coupon_folio, description, start_date, \
                                             end_date, coupons.limit, min_spent, coupon_category_id, logo, branches_location.latitude, branches_location.longitude, \
-                                            banner, category_id,start_date,end_date,min_spent, \
+                                            banner, category_id, \
                                     (SELECT COUNT(*)  FROM coupons_likes \
                                         WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes, \
                                     (SELECT COUNT(*)  FROM coupons_likes \
@@ -442,8 +442,8 @@ def nearest_coupons():
     
 
 
-    query = 'SELECT branch_location_id, branch_id, state, city, latitude, longitude, distance, address, name, category_id, coupon_name, coupon_id, description \
-                FROM (SELECT coupons.name as coupon_name, coupons.coupon_id, coupons.start_date,coupons.end_date,coupons.limit,coupons.min_spent, coupons.description, z.branch_location_id, z.branch_id, z.state, z.city, z.address, \
+    query = 'SELECT branch_location_id, branch_id, state, city, latitude, longitude, distance, address, name, category_id, coupon_name, coupon_id, description,start_date,end_date,min_spent,limit \
+                FROM (SELECT coupons.name as coupon_name, coupons.coupon_id,coupons.start_date,coupons.end_date,coupons.limit,coupons.min_spent, coupons.description, z.branch_location_id, z.branch_id, z.state, z.city, z.address, \
                     z.latitude, z.longitude, branches.name, subcategory.category_id, \
                     p.radius,\
                     p.distance_unit \
