@@ -411,7 +411,7 @@ def get_trending_coupons():
                                         WHERE deleted = false ORDER BY total_value DESC LIMIT 8' % payload['id'])
 
 
-        selected_list_coupon = coupons_logo_schema.dump(list_coupon)
+        selected_list_coupon = trending_coupon_schema.dump(list_coupon)
         return jsonify({'data': selected_list_coupon.data})
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
@@ -430,7 +430,7 @@ def get_almost_expired_coupons():
                                         INNER JOIN branches_location on coupons.branch_id = branches_location.branch_id \
                                         WHERE deleted = false AND coupons.end_date>now() ORDER BY coupons.end_date ASC LIMIT 8' % payload['id'])
 
-        selected_list_coupon = coupons_logo_schema.dump(list_coupon)
+        selected_list_coupon = toexpire_coupon_schema.dump(list_coupon)
         return jsonify({'data': selected_list_coupon.data})
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
@@ -472,7 +472,7 @@ def nearest_coupons():
                 ORDER BY distance LIMIT 8'
 
     nearestCoupons = db.engine.execute(query)
-    nearest = coupons_location_schema.dump(nearestCoupons)
+    nearest = nearest_coupon_schema.dump(nearestCoupons)
     
     return jsonify({'data': nearest.data})
 
