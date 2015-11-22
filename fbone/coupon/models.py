@@ -170,12 +170,10 @@ class NearestCouponSchema(Schema):
                   'limit',
                   'min_spent',
                   'coupon_category_id',
-                  'logo',
                   'total_likes',
                   'user_like',
                   'latitude',
-                  'longitude',
-                  'banner')
+                  'longitude')
 
 class ToExpireCouponSchema(Schema):
     class Meta:
