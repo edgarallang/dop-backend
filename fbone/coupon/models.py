@@ -137,6 +137,66 @@ class CouponLogoSchema(Schema):
                   'banner',
                   'category_id')
 
+class TrendingCouponSchema(Schema):
+    class Meta:
+        fields = ('coupon_id',
+                  'branch_id',
+                  'company_id',
+                  'name',
+                  'coupon_folio',
+                  'description',
+                  'start_date',
+                  'end_date',
+                  'limit',
+                  'min_spent',
+                  'coupon_category_id',
+                  'logo',
+                  'total_likes',
+                  'user_like',
+                  'latitude',
+                  'longitude',
+                  'banner')
+
+class NearestCouponSchema(Schema):
+    class Meta:
+        fields = ('coupon_id',
+                  'branch_id',
+                  'company_id',
+                  'name',
+                  'coupon_folio',
+                  'description',
+                  'start_date',
+                  'end_date',
+                  'limit',
+                  'min_spent',
+                  'coupon_category_id',
+                  'logo',
+                  'total_likes',
+                  'user_like',
+                  'latitude',
+                  'longitude',
+                  'banner')
+
+class ToExpireCouponSchema(Schema):
+    class Meta:
+        fields = ('coupon_id',
+                  'branch_id',
+                  'company_id',
+                  'name',
+                  'coupon_folio',
+                  'description',
+                  'start_date',
+                  'end_date',
+                  'limit',
+                  'min_spent',
+                  'coupon_category_id',
+                  'logo',
+                  'total_likes',
+                  'user_like',
+                  'latitude',
+                  'longitude',
+                  'banner')
+
 class BondJoinCouponSchema(Schema):
     class Meta:
         fields = ('coupon_id',
@@ -251,7 +311,9 @@ coupon_schema = CouponSchema()
 coupons_schema = CouponSchema(many=True)
 
 coupons_logo_schema = CouponLogoSchema(many=True)
-
+trending_coupon_schema = TrendingCouponSchema(many=True)
+nearest_coupon_schema = NearestCouponSchema(many=True)
+toexpire_coupon_schema = ToExpireCouponSchema(many=True)
 
 bond_join_coupon_schema = BondJoinCouponSchema(many=True)
 discount_join_coupon_schema = DiscountJoinCouponSchema(many=True)
