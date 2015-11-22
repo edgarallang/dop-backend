@@ -245,7 +245,7 @@ def dashboard_branches():
              WHERE branch_ad.duration>0 ORDER BY branch_ad.start_date LIMIT 8'
 
     branches = db.engine.execute(adBranches)
-    selected_list_branch = branch_profile_schema.dump(branches)
+    selected_list_branch = branch_ad_schema.dump(branches)
 
     result = number_of_rows(selected_list_branch.data)
 
@@ -259,7 +259,7 @@ def dashboard_branches():
                               ORDER BY RANDOM() LIMIT %d' % (remaining)
         extra_branches = db.engine.execute(remainingBranches)
 
-        selected_list_extra = branch_profile_schema.dump(extra_branches)
+        selected_list_extra = branch_ad_schema.dump(extra_branches)
 
     return jsonify({'data': selected_list_branch.data+selected_list_extra.data})
 
