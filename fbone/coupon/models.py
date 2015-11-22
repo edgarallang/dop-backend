@@ -165,7 +165,6 @@ class NearestCouponSchema(Schema):
                   'description',
                   'start_date',
                   'end_date',
-                  'limit',
                   'min_spent',
                   'latitude',
                   'longitude')
