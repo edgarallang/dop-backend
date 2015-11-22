@@ -186,6 +186,14 @@ class BranchesProfile(Schema):
                   'banner',
                   'logo')
 
+class BranchesAd(Schema):
+    class Meta:
+        fields = ('branch_id',
+                  'name',
+                  'company_id',
+                  'banner',
+                  'logo')
+
 class BranchesLocation(Schema):
     # branch = fields.Nested(BranchSchema, validate=must_not_be_blank)
     class Meta:
@@ -205,4 +213,5 @@ companies_schema = CompanySchema(many=True)
 branch_schema = BranchSchema()
 branch_user_schema = BranchUserSchema()
 branch_profile_schema = BranchesProfile(many=True)
+branch_ad_schema = BranchesAd(many=True)
 branches_location_schema = BranchesLocation(many=True)
