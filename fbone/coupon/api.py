@@ -74,6 +74,25 @@ def take_coupon():
         return jsonify({'message': 'El cupon se tomó con éxito','folio': folio})
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
+@coupon.route('/user/use',methods=['POST'])
+def use_coupon():
+
+    if request.headers.get('Authorization'):
+        token_index = True
+        payload = parse_token(request, token_index)
+        client_coupon_id = request.json['client_coupon_id']
+
+        client_coupon = ClientsCoupon.query.filter_by(clients_coupon_id = client_coupon_id).first()
+
+        client_coupon.used = True
+        client_coupon.used_date = datetime.now()
+
+        db.session.commit()
+
+        return jsonify({'message': 'El cupon se tomó con éxito','folio': folio})
+    return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
+
+
 # GET methods
 @coupon.route('/<int:coupon_id>/get', methods = ['GET'])
 def get_coupon(coupon_id):

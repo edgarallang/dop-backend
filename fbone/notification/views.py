@@ -76,7 +76,7 @@ def set_read():
 def get_notifications():
     #if request.headers.get('Authorization'):
         token_index = True
-        payload = 5 #parse_token(request, token_index)
+        payload = parse_token(request, token_index)
 
         notifications_query = "SELECT notifications.notification_id,notifications.type, launcher_user.names AS "+"launcher_name"+",\
                                 launcher_user.surnames AS "+"launcher_surnames"+",launcher_user.user_id AS "+"launcher_id"+",friends.operation_id AS "+"friendship_status"+",\
