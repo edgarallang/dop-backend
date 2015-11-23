@@ -85,13 +85,13 @@ def use_coupon():
 
     client_coupon = ClientsCoupon.query.filter_by(clients_coupon_id = client_coupon_id).first()
 
-    if client_coupon.branch_id == qr_code
-        client_coupon.used = True
-        client_coupon.used_date = datetime.now()
+    #if client_coupon.branch_id == qr_code
+    client_coupon.used = True
+    client_coupon.used_date = datetime.now()
 
-        db.session.commit()
+    db.session.commit()
 
-        return jsonify({'message': 'El cupon se tomó con éxito','folio': folio})
+    return jsonify({'message': 'El cupon se tomó con éxito','folio': folio})
     #return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
 
