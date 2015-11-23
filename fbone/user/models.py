@@ -210,11 +210,30 @@ class UserJoinExchanges(Schema):
                   'user_like')
 
 
+class UserActivityNewsfeed(Schema):
+    class Meta:
+        fields = ('clients_coupon_id',
+                  'branch_id',
+                  'company_id',
+                  'coupon_id',
+                  'logo',
+                  'name',
+                  'latitude',
+                  'longitude',
+                  'names',
+                  'surnames',
+                  'user_id',
+                  'main_image',
+                  'branch_name',
+                  'total_likes',
+                  'user_like')
+
 user_schema = UserSchema(many=True)
 user_joined_schema = UserJoinImage(many=True)
 friends_schema = FriendsSchema(many=True)
 user_join_friends = UserJoinFriends(many=True)
 user_join_exchanges_coupon_schema = UserJoinExchanges(many=True)
+user_join_activity_newsfeed = UserActivityNewsfeed(many=True)
 friends_count_schema = FriendsCountSchema(many=True)
 people_schema = PeopleSchema(many = True)
 

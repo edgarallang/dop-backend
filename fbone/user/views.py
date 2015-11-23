@@ -346,7 +346,7 @@ def get_coupons_activity_by_user_likes():
                                     WHERE users.user_id = %s \
                                     ORDER BY clients_coupon.clients_coupon_id DESC LIMIT %s OFFSET 0' % (user_profile_id, user_profile_id, limit))
 
-        users_list = user_join_exchanges_coupon_schema.dump(users)
+        users_list = user_join_activity_newsfeed.dump(users)
         return jsonify({'data': users_list.data})
 
     return jsonify({'message': 'Oops! algo salió mal'})
@@ -375,7 +375,7 @@ def get_used_coupons_by_user_likes_offset():
                                     WHERE users.user_id = %s \
                                     AND clients_coupon.clients_coupon_id < %s ORDER BY clients_coupon.clients_coupon_id DESC LIMIT 6 OFFSET %s' % (payload['id'], user_profile_id, client_coupon_id , offset))
 
-        users_list = user_join_exchanges_coupon_schema.dump(users)
+        users_list = user_join_activity_newsfeed.dump(users)
 
         return jsonify({'data': users_list.data})
 
