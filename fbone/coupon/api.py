@@ -91,7 +91,6 @@ def use_coupon():
                             .order_by(ClientsCoupon.clients_coupon_id) \
                             .first()
 
-    print client_coupon.clients_coupon_id.branch_id
     #if client_coupon.branch_id == qr_code
     #client_coupon.used = True
     #client_coupon.used_date = datetime.now()
