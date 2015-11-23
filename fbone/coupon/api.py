@@ -83,7 +83,7 @@ def use_coupon():
     qr_code = request.json['qr_code']
     client_coupon_id = request.json['client_coupon_id']
 
-    client_coupon = ClientsCoupon.query.filter_by(clients_coupon_id = client_coupon_id).first().options(joinedload(Coupon.coupon_id, innerjoin=True)
+    client_coupon = ClientsCoupon.query.filter_by(clients_coupon_id = client_coupon_id).first()
 
     if client_coupon.branch_id == qr_code
         client_coupon.used = True
