@@ -85,11 +85,16 @@ def use_coupon():
     client_coupon_id = 10 #request.json['client_coupon_id']
 
     #client_coupon = ClientsCoupon.query.filter_by(clients_coupon_id = client_coupon_id).first()
-    client_coupon = db.session.query(ClientsCoupon) \
-                            .options(db.joinedload(ClientsCoupon.clients_coupons)) \
-                            .filter(ClientsCoupon.clients_coupon_id==client_coupon_id)\
-                            .order_by(ClientsCoupon.clients_coupon_id) \
-                            .first()
+    #client_coupon = db.session.query(ClientsCoupon) \
+    #                        .options(db.joinedload(ClientsCoupon.clients_coupons)) \
+    #                        .filter(ClientsCoupon.clients_coupon_id==client_coupon_id)\
+    #                        .order_by(ClientsCoupon.clients_coupon_id) \
+    #                        .first()
+
+    client_coupon = ClientsCoupon.query.join(Coupon, ClientsCoupon.coupon_id==Coupon.coupon_id).add_columns(ClientsCoupon.coupon_id, Coupon.branch_id).filter(ClientsCoupon.clients_coupon_id==client_coupon_id)
+
+    client_coupon_json = clients_coupon_inner_coupon_schema.dump(client_coupon)
+    
 
     #if client_coupon.branch_id == qr_code
     #client_coupon.used = True
@@ -97,9 +102,9 @@ def use_coupon():
 
     #db.session.commit()
     
-    client_coupon_json = clients_coupon_schema.dump(client_coupon)
+    #client_coupon_json = clients_coupon_schema.dump(client_coupon)
 
-    return jsonify({'message': client_coupon_json.data})
+    return jsonify({'message': client_coupon_json.data['branch_id']})
     #return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
 
