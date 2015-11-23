@@ -85,7 +85,7 @@ def use_coupon():
 
     client_coupon = ClientsCoupon.query.filter_by(clients_coupon_id = client_coupon_id).first().options(joinedload(Coupon.coupon_id, innerjoin=True)
 
-    if client_coupon.branch_id = qr_code
+    if client_coupon.branch_id == qr_code
         client_coupon.used = True
         client_coupon.used_date = datetime.now()
 
