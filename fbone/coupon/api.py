@@ -99,7 +99,8 @@ def use_coupon():
     print client_coupon_json.data['branch_id']
 
     if client_coupon_json.data['branch_id'] == qr_code:
-        print "Good"
+        client_coupon.used = True
+        client_coupon_json.used_date = datetime.now()
     else:
         print "Bad"
     #client_coupon.used = True
