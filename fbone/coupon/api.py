@@ -91,12 +91,12 @@ def use_coupon():
                             .first()
 
     #if client_coupon.branch_id == qr_code
-    client_coupon.used = True
-    client_coupon.used_date = datetime.now()
+    #client_coupon.used = True
+    #client_coupon.used_date = datetime.now()
 
     db.session.commit()
 
-    return jsonify({'message': 'El cupon se tomó con éxito','folio': folio})
+    return jsonify({'message': client_coupon})
     #return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
 
