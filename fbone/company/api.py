@@ -198,9 +198,10 @@ def search_branch():
             selected_list_branch = branch_profile_schema.dump(branches)
             return jsonify({'data': selected_list_branch.data})
         else:
-            query = "SELECT branch_location_id, branch_id, state, city, latitude, longitude, distance, address, name, company_id, logo \
+            query = "SELECT branch_location_id, branch_id, state, city, latitude, longitude, distance, address, \
+                            name, company_id, logo, category_id \
                         FROM (SELECT z.branch_location_id, z.branch_id, z.state, z.city, z.address, \
-                            z.latitude, z.longitude, branches.name, branches.company_id, branches_design.logo, \
+                            z.latitude, z.longitude, branches.name, branches.company_id, branches_design.logo, subcategory.category_id \
                             p.distance_unit \
                                      * DEGREES(ACOS(COS(RADIANS(p.latpoint)) \
                                      * COS(RADIANS(z.latitude)) \
@@ -211,6 +212,7 @@ def search_branch():
                         JOIN branches on z.branch_id = branches.branch_id \
                         JOIN branches_design on z.branch_id = branches_design.branch_id \
                         JOIN branches_subcategory on z.branch_id = branches_subcategory.branch_id \
+                        JOIN subcategory ON subcategory.subcategory_id = branches_subcategory.subcategory_id \
                         JOIN (   /* these are the query parameters */ \
                             SELECT  "+latitude+"  AS latpoint,  "+longitude+" AS longpoint, \
                                          111.045 AS distance_unit \
