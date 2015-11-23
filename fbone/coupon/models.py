@@ -261,8 +261,7 @@ class ClientsCouponSchema(Schema):
 
 class CLientsCouponsInnerCouponSchema(Schema):
     class Meta:
-        fields = ('clients_coupon_id',
-                  'branch_id')
+        fields = ('clients_coupon_id')
 
 class UserJoinExchanges(Schema):
     class Meta:
