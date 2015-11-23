@@ -321,7 +321,7 @@ discount_coupon_schema = DiscountCouponSchema()
 nxn_coupon_schema = NxNCouponSchema()
 
 clients_coupon_schema = ClientsCouponSchema()
-clients_coupon_inner_coupon_schema = ClientsCouponsInnerCouponSchema(many=True)
+clients_coupon_inner_coupon_schema = ClientsCouponsInnerCouponSchema()
 
 user_join_exchanges_coupon_schema = UserJoinExchanges(many=True)
 
