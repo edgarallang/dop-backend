@@ -88,7 +88,7 @@ def use_coupon():
     client_coupon = db.session.query(ClientsCoupon) \
                             .options(db.joinedload(ClientsCoupon.clients_coupons)) \
                             .order_by(ClientsCoupon.clients_coupon_id) \
-                            .first()
+                            .all()
 
     #if client_coupon.branch_id == qr_code
     #client_coupon.used = True
