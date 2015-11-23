@@ -91,10 +91,7 @@ def use_coupon():
     #                        .order_by(ClientsCoupon.clients_coupon_id) \
     #                        .first()
 
-    client_coupon = ClientsCoupon.query.join(Coupon, ClientsCoupon.coupon_id==Coupon.coupon_id) \
-                                       .add_columns(ClientsCoupon.clients_coupon_id, Coupon.branch_id) \
-                                       .filter(ClientsCoupon.clients_coupon_id==client_coupon_id) \
-                                       .first()
+    client_coupon = ClientsCoupon.query.join(Coupon, ClientsCoupon.coupon_id==Coupon.coupon_id).add_columns(ClientsCoupon.clients_coupon_id, Coupon.branch_id).filter(ClientsCoupon.clients_coupon_id==client_coupon_id).first()
 
     client_coupon_json = clients_coupon_inner_coupon_schema.dump(client_coupon)
     
