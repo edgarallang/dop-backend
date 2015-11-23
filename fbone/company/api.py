@@ -199,7 +199,7 @@ def search_branch():
             return jsonify({'data': selected_list_branch.data})
         else:
             query = "SELECT branch_location_id, branch_id, state, city, latitude, longitude, distance, address, \
-                            name, company_id, logo, category_idg \
+                            name, company_id, logo, category_id \
                         FROM (SELECT z.branch_location_id, z.branch_id, z.state, z.city, z.address, \
                             z.latitude, z.longitude, branches.name, branches.company_id, branches_design.logo, subcategory.category_id, \
                             p.distance_unit \
