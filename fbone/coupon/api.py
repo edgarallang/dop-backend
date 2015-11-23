@@ -91,12 +91,11 @@ def use_coupon():
     #                        .order_by(ClientsCoupon.clients_coupon_id) \
     #                        .first()
 
-    client_coupon = ClientsCoupon.query.join(Coupon, ClientsCoupon.coupon_id==Coupon.coupon_id).add_columns(ClientsCoupon.coupon_id, Coupon.name).filter(ClientsCoupon.clients_coupon_id==client_coupon_id)
+    client_coupon = ClientsCoupon.query.join(Coupon, ClientsCoupon.coupon_id==Coupon.coupon_id).add_columns(ClientsCoupon.coupon_id, Coupon.branch_id).filter(ClientsCoupon.clients_coupon_id==client_coupon_id)
 
+    client_coupon_json = clients_coupon_inner_coupon_schema.dump(client_coupon)
+    
 
-    for name, val in client_coupon.iteritems():
-        print name
-        print val
     #if client_coupon.branch_id == qr_code
     #client_coupon.used = True
     #client_coupon.used_date = datetime.now()
@@ -105,7 +104,7 @@ def use_coupon():
     
     #client_coupon_json = clients_coupon_schema.dump(client_coupon)
 
-    return jsonify({'message': "sds"})
+    return jsonify({'message': client_coupon_json.data['branch_id']})
     #return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
 
