@@ -92,8 +92,9 @@ def use_coupon():
     #                        .first()
 
     client_coupon = ClientsCoupon.query.join(Coupon, ClientsCoupon.coupon_id==Coupon.coupon_id) \
-                                       .add_columns(ClientsCoupon.clients_coupon_id,ClientsCoupon.used,ClientsCoupon.used_date, Coupon.branch_id) \
-                                       .filter(ClientsCoupon.clients_coupon_id==client_coupon_id).first()
+                                       .add_columns(ClientsCoupon.clients_coupon_id, Coupon.branch_id) \
+                                       .filter(ClientsCoupon.clients_coupon_id==client_coupon_id) \
+                                       .first()
 
     client_coupon_json = clients_coupon_inner_coupon_schema.dump(client_coupon)
     
@@ -102,7 +103,7 @@ def use_coupon():
 
     if client_coupon_json.data['branch_id'] == qr_code:
         client_coupon.used = True
-        client_coupon_json.used_date = datetime.now()
+        client_coupon.used_date = datetime.now()
     else:
         print "Bad"
     #client_coupon.used = True
