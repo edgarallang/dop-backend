@@ -80,10 +80,12 @@ def use_coupon():
     if request.headers.get('Authorization'):
         token_index = True
         payload = parse_token(request, token_index)
+        qr_code = request.json['qr_code']
         client_coupon_id = request.json['client_coupon_id']
 
-        client_coupon = ClientsCoupon.query.filter_by(clients_coupon_id = client_coupon_id).first()
+        client_coupon = ClientsCoupon.query.filter_by(clients_coupon_id = client_coupon_id).first().options(joinedload(Coupon.coupon_id, innerjoin=True)
 
+        if client_coupon.branch_id
         client_coupon.used = True
         client_coupon.used_date = datetime.now()
 
