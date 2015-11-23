@@ -259,9 +259,10 @@ class ClientsCouponSchema(Schema):
                   'latitude',
                   'longitude')
 
-class CLientsCouponsInnerCouponSchema(Schema):
+class ClientsCouponsInnerCouponSchema(Schema):
     class Meta:
-        fields = ('clients_coupon_id')
+        fields = ('clients_coupon_id',
+                  'branch_id')
 
 class UserJoinExchanges(Schema):
     class Meta:
@@ -338,7 +339,7 @@ discount_coupon_schema = DiscountCouponSchema()
 nxn_coupon_schema = NxNCouponSchema()
 
 clients_coupon_schema = ClientsCouponSchema()
-clients_coupon_inner_coupon_schema = CLientsCouponsInnerCouponSchema(many=True)
+clients_coupon_inner_coupon_schema = ClientsCouponsInnerCouponSchema()
 
 user_join_exchanges_coupon_schema = UserJoinExchanges(many=True)
 user_join_activity_newsfeed = UserActivityNewsfeed(many=True)
