@@ -605,7 +605,7 @@ def get_coupons_activity_by_user_likes():
                                     INNER JOIN branches_design ON coupons.branch_id = branches_design.branch_id \
                                     ORDER BY start_date DESC LIMIT %s OFFSET 0 ORDER BY clients_coupon.clients_coupon_id DESC' % payload['id'],limit)
 
-        users_list = user_join_exchanges_coupon_schema.dump(users)
+        users_list = user_join_activity_newsfeed.dump(users)
 
         return jsonify({'data': users_list.data})
 
@@ -632,7 +632,7 @@ def get_used_coupons_by_user_likes_offset():
                                     INNER JOIN branches_design ON coupons.branch_id = branches_design.branch_id \
                                     WHERE clients_coupon.clients_coupon_id < %s ORDER BY clients_coupon.clients_coupon_id DESC LIMIT 6 OFFSET %s' % (payload['id'], client_coupon_id , offset))
 
-        users_list = user_join_exchanges_coupon_schema.dump(users)
+        users_list = user_join_activity_newsfeed.dump(users)
 
         return jsonify({'data': users_list.data})
 

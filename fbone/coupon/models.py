@@ -303,6 +303,24 @@ class CouponsLocation(Schema):
                   'latitude',
                   'longitude')
 
+class UserActivityNewsfeed(Schema):
+    class Meta:
+        fields = ('clients_coupon_id',
+                  'branch_id',
+                  'company_id',
+                  'coupon_id',
+                  'logo',
+                  'name',
+                  'latitude',
+                  'longitude',
+                  'names',
+                  'surnames',
+                  'user_id',
+                  'main_image',
+                  'branch_name',
+                  'total_likes',
+                  'user_like')
+
 coupon_schema = CouponSchema()
 coupons_schema = CouponSchema(many=True)
 
@@ -323,6 +341,7 @@ clients_coupon_schema = ClientsCouponSchema()
 clients_coupon_inner_coupon_schema = CLientsCouponsInnerCouponSchema(many=True)
 
 user_join_exchanges_coupon_schema = UserJoinExchanges(many=True)
+user_join_activity_newsfeed = UserActivityNewsfeed(many=True)
 
 coupons_likes_schema = CouponLike(many=True)
 
