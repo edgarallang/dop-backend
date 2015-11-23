@@ -91,7 +91,7 @@ def use_coupon():
     #                        .order_by(ClientsCoupon.clients_coupon_id) \
     #                        .first()
 
-    client_coupon = ClientsCoupon.query.join(Coupon, ClientsCoupon.coupon_id==Coupon.coupon_id).add_columns(ClientsCoupon.clients_coupon_id,ClientsCoupon.used, ClientsCoupon.used_date, Coupon.branch_id).filter(ClientsCoupon.clients_coupon_id==client_coupon_id).first()
+    client_coupon = ClientsCoupon.query.join(Coupon, ClientsCoupon.coupon_id==Coupon.coupon_id).add_columns(ClientsCoupon.clients_coupon_id,ClientsCoupon.used, Coupon.branch_id).filter(ClientsCoupon.clients_coupon_id==client_coupon_id).first()
 
     client_coupon_json = clients_coupon_inner_coupon_schema.dump(client_coupon)
     
@@ -99,8 +99,10 @@ def use_coupon():
     print client_coupon_json.data['branch_id']
 
     if client_coupon_json.data['branch_id'] == qr_code:
+        client_coupon = ClientsCoupon.query.filter_by(clients_coupon_id = client_coupon_id).first()
         client_coupon.used = True
         client_coupon.used_date = datetime.now()
+        db.session.commit()
     else:
         print "Bad"
     #client_coupon.used = True
