@@ -257,7 +257,7 @@ class ClientsCouponSchema(Schema):
                   'folio',
                   'taken_date',
                   'latitude',
-                  'longitude','branch_id')
+                  'longitude')
 
 class UserJoinExchanges(Schema):
     class Meta:
