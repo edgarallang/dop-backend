@@ -94,7 +94,7 @@ def use_coupon():
     client_coupon = ClientsCoupon.query.join(Coupon, ClientsCoupon.coupon_id==Coupon.coupon_id).add_columns(ClientsCoupon.coupon_id, Coupon.name).filter(ClientsCoupon.clients_coupon_id==client_coupon_id)
 
 
-    for name, val in client_coupon:
+    for name, val in client_coupon.iteritems():
         print name
         print val
     #if client_coupon.branch_id == qr_code
