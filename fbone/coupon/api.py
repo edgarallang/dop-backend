@@ -94,7 +94,9 @@ def use_coupon():
     client_coupon = ClientsCoupon.query.join(Coupon, ClientsCoupon.coupon_id==Coupon.coupon_id).add_columns(ClientsCoupon.coupon_id, Coupon.name).filter(ClientsCoupon.clients_coupon_id==client_coupon_id)
 
     print client_coupon.name
-
+    for name, val in client_coupon:
+        print name
+        print val
     #if client_coupon.branch_id == qr_code
     #client_coupon.used = True
     #client_coupon.used_date = datetime.now()
