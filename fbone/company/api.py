@@ -198,9 +198,9 @@ def search_branch():
             selected_list_branch = branch_profile_schema.dump(branches)
             return jsonify({'data': selected_list_branch.data})
         else:
-            query = "SELECT branch_location_id, branch_id, state, city, latitude, longitude, distance, address, name, branches.company_id \
+            query = "SELECT branch_location_id, branch_id, state, city, latitude, longitude, distance, address, name\
                         FROM (SELECT z.branch_location_id, z.branch_id, z.state, z.city, z.address, \
-                            z.latitude, z.longitude, branches.name, \
+                            z.latitude, z.longitude, branches.name, branches.company_id , \
                             p.distance_unit \
                                      * DEGREES(ACOS(COS(RADIANS(p.latpoint)) \
                                      * COS(RADIANS(z.latitude)) \
