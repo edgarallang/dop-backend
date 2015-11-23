@@ -74,7 +74,7 @@ def take_coupon():
         return jsonify({'message': 'El cupon se tomó con éxito','folio': folio})
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
-@coupon.route('/user/use',methods=['POST'])
+@coupon.route('/user/use',methods=['GET'])
 def use_coupon():
 
     #if request.headers.get('Authorization'):
@@ -83,7 +83,8 @@ def use_coupon():
     qr_code = request.json['qr_code']
     client_coupon_id = request.json['client_coupon_id']
 
-    client_coupon = ClientsCoupon.query.filter_by(clients_coupon_id = client_coupon_id).first()
+    #client_coupon = ClientsCoupon.query.filter_by(clients_coupon_id = client_coupon_id).first()
+    client_coupon = session.query(ClientsCoupon).options(joinedload('Coupon')).order_by(ClientsCoupon.clients_coupon_id).first()
 
     #if client_coupon.branch_id == qr_code
     client_coupon.used = True
