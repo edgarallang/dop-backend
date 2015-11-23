@@ -81,7 +81,7 @@ def use_coupon():
     #if request.headers.get('Authorization'):
     token_index = True
     payload = 5 #parse_token(request, token_index)
-    qr_code = "4" #request.json['qr_code']
+    qr_code = 4 #request.json['qr_code']
     client_coupon_id = 10 #request.json['client_coupon_id']
 
     #client_coupon = ClientsCoupon.query.filter_by(clients_coupon_id = client_coupon_id).first()
