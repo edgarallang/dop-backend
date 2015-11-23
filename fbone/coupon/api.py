@@ -94,9 +94,11 @@ def use_coupon():
     #client_coupon.used = True
     #client_coupon.used_date = datetime.now()
 
-    db.session.commit()
+    #db.session.commit()
+    
+    client_coupon_json = clients_coupon_schema.dump(client_coupon)
 
-    return jsonify({'message': client_coupon})
+    return jsonify({'message': client_coupon_json.data})
     #return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
 
