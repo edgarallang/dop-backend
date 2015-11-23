@@ -103,8 +103,9 @@ def use_coupon():
     #db.session.commit()
     
     #client_coupon_json = clients_coupon_schema.dump(client_coupon)
+    branch_id = client_coupon_json.data['branch_id']
 
-    return jsonify({'message': client_coupon_json.data['branch_id']})
+    return jsonify({'message': branch_id})
     #return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
 
