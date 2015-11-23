@@ -87,6 +87,7 @@ def use_coupon():
     #client_coupon = ClientsCoupon.query.filter_by(clients_coupon_id = client_coupon_id).first()
     client_coupon = db.session.query(ClientsCoupon) \
                             .options(db.joinedload(ClientsCoupon.clients_coupons)) \
+                            .filter(Coupon.branch_id==qr_code)\
                             .order_by(ClientsCoupon.clients_coupon_id) \
                             .all()
 
