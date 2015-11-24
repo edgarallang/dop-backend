@@ -77,6 +77,7 @@ def take_coupon():
 
 @coupon.route('/user/use/',methods=['POST'])
 def use_coupon():
+    print "Entra a la api"
     if request.headers.get('Authorization'):
         token_index = True
         payload = parse_token(request, token_index) #5
