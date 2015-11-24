@@ -84,7 +84,7 @@ def use_coupon():
     qr_code = 4 #int(request.json['qr_code'])
     coupon_id = 5 #request.json['coupon_id']
 
-    client_coupon = ClientsCoupon.query.join(Coupon, ClientsCoupon.coupon_id==Coupon.coupon_id).add_columns(ClientsCoupon.clients_coupon_id,ClientsCoupon.used, Coupon.branch_id).filter(ClientsCoupon.coupon_id==coupon_id).filter(ClientsCoupon.user_id==payload['id']).first()
+    client_coupon = ClientsCoupon.query.join(Coupon, ClientsCoupon.coupon_id==Coupon.coupon_id).add_columns(ClientsCoupon.clients_coupon_id,ClientsCoupon.used, Coupon.branch_id).filter(and_(ClientsCoupon.coupon_id==coupon_id),(ClientsCoupon.user_id==payload['id'])).first()
 
     client_coupon_json = clients_coupon_inner_coupon_schema.dump(client_coupon)
     
