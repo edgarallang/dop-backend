@@ -80,9 +80,9 @@ def use_coupon():
 
     #if request.headers.get('Authorization'):
     token_index = True
-    payload = parse_token(request, token_index)
-    qr_code = int(request.json['qr_code'])
-    coupon_id = request.json['coupon_id']
+    payload = 5#parse_token(request, token_index)
+    qr_code = 4#int(request.json['qr_code'])
+    coupon_id = 5#request.json['coupon_id']
 
     client_coupon = ClientsCoupon.query.join(Coupon, ClientsCoupon.coupon_id==Coupon.coupon_id).add_columns(ClientsCoupon.clients_coupon_id,ClientsCoupon.used, Coupon.branch_id).filter(ClientsCoupon.coupon_id==coupon_id,ClientsCoupon.user_id==payload['id']).first()
 
@@ -587,7 +587,7 @@ def get_coupons_activity_by_user_likes():
         limit = request.args.get('limit')
 
         users = db.engine.execute('SELECT coupons.branch_id,coupons.coupon_id,branches_design.logo,coupons.name,clients_coupon.clients_coupon_id,clients_coupon.latitude,clients_coupon.longitude \
-                                    , users.names, users.surnames, users.user_id, users_image.main_image, branches.name AS branch_name, \
+                                    , users.names, users.surnames, users.user_id, users_image.main_image, branches.name AS branch_name, branches.company_id, \
                                     (SELECT COUNT(*)  FROM clients_coupon_likes WHERE clients_coupon.clients_coupon_id = clients_coupon_likes.clients_coupon_id) AS total_likes, \
                                     (SELECT COUNT(*)  FROM clients_coupon_likes WHERE clients_coupon_likes.user_id = %d AND clients_coupon_likes.clients_coupon_id = clients_coupon.clients_coupon_id) AS user_like \
                                     FROM clients_coupon \
@@ -614,7 +614,7 @@ def get_used_coupons_by_user_likes_offset():
         client_coupon_id = request.args.get('client_coupon_id')
 
         users = db.engine.execute('SELECT coupons.branch_id,coupons.coupon_id,branches_design.logo,coupons.name,clients_coupon.clients_coupon_id,clients_coupon.latitude,clients_coupon.longitude \
-                                    , users.names, users.surnames, users.user_id, users_image.main_image, branches.name AS branch_name, \
+                                    , users.names, users.surnames, users.user_id, users_image.main_image, branches.name AS branch_name, branches.company_id, \
                                     (SELECT COUNT(*)  FROM clients_coupon_likes WHERE clients_coupon.clients_coupon_id = clients_coupon_likes.clients_coupon_id) AS total_likes, \
                                     (SELECT COUNT(*)  FROM clients_coupon_likes WHERE clients_coupon_likes.user_id = %d AND clients_coupon_likes.clients_coupon_id = clients_coupon.clients_coupon_id) AS user_like \
                                     FROM clients_coupon \
@@ -649,7 +649,7 @@ def get_used_coupons_by_coupon():
                                     INNER JOIN branches_design ON coupons.branch_id = branches_design.branch_id \
                                     ORDER BY taken_date DESC' % (payload['id'], coupon_id)
         users = db.engine.execute(query)
-        users_list = user_join_exchanges_coupon_schema.dump(users)
+        users_list = user_join_exchanges_coupon_schema.dump(users, partial=True)
 
         return jsonify({'data': users_list.data})
 

@@ -10,6 +10,7 @@ from flask.ext.login import login_required, current_user
 from jwt import DecodeError, ExpiredSignature
 from .models import *
 from ..extensions import db, socketio
+from marshmallow import pprint
 from ..notification import Notification
 from flask.ext.socketio import SocketIO, send, emit, join_room, leave_room
 from ..utils import *
@@ -312,15 +313,17 @@ def search_people():
         token_index = True
         text = request.args.get('text')
 
-        #payload = parse_token(request, token_index)
+        payload = parse_token(request, token_index)
         #list_coupon = db.engine.execute(query)
         people = db.engine.execute("SELECT *, \
                                     (SELECT EXISTS (SELECT * FROM friends \
-                                        WHERE friends.user_one_id = 3 and friends.user_two_id = users.user_id)::bool) AS friend \
+                                        WHERE friends.user_one_id = %d and friends.user_two_id = users.user_id)::bool) AS friend \
                                     FROM users \
                                     INNER JOIN users_image on users.user_id = users_image.user_id \
-                                    WHERE users.names ILIKE '%s' " % ('%%' + text + '%%' ))
-        selected_list_people = people_schema.dump(people)
+                                    WHERE users.names ILIKE '%s' " % (payload['id'], '%%' + text + '%%'))
+
+        selected_list_people = people_schema.dump(people, many=True)
+        # pprint(selected_list_people, indent = 2)
         return jsonify({'data': selected_list_people.data})
     return jsonify({'message': 'Oops! algo salió mal :('})
 
