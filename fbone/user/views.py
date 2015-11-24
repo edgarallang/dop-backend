@@ -313,20 +313,17 @@ def search_people():
         token_index = True
         text = request.args.get('text')
 
-        #payload = parse_token(request, token_index)
+        payload = parse_token(request, token_index)
         #list_coupon = db.engine.execute(query)
         people = db.engine.execute("SELECT *, \
                                     (SELECT EXISTS (SELECT * FROM friends \
-                                        WHERE friends.user_one_id = 3 and friends.user_two_id = users.user_id)::bool) AS friend \
+                                        WHERE friends.user_one_id = %d and friends.user_two_id = users.user_id)::bool) AS friend \
                                     FROM users \
                                     INNER JOIN users_image on users.user_id = users_image.user_id \
-                                    WHERE users.names ILIKE '%s' " % ('%%' + text + '%%' ))
-        print people
-        for val in people:
-            print val
+                                    WHERE users.names ILIKE '%s' " % (payload['id'], '%%' + text + '%%'))
 
-        selected_list_people = people_schema.dump(people)
-        pprint(selected_list_people, indent = 2)
+        selected_list_people = people_schema.dumps(people)
+        # pprint(selected_list_people, indent = 2)
         return jsonify({'data': selected_list_people.data})
     return jsonify({'message': 'Oops! algo salió mal :('})
 
