@@ -10,6 +10,7 @@ from flask.ext.login import login_required, current_user
 from jwt import DecodeError, ExpiredSignature
 from .models import *
 from ..extensions import db, socketio
+from marshmallow import pprint
 from ..notification import Notification
 from flask.ext.socketio import SocketIO, send, emit, join_room, leave_room
 from ..utils import *
@@ -321,6 +322,7 @@ def search_people():
                                     INNER JOIN users_image on users.user_id = users_image.user_id \
                                     WHERE users.names ILIKE '%s' " % ('%%' + text + '%%' ))
         selected_list_people = people_schema.dump(people)
+        pprint(selected_list_people)
         return jsonify({'data': selected_list_people.data})
     return jsonify({'message': 'Oops! algo salió mal :('})
 
