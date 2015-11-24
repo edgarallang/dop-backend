@@ -322,7 +322,7 @@ def search_people():
                                     INNER JOIN users_image on users.user_id = users_image.user_id \
                                     WHERE users.names ILIKE '%s' " % (payload['id'], '%%' + text + '%%'))
 
-        selected_list_people = people_schema.dump(people)
+        selected_list_people = people_schema.dump(people, many=True)
         # pprint(selected_list_people, indent = 2)
         return jsonify({'data': selected_list_people.data})
     return jsonify({'message': 'Oops! algo salió mal :('})
