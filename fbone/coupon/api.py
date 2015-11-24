@@ -75,7 +75,7 @@ def take_coupon():
         return jsonify({'message': 'El cupon se tomó con éxito','folio': folio})
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
-@coupon.route('/user/use',methods=['GET'])
+@coupon.route('/user/use',methods=['POST'])
 def use_coupon():
     if request.headers.get('Authorization'):
         token_index = True
