@@ -17,6 +17,8 @@ from ..extensions import db, socketio
 from flask.ext.socketio import SocketIO, send, emit, join_room, leave_room
 from sqlalchemy.orm import joinedload
 from marshmallow import pprint
+from sqlalchemy import and_
+
 
 
 coupon = Blueprint('coupon', __name__, url_prefix='/api/coupon')
@@ -76,47 +78,30 @@ def take_coupon():
         return jsonify({'message': 'El cupon se tomó con éxito','folio': folio})
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
-@coupon.route('/user/use',methods=['GET'])
+@coupon.route('/user/use',methods=['POST'])
 def use_coupon():
+    if request.headers.get('Authorization'):
+        token_index = True
+        payload = parse_token(request, token_index) #5
+        coupon_id = request.json['coupon_id'] #5
+        try:
+            qr_code = int(request.json['qr_code']) #4
+        except ValueError:
+            return jsonify({'message': 'Código QR incorrect'})
 
-    #if request.headers.get('Authorization'):
-    token_index = True
-    payload = 5 #parse_token(request, token_index)
-    qr_code = 4 #request.json['qr_code']
-    client_coupon_id = 10 #request.json['client_coupon_id']
+        client_coupon = ClientsCoupon.query.join(Coupon, ClientsCoupon.coupon_id==Coupon.coupon_id).add_columns(ClientsCoupon.clients_coupon_id,ClientsCoupon.used, Coupon.branch_id).filter(and_(ClientsCoupon.coupon_id==coupon_id),(ClientsCoupon.user_id==payload['id'])).first()
 
-    #client_coupon = ClientsCoupon.query.filter_by(clients_coupon_id = client_coupon_id).first()
-    #client_coupon = db.session.query(ClientsCoupon) \
-    #                        .options(db.joinedload(ClientsCoupon.clients_coupons)) \
-    #                        .filter(ClientsCoupon.clients_coupon_id==client_coupon_id)\
-    #                        .order_by(ClientsCoupon.clients_coupon_id) \
-    #                        .first()
-
-    client_coupon = ClientsCoupon.query.join(Coupon, ClientsCoupon.coupon_id==Coupon.coupon_id).add_columns(ClientsCoupon.clients_coupon_id,ClientsCoupon.used, Coupon.branch_id).filter(ClientsCoupon.clients_coupon_id==client_coupon_id).first()
-
-    client_coupon_json = clients_coupon_inner_coupon_schema.dump(client_coupon)
-    
-    print qr_code
-    print client_coupon_json.data['branch_id']
-
-    if client_coupon_json.data['branch_id'] == qr_code:
-        client_coupon = ClientsCoupon.query.filter_by(clients_coupon_id = client_coupon_id).first()
-        client_coupon.used = True
-        client_coupon.used_date = datetime.now()
-        db.session.commit()
-    else:
-        print "Bad"
-    #client_coupon.used = True
-    #client_coupon.used_date = datetime.now()
-
-    #db.session.commit()
-    
-    #client_coupon_json = clients_coupon_schema.dump(client_coupon)
-
-
-    return jsonify({'message': client_coupon_json.data['branch_id']})
-    #return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
-
+        client_coupon_json = clients_coupon_inner_coupon_schema.dump(client_coupon)
+        
+        if client_coupon_json.data['branch_id'] == qr_code:
+            client_coupon = ClientsCoupon.query.filter_by(clients_coupon_id = client_coupon.clients_coupon_id).first()
+            client_coupon.used = True
+            client_coupon.used_date = datetime.now()
+            db.session.commit()
+            return jsonify({'message': 'Cupón cajeado'})
+        else:
+            return jsonify({'message': 'Código QR incorrect'})
+    return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
 # GET methods
 @coupon.route('/<int:coupon_id>/get', methods = ['GET'])
