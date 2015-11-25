@@ -176,8 +176,9 @@ def get_all_coupon_for_user():
     for key in list_coupon:
         print key
 
-    pprint(list_coupon)
+    
     selected_list_coupon = coupons_logo_schema.dump(list_coupon)
+    pprint(selected_list_coupon)
     return jsonify({'data': selected_list_coupon.data})
 
 @coupon.route('/all/for/user/offset/get/', methods = ['GET'])
@@ -205,8 +206,9 @@ def get_all_coupon_for_user_offset():
     for key in list_coupon:
         print key
 
-    pprint(list_coupon)
+    
     selected_list_coupon = coupons_logo_schema.dump(list_coupon)
+    pprint(selected_list_coupon)
     return jsonify({'data': selected_list_coupon.data})
 
 @coupon.route('/all/taken/for/user/get/', methods = ['GET'])
