@@ -257,8 +257,8 @@ def dashboard_branches():
     print 'Remaining %d' % remaining
 
     if remaining>0:
-        for branch in branches:
-            print 'Branch id %d' % branch.branch_id
+        for branch in selected_list_branch:
+            print 'Branch id %d' % branch.data['branch_id']
 
         filterQuery = ''
         prefixFilterQuery = 'WHERE branches.branch_id != ALL(ARRAY'
