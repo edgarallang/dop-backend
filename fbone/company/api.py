@@ -248,6 +248,9 @@ def dashboard_branches():
              WHERE branch_ad.duration>0 ORDER BY branch_ad.start_date LIMIT 8'
 
     branches = db.engine.execute(adBranches)
+    for branch in branches:
+        print 'Branch id %d' % branch.branch_id
+
     selected_list_branch = branch_ad_schema.dump(branches)
 
     result = number_of_rows(selected_list_branch.data)
@@ -257,9 +260,6 @@ def dashboard_branches():
     print 'Remaining %d' % remaining
 
     if remaining>0:
-        for branch in selected_list_branch:
-            print 'Branch id %d' % branch['branch_id']
-
         filterQuery = ''
         prefixFilterQuery = 'WHERE branches.branch_id != ALL(ARRAY'
         filterArray = '' #request.json['filterArray']
