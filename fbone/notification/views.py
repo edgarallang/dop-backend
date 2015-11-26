@@ -96,7 +96,7 @@ def get_notifications():
         return jsonify({'data': notifications_list.data})
 
 
-   return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
+    return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
 @notification.route('/all/offset/get/', methods=['GET'])
 def get_notifications_offset():
