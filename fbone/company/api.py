@@ -257,6 +257,17 @@ def dashboard_branches():
     print 'Remaining %d' % remaining
 
     if remaining>0:
+        for branch in branches:
+            print branch.branch_id
+
+        filterQuery = ''
+        prefixFilterQuery = 'WHERE branches.branch_id != ALL(ARRAY'
+        filterArray = '' #request.json['filterArray']
+
+        if filterArray:
+            filterQuery = prefixFilterQuery + `filterArray` + ')'
+
+
         remainingBranches = 'SELECT * FROM branches\
                               JOIN branches_design ON branches.branch_id = branches_design.branch_id\
                               ORDER BY RANDOM() LIMIT %d' % (remaining)
