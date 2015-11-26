@@ -84,10 +84,12 @@ def use_coupon():
         token_index = True
         payload = parse_token(request, token_index) #5
         coupon_id = request.json['coupon_id'] #5
-        try:
-            qr_code = int(request.json['qr_code']) #4
-        except ValueError:
-            return jsonify({'message': 'Código QR incorrect'})
+        qr_code = request.json['qr_code']
+        
+        #try:
+        #    qr_code = int(request.json['qr_code']) #4
+        #except ValueError:
+        #    return jsonify({'message': 'Código QR incorrecto'})
 
         client_coupon = ClientsCoupon.query.join(Coupon, ClientsCoupon.coupon_id==Coupon.coupon_id).add_columns(ClientsCoupon.clients_coupon_id,ClientsCoupon.used, Coupon.branch_id).filter(and_(ClientsCoupon.coupon_id==coupon_id),(ClientsCoupon.user_id==payload['id'])).first()
 
@@ -100,7 +102,7 @@ def use_coupon():
             db.session.commit()
             return jsonify({'message': 'Cupón cajeado'})
         else:
-            return jsonify({'message': 'Código QR incorrect'})
+            return jsonify({'message': 'Código QR incorrecto'})
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
 # GET methods
