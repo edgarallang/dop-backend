@@ -251,7 +251,7 @@ def dashboard_branches():
 
     filterArray =[]
     for branch in branches:
-        filterArray.append(branch_id)
+        filterArray.append(branch.branch_id)
 
     selected_list_branch = branch_ad_schema.dump(branches)
 
