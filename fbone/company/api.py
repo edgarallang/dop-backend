@@ -248,8 +248,10 @@ def dashboard_branches():
              WHERE branch_ad.duration>0 ORDER BY branch_ad.start_date LIMIT 8'
 
     branches = db.engine.execute(adBranches)
+
+    filterArray =[]
     for branch in branches:
-        print 'Branch id %d' % branch.branch_id
+        filterArray.append(branch_id)
 
     selected_list_branch = branch_ad_schema.dump(branches)
 
@@ -262,7 +264,6 @@ def dashboard_branches():
     if remaining>0:
         filterQuery = ''
         prefixFilterQuery = 'WHERE branches.branch_id != ALL(ARRAY'
-        filterArray = '' #request.json['filterArray']
 
         if filterArray:
             filterQuery = prefixFilterQuery + `filterArray` + ')'
@@ -270,6 +271,7 @@ def dashboard_branches():
 
         remainingBranches = 'SELECT * FROM branches\
                               JOIN branches_design ON branches.branch_id = branches_design.branch_id\
+                              '+filterQuery+' \
                               ORDER BY RANDOM() LIMIT %d' % (remaining)
         extra_branches = db.engine.execute(remainingBranches)
 
