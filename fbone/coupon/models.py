@@ -341,7 +341,7 @@ nxn_coupon_schema = NxNCouponSchema()
 clients_coupon_schema = ClientsCouponSchema()
 clients_coupon_inner_coupon_schema = ClientsCouponsInnerCouponSchema()
 
-user_join_exchanges_coupon_schema = UserJoinExchanges(many=True, partial=True)
+user_join_exchanges_coupon_schema = UserJoinExchanges(many=True)
 user_join_activity_newsfeed = UserActivityNewsfeed(many=True)
 
 coupons_likes_schema = CouponLike(many=True)
