@@ -15,7 +15,10 @@ from .models import *
 from ..user import *
 from ..extensions import db, socketio
 from flask.ext.socketio import SocketIO, send, emit, join_room, leave_room
+from sqlalchemy.orm import joinedload
+from marshmallow import pprint
 from sqlalchemy import and_
+
 
 
 coupon = Blueprint('coupon', __name__, url_prefix='/api/coupon')
@@ -172,8 +175,8 @@ def get_all_coupon_for_user():
                                     WHERE deleted = false ORDER BY coupons.coupon_id DESC LIMIT %s OFFSET 0' % (payload['id'],limit))
 
 
-
     selected_list_coupon = coupons_logo_schema.dump(list_coupon)
+    pprint(selected_list_coupon)
     return jsonify({'data': selected_list_coupon.data})
 
 @coupon.route('/all/for/user/offset/get/', methods = ['GET'])
@@ -197,9 +200,9 @@ def get_all_coupon_for_user_offset():
                                     JOIN subcategory ON subcategory.subcategory_id = branches_subcategory.subcategory_id \
                                     WHERE deleted = false AND coupons.coupon_id < %s ORDER BY start_date DESC LIMIT 6 OFFSET %s' % (payload['id'],coupon_id,offset))
 
-
-
+    
     selected_list_coupon = coupons_logo_schema.dump(list_coupon)
+    pprint(selected_list_coupon)
     return jsonify({'data': selected_list_coupon.data})
 
 @coupon.route('/all/taken/for/user/get/', methods = ['GET'])
