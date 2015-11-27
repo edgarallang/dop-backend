@@ -180,7 +180,7 @@ class FriendsCountSchema(Schema):
 
 class PeopleSchema(Schema):
     class Meta:
-        fields = ('user_id',
+        additional = ('user_id',
                   'names',
                   'surnames',
                   'birth_date',
