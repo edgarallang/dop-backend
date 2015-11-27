@@ -10,6 +10,7 @@ from flask.ext.login import login_required, current_user
 from jwt import DecodeError, ExpiredSignature
 from .models import *
 from ..extensions import db
+from ..company import Branch, BranchUser
 
 
 
@@ -250,8 +251,8 @@ def dashboard_branches():
     branches = db.engine.execute(adBranches)
 
     filterArray =[]
-    #for branch in branches:
-    #    filterArray.append(branch.branch_id)
+    for branch in branches:
+        filterArray.append(branch.branch_id)
 
     selected_list_branch = branch_ad_schema.dump(branches)
 
@@ -271,6 +272,7 @@ def dashboard_branches():
 
         remainingBranches = 'SELECT * FROM branches\
                               JOIN branches_design ON branches.branch_id = branches_design.branch_id\
+                              #'+filterQuery+' \
                               ORDER BY RANDOM() LIMIT %d' % (remaining)
         extra_branches = db.engine.execute(remainingBranches)
 
