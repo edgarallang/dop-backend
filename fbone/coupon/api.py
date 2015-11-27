@@ -18,7 +18,7 @@ from flask.ext.socketio import SocketIO, send, emit, join_room, leave_room
 from sqlalchemy.orm import joinedload
 from marshmallow import pprint
 from sqlalchemy import and_
-from ..company import Branch, BranchUser
+from ..company import branch_schema
 
 
 
