@@ -99,11 +99,12 @@ def use_coupon():
             client_coupon = ClientsCoupon.query.filter_by(clients_coupon_id = client_coupon.clients_coupon_id).first()
             client_coupon.used = True
             client_coupon.used_date = datetime.now()
-
-            branch = Branch.query.filter_by(branch_id = client_coupon_json.data['branch_id']).first()
             db.session.commit()
 
-            return jsonify({'message': branch.name})
+            branch = Branch.query.filter_by(branch_id = client_coupon_json.data['branch_id']).first()
+            branch_data = branch_schema.dump(branch)
+
+            return jsonify({'message': branch_data.data})
         else:
             return jsonify({'message': 'Código QR incorrecto'})
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
