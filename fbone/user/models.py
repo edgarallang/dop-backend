@@ -179,20 +179,18 @@ class FriendsCountSchema(Schema):
                   'total')
 
 class PeopleSchema(Schema):
-    class Meta:
-        additional = ('user_id',
-                  'names',
-                  'surnames',
-                  'birth_date',
-                  'facebook_key',
-                  'google_key',
-                  'twitter_key',
-                  'privacy_status',
-                  'exp',
-                  'user_image_id',
-                  'user_id',
-                  'main_image',
-                  'friend')
+    user_id = fields.Number()
+    names = fields.String()
+    surnames = fields.String()
+    birth_date = fields.String()
+    facebook_key = fields.String()
+    google_key = fields.String()
+    twitter_key = fields.String()
+    privacy_status = fields.Number()
+    exp = fields.Number()
+    user_image_id = fields.Number()
+    main_image = fields.String()
+    friend = fields.Boolean()
 
 class UserJoinExchanges(Schema):
     class Meta:
