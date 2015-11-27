@@ -185,7 +185,12 @@ class PeopleSchema(Schema):
                   'surnames',
                   'birth_date',
                   'facebook_key',
+                  'google_key',
+                  'twitter_key',
                   'privacy_status',
+                  'exp',
+                  'user_image_id',
+                  'user_id',
                   'main_image',
                   'friend')
 
