@@ -100,7 +100,7 @@ def use_coupon():
             client_coupon.used = True
             client_coupon.used_date = datetime.now()
 
-            branch = Branch.query.filter_by(branch_id = client_coupon.branch_id).first()
+            branch = Branch.query.filter_by(branch_id = client_coupon_json.data['branch_id']).first()
             db.session.commit()
 
             return jsonify({'message': branch.name})
