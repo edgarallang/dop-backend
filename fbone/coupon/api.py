@@ -105,7 +105,7 @@ def use_coupon():
             branch = Branch.query.filter_by(branch_id = client_coupon_json.data['branch_id']).first()
             branch_data = branch_schema.dump(branch)
 
-            return jsonify({'message': branch_data.data})
+            return jsonify({'data': branch_data.data})
         else:
             return jsonify({'message': 'Código QR incorrecto'})
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
