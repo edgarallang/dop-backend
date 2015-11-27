@@ -18,6 +18,7 @@ from flask.ext.socketio import SocketIO, send, emit, join_room, leave_room
 from sqlalchemy.orm import joinedload
 from marshmallow import pprint
 from sqlalchemy import and_
+from ..company import branch_schema
 
 
 
@@ -100,7 +101,11 @@ def use_coupon():
             client_coupon.used = True
             client_coupon.used_date = datetime.now()
             db.session.commit()
-            return jsonify({'message': 'Cupón cajeado'})
+
+            branch = Branch.query.filter_by(branch_id = client_coupon_json.data['branch_id']).first()
+            branch_data = branch_schema.dump(branch)
+
+            return jsonify({'data': branch_data.data})
         else:
             return jsonify({'message': 'Código QR incorrecto'})
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
