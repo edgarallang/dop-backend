@@ -406,7 +406,7 @@ def set_privacy():
         return jsonify({'message': 'user privacy is set :D'})
     return jsonify({'message': 'Oops! algo salió mal'})
 
-@user.route('/following/get', methods=['POST'])
+@user.route('/following/get', methods=['GET'])
 def get_following():
     if request.headers.get('Authorization'):
         token_index = True
