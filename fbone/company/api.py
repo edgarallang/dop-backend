@@ -263,6 +263,8 @@ def dashboard_branches():
     print 'Remaining %d' % remaining
 
     if remaining>0:
+        for branch in selected_list_branch.data:
+            print "Alo"
         filterQuery = ''
         prefixFilterQuery = 'WHERE branches.branch_id != ALL(ARRAY'
 
