@@ -412,7 +412,9 @@ def get_following():
         token_index = True
         payload = parse_token(request, token_index)
 
-        people = db.session.execute('SELECT * FROM friends WHERE friends.user_one_id = %d' % (payload['id']))
+        people = db.engine.execute('SELECT * FROM friends INNER JOIN users \
+                                        ON users.user_id = friends.user_two_id \
+                                        WHERE friends.user_one_id = %d AND friends.operation_id = 1' % (payload['id']))
         people_list = people_schema.dump(people)
 
         return jsonify({'data': people_list.data})
