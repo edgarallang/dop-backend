@@ -250,10 +250,6 @@ def dashboard_branches():
 
     branches = db.engine.execute(adBranches)
 
-    filterArray =[]
-    #for branch in branches:
-    #    filterArray.append(branch.branch_id)
-
     selected_list_branch = branch_ad_schema.dump(branches)
 
 
@@ -264,7 +260,9 @@ def dashboard_branches():
     print 'Remaining %d' % remaining
 
     if remaining>0:
+        filterArray =[]
         for branch in selected_list_branch.data:
+            print branch["branch_id"]
             filterArray.append(branch["branch_id"])
 
         filterQuery = ''
