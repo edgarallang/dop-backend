@@ -256,8 +256,7 @@ def dashboard_branches():
 
     selected_list_branch = branch_ad_schema.dump(branches)
 
-    print selected_list_branch
-    
+
     result = number_of_rows(selected_list_branch.data)
 
     remaining = 8-result
@@ -265,7 +264,8 @@ def dashboard_branches():
     print 'Remaining %d' % remaining
 
     if remaining>0:
-        for branch in selected_list_branch:
+        for branch in selected_list_branch.data:
+            print branch
             print "Alo"
         filterQuery = ''
         prefixFilterQuery = 'WHERE branches.branch_id != ALL(ARRAY'
