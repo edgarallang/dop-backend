@@ -321,7 +321,7 @@ def search_people():
                                     FROM users \
                                     INNER JOIN users_image on users.user_id = users_image.user_id \
                                     WHERE users.names ILIKE '%s' " % (payload['id'], '%%' + text + '%%'))
-
+        
         selected_list_people = people_schema.dump(people, many=True)
         # pprint(selected_list_people, indent = 2)
         return jsonify({'data': selected_list_people.data})
@@ -406,3 +406,17 @@ def set_privacy():
         return jsonify({'message': 'user privacy is set :D'})
     return jsonify({'message': 'Oops! algo salió mal'})
 
+@user.route('/following/get', methods=['POST'])
+def get_following():
+    if request.headers.get('Authorization'):
+        token_index = True
+        payload = parse_token(request, token_index)
+
+        people = db.session.execute('SELECT * FROM friends WHERE friends.user_one_id = %d' % (payload['id']))
+        people_list = people_schema.dump(people)
+
+        return jsonify({'data': people_list.data})
+    return jsonify({'message': 'Oops! algo salió mal'})
+
+
+        
