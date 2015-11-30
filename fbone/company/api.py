@@ -256,6 +256,8 @@ def dashboard_branches():
 
     selected_list_branch = branch_ad_schema.dump(branches)
 
+    print selected_list_branch
+    
     result = number_of_rows(selected_list_branch.data)
 
     remaining = 8-result
