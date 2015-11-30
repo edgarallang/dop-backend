@@ -265,7 +265,7 @@ def dashboard_branches():
 
     if remaining>0:
         for branch in selected_list_branch.data:
-            filterArray.append(branch.branch_id)
+            filterArray.append(branch["branch_id"])
 
         filterQuery = ''
         prefixFilterQuery = 'WHERE branches.branch_id != ALL(ARRAY'
