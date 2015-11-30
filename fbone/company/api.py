@@ -250,11 +250,8 @@ def dashboard_branches():
 
     branches = db.engine.execute(adBranches)
 
-    filterArray =[]
-    for branch in branches:
-        filterArray.append(branch.branch_id)
-
     selected_list_branch = branch_ad_schema.dump(branches)
+
 
     result = number_of_rows(selected_list_branch.data)
 
@@ -263,6 +260,11 @@ def dashboard_branches():
     print 'Remaining %d' % remaining
 
     if remaining>0:
+        filterArray =[]
+        for branch in selected_list_branch.data:
+            print branch["branch_id"]
+            filterArray.append(branch["branch_id"])
+
         filterQuery = ''
         prefixFilterQuery = 'WHERE branches.branch_id != ALL(ARRAY'
 
@@ -272,7 +274,7 @@ def dashboard_branches():
 
         remainingBranches = 'SELECT * FROM branches\
                               JOIN branches_design ON branches.branch_id = branches_design.branch_id\
-                              #'+filterQuery+' \
+                              '+filterQuery+' \
                               ORDER BY RANDOM() LIMIT %d' % (remaining)
         extra_branches = db.engine.execute(remainingBranches)
 
