@@ -239,7 +239,7 @@ user_join_friends = UserJoinFriends(many=True)
 user_join_exchanges_coupon_schema = UserJoinExchanges(many=True)
 user_join_activity_newsfeed = UserActivityNewsfeed(many=True)
 friends_count_schema = FriendsCountSchema(many=True)
-people_schema = PeopleSchema(strict=True)
+people_schema = PeopleSchema(many=True)
 
     # ================================================================
     # Class methods
