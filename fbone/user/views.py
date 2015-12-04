@@ -414,6 +414,7 @@ def get_following():
 
         people = db.engine.execute('SELECT * FROM friends INNER JOIN users \
                                         ON users.user_id = friends.user_two_id \
+                                        INNER JOIN users_image ON users_image.user_id = users.user_id \
                                         WHERE friends.user_one_id = %d AND friends.operation_id = 1' % (payload['id']))
         people_list = people_schema.dump(people)
 
