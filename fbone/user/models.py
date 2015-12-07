@@ -172,7 +172,10 @@ class UserJoinFriends(Schema):
                   'names',
                   'surnames',
                   'main_image',
-                  'friend')
+                  'friend',
+                  'facebook_key',
+                  'privacy_status',
+                  'birth_date')
 
 class FriendsCountSchema(Schema):
     class Meta:
