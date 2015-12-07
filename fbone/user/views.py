@@ -173,7 +173,7 @@ def get_friends():
 
         user_id = User.query.get(payload['id']).user_id
         
-        query = 'SELECT *, \
+        query = 'SELECT DISTINCT ON (users.user_id) *, \
                     (SELECT EXISTS (SELECT * FROM friends \
                             WHERE friends.user_one_id = %d and friends.user_two_id = users.user_id)::bool) AS friend \
                  FROM friends \
