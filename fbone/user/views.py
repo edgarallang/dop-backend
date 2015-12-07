@@ -175,7 +175,8 @@ def get_friends():
         
         query = 'SELECT *, \
                     (SELECT EXISTS (SELECT * FROM friends \
-                                        WHERE friends.user_one_id = %d and friends.user_two_id = users.user_id)::bool) AS friend \ FROM friends \
+                            WHERE friends.user_one_id = %d and friends.user_two_id = users.user_id)::bool) AS friend \
+                 FROM friends \
                  INNER JOIN users ON (friends.user_one_id = user_id  AND friends.user_one_id != %d) \
                  OR (friends.user_two_id=user_id  AND friends.user_two_id!=%d) \
                  INNER JOIN users_image ON (friends.user_one_id = users_image.user_id AND friends.user_one_id != %d)\
