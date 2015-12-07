@@ -171,7 +171,8 @@ class UserJoinFriends(Schema):
                   'user_id',
                   'names',
                   'surnames',
-                  'main_image')
+                  'main_image',
+                  'friend')
 
 class FriendsCountSchema(Schema):
     class Meta:
