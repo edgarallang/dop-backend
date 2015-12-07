@@ -173,13 +173,15 @@ def get_friends():
 
         user_id = User.query.get(payload['id']).user_id
         
-        query = 'SELECT * FROM friends \
+        query = 'SELECT *, \
+                    (SELECT EXISTS (SELECT * FROM friends \
+                                        WHERE friends.user_one_id = %d and friends.user_two_id = users.user_id)::bool) AS friend \ FROM friends \
                  INNER JOIN users ON (friends.user_one_id = user_id  AND friends.user_one_id != %d) \
                  OR (friends.user_two_id=user_id  AND friends.user_two_id!=%d) \
                  INNER JOIN users_image ON (friends.user_one_id = users_image.user_id AND friends.user_one_id != %d)\
                  OR (friends.user_two_id = users_image.user_id AND friends.user_two_id != %d) \
                  WHERE (user_one_id = %d OR user_two_id = %d)\
-                 AND operation_id = 1' % (user_id, user_id, user_id, user_id, user_id, user_id)
+                 AND operation_id = 1' % (user_id, user_id, user_id, user_id, user_id, user_id, user_id)
 
         friends = db.engine.execute(query)
         friends_list = user_join_friends.dump(friends)
