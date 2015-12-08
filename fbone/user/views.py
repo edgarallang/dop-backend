@@ -173,13 +173,16 @@ def get_friends():
 
         user_id = User.query.get(payload['id']).user_id
         
-        query = 'SELECT * FROM friends \
+        query = 'SELECT DISTINCT ON (users.user_id) *, \
+                    (SELECT EXISTS (SELECT * FROM friends \
+                            WHERE friends.user_one_id = %d and friends.user_two_id = users.user_id)::bool) AS friend \
+                 FROM friends \
                  INNER JOIN users ON (friends.user_one_id = user_id  AND friends.user_one_id != %d) \
                  OR (friends.user_two_id=user_id  AND friends.user_two_id!=%d) \
                  INNER JOIN users_image ON (friends.user_one_id = users_image.user_id AND friends.user_one_id != %d)\
                  OR (friends.user_two_id = users_image.user_id AND friends.user_two_id != %d) \
                  WHERE (user_one_id = %d OR user_two_id = %d)\
-                 AND operation_id = 1' % (user_id, user_id, user_id, user_id, user_id, user_id)
+                 AND operation_id = 1' % (user_id, user_id, user_id, user_id, user_id, user_id, user_id)
 
         friends = db.engine.execute(query)
         friends_list = user_join_friends.dump(friends)
@@ -321,7 +324,7 @@ def search_people():
                                     FROM users \
                                     INNER JOIN users_image on users.user_id = users_image.user_id \
                                     WHERE users.names ILIKE '%s' " % (payload['id'], '%%' + text + '%%'))
-
+        
         selected_list_people = people_schema.dump(people, many=True)
         # pprint(selected_list_people, indent = 2)
         return jsonify({'data': selected_list_people.data})
@@ -406,3 +409,23 @@ def set_privacy():
         return jsonify({'message': 'user privacy is set :D'})
     return jsonify({'message': 'Oops! algo salió mal'})
 
+@user.route('/following/get', methods=['GET'])
+def get_following():
+    if request.headers.get('Authorization'):
+        token_index = True
+        payload = parse_token(request, token_index)
+
+        people = db.engine.execute('SELECT *, \
+                                    (SELECT EXISTS (SELECT * FROM friends \
+                                        WHERE friends.user_one_id = %d and friends.user_two_id = users.user_id)::bool) AS friend \
+                                    FROM friends INNER JOIN users \
+                                        ON users.user_id = friends.user_two_id \
+                                        INNER JOIN users_image ON users_image.user_id = users.user_id \
+                                        WHERE friends.user_one_id = %d AND friends.operation_id = 1' % (payload['id'], payload['id']))
+        people_list = people_schema.dump(people)
+
+        return jsonify({'data': people_list.data})
+    return jsonify({'message': 'Oops! algo salió mal'})
+
+
+        

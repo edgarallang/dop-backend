@@ -171,7 +171,11 @@ class UserJoinFriends(Schema):
                   'user_id',
                   'names',
                   'surnames',
-                  'main_image')
+                  'main_image',
+                  'friend',
+                  'facebook_key',
+                  'privacy_status',
+                  'birth_date')
 
 class FriendsCountSchema(Schema):
     class Meta:
@@ -179,18 +183,19 @@ class FriendsCountSchema(Schema):
                   'total')
 
 class PeopleSchema(Schema):
-    user_id = fields.Number()
-    names = fields.String()
-    surnames = fields.String()
-    birth_date = fields.String()
-    facebook_key = fields.String()
-    google_key = fields.String()
-    twitter_key = fields.String()
-    privacy_status = fields.Number()
-    exp = fields.Number()
-    user_image_id = fields.Number()
-    main_image = fields.String()
-    friend = fields.Boolean()
+    class Meta:
+        fields = ('user_id',
+                  'names',
+                  'surnames',
+                  'birth_date',
+                  'facebook_key',
+                  'google_key',
+                  'twitter_key',
+                  'privacy_status',
+                  'exp',
+                  'user_image_id',
+                  'main_image',
+                  'friend')
 
 class UserJoinExchanges(Schema):
     class Meta:
@@ -238,7 +243,7 @@ user_join_friends = UserJoinFriends(many=True)
 user_join_exchanges_coupon_schema = UserJoinExchanges(many=True)
 user_join_activity_newsfeed = UserActivityNewsfeed(many=True)
 friends_count_schema = FriendsCountSchema(many=True)
-people_schema = PeopleSchema(strict=True)
+people_schema = PeopleSchema(many=True)
 
     # ================================================================
     # Class methods
