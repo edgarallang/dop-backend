@@ -36,7 +36,8 @@ class Notifications(Schema):
                   'read',
                   'notification_date',
                   'user_image',
-                  'branch_image'
+                  'branch_image',
+                  'company_id'
                   )
 
 
