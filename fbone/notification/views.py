@@ -85,7 +85,7 @@ def get_notifications():
                                 LEFT JOIN coupons ON clients_coupon.coupon_id = coupons.coupon_id\
                                 LEFT JOIN branches ON coupons.branch_id = branches.branch_id\
                                 LEFT JOIN friends ON notifications.object_id = friends.friends_id AND notifications.type= 'friend'\
-                                LEFT JOIN users_image ON friends.friends_id = users_image.user_id AND notifications.type= 'friend'\
+                                LEFT JOIN users_image ON notifications.launcher_id = users_image.user_id AND notifications.type= 'friend'\
                                 LEFT JOIN branches_design ON branches.branch_id = branches_design.logo AND notifications.type= 'newsfeed'\
                                 INNER JOIN users AS launcher_user ON notifications.launcher_id = launcher_user.user_id \
                                 WHERE notifications.user_id = %d ORDER BY notification_date DESC LIMIT 11" % (payload['id'])
