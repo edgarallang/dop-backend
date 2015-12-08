@@ -80,11 +80,12 @@ def get_notifications():
 
         notifications_query = "SELECT notifications.notification_id,notifications.type, launcher_user.names AS "+"launcher_name"+",\
                                 launcher_user.surnames AS "+"launcher_surnames"+",launcher_user.user_id AS "+"launcher_id"+",friends.operation_id AS "+"friendship_status"+",\
-                                branches.name AS "+"newsfeed_activity"+", notifications.read, notifications.notification_date FROM notifications\
+                                branches.name AS "+"newsfeed_activity"+", notifications.read, notifications.notification_date,users_image.main_image AS "+"users_image"+" FROM notifications\
                                 LEFT JOIN clients_coupon ON notifications.object_id = clients_coupon.clients_coupon_id AND notifications.type= 'newsfeed'\
                                 LEFT JOIN coupons ON clients_coupon.coupon_id = coupons.coupon_id\
                                 LEFT JOIN branches ON coupons.branch_id = branches.branch_id\
                                 LEFT JOIN friends ON notifications.object_id = friends.friends_id AND notifications.type= 'friend'\
+                                LEFT JOIN users_image ON friends.friend_id = users_image.user_id AND notifications.type= 'friend'\
                                 INNER JOIN users AS launcher_user ON notifications.launcher_id = launcher_user.user_id \
                                 WHERE notifications.user_id = %d ORDER BY notification_date DESC LIMIT 11" % (payload['id'])
         notifications = db.engine.execute(notifications_query)

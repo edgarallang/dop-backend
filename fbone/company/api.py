@@ -257,12 +257,9 @@ def dashboard_branches():
 
     remaining = 8-result
 
-    print 'Remaining %d' % remaining
-
     if remaining>0:
         filterArray =[]
         for branch in selected_list_branch.data:
-            print branch["branch_id"]
             filterArray.append(branch["branch_id"])
 
         filterQuery = ''
