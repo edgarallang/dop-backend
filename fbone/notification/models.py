@@ -34,7 +34,9 @@ class Notifications(Schema):
                   'friendship_status',
                   'newsfeed_activity',
                   'read',
-                  'notification_date'
+                  'notification_date',
+                  'user_image',
+                  'branch_image'
                   )
 
 
