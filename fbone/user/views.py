@@ -12,6 +12,7 @@ from .models import *
 from ..extensions import db, socketio
 from marshmallow import pprint
 from ..notification import Notification
+from ..badge import *
 from flask.ext.socketio import SocketIO, send, emit, join_room, leave_room
 from ..utils import *
 
@@ -388,12 +389,23 @@ def get_used_coupons_by_user_likes_offset():
     return jsonify({'message': 'Oops! algo salió mal'})
 
 @user.route('/<int:user_id>/<int:exp>/set', methods=['GET','PUT'])
-def set_experience(user_id,exp):
+def set_experience(user_id, exp):
     user = User.query.filter_by(user_id = user_id).first()
     user.exp = user.exp + exp
+    badge_name = 'raccoon'
+
+    for key, val in BADGES:
+        if user.exp >= val
+          badge_name = key
+          return 'done'
+
+    badge = Badge.query.filter_by(name = badge_name).first()
+    badges = badge_schema.dump(badge)
+
     db.session.commit()
     
-    return jsonify({'message': 'experiencia asignada %d' % exp })
+    return jsonify({'message': 'experiencia asignada %d' % exp,
+                    'badges': badges.data })
 
 @user.route('/privacy_status/set', methods=['POST'])
 def set_privacy():

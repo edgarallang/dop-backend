@@ -11,3 +11,4 @@ class Badge(db.Model):
     info = Column(db.String(STRING_LEN), nullable=False)
     
     level = db.relationship("Level", uselist=False, backref="badges")
+
