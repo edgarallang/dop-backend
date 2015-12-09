@@ -9,7 +9,6 @@ from flask.ext.babel import Babel
 
 
 from .config import DefaultConfig
-from .badge import *
 from .level import Level, level
 from .user import User, UserLevel, user
 from .company import Company, Branch, BranchLocation, BranchDesign, BranchUser, Category, company
@@ -18,6 +17,7 @@ from .notification import *
 from .settings import settings
 from .frontend import frontend
 from .api import api
+from .badge import *
 from .admin import admin
 from .extensions import db, mail, cache, login_manager, oid, CORS, socketio
 from .utils import INSTANCE_FOLDER_PATH

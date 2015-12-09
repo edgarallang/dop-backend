@@ -4,6 +4,7 @@ from sqlalchemy.exc import IntegrityError
 from ..extensions import db
 from ..utils import get_current_time, SEX_TYPE, STRING_LEN
 from ..level import Level
+from .schemas import *
 
 class Badge(db.Model):
     __tablename__ = 'badges'

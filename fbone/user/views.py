@@ -18,8 +18,6 @@ from ..utils import *
 
 user = Blueprint('user', __name__, url_prefix='/api/user')
 
-
-
 def parse_token(req, token_index):
     if token_index:
         token = req.headers.get('Authorization').split()[0]
