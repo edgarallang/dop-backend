@@ -62,11 +62,12 @@ def set_read():
     if request.headers.get('Authorization'):
         token_index = True
         payload = parse_token(request, token_index)
+        notification_id = request.json['notification_id']
 
-        Notification.query.filter_by(user_id=payload['id']).update({"read": "true"})
+        Notification.query.filter_by(notification_id=notification_id).update({"read": "true"})
 
         db.session.commit()
-        return jsonify({'message': 'Notificaciones leidas'})
+        return jsonify({'message': 'Notificacion leida'})
 
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
