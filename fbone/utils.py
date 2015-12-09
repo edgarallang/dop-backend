@@ -60,6 +60,18 @@ FACEBOOK_LOGIN = 5
 
 ############################################
 
+############## BADGES CONSTANTS ############
+
+BADGES = {
+    'bronce': 50,
+    'plata': 200,
+    'oro': 500,
+    'rubi': 1000
+}
+
+
+#############################################
+
 def assign_exp(user_id, exp):
     requests.put("https://inmoon.com.mx/api/user/"+user_id+"/"+ exp +"/set")
 
