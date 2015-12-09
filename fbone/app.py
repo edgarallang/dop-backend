@@ -31,7 +31,6 @@ DEFAULT_BLUEPRINTS = (
     user,
     company,
     coupon,
-    level,
     settings,
     api,
     admin,
