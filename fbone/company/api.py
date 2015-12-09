@@ -12,8 +12,6 @@ from .models import *
 from ..extensions import db
 from ..company import Branch, BranchUser
 
-
-
 company = Blueprint('company', __name__, url_prefix='/api/company')
 
 def create_token(user):
