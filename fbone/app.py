@@ -35,7 +35,7 @@ DEFAULT_BLUEPRINTS = (
     settings,
     api,
     admin,
-    notification
+    notification,
 )
 
 
