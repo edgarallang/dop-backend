@@ -11,6 +11,4 @@ from jwt import DecodeError, ExpiredSignature
 from .models import *
 from ..extensions import db
 
-
-
 badge = Blueprint('badge', __name__, url_prefix='/api/badge')
