@@ -17,7 +17,7 @@ from .notification import *
 from .settings import settings
 from .frontend import frontend
 from .api import api
-from .badge import *
+from .badge import badge
 from .admin import admin
 from .extensions import db, mail, cache, login_manager, oid, CORS, socketio
 from .utils import INSTANCE_FOLDER_PATH
@@ -31,10 +31,12 @@ DEFAULT_BLUEPRINTS = (
     user,
     company,
     coupon,
+    level,
     settings,
     api,
     admin,
     notification,
+    badge
 )
 
 
