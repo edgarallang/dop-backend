@@ -397,7 +397,7 @@ def set_experience(user_id, exp):
     for key, val in BADGES.iteritems():
         if user.exp >= val:
           badge_name = key
-          return 'done'
+          break
 
     badge = Badge.query.filter_by(name = badge_name).first()
     badges = badge_schema.dump(badge)
