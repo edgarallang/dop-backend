@@ -36,7 +36,7 @@ DEFAULT_BLUEPRINTS = (
     api,
     admin,
     notification,
-    badge
+    badge,
 )
 
 
