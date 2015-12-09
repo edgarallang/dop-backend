@@ -1,5 +1,6 @@
 from sqlalchemy import Column, types
 from sqlalchemy.ext.mutable import Mutable
+from sqlalchemy.exc import IntegrityError
 from ..extensions import db
 from ..utils import get_current_time, SEX_TYPE, STRING_LEN
 from ..level import Level

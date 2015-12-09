@@ -1,3 +1,3 @@
-from .models import Badge
+from .models import *
 from .schemas import *
 from .api import badge
