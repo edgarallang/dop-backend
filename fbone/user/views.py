@@ -12,7 +12,7 @@ from .models import *
 from ..extensions import db, socketio
 from marshmallow import pprint
 from ..notification import Notification
-from ..badge import *
+from ..badge import Badge
 from flask.ext.socketio import SocketIO, send, emit, join_room, leave_room
 from ..utils import *
 
