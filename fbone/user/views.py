@@ -399,7 +399,7 @@ def set_experience(user_id, exp):
           badge_name = key
           break
 
-    badge = Badge.query.filter_by(name = badge_name).first()
+    badge = db.engine.execute('SELECT * FROM badges WHERE name = %s' % (badge_name))
     badges = badge_schema.dump(badge)
 
     db.session.commit()
