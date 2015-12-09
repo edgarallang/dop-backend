@@ -394,7 +394,7 @@ def set_experience(user_id, exp):
     user.exp = user.exp + exp
     badge_name = 'raccoon'
 
-    for key, val in BADGES:
+    for key, val in BADGES.values():
         if user.exp >= val
           badge_name = key
           return 'done'
