@@ -395,7 +395,6 @@ def set_experience(user_id, exp):
     for key, val in BADGES.iteritems():
         if user.exp >= val:
           badge_name.append(key)
-          break
 
     badges_tuple = tuple(badge_name)
 
