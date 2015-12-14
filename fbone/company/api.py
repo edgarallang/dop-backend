@@ -31,13 +31,6 @@ def parse_token(req, token_index):
         token = req.headers.get('Authorization').split()[1]
     return jwt.decode(token, app.config['TOKEN_SECRET'])
 
-def parse_token(req, token_index):
-    if token_index:
-        token = req.headers.get('Authorization').split()[0]
-    else:
-        token = req.headers.get('Authorization').split()[1]
-    return jwt.decode(token, app.config['TOKEN_SECRET'])
-
 @company.route('/auth/signup', methods=['POST'])
 def signup():
     branchUser = BranchUser(email = request.json['email'],
