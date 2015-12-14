@@ -14,3 +14,9 @@ class Badge(db.Model):
     
     level = db.relationship("Level", uselist=False, backref="badges")
 
+class UsersBadges(db.Model):
+    __tablename__ = 'users_badges'
+    users_badges_id = Column(db.Integer, primary_key=True)
+    user_id = Column(db.Integer)
+    badge_id = Column(db.Integer)
+    reward_date = Column(db.DateTime)
