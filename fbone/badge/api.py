@@ -45,6 +45,6 @@ def badge_grid():
                                     WHERE user_id = %d OR user_id is null' % (payload['id'], payload['id']))
 
         badges_list = badges_schema.dump(badges)
-        return jsonify({'data': badges_list.date})
+        return jsonify({'data': badges_list.data})
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
