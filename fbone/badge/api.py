@@ -47,3 +47,4 @@ def badge_grid():
         badges_list = badges_schema.dump(badges)
         return jsonify({'data': badges_list.date})
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
+

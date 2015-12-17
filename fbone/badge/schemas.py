@@ -17,4 +17,4 @@ class BadgesSchema(Schema):
                   'earned')
 
 badge_schema = BadgeSchema(many = True)
-badges_earned = BadgesSchema(many = True)
+badges_schema = BadgesSchema(many = True)
