@@ -49,7 +49,7 @@ def badge_grid():
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
 @badge.route('/all/trophy/get', methods=['GET'])
-def badge_grid():
+def badge_trophy_grid():
     if request.headers.get('Authorization'):
         token_index = True
         payload = parse_token(request, token_index)
@@ -65,7 +65,7 @@ def badge_grid():
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
 @badge.route('/all/medal/get', methods=['GET'])
-def badge_grid():
+def badge_medal_grid():
     if request.headers.get('Authorization'):
         token_index = True
         payload = parse_token(request, token_index)
