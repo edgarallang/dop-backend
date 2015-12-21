@@ -339,7 +339,7 @@ def get_coupons_activity_by_user_likes():
         user_profile_id = request.args.get('user_profile_id')
         
         users = db.engine.execute('SELECT coupons.branch_id,coupons.coupon_id,branches_design.logo,coupons.name,clients_coupon.clients_coupon_id,clients_coupon.latitude,clients_coupon.longitude \
-                                    , users.names, users.surnames, users.user_id, users_image.main_image, branches.name AS branch_name, branches.company_id, \
+                                    , users.names, users.surnames, users.user_id, users_image.main_image, branches.name AS branch_name, branches.company_id, clients_coupon.used_date, \
                                     (SELECT COUNT(*)  FROM clients_coupon_likes WHERE clients_coupon.clients_coupon_id = clients_coupon_likes.clients_coupon_id) AS total_likes, \
                                     (SELECT COUNT(*)  FROM clients_coupon_likes WHERE clients_coupon_likes.user_id = %s AND clients_coupon_likes.clients_coupon_id = clients_coupon.clients_coupon_id) AS user_like \
                                     FROM clients_coupon \
@@ -368,7 +368,7 @@ def get_used_coupons_by_user_likes_offset():
 
         users = db.engine.execute('SELECT coupons.branch_id, coupons.coupon_id, branches_design.logo, coupons.name, \
                                             clients_coupon.clients_coupon_id, clients_coupon.latitude,clients_coupon.longitude, \
-                                            users.names, users.surnames, users.user_id, users_image.main_image, branches.name AS branch_name, branches.company_id, \
+                                            users.names, users.surnames, users.user_id, users_image.main_image, branches.name AS branch_name, branches.company_id,clients_coupon.used_date, \
                                     (SELECT COUNT(*)  FROM clients_coupon_likes WHERE clients_coupon.clients_coupon_id = clients_coupon_likes.clients_coupon_id) AS total_likes, \
                                     (SELECT COUNT(*)  FROM clients_coupon_likes WHERE clients_coupon_likes.user_id = %d AND clients_coupon_likes.clients_coupon_id = clients_coupon.clients_coupon_id) AS user_like \
                                     FROM clients_coupon \
