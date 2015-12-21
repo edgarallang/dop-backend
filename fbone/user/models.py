@@ -234,7 +234,8 @@ class UserActivityNewsfeed(Schema):
                   'main_image',
                   'branch_name',
                   'total_likes',
-                  'user_like')
+                  'user_like',
+                  'used_date')
 
 user_schema = UserSchema(many=True)
 user_joined_schema = UserJoinImage(many=True)
