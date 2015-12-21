@@ -6,6 +6,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from ..extensions import db
 from ..utils import get_current_time, SEX_TYPE, STRING_LEN
 
+
 # =====================================================================
 # Company
 

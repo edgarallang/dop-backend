@@ -18,8 +18,6 @@ from ..utils import *
 
 user = Blueprint('user', __name__, url_prefix='/api/user')
 
-
-
 def parse_token(req, token_index):
     if token_index:
         token = req.headers.get('Authorization').split()[0]
@@ -392,14 +390,15 @@ def get_used_coupons_by_user_likes_offset():
 def set_experience(user_id, exp):
     user = User.query.filter_by(user_id = user_id).first()
     user.exp = user.exp + exp
-    badge_name = 'raccoon'
+    badge_name = []
 
     for key, val in BADGES.iteritems():
         if user.exp >= val:
-          badge_name = key
-          break
+          badge_name.append(key)
 
-    badge = Badge.query.filter_by(name = badge_name).first()
+    badges_tuple = tuple(badge_name)
+
+    badge = db.engine.execute("SELECT * FROM badges WHERE LOWER(name) in" + `badges_tuple`)
     badges = badge_schema.dump(badge)
 
     db.session.commit()
