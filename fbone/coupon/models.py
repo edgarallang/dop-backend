@@ -320,7 +320,8 @@ class UserActivityNewsfeed(Schema):
                   'main_image',
                   'branch_name',
                   'total_likes',
-                  'user_like')
+                  'user_like',
+                  'used_date')
 
 coupon_schema = CouponSchema()
 coupons_schema = CouponSchema(many=True)
