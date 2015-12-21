@@ -14,7 +14,8 @@ class BadgesSchema(Schema):
                   'info',
                   'user_id',
                   'reward_date',
-                  'earned')
+                  'earned',
+                  'type')
 
 badge_schema = BadgeSchema(many = True)
 badges_schema = BadgesSchema(many = True)
