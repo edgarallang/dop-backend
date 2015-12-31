@@ -95,17 +95,17 @@ class Category(db.Model):
 
 # =====================================================================
 
-# Branches likes 
+# Branches follower 
 
-class BranchesLikes(db.Model):
-    __tablename__ = 'branches_likes'
+class BranchesFollower(db.Model):
+    __tablename__ = 'branches_follower'
     branch_like_id = Column(db.Integer, primary_key=True)
     branch_id = Column(db.Integer, db.ForeignKey('branches.branch_id'), nullable=False)
     user_id = Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
     date = Column(db.DateTime, nullable=False)
 
-    branches_likes = db.relationship("Branch", uselist=False, backref="branches_likes")
-    branches_user = db.relationship('User', uselist=False, backref='branches_likes')
+    branches_follower = db.relationship("Branch", uselist=False, backref="branches_follower")
+    branches_user = db.relationship('User', uselist=False, backref='branches_follower')
 # =====================================================================
 
 # Branches user is the person geting into the system from that specific branch
@@ -209,6 +209,14 @@ class BranchesLocation(Schema):
                   'name',
                   'category_id')
 
+class BranchesFollowedSchema(Schema):
+    class Meta:
+        fields = ('branch_id',
+                  'name',
+                  'company_id',
+                  'banner',
+                  'logo')
+
 company_schema = CompanySchema()
 companies_schema = CompanySchema(many=True)
 branch_schema = BranchSchema()
@@ -216,3 +224,4 @@ branch_user_schema = BranchUserSchema()
 branch_profile_schema = BranchesProfile(many=True)
 branch_ad_schema = BranchesAd(many=True)
 branches_location_schema = BranchesLocation(many=True)
+branches_followed_schema = BranchesFollowedSchema(many=True)

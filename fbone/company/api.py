@@ -159,19 +159,37 @@ def like_branch():
         token_index = True
         payload = parse_token(request, token_index)
 
-        branchLike = BranchesLikes.query.filter_by(branch_id = request.json['branch_id'],user_id = payload['id']).first()
-        if not branchLike:
-            branch_like = BranchesLikes(branch_id = request.json['branch_id'],
+        branchFollower = BranchesFollower.query.filter_by(branch_id = request.json['branch_id'],user_id = payload['id']).first()
+        if not branchFollower:
+            branch_follower = BranchesFollower(branch_id = request.json['branch_id'],
                                       user_id = payload['id'],
                                       date = request.json['date'])
 
-            db.session.add(branch_like)
+            db.session.add(branch_follower)
             db.session.commit()
             return jsonify({'message': 'El like se asigno con éxito'})
         else:
-            db.session.delete(branchLike)
+            db.session.delete(branchFollower)
             db.session.commit()
             return jsonify({'message': 'El like se elimino con éxito'})
+    return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
+
+@company.route('/branch/following/get',methods=['GET'])
+def following_branch():
+    if request.headers.get('Authorization'):
+        token_index = True
+        payload = parse_token(request, token_index)
+
+        query = 'SELECT * FROM branches_follower \
+                    INNER JOIN branches ON branches_follower.branch_id = branches.branch_id \
+                    INNER JOIN  branches_design ON branches_follower.branch_id = branches_design.branch_id \
+                    WHERE user_id = %d' % (payload['id'])
+
+        branches_list = db.engine.execute(query)
+        branches_followed = branches_followed_schema.dump(branches_list).data
+
+        return jsonify({'data': branches_followed})
+
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
 #SEARCH API
