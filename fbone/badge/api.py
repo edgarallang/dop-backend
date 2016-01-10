@@ -32,8 +32,8 @@ def parse_token(req, token_index):
     return jwt.decode(token, app.config['TOKEN_SECRET'])
 
 
-@badge.route('/all/get', methods=['GET'])
-def badge_grid():
+@badge.route('/<int:user_id>/all/get', methods=['GET'])
+def badge_grid(user_id):
     if request.headers.get('Authorization'):
         token_index = True
         payload = parse_token(request, token_index)
@@ -42,7 +42,7 @@ def badge_grid():
                                         (SELECT exists(SELECT * FROM users_badges WHERE user_id = %d \
                                          AND badges.badge_id = badge_id)::bool) AS earned \
                                     FROM badges LEFT JOIN users_badges ON badges.badge_id = users_badges.badge_id \
-                                    WHERE user_id = %d OR user_id is null' % (payload['id'], payload['id']))
+                                    WHERE user_id = %d OR user_id is null' % (user_id, user_id))
 
         badges_list = badges_schema.dump(badges)
         return jsonify({'data': badges_list.data})
