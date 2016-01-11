@@ -38,11 +38,30 @@ def badge_grid(user_id):
         token_index = True
         payload = parse_token(request, token_index)
 
-        badges = db.engine.execute('SELECT badges.badge_id, name, info, badges.type, user_id, reward_date, \
+        badges = db.engine.execute('SELECT badges.badge_id, name, info, badges.type, user_id, reward_date, users_badges_id, \
                                         (SELECT exists(SELECT * FROM users_badges WHERE user_id = %d \
                                          AND badges.badge_id = badge_id)::bool) AS earned \
                                     FROM badges LEFT JOIN users_badges ON badges.badge_id = users_badges.badge_id \
-                                    WHERE user_id = %d OR user_id is null' % (user_id, user_id))
+                                    WHERE user_id = %d \
+                                    ORDER BY users_badges_id DESC LIMIT 6 OFFSET 0' % (user_id, user_id))
+
+        badges_list = badges_schema.dump(badges)
+        return jsonify({'data': badges_list.data})
+    return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
+
+@badge.route('/<int:user_id>/all/<int:last_badge_id>/<int:offset>/get', methods=['GET'])
+def badge_grid_offset(user_id, offset):
+    if request.headers.get('Authorization'):
+        token_index = True
+        payload = parse_token(request, token_index)
+
+        badges = db.engine.execute('SELECT badges.badge_id, name, info, badges.type, user_id, reward_date, users_badges_id, \
+                                        (SELECT exists(SELECT * FROM users_badges WHERE user_id = %d \
+                                         AND badges.badge_id = badge_id)::bool) AS earned \
+                                    FROM badges LEFT JOIN users_badges ON badges.badge_id = users_badges.badge_id \
+                                    WHERE user_id = %d \
+                                    AND users_badges_id < %d \
+                                    ORDER BY users_badges_id DESC LIMIT 6 OFFSET %d' % (user_id, user_id, last_badge_id, offset))
 
         badges_list = badges_schema.dump(badges)
         return jsonify({'data': badges_list.data})
