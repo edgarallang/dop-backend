@@ -50,7 +50,7 @@ def badge_grid(user_id):
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
 @badge.route('/<int:user_id>/all/<int:last_badge_id>/<int:offset>/get', methods=['GET'])
-def badge_grid_offset(user_id, offset):
+def badge_grid_offset(user_id, last_badge_id, offset):
     if request.headers.get('Authorization'):
         token_index = True
         payload = parse_token(request, token_index)
