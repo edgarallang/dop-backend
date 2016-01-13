@@ -202,7 +202,7 @@ def following_branch_offset(user_id, last_branch, offset):
         query = 'SELECT * FROM branches_follower \
                     INNER JOIN branches ON branches_follower.branch_id = branches.branch_id \
                     INNER JOIN  branches_design ON branches_follower.branch_id = branches_design.branch_id \
-                    WHERE user_id = %d AND branch_follower_id < last_branch\
+                    WHERE user_id = %d AND branch_follower_id < %d \
                     ORDER BY branch_follower_id DESC LIMIT 6 OFFSET %d' % (user_id, last_branch, offset)
 
         branches_list = db.engine.execute(query)
