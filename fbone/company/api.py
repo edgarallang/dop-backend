@@ -193,7 +193,7 @@ def following_branch(user_id):
 
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
-@company.route('/branch/<int:user_id>/following/<int:last_branch>/<int:offset/get',methods=['GET'])
+@company.route('/branch/<int:user_id>/following/<int:last_branch>/<int:offset>/get',methods=['GET'])
 def following_branch_offset(user_id, last_branch, offset):
     if request.headers.get('Authorization'):
         token_index = True
