@@ -99,7 +99,7 @@ class Category(db.Model):
 
 class BranchesFollower(db.Model):
     __tablename__ = 'branches_follower'
-    branch_like_id = Column(db.Integer, primary_key=True)
+    branch_follower_id = Column(db.Integer, primary_key=True)
     branch_id = Column(db.Integer, db.ForeignKey('branches.branch_id'), nullable=False)
     user_id = Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
     date = Column(db.DateTime, nullable=False)
@@ -215,7 +215,8 @@ class BranchesFollowedSchema(Schema):
                   'name',
                   'company_id',
                   'banner',
-                  'logo')
+                  'logo',
+                  'branch_follower_id')
 
 company_schema = CompanySchema()
 companies_schema = CompanySchema(many=True)
