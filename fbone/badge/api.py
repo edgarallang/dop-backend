@@ -79,7 +79,7 @@ def badge_trophy_grid():
                                     FROM badges LEFT JOIN users_badges ON badges.badge_id = users_badges.badge_id \
                                     WHERE badges.type = 'trophy' AND (user_id = %d OR user_id is null)" % (payload['id'], payload['id']))
 
-        badges_list = badges_schema.dump(badges)
+        badges_list = badges_type_schema.dump(badges)
         return jsonify({'data': badges_list.data})
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
@@ -95,7 +95,7 @@ def badge_medal_grid():
                                     FROM badges LEFT JOIN users_badges ON badges.badge_id = users_badges.badge_id \
                                     WHERE badges.type = 'medal' AND (user_id = %d OR user_id is null)" % (payload['id'], payload['id']))
 
-        badges_list = badges_schema.dump(badges)
+        badges_list = badges_type_schema.dump(badges)
         return jsonify({'data': badges_list.data})
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
