@@ -73,7 +73,7 @@ def badge_trophy_grid():
         token_index = True
         payload = parse_token(request, token_index)
 
-        badges = db.engine.execute("SELECT badges.badge_id, name, info, badges.type, user_id, reward_date, \
+        badges = db.engine.execute("SELECT badges.badge_id, name, info, badges.type, user_id, reward_date, users_badges_id, \
                                         (SELECT exists(SELECT * FROM users_badges WHERE user_id = %d \
                                          AND badges.badge_id = badge_id)::bool) AS earned \
                                     FROM badges LEFT JOIN users_badges ON badges.badge_id = users_badges.badge_id \
@@ -89,7 +89,7 @@ def badge_medal_grid():
         token_index = True
         payload = parse_token(request, token_index)
 
-        badges = db.engine.execute("SELECT badges.badge_id, name, info, badges.type, user_id, reward_date, \
+        badges = db.engine.execute("SELECT badges.badge_id, name, info, badges.type, user_id, reward_date, users_badges_id, \
                                         (SELECT exists(SELECT * FROM users_badges WHERE user_id = %d \
                                          AND badges.badge_id = badge_id)::bool) AS earned \
                                     FROM badges LEFT JOIN users_badges ON badges.badge_id = users_badges.badge_id \
