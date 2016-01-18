@@ -174,8 +174,8 @@ def like_branch():
             return jsonify({'message': 'El like se elimino con éxito'})
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
-@company.route('/branch/following/get',methods=['GET'])
-def following_branch():
+@company.route('/branch/<int:user_id>/following/get',methods=['GET'])
+def following_branch(user_id):
     if request.headers.get('Authorization'):
         token_index = True
         payload = parse_token(request, token_index)
@@ -183,7 +183,27 @@ def following_branch():
         query = 'SELECT * FROM branches_follower \
                     INNER JOIN branches ON branches_follower.branch_id = branches.branch_id \
                     INNER JOIN  branches_design ON branches_follower.branch_id = branches_design.branch_id \
-                    WHERE user_id = %d' % (payload['id'])
+                    WHERE user_id = %d \
+                    ORDER BY branch_follower_id DESC LIMIT 6' % (user_id)
+
+        branches_list = db.engine.execute(query)
+        branches_followed = branches_followed_schema.dump(branches_list).data
+
+        return jsonify({'data': branches_followed})
+
+    return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
+
+@company.route('/branch/<int:user_id>/following/<int:last_branch>/<int:offset>/get',methods=['GET'])
+def following_branch_offset(user_id, last_branch, offset):
+    if request.headers.get('Authorization'):
+        token_index = True
+        payload = parse_token(request, token_index)
+
+        query = 'SELECT * FROM branches_follower \
+                    INNER JOIN branches ON branches_follower.branch_id = branches.branch_id \
+                    INNER JOIN  branches_design ON branches_follower.branch_id = branches_design.branch_id \
+                    WHERE user_id = %d AND branch_follower_id < %d \
+                    ORDER BY branch_follower_id DESC LIMIT 6 OFFSET %d' % (user_id, last_branch, offset)
 
         branches_list = db.engine.execute(query)
         branches_followed = branches_followed_schema.dump(branches_list).data
