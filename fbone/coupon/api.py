@@ -86,17 +86,17 @@ def use_coupon():
         payload = parse_token(request, token_index) #5
         coupon_id = request.json['coupon_id'] #5
         qr_code = request.json['qr_code']
-        
+        branch_id = request.json['branch_id']
         #try:
         #    qr_code = int(request.json['qr_code']) #4
         #except ValueError:
         #    return jsonify({'message': 'Código QR incorrecto'})
 
         client_coupon = ClientsCoupon.query.join(Coupon, ClientsCoupon.coupon_id==Coupon.coupon_id).add_columns(ClientsCoupon.clients_coupon_id,ClientsCoupon.used, Coupon.branch_id).filter(and_(ClientsCoupon.coupon_id==coupon_id),(ClientsCoupon.user_id==payload['id'])).first()
-
         client_coupon_json = clients_coupon_inner_coupon_schema.dump(client_coupon)
         
-        if client_coupon_json.data['branch_id'] == qr_code:
+
+        if branch_id == qr_code:
             actual_date = datetime.now()
             client_coupon = ClientsCoupon.query.filter_by(clients_coupon_id = client_coupon.clients_coupon_id).first()
             if not client_coupon
