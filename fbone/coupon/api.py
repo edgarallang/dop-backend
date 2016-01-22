@@ -92,13 +92,14 @@ def use_coupon():
         #except ValueError:
         #    return jsonify({'message': 'Código QR incorrecto'})
 
-        client_coupon_exist = ClientsCoupon.query.join(Coupon, ClientsCoupon.coupon_id==Coupon.coupon_id).add_columns(ClientsCoupon.clients_coupon_id,ClientsCoupon.used, Coupon.branch_id).filter(and_(ClientsCoupon.coupon_id==coupon_id),(ClientsCoupon.user_id==payload['id'])).first()
+        #client_coupon_exist = ClientsCoupon.query.join(Coupon, ClientsCoupon.coupon_id==Coupon.coupon_id).add_columns(ClientsCoupon.clients_coupon_id,ClientsCoupon.used, Coupon.branch_id).filter(and_(ClientsCoupon.coupon_id==coupon_id),(ClientsCoupon.user_id==payload['id'])).first()
         #client_coupon_json = clients_coupon_inner_coupon_schema.dump(client_coupon)
         
 
         if branch_id == qr_code:
             actual_date = datetime.now()
-            client_coupon = ClientsCoupon.query.filter_by(clients_coupon_id = client_coupon_exist.clients_coupon_id).first()
+            client_coupon = ClientsCoupon.query.filter_by(coupon_id = coupon_id,payload['id']).first()
+            #client_coupon = ClientsCoupon.query.filter_by(clients_coupon_id = client_coupon_exist.clients_coupon_id).first()
             if not client_coupon:
                 client_coupon = ClientsCoupon(user_id = payload['id'],
                                   coupon_id = request.json['coupon_id'],
