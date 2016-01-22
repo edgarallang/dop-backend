@@ -72,7 +72,7 @@ def take_coupon():
 
         db.session.add(user_take)
         db.session.commit()
-        folio = '%d%s%d' % (request.json['branch_id'], request.json['folio_date'], user_take.clients_coupon_id)
+        folio = '%d%s%d' % (request.json['branch_id'], datetime.now(), user_take.clients_coupon_id)
         user_take.folio = folio
         db.session.commit()
 
@@ -111,7 +111,7 @@ def use_coupon():
                                   used_date = actual_date)
                 db.session.add(client_coupon)
                 db.session.commit()
-                folio = '%d%s%d' % (request.json['branch_id'], request.json['folio_date'], user_take.clients_coupon_id)
+                folio = '%d%s%d' % (request.json['branch_id'], actual_date, user_take.clients_coupon_id)
                 client_coupon.folio = folio
                 db.session.commit()
             else:
@@ -456,7 +456,7 @@ def get_trending_coupons():
 
         list_coupon = db.engine.execute('SELECT *,\
                                         (SELECT COUNT(*) FROM coupons_likes  WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes, \
-                                        ((SELECT COUNT(*) FROM coupons_likes  WHERE coupons.coupon_id = coupons_likes.coupon_id)*.30 + (SELECT COUNT(*) FROM clients_coupon WHERE coupons.coupon_id = clients_coupon.coupon_id)*.70)as total_value,\
+                                        ((SELECT COUNT(*) FROM coupons_likes  WHERE coupons.coupon_id = coupons_likes.coupon_id)*.30 + (SELECT COUNT(*) FROM clients_coupon WHERE coupons.coupon_id = clients_coupon.coupon_id AND clients_coupon.used = true)*.70)as total_value,\
                                         (SELECT COUNT(*)  FROM coupons_likes  WHERE coupons_likes.user_id = %d AND coupons.coupon_id = coupons_likes.coupon_id) AS user_like \
                                         FROM coupons INNER JOIN branches_design ON \
                                         coupons.branch_id = branches_design.branch_id \
