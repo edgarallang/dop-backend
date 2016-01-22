@@ -98,7 +98,7 @@ def use_coupon():
 
         if branch_id == qr_code:
             actual_date = datetime.now()
-            client_coupon = ClientsCoupon.query.filter(and_(ClientsCoupon.coupon_id==coupon_id),(ClientsCoupon.user_id==payload['id']),(used==False)).first()
+            client_coupon = ClientsCoupon.query.filter(and_(ClientsCoupon.coupon_id==coupon_id),(ClientsCoupon.user_id==payload['id']),(ClientsCoupon.used==False)).first()
             #client_coupon = ClientsCoupon.query.filter_by(clients_coupon_id = client_coupon_exist.clients_coupon_id).first()
             if not client_coupon:
                 client_coupon = ClientsCoupon(user_id = payload['id'],
