@@ -64,7 +64,7 @@ def take_coupon():
         user_take = ClientsCoupon(user_id = payload['id'],
                                   coupon_id = request.json['coupon_id'],
                                   folio = '',
-                                  taken_date = request.json['taken_date'],
+                                  taken_date = datetime.now(),
                                   latitude= request.json['latitude'],
                                   longitude = request.json['longitude'],
                                   used = False)
@@ -97,11 +97,25 @@ def use_coupon():
         client_coupon_json = clients_coupon_inner_coupon_schema.dump(client_coupon)
         
         if client_coupon_json.data['branch_id'] == qr_code:
+            actual_date = datetime.now()
             client_coupon = ClientsCoupon.query.filter_by(clients_coupon_id = client_coupon.clients_coupon_id).first()
-            client_coupon.used = True
-            client_coupon.used_date = datetime.now()
-            db.session.commit()
+            if not client_coupon
+                client_coupon = ClientsCoupon(user_id = payload['id'],
+                                  coupon_id = request.json['coupon_id'],
+                                  folio = '',
+                                  taken_date = actual_date,
+                                  latitude= request.json['latitude'],
+                                  longitude = request.json['longitude'],
+                                  used = True,
+                                  used_date = actual_date)
+                db.session.add(client_coupon)
+                db.session.commit()
+            else:
+                client_coupon.used = True
+                client_coupon.used_date = actual_date
+                db.session.commit()
 
+                
             branch = Branch.query.filter_by(branch_id = client_coupon_json.data['branch_id']).first()
             branch_data = branch_schema.dump(branch)
 
