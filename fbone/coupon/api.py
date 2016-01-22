@@ -111,7 +111,7 @@ def use_coupon():
                                   used_date = actual_date)
                 db.session.add(client_coupon)
                 db.session.commit()
-                folio = '%d%s%d' % (request.json['branch_id'], actual_date, user_take.clients_coupon_id)
+                folio = '%d%s%d' % (request.json['branch_id'], actual_date, client_coupon.clients_coupon_id)
                 client_coupon.folio = folio
                 db.session.commit()
             else:
