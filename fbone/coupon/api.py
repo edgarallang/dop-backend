@@ -99,7 +99,7 @@ def use_coupon():
         if branch_id == qr_code:
             actual_date = datetime.now()
             client_coupon = ClientsCoupon.query.filter_by(clients_coupon_id = client_coupon.clients_coupon_id).first()
-            if not client_coupon
+            if not client_coupon:
                 client_coupon = ClientsCoupon(user_id = payload['id'],
                                   coupon_id = request.json['coupon_id'],
                                   folio = '',
