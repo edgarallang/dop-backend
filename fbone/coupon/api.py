@@ -456,7 +456,7 @@ def get_trending_coupons():
 
         list_coupon = db.engine.execute('SELECT *,\
                                         (SELECT COUNT(*) FROM coupons_likes  WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes, \
-                                        ((SELECT COUNT(*) FROM coupons_likes  WHERE coupons.coupon_id = coupons_likes.coupon_id)*.30 + (SELECT COUNT(*) FROM clients_coupon WHERE coupons.coupon_id = clients_coupon.coupon_id AND clients_coupon.used = true)*.70)as total_value,\
+                                        ((SELECT COUNT(*) FROM coupons_likes  WHERE coupons.coupon_id = coupons_likes.coupon_id)*.30 + (SELECT COUNT(*) FROM clients_coupon WHERE coupons.coupon_id = clients_coupon.coupon_id AND clients_coupon.used = true)*1)as total_value,\
                                         (SELECT COUNT(*)  FROM coupons_likes  WHERE coupons_likes.user_id = %d AND coupons.coupon_id = coupons_likes.coupon_id) AS user_like \
                                         FROM coupons INNER JOIN branches_design ON \
                                         coupons.branch_id = branches_design.branch_id \
