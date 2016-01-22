@@ -117,7 +117,7 @@ def use_coupon():
                 db.session.commit()
 
                 
-            branch = Branch.query.filter_by(branch_id = client_coupon_json.data['branch_id']).first()
+            branch = Branch.query.filter_by(branch_id = branch_id).first()
             branch_data = branch_schema.dump(branch)
 
             return jsonify({'data': branch_data.data})
