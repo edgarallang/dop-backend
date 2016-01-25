@@ -61,10 +61,12 @@ def take_coupon():
     if request.headers.get('Authorization'):
         token_index = True
         payload = parse_token(request, token_index)
+        actual_date = datetime.now()
+
         user_take = ClientsCoupon(user_id = payload['id'],
                                   coupon_id = request.json['coupon_id'],
                                   folio = '',
-                                  taken_date = datetime.now(),
+                                  taken_date = actual_date,
                                   latitude= request.json['latitude'],
                                   longitude = request.json['longitude'],
                                   used = False)
