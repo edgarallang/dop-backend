@@ -61,10 +61,12 @@ def take_coupon():
     if request.headers.get('Authorization'):
         token_index = True
         payload = parse_token(request, token_index)
+        actual_date = datetime.now()
+
         user_take = ClientsCoupon(user_id = payload['id'],
                                   coupon_id = request.json['coupon_id'],
                                   folio = '',
-                                  taken_date = request.json['taken_date'],
+                                  taken_date = actual_date,
                                   latitude= request.json['latitude'],
                                   longitude = request.json['longitude'],
                                   used = False)
@@ -72,7 +74,7 @@ def take_coupon():
 
         db.session.add(user_take)
         db.session.commit()
-        folio = '%d%s%d' % (request.json['branch_id'], request.json['folio_date'], user_take.clients_coupon_id)
+        folio = '%d%s%d' % (request.json['branch_id'], "{:%d%m%Y}".format(actual_date), user_take.clients_coupon_id)
         user_take.folio = folio
         db.session.commit()
 
@@ -86,28 +88,43 @@ def use_coupon():
         payload = parse_token(request, token_index) #5
         coupon_id = request.json['coupon_id'] #5
         qr_code = request.json['qr_code']
-        
+        branch_id = request.json['branch_id']
         #try:
         #    qr_code = int(request.json['qr_code']) #4
         #except ValueError:
         #    return jsonify({'message': 'Código QR incorrecto'})
 
-        client_coupon = ClientsCoupon.query.join(Coupon, ClientsCoupon.coupon_id==Coupon.coupon_id).add_columns(ClientsCoupon.clients_coupon_id,ClientsCoupon.used, Coupon.branch_id).filter(and_(ClientsCoupon.coupon_id==coupon_id),(ClientsCoupon.user_id==payload['id'])).first()
-
-        client_coupon_json = clients_coupon_inner_coupon_schema.dump(client_coupon)
+        #client_coupon_exist = ClientsCoupon.query.join(Coupon, ClientsCoupon.coupon_id==Coupon.coupon_id).add_columns(ClientsCoupon.clients_coupon_id,ClientsCoupon.used, Coupon.branch_id).filter(and_(ClientsCoupon.coupon_id==coupon_id),(ClientsCoupon.user_id==payload['id'])).first()
+        #client_coupon_json = clients_coupon_inner_coupon_schema.dump(client_coupon)
         
-        if client_coupon_json.data['branch_id'] == qr_code:
-            client_coupon = ClientsCoupon.query.filter_by(clients_coupon_id = client_coupon.clients_coupon_id).first()
+
+        actual_date = datetime.now()
+        client_coupon = ClientsCoupon.query.filter(and_(ClientsCoupon.coupon_id==coupon_id),(ClientsCoupon.user_id==payload['id']),(ClientsCoupon.used==False)).first()
+        #client_coupon = ClientsCoupon.query.filter_by(clients_coupon_id = client_coupon_exist.clients_coupon_id).first()
+        if not client_coupon:
+            client_coupon = ClientsCoupon(user_id = payload['id'],
+                              coupon_id = request.json['coupon_id'],
+                              folio = '',
+                              taken_date = actual_date,
+                              latitude= request.json['latitude'],
+                              longitude = request.json['longitude'],
+                              used = True,
+                              used_date = actual_date)
+            db.session.add(client_coupon)
+            db.session.commit()
+            folio = '%d%s%d' % (request.json['branch_id'], "{:%d%m%Y}".format(actual_date), client_coupon.clients_coupon_id)
+            client_coupon.folio = folio
+            db.session.commit()
+        else:
             client_coupon.used = True
-            client_coupon.used_date = datetime.now()
+            client_coupon.used_date = actual_date
             db.session.commit()
 
-            branch = Branch.query.filter_by(branch_id = client_coupon_json.data['branch_id']).first()
-            branch_data = branch_schema.dump(branch)
+            
+        branch = Branch.query.filter_by(branch_id = branch_id).first()
+        branch_data = branch_schema.dump(branch)
 
-            return jsonify({'data': branch_data.data})
-        else:
-            return jsonify({'message': 'Código QR incorrecto'})
+        return jsonify({'data': branch_data.data})
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
 # GET methods
@@ -438,7 +455,7 @@ def get_trending_coupons():
 
         list_coupon = db.engine.execute('SELECT *,\
                                         (SELECT COUNT(*) FROM coupons_likes  WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes, \
-                                        ((SELECT COUNT(*) FROM coupons_likes  WHERE coupons.coupon_id = coupons_likes.coupon_id)*.30 + (SELECT COUNT(*) FROM clients_coupon WHERE coupons.coupon_id = clients_coupon.coupon_id)*.70)as total_value,\
+                                        ((SELECT COUNT(*) FROM coupons_likes  WHERE coupons.coupon_id = coupons_likes.coupon_id)*.30 + (SELECT COUNT(*) FROM clients_coupon WHERE coupons.coupon_id = clients_coupon.coupon_id AND clients_coupon.used = true)*1)as total_value,\
                                         (SELECT COUNT(*)  FROM coupons_likes  WHERE coupons_likes.user_id = %d AND coupons.coupon_id = coupons_likes.coupon_id) AS user_like \
                                         FROM coupons INNER JOIN branches_design ON \
                                         coupons.branch_id = branches_design.branch_id \
