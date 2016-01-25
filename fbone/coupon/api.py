@@ -72,7 +72,7 @@ def take_coupon():
 
         db.session.add(user_take)
         db.session.commit()
-                folio = '%d%s%d' % (request.json['branch_id'], "{:%d%m%Y}".format(actual_date), user_take.clients_coupon_id)
+        folio = '%d%s%d' % (request.json['branch_id'], "{:%d%m%Y}".format(actual_date), user_take.clients_coupon_id)
         user_take.folio = folio
         db.session.commit()
 
