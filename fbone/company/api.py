@@ -307,16 +307,17 @@ def dashboard_branches():
 
     return jsonify({'data': selected_list_branch.data+selected_list_extra.data})
 
-@company.route('/branch/user/ranking/get', methods = ['GET'])
-def branch_ranking():
+@company.route('/branch/<int:branch_id>/ranking/get', methods = ['GET'])
+def branch_ranking(branch_id):
     if request.headers.get('Authorization'):
         token_index = True
 
         query = 'SELECT DISTINCT ON (users.user_id) *, \
                     (SELECT COUNT(*) FROM clients_coupon \
-                        WHERE users.user_id = clients_coupon.user_id AND used = true) AS total_used \
+                        INNER JOIN coupons ON clients_coupon.coupon_id = coupons.coupon_id \
+                        WHERE users.user_id = clients_coupon.user_id AND used = true AND coupons.branch_id = %d ) AS total_used \
                     FROM users INNER JOIN clients_coupon ON users.user_id = clients_coupon.user_id \
-                               INNER JOIN users_image ON users.user_id = users_image.user_id'
+                               INNER JOIN users_image ON users.user_id = users_image.user_id' % (branch_id)
 
         ranking_users = db.engine.execute(query)
         ranking_users_list = ranking_users_schema.dump(ranking_users.data)
