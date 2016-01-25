@@ -211,12 +211,21 @@ class BranchesLocation(Schema):
 
 class BranchesFollowedSchema(Schema):
     class Meta:
-        fields = ('branch_id',
-                  'name',
-                  'company_id',
-                  'banner',
-                  'logo',
-                  'branch_follower_id')
+        fields = ('clients_coupon_id',
+                  'names',
+                  'surnames',
+                  'birth_date',
+                  'facebook_key',
+                  'google_key',
+                  'twitter_key',
+                  'privacy_status'
+                  'user_id',
+                  'main_image',
+                  'total_used')
+
+class RankingUsersSchema(Schema):
+    class Meta:
+
 
 company_schema = CompanySchema()
 companies_schema = CompanySchema(many=True)
@@ -226,3 +235,4 @@ branch_profile_schema = BranchesProfile(many=True)
 branch_ad_schema = BranchesAd(many=True)
 branches_location_schema = BranchesLocation(many=True)
 branches_followed_schema = BranchesFollowedSchema(many=True)
+ranking_users_schema = RankingUsersSchema(many = True)
