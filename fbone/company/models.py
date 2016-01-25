@@ -211,6 +211,15 @@ class BranchesLocation(Schema):
 
 class BranchesFollowedSchema(Schema):
     class Meta:
+        fields = ('branch_id',
+                  'name',
+                  'company_id',
+                  'banner',
+                  'logo',
+                  'branch_follower_id')
+
+class RankingUsersSchema(Schema):
+    class Meta:
         fields = ('clients_coupon_id',
                   'names',
                   'surnames',
@@ -222,10 +231,6 @@ class BranchesFollowedSchema(Schema):
                   'user_id',
                   'main_image',
                   'total_used')
-
-class RankingUsersSchema(Schema):
-    class Meta:
-
 
 company_schema = CompanySchema()
 companies_schema = CompanySchema(many=True)
