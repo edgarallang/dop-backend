@@ -227,7 +227,7 @@ class RankingUsersSchema(Schema):
                   'facebook_key',
                   'google_key',
                   'twitter_key',
-                  'privacy_status'
+                  'privacy_status',
                   'user_id',
                   'main_image',
                   'total_used')
