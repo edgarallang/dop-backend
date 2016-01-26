@@ -198,8 +198,7 @@ class BranchesAd(Schema):
 class BranchesLocation(Schema):
     # branch = fields.Nested(BranchSchema, validate=must_not_be_blank)
     class Meta:
-        fields = ('branch_location_id',
-                  'branch_id',
+        fields = ('branch_id',
                   'state',
                   'longitude',
                   'latitude',
