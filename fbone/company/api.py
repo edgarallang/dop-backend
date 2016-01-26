@@ -225,7 +225,7 @@ def search_branch():
         #list_coupon = db.engine.execute(query)
         if not latitude or not longitude or latitude == '0':
             branches = db.engine.execute("SELECT * FROM branches WHERE name ILIKE '%s' " % ('%%' + text + '%%' ))
-            selected_list_branch = branch_profile_schema.dump(branches)
+            selected_list_branch = branch_profile_search_schema.dump(branches)
             return jsonify({'data': selected_list_branch.data})
         else:
             query = "SELECT branch_location_id, branch_id, state, city, latitude, longitude, distance, address, \
@@ -253,7 +253,7 @@ def search_branch():
             #branches = db.engine.execute("SELECT * FROM branches WHERE name ILIKE '%s' " % ('%%' + text + '%%' ))
             branches = db.engine.execute(query)
 
-            selected_list_branch = branch_profile_schema.dump(branches)
+            selected_list_branch = branch_profile_search_schema.dump(branches)
             return jsonify({'data': selected_list_branch.data})
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
