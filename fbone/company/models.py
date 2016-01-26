@@ -221,7 +221,7 @@ class BranchesLocation(Schema):
                   'city',
                   'address',
                   'distance',
-                  'name',g
+                  'name',
                   'category_id')
 
 class BranchesFollowedSchema(Schema):
