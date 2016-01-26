@@ -220,7 +220,7 @@ def get_all_coupon_for_user_offset():
                                     INNER JOIN branches_location on coupons.branch_id = branches_location.branch_id \
                                     JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.branch_id \
                                     JOIN subcategory ON subcategory.subcategory_id = branches_subcategory.subcategory_id \
-                                    WHERE deleted = false AND coupons.coupon_id < %s ORDER BY start_date DESC LIMIT 6 OFFSET %s' % (payload['id'],coupon_id,offset))
+                                    WHERE deleted = false AND coupons.coupon_id < %s ORDER BY coupons.coupon_id DESC LIMIT 6 OFFSET %s' % (payload['id'],coupon_id,offset))
 
     
     selected_list_coupon = coupons_logo_schema.dump(list_coupon)
