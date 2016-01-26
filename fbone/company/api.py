@@ -320,7 +320,7 @@ def branch_ranking(branch_id):
                                INNER JOIN users_image ON users.user_id = users_image.user_id' % (branch_id)
 
         ranking_users = db.engine.execute(query)
-        ranking_users_list = ranking_users_schema.dump(ranking_users.data)
+        ranking_users_list = ranking_users_schema.dump(ranking_users).data
 
         return jsonify({'data': ranking_users_list})
 
