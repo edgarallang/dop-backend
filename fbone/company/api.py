@@ -312,12 +312,13 @@ def branch_ranking(branch_id):
     if request.headers.get('Authorization'):
         token_index = True
 
-        query = 'SELECT DISTINCT ON (users.user_id) *, \
+        query = 'SELECT DISTINCT users.*, client.clients_coupon_id, users_image.main_image, \
                     (SELECT COUNT(*) FROM clients_coupon \
-                        INNER JOIN coupons ON clients_coupon.coupon_id = coupons.coupon_id \
-                        WHERE users.user_id = clients_coupon.user_id AND used = true AND coupons.branch_id = %d ) AS total_used \
-                    FROM users INNER JOIN clients_coupon ON users.user_id = clients_coupon.user_id \
-                               INNER JOIN users_image ON users.user_id = users_image.user_id' % (branch_id)
+                       INNER JOIN coupons ON clients_coupon.coupon_id = coupons.coupon_id \
+                       WHERE users.user_id = clients_coupon.user_id AND used = TRUE AND coupons.branch_id = %d) AS total_used \
+                    FROM users JOIN (SELECT DISTINCT ON (user_id) * FROM clients_coupon ORDER BY user_id) AS client ON users.user_id = client.user_id \
+                               JOIN users_image ON users.user_id = users_image.user_id \
+                ORDER BY total_used DESC LIMIT 6' % (branch_id)
 
         ranking_users = db.engine.execute(query)
         ranking_users_list = ranking_users_schema.dump(ranking_users).data
