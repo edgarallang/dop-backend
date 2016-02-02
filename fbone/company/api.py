@@ -77,7 +77,7 @@ def select_branch(branchId):
     
     return jsonify({'data': branch.data})
 
-@company.route('/branch/<int:branchId>/profile/get', methods=['GET'])    
+@company.route('/branch/<int:branch_id>/profile/get', methods=['GET'])    
 def select_branch_profile(branch_id):
     if request.headers.get('Authorization'):
         token_index = True
