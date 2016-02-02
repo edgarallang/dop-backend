@@ -184,7 +184,8 @@ class BranchesProfile(Schema):
                   'name',
                   'company_id',
                   'banner',
-                  'logo')
+                  'logo',
+                  'following')
 
 class BranchesProfileSearch(Schema):
     class Meta:
