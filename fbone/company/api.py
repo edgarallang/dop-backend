@@ -78,20 +78,26 @@ def select_branch(branchId):
     return jsonify({'data': branch.data})
 
 @company.route('/branch/<int:branchId>/profile/get', methods=['GET'])    
-def select_branch_profile(branchId):
-    query = 'SELECT branches_location.branch_location_id, branches.branch_id, state, category_id, longitude, latitude, logo,  \
-                    city, address, branches.name, branches.company_id, banner  \
-                FROM branches JOIN branches_location \
-                    ON branches.branch_id = branches_location.branch_id \
-                JOIN branches_design ON branches_design.branch_id = branches.branch_id \
-                JOIN branches_subcategory ON branches_subcategory.branch_id = branches.branch_id \
-                JOIN subcategory ON subcategory.subcategory_id = branches_subcategory.subcategory_id \
-             WHERE branches.branch_id = %d' % branchId
+def select_branch_profile(branch_id):
+    if request.headers.get('Authorization'):
+        token_index = True
+        payload = parse_token(request, token_index)
+        query = 'SELECT branches_location.branch_location_id, branches.branch_id, state, category_id, longitude, latitude, logo,  \
+                        city, address, branches.name, branches.company_id, banner,  \
+                        (SELECT EXISTS (SELECT * FROM branches_follower \
+                                WHERE branch_id = %d AND user_id = %d)::bool) AS following \
+                    FROM branches JOIN branches_location \
+                        ON branches.branch_id = branches_location.branch_id \
+                    JOIN branches_design ON branches_design.branch_id = branches.branch_id \
+                    JOIN branches_subcategory ON branches_subcategory.branch_id = branches.branch_id \
+                    JOIN subcategory ON subcategory.subcategory_id = branches_subcategory.subcategory_id \
+                 WHERE branches.branch_id = %d' % (branch_id, payload['id'], branch_id)
 
-    selectedBranch = db.engine.execute(query)
-    branch = branch_profile_schema.dump(selectedBranch)
-    
-    return jsonify({'data': branch.data})
+        selectedBranch = db.engine.execute(query)
+        branch = branch_profile_schema.dump(selectedBranch)
+        
+        return jsonify({'data': branch.data})
+    return jsonify({'message': 'Oops! algo salió mal'})
 
 @company.route('/me', methods = ['POST'])    
 def select_branch_user():
