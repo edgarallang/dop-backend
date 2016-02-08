@@ -125,7 +125,7 @@ def nearest_branches():
     if filterArray:
         filterQuery = prefixFilterQuery + `filterArray` + ')'
 
-    query = 'SELECT branch_location_id, branch_id, state, city, latitude, longitude, distance, address, name, category_id \
+    query = 'SELECT DISTINC ON (branch_id) branch_location_id, branch_id, state, city, latitude, longitude, distance, address, name, category_id \
                 FROM (SELECT z.branch_location_id, z.branch_id, z.state, z.city, z.address, \
                     z.latitude, z.longitude, branches.name, subcategory.category_id, \
                     p.radius, \
@@ -152,7 +152,7 @@ def nearest_branches():
                 ' + filterQuery + ' \
                 ) AS d \
                 WHERE distance <= radius \
-                ORDER BY distance'
+                ORDER BY branch_id, distance'
 
     nearestBranches = db.engine.execute(query)
     nearest = branches_location_schema.dump(nearestBranches)
