@@ -289,7 +289,7 @@ def delete_friend():
         action_user = User.query.get(payload['id']).user_id
         user_to_delete = User.query.get(request.json['friends_id'])
 
-        friendsRelationship = Friends.query.filter_by((users_one_id == action_user) & (user_two_id == request.json['friends_id'])).first()
+        friendsRelationship = Friends.query.filter_by((user_one_id == action_user) & (user_two_id == request.json['friends_id'])).first()
         friendsRelationship.operation_id = 4
         
         db.session.commit()
