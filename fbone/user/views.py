@@ -286,14 +286,15 @@ def block_friend():
 def delete_friend():
     if request.headers.get('Authorization'):
         payload = parse_token(request, True)
+        action_user = User.query.get(payload['id']).user_id
+        user_to_delete = User.query.get(request.json['friends_id'])
 
-        friendsRelationship = Friends.query.filter_by(friends_id = request.json['friends_id']).first()
-
-        db.session.delete(friendsRelationship)
+        friendsRelationship = Friends.query.filter_by((users_one_id == action_user) & (user_two_id == request.json['friends_id'])).first()
+        friendsRelationship.operation_id = 4
         
         db.session.commit()
 
-        return jsonify({'data': 'Usuario eliminado'})
+        return jsonify({'data': 'Has dejado de seguir a este usuario'})
 
     return jsonify({'message': 'Oops! algo salió mal :('})
 
