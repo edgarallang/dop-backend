@@ -198,7 +198,7 @@ def add_friend():
         user_two = User.query.get(user_to_add)
         friendshipExist = Friends.query.filter(((Friends.user_one_id == user_id) & (Friends.user_two_id == user_to_add))).all()
         if not friendshipExist:
-            user_two = User.query.get(user_to_add)
+            user_two = User.query.get(user_to_add).first()
             print user_two
             if user_two.privacy_status == 0:
                 operation_id = 1
