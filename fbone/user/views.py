@@ -174,7 +174,7 @@ def get_friends():
         
         query = 'SELECT DISTINCT ON (users.user_id) *, \
                     (SELECT EXISTS (SELECT * FROM friends \
-                            WHERE friends.user_one_id = %d and friends.user_two_id = users.user_id)::bool) AS friend \
+                            WHERE friends.user_one_id = %d and friends.user_two_id = users.user_id and friends.operation_id = 1)::bool) AS friend \
                  FROM friends \
                  INNER JOIN users ON (friends.user_one_id = user_id  AND friends.user_one_id != %d) \
                  OR (friends.user_two_id=user_id  AND friends.user_two_id!=%d) \
