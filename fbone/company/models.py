@@ -181,6 +181,22 @@ class BranchesProfile(Schema):
                   'latitude',
                   'city',
                   'address',
+                  'name',
+                  'company_id',
+                  'banner',
+                  'logo',
+                  'following')
+
+class BranchesProfileSearch(Schema):
+    class Meta:
+        fields = ('branch_location_id',
+                  'branch_id',
+                  'category_id',
+                  'state',
+                  'longitude',
+                  'latitude',
+                  'city',
+                  'address',
                   'distance',
                   'name',
                   'company_id',
@@ -227,7 +243,7 @@ class RankingUsersSchema(Schema):
                   'facebook_key',
                   'google_key',
                   'twitter_key',
-                  'privacy_status'
+                  'privacy_status',
                   'user_id',
                   'main_image',
                   'total_used')
@@ -237,6 +253,7 @@ companies_schema = CompanySchema(many=True)
 branch_schema = BranchSchema()
 branch_user_schema = BranchUserSchema()
 branch_profile_schema = BranchesProfile(many=True)
+branch_profile_search_schema = BranchesProfileSearch(many=True)
 branch_ad_schema = BranchesAd(many=True)
 branches_location_schema = BranchesLocation(many=True)
 branches_followed_schema = BranchesFollowedSchema(many=True)

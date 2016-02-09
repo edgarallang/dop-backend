@@ -77,21 +77,27 @@ def select_branch(branchId):
     
     return jsonify({'data': branch.data})
 
-@company.route('/branch/<int:branchId>/profile/get', methods=['GET'])    
-def select_branch_profile(branchId):
-    query = 'SELECT branches.branch_id, state, category_id, longitude, latitude, logo,  \
-                    city, address, branches.name, branches.company_id, banner  \
-                FROM branches JOIN branches_location \
-                    ON branches.branch_id = branches_location.branch_id \
-                JOIN branches_design ON branches_design.branch_id = branches.branch_id \
-                JOIN branches_subcategory ON branches_subcategory.branch_id = branches.branch_id \
-                JOIN subcategory ON subcategory.subcategory_id = branches_subcategory.subcategory_id \
-             WHERE branches.branch_id = %d' % branchId
+@company.route('/branch/<int:branch_id>/profile/get', methods=['GET'])    
+def select_branch_profile(branch_id):
+    if request.headers.get('Authorization'):
+        token_index = True
+        payload = parse_token(request, token_index)
+        query = 'SELECT branches_location.branch_location_id, branches.branch_id, state, category_id, longitude, latitude, logo,  \
+                        city, address, branches.name, branches.company_id, banner,  \
+                        (SELECT EXISTS (SELECT * FROM branches_follower \
+                                WHERE branch_id = %d AND user_id = %d)::bool) AS following \
+                    FROM branches JOIN branches_location \
+                        ON branches.branch_id = branches_location.branch_id \
+                    JOIN branches_design ON branches_design.branch_id = branches.branch_id \
+                    JOIN branches_subcategory ON branches_subcategory.branch_id = branches.branch_id \
+                    JOIN subcategory ON subcategory.subcategory_id = branches_subcategory.subcategory_id \
+                 WHERE branches.branch_id = %d' % (branch_id, payload['id'], branch_id)
 
-    selectedBranch = db.engine.execute(query)
-    branch = branch_profile_schema.dump(selectedBranch)
-    
-    return jsonify({'data': branch.data})
+        selectedBranch = db.engine.execute(query)
+        branch = branch_profile_schema.dump(selectedBranch)
+        
+        return jsonify({'data': branch.data})
+    return jsonify({'message': 'Oops! algo salió mal'})
 
 @company.route('/me', methods = ['POST'])    
 def select_branch_user():
@@ -119,7 +125,7 @@ def nearest_branches():
     if filterArray:
         filterQuery = prefixFilterQuery + `filterArray` + ')'
 
-    query = 'SELECT branch_location_id, branch_id, state, city, latitude, longitude, distance, address, name, category_id \
+    query = 'SELECT DISTINCT ON (branch_id) branch_location_id, branch_id, state, city, latitude, longitude, distance, address, name, category_id \
                 FROM (SELECT z.branch_location_id, z.branch_id, z.state, z.city, z.address, \
                     z.latitude, z.longitude, branches.name, subcategory.category_id, \
                     p.radius, \
@@ -146,7 +152,7 @@ def nearest_branches():
                 ' + filterQuery + ' \
                 ) AS d \
                 WHERE distance <= radius \
-                ORDER BY distance'
+                ORDER BY branch_id, distance'
 
     nearestBranches = db.engine.execute(query)
     nearest = branches_location_schema.dump(nearestBranches)
@@ -225,7 +231,7 @@ def search_branch():
         #list_coupon = db.engine.execute(query)
         if not latitude or not longitude or latitude == '0':
             branches = db.engine.execute("SELECT * FROM branches WHERE name ILIKE '%s' " % ('%%' + text + '%%' ))
-            selected_list_branch = branch_profile_schema.dump(branches)
+            selected_list_branch = branch_profile_search_schema.dump(branches)
             return jsonify({'data': selected_list_branch.data})
         else:
             query = "SELECT branch_location_id, branch_id, state, city, latitude, longitude, distance, address, \
@@ -253,7 +259,7 @@ def search_branch():
             #branches = db.engine.execute("SELECT * FROM branches WHERE name ILIKE '%s' " % ('%%' + text + '%%' ))
             branches = db.engine.execute(query)
 
-            selected_list_branch = branch_profile_schema.dump(branches)
+            selected_list_branch = branch_profile_search_schema.dump(branches)
             return jsonify({'data': selected_list_branch.data})
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
@@ -312,15 +318,16 @@ def branch_ranking(branch_id):
     if request.headers.get('Authorization'):
         token_index = True
 
-        query = 'SELECT DISTINCT ON (users.user_id) *, \
+        query = 'SELECT DISTINCT users.*, client.clients_coupon_id, users_image.main_image, \
                     (SELECT COUNT(*) FROM clients_coupon \
-                        INNER JOIN coupons ON clients_coupon.coupon_id = coupons.coupon_id \
-                        WHERE users.user_id = clients_coupon.user_id AND used = true AND coupons.branch_id = %d ) AS total_used \
-                    FROM users INNER JOIN clients_coupon ON users.user_id = clients_coupon.user_id \
-                               INNER JOIN users_image ON users.user_id = users_image.user_id' % (branch_id)
+                       INNER JOIN coupons ON clients_coupon.coupon_id = coupons.coupon_id \
+                       WHERE users.user_id = clients_coupon.user_id AND used = TRUE AND coupons.branch_id = %d) AS total_used \
+                    FROM users JOIN (SELECT DISTINCT ON (user_id) * FROM clients_coupon ORDER BY user_id) AS client ON users.user_id = client.user_id \
+                               JOIN users_image ON users.user_id = users_image.user_id \
+                ORDER BY total_used DESC LIMIT 6' % (branch_id)
 
         ranking_users = db.engine.execute(query)
-        ranking_users_list = ranking_users_schema.dump(ranking_users.data)
+        ranking_users_list = ranking_users_schema.dump(ranking_users).data
 
         return jsonify({'data': ranking_users_list})
 

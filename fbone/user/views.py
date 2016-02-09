@@ -172,7 +172,7 @@ def get_friends():
         
         query = 'SELECT DISTINCT ON (users.user_id) *, \
                     (SELECT EXISTS (SELECT * FROM friends \
-                            WHERE friends.user_one_id = %d and friends.user_two_id = users.user_id)::bool) AS friend \
+                            WHERE friends.user_one_id = %d and friends.user_two_id = users.user_id and friends.operation_id = 1)::bool) AS friend \
                  FROM friends \
                  INNER JOIN users ON (friends.user_one_id = user_id  AND friends.user_one_id != %d) \
                  OR (friends.user_two_id=user_id  AND friends.user_two_id!=%d) \
@@ -193,12 +193,11 @@ def add_friend():
 
         user_id = User.query.get(payload['id']).user_id
         user_to_add = request.json['user_two_id']
+        print user_to_add
         user_two = User.query.get(user_to_add)
-        friendshipExist = Friends.query.filter(((Friends.user_one_id == user_id) & (Friends.user_two_id == user_to_add)) | 
-                                               ((Friends.user_one_id == user_to_add) & (Friends.user_two_id == user_id))).all()
+        friendshipExist = Friends.query.filter(((Friends.user_one_id == user_id) & (Friends.user_two_id == user_to_add))).all()
         if not friendshipExist:
             user_two = User.query.get(user_to_add)
-
             if user_two.privacy_status == 0:
                 operation_id = 1
             elif user_two.privacy_status == 1:
@@ -285,14 +284,15 @@ def block_friend():
 def delete_friend():
     if request.headers.get('Authorization'):
         payload = parse_token(request, True)
+        action_user = User.query.get(payload['id']).user_id
+        user_to_delete = User.query.get(request.json['friends_id'])
 
-        friendsRelationship = Friends.query.filter_by(friends_id=request.json['friends_id']).first()
-
-        db.session.delete(friendsRelationship)
+        friendsRelationship = Friends.query.filter((Friends.user_one_id == action_user) & (Friends.user_two_id == request.json['friends_id'])).first()
+        friendsRelationship.operation_id = 4
         
         db.session.commit()
 
-        return jsonify({'data': 'Usuario eliminado'})
+        return jsonify({'data': 'Has dejado de seguir a este usuario'})
 
     return jsonify({'message': 'Oops! algo salió mal :('})
 
