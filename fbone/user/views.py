@@ -63,14 +63,12 @@ def profile(userId):
                     FROM users INNER JOIN users_image ON users.user_id = users_image.user_id\
                     WHERE users.user_id = %d" % (userId)
 
-    total_friends = get_friends_by_id(userId)
+    #total_friends = get_friends_by_id(userId)
     
-    
-
     result = db.engine.execute(query)
     user_with_image = user_joined_schema.dump(result).data
 
-    return jsonify({'data': user_with_image,'friends':total_friends})
+    return jsonify({'data': user_with_image})
 
 @user.route('/<int:user_id>/avatar/<path:filename>')
 @login_required
