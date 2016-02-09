@@ -59,18 +59,16 @@ def get_friends_by_id(userId):
 @user.route('/<int:userId>/profile', methods=['GET'])
 def profile(userId):
     query = "SELECT users.user_id, users.names, users.surnames, users.birth_date, users.facebook_key, users.google_key,\
-                    users.twitter_key, users_image.main_image, users_image.user_image_id\
+                    users.twitter_key,users.privacy_status, users_image.main_image, users_image.user_image_id\
                     FROM users INNER JOIN users_image ON users.user_id = users_image.user_id\
                     WHERE users.user_id = %d" % (userId)
 
-    total_friends = get_friends_by_id(userId)
+    #total_friends = get_friends_by_id(userId)
     
-    
-
     result = db.engine.execute(query)
     user_with_image = user_joined_schema.dump(result).data
 
-    return jsonify({'data': user_with_image,'friends':total_friends})
+    return jsonify({'data': user_with_image})
 
 @user.route('/<int:user_id>/avatar/<path:filename>')
 @login_required
