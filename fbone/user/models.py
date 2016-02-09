@@ -156,7 +156,8 @@ class UserJoinImage(Schema):
                   'google_key',
                   'twitter_key',
                   'main_image',
-                  'user_image_id')
+                  'user_image_id',
+                  'privacy_status')
 
 class FriendsSchema(Schema):
     class Meta:
