@@ -183,7 +183,7 @@ def get_all_coupon_for_user():
     payload = parse_token(request, token_index)
 
     list_coupon = db.engine.execute('SELECT coupon_id, branches.branch_id, company_id, branches.name, coupon_folio, description, start_date, \
-                                            end_date, coupons.limit, min_spent, coupon_category_id, logo, latitude, longitude, banner, category_id, \
+                                            end_date, coupons.limit, min_spent, coupon_category_id, logo, latitude, longitude, banner, category_id, available, \
                                     (SELECT COUNT(*)  FROM coupons_likes \
                                         WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes, \
                                     (SELECT COUNT(*)  FROM coupons_likes \
@@ -209,7 +209,7 @@ def get_all_coupon_for_user_offset():
     payload = parse_token(request, token_index)
 
     list_coupon = db.engine.execute('SELECT coupon_id, branches.branch_id, company_id, branches.name, coupon_folio, description, start_date, \
-                                            end_date, coupons.limit, min_spent, coupon_category_id, logo, latitude, longitude, banner, category_id, \
+                                            end_date, coupons.limit, min_spent, coupon_category_id, logo, latitude, longitude, banner, category_id, available, \
                                     (SELECT COUNT(*)  FROM coupons_likes \
                                         WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes, \
                                     (SELECT COUNT(*)  FROM coupons_likes \
@@ -235,7 +235,7 @@ def get_all_taken_coupon_for_user():
 
     list_coupon = db.engine.execute('SELECT coupons.coupon_id, branches.branch_id, company_id, branches.name, coupon_folio, description, start_date, \
                                             end_date, coupons.limit, min_spent, coupon_category_id, logo, branches_location.latitude, branches_location.longitude, \
-                                            banner, category_id, \
+                                            banner, category_id, available, \
                                     (SELECT COUNT(*)  FROM coupons_likes \
                                         WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes, \
                                     (SELECT COUNT(*)  FROM coupons_likes \
@@ -265,7 +265,7 @@ def get_all_taken_coupon_for_user_offset():
 
     list_coupon = db.engine.execute('SELECT coupons.coupon_id, branches.branch_id, company_id, branches.name, coupon_folio, description, start_date, \
                                             end_date, coupons.limit, min_spent, coupon_category_id, logo, branches_location.latitude, branches_location.longitude, \
-                                            banner, category_id, \
+                                            banner, category_id, available, \
                                     (SELECT COUNT(*)  FROM coupons_likes \
                                         WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes, \
                                     (SELECT COUNT(*)  FROM coupons_likes \
@@ -294,7 +294,7 @@ def get_all_used_coupon_for_user():
 
     list_coupon = db.engine.execute('SELECT coupons.coupon_id, branches.branch_id, company_id, branches.name, coupon_folio, description, start_date, \
                                             end_date, coupons.limit, min_spent, coupon_category_id, logo, branches_location.latitude, branches_location.longitude, \
-                                            banner, category_id, \
+                                            banner, category_id, available, \
                                     (SELECT COUNT(*)  FROM coupons_likes \
                                         WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes, \
                                     (SELECT COUNT(*)  FROM coupons_likes \
@@ -322,7 +322,7 @@ def get_all_used_coupon_for_user_offset():
 
     list_coupon = db.engine.execute('SELECT coupons.coupon_id, branches.branch_id, company_id, branches.name, coupon_folio, description, start_date, \
                                             end_date, coupons.limit, min_spent, coupon_category_id, logo, branches_location.latitude, branches_location.longitude, \
-                                            banner, category_id, \
+                                            banner, category_id, available, \
                                     (SELECT COUNT(*)  FROM coupons_likes \
                                         WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes, \
                                     (SELECT COUNT(*)  FROM coupons_likes \
@@ -349,7 +349,7 @@ def get_all_used_coupon_for_myself():
 
     list_coupon = db.engine.execute('SELECT coupons.coupon_id, branches.branch_id, company_id, branches.name, coupon_folio, description, start_date, \
                                             end_date, coupons.limit, min_spent, coupon_category_id, logo, branches_location.latitude, branches_location.longitude, \
-                                            banner, category_id, \
+                                            banner, category_id, available, \
                                     (SELECT COUNT(*)  FROM coupons_likes \
                                         WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes, \
                                     (SELECT COUNT(*)  FROM coupons_likes \
@@ -376,7 +376,7 @@ def get_all_used_coupon_for_myself_offset():
 
     list_coupon = db.engine.execute('SELECT coupons.coupon_id, branches.branch_id, company_id, branches.name, coupon_folio, description, start_date, \
                                             end_date, coupons.limit, min_spent, coupon_category_id, logo, branches_location.latitude, branches_location.longitude, \
-                                            banner, category_id, \
+                                            banner, category_id, available, \
                                     (SELECT COUNT(*)  FROM coupons_likes \
                                         WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes, \
                                     (SELECT COUNT(*)  FROM coupons_likes \
@@ -401,7 +401,7 @@ def get_all_coupon_for_user_by_branch():
     payload = parse_token(request, token_index)
 
     list_coupon = db.engine.execute('SELECT coupon_id, branches.branch_id, company_id, branches.name, coupon_folio, description, start_date, \
-                                            end_date, coupons.limit, min_spent, coupon_category_id, logo, latitude, longitude, banner, category_id, \
+                                            end_date, coupons.limit, min_spent, coupon_category_id, logo, latitude, longitude, banner, category_id, available, \
                                     (SELECT COUNT(*)  FROM coupons_likes \
                                         WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes, \
                                     (SELECT COUNT(*)  FROM coupons_likes \
@@ -428,7 +428,7 @@ def get_all_coupon_for_user_by_branch_offset():
     payload = parse_token(request, token_index)
 
     list_coupon = db.engine.execute('SELECT coupon_id, branches.branch_id, company_id, branches.name, coupon_folio, description, start_date, \
-                                            end_date, coupons.limit, min_spent, coupon_category_id, logo, latitude, longitude, banner, category_id, \
+                                            end_date, coupons.limit, min_spent, coupon_category_id, logo, latitude, longitude, banner, category_id, available, \
                                     (SELECT COUNT(*)  FROM coupons_likes \
                                         WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes, \
                                     (SELECT COUNT(*)  FROM coupons_likes \

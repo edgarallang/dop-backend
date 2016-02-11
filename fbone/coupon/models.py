@@ -135,7 +135,8 @@ class CouponLogoSchema(Schema):
                   'latitude',
                   'longitude',
                   'banner',
-                  'category_id')
+                  'category_id',
+                  'available')
 
 class TrendingCouponSchema(Schema):
     class Meta:
