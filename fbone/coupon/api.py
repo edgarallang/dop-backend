@@ -45,7 +45,7 @@ def create_coupon(request):
                             coupon_folio = "EAG",
                             # min_spent = request.json['min_spent'],
                             coupon_category_id = 1,
-                            available = 0,
+                            available = payment_data['amountOfCoupon'],
                             deleted = False,
                             active = False)
         db.session.add(new_coupon)
@@ -81,7 +81,7 @@ def take_coupon():
         return jsonify({'message': 'El cupon se tomó con éxito','folio': folio})
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
-@coupon.route('/user/use',methods=['POST'])
+@coupon.route('/user/redeem',methods=['POST'])
 def use_coupon():
     if request.headers.get('Authorization'):
         token_index = True
@@ -114,10 +114,17 @@ def use_coupon():
             db.session.commit()
             folio = '%d%s%d' % (request.json['branch_id'], "{:%d%m%Y}".format(actual_date), client_coupon.clients_coupon_id)
             client_coupon.folio = folio
+
+            coupon = Coupon.query.get(request.json['coupon_id'])
+            coupon.available = coupon.available - 1
             db.session.commit()
         else:
             client_coupon.used = True
             client_coupon.used_date = actual_date
+
+            coupon = Coupon.query.get(request.json['coupon_id'])
+            coupon.available = coupon.available - 1
+            
             db.session.commit()
 
             
