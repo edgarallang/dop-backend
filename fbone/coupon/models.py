@@ -156,7 +156,8 @@ class TrendingCouponSchema(Schema):
                   'user_like',
                   'latitude',
                   'longitude',
-                  'banner')
+                  'banner',
+                  'available')
 
 class NearestCouponSchema(Schema):
     class Meta:
@@ -168,7 +169,8 @@ class NearestCouponSchema(Schema):
                   'end_date',
                   'min_spent',
                   'latitude',
-                  'longitude')
+                  'longitude',
+                  'available')
 
 class ToExpireCouponSchema(Schema):
     class Meta:
@@ -188,7 +190,8 @@ class ToExpireCouponSchema(Schema):
                   'user_like',
                   'latitude',
                   'longitude',
-                  'banner')
+                  'banner',
+                  'available')
 
 class BondJoinCouponSchema(Schema):
     class Meta:
