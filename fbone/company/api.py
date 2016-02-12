@@ -137,6 +137,7 @@ def nearest_branches():
                              * SIN(RADIANS(z.latitude)))) AS distance \
                 FROM branches_location AS z \
                 JOIN branches on z.branch_id = branches.branch_id \
+                JOIN branches_design on branches.branch_id = branches_design.branch_id \
                 JOIN branches_subcategory on z.branch_id = branches_subcategory.branch_id \
                 JOIN subcategory on subcategory.subcategory_id = branches_subcategory.subcategory_id\
                 JOIN (   /* these are the query parameters */ \
