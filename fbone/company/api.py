@@ -125,7 +125,7 @@ def nearest_branches():
     if filterArray:
         filterQuery = prefixFilterQuery + `filterArray` + ')'
 
-    query = 'SELECT DISTINCT ON (branch_id) branch_location_id, branch_id, state, city, latitude, longitude, distance, address, name, category_id, logo, company_id \
+    query = 'SELECT DISTINCT ON (branch_id) branch_location_id, branch_id, state, city, latitude, longitude, distance, address, name, category_id, logo \
                 FROM (SELECT z.branch_location_id, z.branch_id, z.state, z.city, z.address,branches_design.logo, \
                     z.latitude, z.longitude, branches.name, subcategory.category_id, branches.company_id, \
                     p.radius, \
