@@ -224,8 +224,7 @@ class BranchesLocation(Schema):
                   'distance',
                   'name',
                   'category_id',
-                  'logo',
-                  'company_id'),
+                  'logo'),
 
 class BranchesFollowedSchema(Schema):
     class Meta:
