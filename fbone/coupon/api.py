@@ -638,14 +638,14 @@ def get_coupons_activity_by_user_likes():
 
     return jsonify({'message': 'Oops! algo salió mal'})
 
-@coupon.route('/used/get/user/offset/', methods=['GET'])
+@coupon.route('/used/get/user/offset/', methods=['POST'])
 def get_used_coupons_by_user_likes_offset():
     if request.headers.get('Authorization'):
         token_index = True
         payload = parse_token(request, token_index)
         user_id = User.query.get(payload['id']).user_id
-        offset = request.args.get('offset')
-        used_date = request.args.get('used_date')
+        offset = request.json['offset']
+        used_date = request.json['used_date']
 
         query = 'SELECT coupons.branch_id,coupons.coupon_id,branches_design.logo,coupons.name,clients_coupon.clients_coupon_id,clients_coupon.latitude,clients_coupon.longitude \
                                     , users.names, users.surnames, users.user_id, users_image.main_image, branches.name AS branch_name, branches.company_id, clients_coupon.used_date, \
