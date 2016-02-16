@@ -647,7 +647,7 @@ def get_used_coupons_by_user_likes_offset():
         offset = request.args.get('offset')
         used_date = request.args.get('used_date')
 
-        users = db.engine.execute('SELECT coupons.branch_id,coupons.coupon_id,branches_design.logo,coupons.name,clients_coupon.clients_coupon_id,clients_coupon.latitude,clients_coupon.longitude \
+        query = 'SELECT coupons.branch_id,coupons.coupon_id,branches_design.logo,coupons.name,clients_coupon.clients_coupon_id,clients_coupon.latitude,clients_coupon.longitude \
                                     , users.names, users.surnames, users.user_id, users_image.main_image, branches.name AS branch_name, branches.company_id, clients_coupon.used_date, \
                                     (SELECT COUNT(*)  FROM clients_coupon_likes WHERE clients_coupon.clients_coupon_id = clients_coupon_likes.clients_coupon_id) AS total_likes, \
                                     (SELECT COUNT(*)  FROM clients_coupon_likes WHERE clients_coupon_likes.user_id = %d AND clients_coupon_likes.clients_coupon_id = clients_coupon.clients_coupon_id) AS user_like \
@@ -657,7 +657,10 @@ def get_used_coupons_by_user_likes_offset():
                                     INNER JOIN coupons ON clients_coupon.coupon_id = coupons.coupon_id \
                                     INNER JOIN branches ON coupons.branch_id = branches.branch_id \
                                     INNER JOIN branches_design ON coupons.branch_id = branches_design.branch_id \
-                                    WHERE clients_coupon.used = true AND clients_coupon.used_date <= %s ORDER BY used_date DESC LIMIT 6 OFFSET %s' % (payload['id'], used_date , offset))
+                                    WHERE clients_coupon.used = true AND clients_coupon.used_date <= %s ORDER BY used_date DESC LIMIT 6 OFFSET %s' % (payload['id'], used_date , offset)
+
+        print query
+        #users = db.engine.execute(query)
 
         users_list = user_join_activity_newsfeed.dump(users)
 
