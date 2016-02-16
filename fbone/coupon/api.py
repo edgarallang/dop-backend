@@ -662,9 +662,9 @@ def get_used_coupons_by_user_likes_offset():
         print query
         #users = db.engine.execute(query)
 
-        users_list = user_join_activity_newsfeed.dump(users)
+        #users_list = user_join_activity_newsfeed.dump(users)
 
-        return jsonify({'data': users_list.data})
+        return jsonify({'data': 'users_list.data'})
 
     return jsonify({'message': 'Oops! algo salió mal'})
 
