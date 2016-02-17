@@ -348,58 +348,6 @@ def get_all_used_coupon_for_user_offset():
     selected_list_coupon = coupons_logo_schema.dump(list_coupon)
     return jsonify({'data': selected_list_coupon.data})
 
-@coupon.route('/all/used/for/myself/get/', methods = ['GET'])
-def get_all_used_coupon_for_myself():
-    token_index = True
-    limit = request.args.get('limit')
-    payload = parse_token(request, token_index)
-
-    list_coupon = db.engine.execute('SELECT coupons.coupon_id, branches.branch_id, company_id, branches.name, coupon_folio, description, start_date, \
-                                            end_date, coupons.limit, min_spent, coupon_category_id, logo, branches_location.latitude, branches_location.longitude, \
-                                            banner, category_id, available, \
-                                    (SELECT COUNT(*)  FROM coupons_likes \
-                                        WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes, \
-                                    (SELECT COUNT(*)  FROM coupons_likes \
-                                        WHERE coupons_likes.user_id = %d AND coupons.coupon_id = coupons_likes.coupon_id) AS user_like \
-                                    FROM coupons INNER JOIN branches_design ON \
-                                    coupons.branch_id = branches_design.branch_id \
-                                    INNER JOIN branches ON coupons.branch_id = branches.branch_id \
-                                    INNER JOIN branches_location on coupons.branch_id = branches_location.branch_id \
-                                    INNER JOIN clients_coupon on coupons.coupon_id = clients_coupon.coupon_id \
-                                    JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.branch_id \
-                                    JOIN subcategory ON subcategory.subcategory_id = branches_subcategory.subcategory_id WHERE used = true \
-                                    AND clients_coupon.user_id = %d \
-                                    AND deleted = false ORDER BY coupons.coupon_id DESC LIMIT %s OFFSET 0' % (payload['id'], payload['id'], limit))
-
-    selected_list_coupon = coupons_logo_schema.dump(list_coupon)
-    return jsonify({'data': selected_list_coupon.data})
-
-@coupon.route('/all/used/for/myself/offset/get/', methods = ['GET'])
-def get_all_used_coupon_for_myself_offset():
-    token_index = True
-    offset = request.args.get('offset')
-    coupon_id = request.args.get('coupon_id')
-    payload = parse_token(request, token_index)
-
-    list_coupon = db.engine.execute('SELECT coupons.coupon_id, branches.branch_id, company_id, branches.name, coupon_folio, description, start_date, \
-                                            end_date, coupons.limit, min_spent, coupon_category_id, logo, branches_location.latitude, branches_location.longitude, \
-                                            banner, category_id, available, \
-                                    (SELECT COUNT(*)  FROM coupons_likes \
-                                        WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes, \
-                                    (SELECT COUNT(*)  FROM coupons_likes \
-                                        WHERE coupons_likes.user_id = %d AND coupons.coupon_id = coupons_likes.coupon_id) AS user_like \
-                                    FROM coupons INNER JOIN branches_design ON \
-                                    coupons.branch_id = branches_design.branch_id \
-                                    INNER JOIN branches ON coupons.branch_id = branches.branch_id \
-                                    INNER JOIN branches_location on coupons.branch_id = branches_location.branch_id \
-                                    INNER JOIN clients_coupon on coupons.coupon_id = clients_coupon.coupon_id \
-                                    JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.branch_id \
-                                    JOIN subcategory ON subcategory.subcategory_id = branches_subcategory.subcategory_id WHERE used = true \
-                                    AND clients_coupon.user_id = %d \
-                                    AND deleted = false AND coupons.coupon_id < %s ORDER BY start_date DESC LIMIT 6 OFFSET %s' % (payload['id'], payload['id'], coupon_id, offset))
-
-    selected_list_coupon = coupons_logo_schema.dump(list_coupon)
-    return jsonify({'data': selected_list_coupon.data})
 
 @coupon.route('/all/for/user/by/branch/get/', methods = ['GET'])
 def get_all_coupon_for_user_by_branch():
