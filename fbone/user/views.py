@@ -351,23 +351,23 @@ def get_coupons_activity_by_user_likes():
                                     INNER JOIN coupons ON clients_coupon.coupon_id = coupons.coupon_id \
                                     INNER JOIN branches ON coupons.branch_id = branches.branch_id \
                                     INNER JOIN branches_design ON coupons.branch_id = branches_design.branch_id \
-                                    WHERE users.user_id = %s \
-                                    ORDER BY clients_coupon.clients_coupon_id DESC LIMIT %s OFFSET 0' % (user_profile_id, user_profile_id, limit))
+                                    WHERE users.user_id = %s AND clients_coupon.used = true AND clients_coupon.private = false \
+                                    ORDER BY used_date DESC LIMIT %s OFFSET 0' % (user_profile_id, user_profile_id, limit))
 
         users_list = user_join_activity_newsfeed.dump(users)
         return jsonify({'data': users_list.data})
 
     return jsonify({'message': 'Oops! algo salió mal'})
 
-@user.route('/activity/get/user/offset/', methods=['GET'])
+@user.route('/activity/get/user/offset', methods=['POST'])
 def get_used_coupons_by_user_likes_offset():
     if request.headers.get('Authorization'):
         token_index = True
         payload = parse_token(request, token_index)
         user_id = User.query.get(payload['id']).user_id
-        offset = request.args.get('offset')
-        client_coupon_id = request.args.get('client_coupon_id')
-        user_profile_id = request.args.get('user_profile_id')
+        offset = request.json['offset']
+        used_date = request.json['used_date']
+        user_profile_id = request.json['user_profile_id']
 
         users = db.engine.execute('SELECT coupons.branch_id, coupons.coupon_id, branches_design.logo, coupons.name, \
                                             clients_coupon.clients_coupon_id, clients_coupon.latitude,clients_coupon.longitude, \
@@ -380,8 +380,8 @@ def get_used_coupons_by_user_likes_offset():
                                     INNER JOIN coupons ON clients_coupon.coupon_id = coupons.coupon_id \
                                     INNER JOIN branches ON coupons.branch_id = branches.branch_id \
                                     INNER JOIN branches_design ON coupons.branch_id = branches_design.branch_id \
-                                    WHERE users.user_id = %s \
-                                    AND clients_coupon.clients_coupon_id < %s ORDER BY clients_coupon.clients_coupon_id DESC LIMIT 6 OFFSET %s' % (payload['id'], user_profile_id, client_coupon_id , offset))
+                                    WHERE users.user_id = %s AND clients_coupon.used = true AND clients_coupon.private = false \
+                                    AND clients_coupon.used_date <= %s ORDER BY used_date DESC LIMIT 6 OFFSET %s' % (payload['id'], user_profile_id, "'"+used_date+"'" , offset))
 
         users_list = user_join_activity_newsfeed.dump(users)
 
