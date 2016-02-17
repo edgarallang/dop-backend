@@ -367,7 +367,7 @@ def get_used_coupons_by_user_likes_offset():
         user_id = User.query.get(payload['id']).user_id
         offset = request.json['offset']
         used_date = request.json['used_date']
-        user_profile_id = request.json['user_profile_id']
+        user_profile_id = request.json['user_id']
 
         users = db.engine.execute('SELECT coupons.branch_id, coupons.coupon_id, branches_design.logo, coupons.name, \
                                             clients_coupon.clients_coupon_id, clients_coupon.latitude,clients_coupon.longitude, \
