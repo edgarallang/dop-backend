@@ -620,7 +620,7 @@ def get_coupons_activity_by_user_likes():
         payload = parse_token(request, token_index)
         user_id = User.query.get(payload['id']).user_id
 
-        users = db.engine.execute('SELECT coupons.branch_id,coupons.coupon_id,branches_design.logo,coupons.name,clients_coupon.clients_coupon_id,clients_coupon.latitude,clients_coupon.longitude \
+        #users = db.engine.execute('SELECT coupons.branch_id,coupons.coupon_id,branches_design.logo,coupons.name,clients_coupon.clients_coupon_id,clients_coupon.latitude,clients_coupon.longitude \
                                     , users.names, users.surnames, users.user_id, users_image.main_image, branches.name AS branch_name, branches.company_id, clients_coupon.used_date, \
                                     (SELECT COUNT(*)  FROM clients_coupon_likes WHERE clients_coupon.clients_coupon_id = clients_coupon_likes.clients_coupon_id) AS total_likes, \
                                     (SELECT COUNT(*)  FROM clients_coupon_likes WHERE clients_coupon_likes.user_id = %d AND clients_coupon_likes.clients_coupon_id = clients_coupon.clients_coupon_id) AS user_like \
@@ -659,11 +659,11 @@ def get_used_coupons_by_user_likes_offset():
                                     INNER JOIN branches_design ON coupons.branch_id = branches_design.branch_id \
                                     WHERE clients_coupon.used = true AND clients_coupon.used_date <= %s ORDER BY used_date DESC LIMIT 6 OFFSET %s' % (payload['id'], "'"+used_date+"'" , offset)
 
-        users = db.engine.execute(query)
+        #users = db.engine.execute(query)
 
-        users_list = user_join_activity_newsfeed.dump(users)
+        #users_list = user_join_activity_newsfeed.dump(users)
 
-        return jsonify({'data': users_list.data})
+        return jsonify({'data': 'users_list.data'})
 
     return jsonify({'message': 'Oops! algo salió mal'})
 
