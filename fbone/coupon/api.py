@@ -657,14 +657,14 @@ def get_used_coupons_by_user_likes_offset():
                                     INNER JOIN coupons ON clients_coupon.coupon_id = coupons.coupon_id \
                                     INNER JOIN branches ON coupons.branch_id = branches.branch_id \
                                     INNER JOIN branches_design ON coupons.branch_id = branches_design.branch_id \
-                                    WHERE clients_coupon.used = true AND clients_coupon.used_date <= %s ORDER BY used_date DESC LIMIT 6 OFFSET %s' % (payload['id'], '"'+used_date+'"' , offset)
+                                    WHERE clients_coupon.used = true AND clients_coupon.used_date <= %s ORDER BY used_date DESC LIMIT 6 OFFSET %s' % (payload['id'], "'"+used_date+"'" , offset)
 
         print(query)
-        #users = db.engine.execute(query)
+        users = db.engine.execute(query)
 
-        #users_list = user_join_activity_newsfeed.dump(users)
+        users_list = user_join_activity_newsfeed.dump(users)
 
-        return jsonify({'data': 'users_list.data'})
+        return jsonify({'data': users_list.data})
 
     return jsonify({'message': 'Oops! algo salió mal'})
 
