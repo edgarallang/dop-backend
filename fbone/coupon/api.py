@@ -638,7 +638,7 @@ def get_coupons_activity_by_user_likes():
 
     return jsonify({'message': 'Oops! algo salió mal'})
 
-@coupon.route('/used/get/user/offset/', methods=['POST'])
+@coupon.route('/used/get/user/offset', methods=['POST'])
 def get_used_coupons_by_user_likes_offset():
     if request.headers.get('Authorization'):
         token_index = True
