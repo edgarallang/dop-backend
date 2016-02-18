@@ -62,23 +62,28 @@ def take_coupon():
         token_index = True
         payload = parse_token(request, token_index)
         actual_date = datetime.now()
+        coupon_id = request.json['coupon_id']
 
-        user_take = ClientsCoupon(user_id = payload['id'],
-                                  coupon_id = request.json['coupon_id'],
-                                  folio = '',
-                                  taken_date = actual_date,
-                                  latitude= request.json['latitude'],
-                                  longitude = request.json['longitude'],
-                                  used = False)
+        client_coupon = ClientsCoupon.query.filter(and_(ClientsCoupon.coupon_id==coupon_id),(ClientsCoupon.user_id==payload['id']),(ClientsCoupon.used==False)).first()
+        if not client_coupon:
+            user_take = ClientsCoupon(user_id = payload['id'],
+                                      coupon_id = coupon_id,
+                                      folio = '',
+                                      taken_date = actual_date,
+                                      latitude= request.json['latitude'],
+                                      longitude = request.json['longitude'],
+                                      used = False)
 
 
-        db.session.add(user_take)
-        db.session.commit()
-        folio = '%d%s%d' % (request.json['branch_id'], "{:%d%m%Y}".format(actual_date), user_take.clients_coupon_id)
-        user_take.folio = folio
-        db.session.commit()
+            db.session.add(user_take)
+            db.session.commit()
+            folio = '%d%s%d' % (request.json['branch_id'], "{:%d%m%Y}".format(actual_date), user_take.clients_coupon_id)
+            user_take.folio = folio
+            db.session.commit()
+            return jsonify({'message': 'El cupon se tomó con éxito','folio': folio})
+        return jsonify({'message': 'Ya tomaste este cupón'})
 
-        return jsonify({'message': 'El cupon se tomó con éxito','folio': folio})
+
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
 @coupon.route('/user/redeem',methods=['POST'])
