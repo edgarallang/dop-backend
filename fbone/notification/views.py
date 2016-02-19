@@ -43,7 +43,7 @@ def create_token(user):
     return token.decode('unicode_escape')
 
 def send_notification(event,message,namespace,room):
-    socketio.emit(event,{'data': message}, namespace='/app',room=liked_user.user_id)
+    socketio.emit(event,{'data': message}, namespace='/app', room=liked_user.user_id)
 
 
 
@@ -90,8 +90,8 @@ def get_notifications():
                                 LEFT JOIN branches_design ON branches.branch_id = branches_design.branch_id AND notifications.type= 'newsfeed'\
                                 INNER JOIN users AS launcher_user ON notifications.launcher_id = launcher_user.user_id \
                                 WHERE notifications.user_id = %d ORDER BY notification_date DESC LIMIT 11" % (payload['id'])
-        notifications = db.engine.execute(notifications_query)
 
+        notifications = db.engine.execute(notifications_query)
         notifications_list = notifications_schema.dump(notifications)
 
         print notifications_list.data

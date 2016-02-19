@@ -37,8 +37,7 @@ class Notifications(Schema):
                   'notification_date',
                   'user_image',
                   'branch_image',
-                  'company_id'
-                  )
+                  'company_id')
 
 
 notifications_schema = Notifications(many=True)
