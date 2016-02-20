@@ -139,7 +139,7 @@ class CouponLogoSchema(Schema):
                   'available',
                   'taken')
 
-class CouponTakenSchema(Schema):
+class CouponsTakenSchema(Schema):
     class Meta:
         fields = ('coupon_id',
                   'branch_id',
