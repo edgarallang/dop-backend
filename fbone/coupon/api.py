@@ -269,7 +269,7 @@ def get_all_taken_coupon_for_user():
 
 
 
-    selected_list_coupon = coupons_logo_schema.dump(list_coupon)
+    selected_list_coupon = coupons_taken_schema.dump(list_coupon)
     return jsonify({'data': selected_list_coupon.data})
 
 @coupon.route('/all/taken/for/user/offset/get/', methods = ['GET'])
@@ -299,7 +299,7 @@ def get_all_taken_coupon_for_user_offset():
 
 
 
-    selected_list_coupon = coupons_logo_schema.dump(list_coupon)
+    selected_list_coupon = coupons_taken_schema.dump(list_coupon)
     return jsonify({'data': selected_list_coupon.data})
 
 @coupon.route('/all/used/for/user/get/', methods = ['GET'])
@@ -326,7 +326,7 @@ def get_all_used_coupon_for_user():
 
 
 
-    selected_list_coupon = coupons_logo_schema.dump(list_coupon)
+    selected_list_coupon = coupons_taken_schema.dump(list_coupon)
     return jsonify({'data': selected_list_coupon.data})
 
 @coupon.route('/all/used/for/user/offset/get/', methods = ['GET'])
@@ -354,7 +354,7 @@ def get_all_used_coupon_for_user_offset():
 
 
 
-    selected_list_coupon = coupons_logo_schema.dump(list_coupon)
+    selected_list_coupon = coupons_taken_schema.dump(list_coupon)
     return jsonify({'data': selected_list_coupon.data})
 
 
@@ -379,7 +379,7 @@ def get_all_coupon_for_user_by_branch():
                                     WHERE coupons.branch_id = %s AND deleted = false ORDER BY start_date DESC LIMIT 6 OFFSET 0' % (payload['id'],branch_id))
 
 
-    selected_list_coupon = coupons_logo_schema.dump(list_coupon)
+    selected_list_coupon = coupons_taken_schema.dump(list_coupon)
     return jsonify({'data': selected_list_coupon.data})
 
 
@@ -407,7 +407,7 @@ def get_all_coupon_for_user_by_branch_offset():
 
 
 
-    selected_list_coupon = coupons_logo_schema.dump(list_coupon)
+    selected_list_coupon = coupons_taken_schema.dump(list_coupon)
     return jsonify({'data': selected_list_coupon.data})
 
 
