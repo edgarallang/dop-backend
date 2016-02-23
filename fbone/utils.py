@@ -73,7 +73,7 @@ BADGES = {
 #############################################
 
 def assign_exp(user_id, exp):
-    requests.put("https://inmoon.com.mx/api/user/"+user_id+"/"+ exp +"/set")
+    requests.put("https://inmoon.com.mx/api/user/"+`user_id`+"/"+`exp`+"/set")
 
 def get_current_time():
     return datetime.utcnow()
