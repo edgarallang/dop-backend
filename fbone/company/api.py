@@ -280,8 +280,8 @@ def fisrt_job():
 @company.route('/branch/dashboard', methods = ['GET'])
 def dashboard_branches():
     adBranches = 'SELECT * FROM branches\
-             INNER JOIN branches_design ON branches.branch_id = branches_design.branch_id\
-             INNER JOIN branch_ad ON branches.branch_id = branch_ad.branch_id\
+             INNER JOIN branches_design ON branches.branch_id = branches_design.branch_id \
+             INNER JOIN branch_ad ON branches.branch_id = branch_ad.branch_id \
              WHERE branch_ad.duration>0 ORDER BY branch_ad.start_date LIMIT 8'
 
     branches = db.engine.execute(adBranches)
@@ -325,7 +325,7 @@ def branch_ranking(branch_id):
                        WHERE users.user_id = clients_coupon.user_id AND used = TRUE AND coupons.branch_id = %d) AS total_used \
                     FROM users JOIN (SELECT DISTINCT ON (user_id) * FROM clients_coupon ORDER BY user_id) AS client ON users.user_id = client.user_id \
                                JOIN users_image ON users.user_id = users_image.user_id \
-                ORDER BY total_used DESC LIMIT 6' % (branch_id)
+                ORDER BY total_used DESC LIMIT 20' % (branch_id)
 
         ranking_users = db.engine.execute(query)
         ranking_users_list = ranking_users_schema.dump(ranking_users).data
@@ -333,6 +333,7 @@ def branch_ranking(branch_id):
         return jsonify({'data': ranking_users_list})
 
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
+
 
 def number_of_rows(query):
     result = 0
