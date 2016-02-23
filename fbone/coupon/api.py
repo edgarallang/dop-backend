@@ -19,6 +19,7 @@ from sqlalchemy.orm import joinedload
 from marshmallow import pprint
 from sqlalchemy import and_
 from ..company import branch_schema
+from ..utils import *
 
 
 
@@ -136,6 +137,7 @@ def use_coupon():
         branch = Branch.query.filter_by(branch_id = branch_id).first()
         branch_data = branch_schema.dump(branch)
 
+        assign_exp(payload['id'], USING)
         return jsonify({'data': branch_data.data})
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
