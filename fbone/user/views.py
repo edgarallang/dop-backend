@@ -400,8 +400,10 @@ def set_experience(user_id, exp):
           badge_name.append(key)
 
     badges_tuple = tuple(badge_name)
-
-    badge = db.engine.execute("SELECT * FROM badges WHERE LOWER(name) in" + `badges_tuple`)
+    if len(badges_tuple) == 1:
+        badge = db.engine.execute("SELECT * FROM badges WHERE LOWER(name) in" + `badges_tuple[0]`)
+    else:
+        badge = db.engine.execute("SELECT * FROM badges WHERE LOWER(name) in" + `badges_tuple`)
     badges = badge_schema.dump(badge)
 
     db.session.commit()
