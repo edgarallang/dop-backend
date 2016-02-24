@@ -19,6 +19,7 @@ from sqlalchemy.orm import joinedload
 from marshmallow import pprint
 from sqlalchemy import and_
 from ..company import branch_schema
+from ..utils import *
 
 
 
@@ -136,7 +137,10 @@ def use_coupon():
         branch = Branch.query.filter_by(branch_id = branch_id).first()
         branch_data = branch_schema.dump(branch)
 
-        return jsonify({'data': branch_data.data})
+        reward = assign_exp(payload['id'], USING)
+        return jsonify({'data': branch_data.data,
+                        'reward': reward
+                })
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
 # GET methods
@@ -196,6 +200,8 @@ def get_all_coupon_for_user():
 
     list_coupon = db.engine.execute('SELECT coupon_id, branches.branch_id, company_id, branches.name, coupon_folio, description, start_date, \
                                             end_date, coupons.limit, min_spent, coupon_category_id, logo, latitude, longitude, banner, category_id, available, \
+                                    (SELECT EXISTS (SELECT * FROM clients_coupon \
+                                        WHERE USER_id = %d AND clients_coupon.coupon_id = coupons.coupon_id AND used = false)::bool) AS taken, \
                                     (SELECT COUNT(*)  FROM coupons_likes \
                                         WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes, \
                                     (SELECT COUNT(*)  FROM coupons_likes \
@@ -206,7 +212,7 @@ def get_all_coupon_for_user():
                                     INNER JOIN branches_location on coupons.branch_id = branches_location.branch_id \
                                     JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.branch_id \
                                     JOIN subcategory ON subcategory.subcategory_id = branches_subcategory.subcategory_id \
-                                    WHERE deleted = false ORDER BY coupons.coupon_id DESC LIMIT %s OFFSET 0' % (payload['id'],limit))
+                                    WHERE deleted = false ORDER BY coupons.coupon_id DESC LIMIT %s OFFSET 0' % (payload['id'], payload['id'], limit))
 
 
     selected_list_coupon = coupons_logo_schema.dump(list_coupon)
@@ -222,6 +228,8 @@ def get_all_coupon_for_user_offset():
 
     list_coupon = db.engine.execute('SELECT coupon_id, branches.branch_id, company_id, branches.name, coupon_folio, description, start_date, \
                                             end_date, coupons.limit, min_spent, coupon_category_id, logo, latitude, longitude, banner, category_id, available, \
+                                    (SELECT EXISTS (SELECT * FROM clients_coupon \
+                                        WHERE USER_id = %d AND clients_coupon.coupon_id = coupons.coupon_id AND used = false)::bool) AS taken, \
                                     (SELECT COUNT(*)  FROM coupons_likes \
                                         WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes, \
                                     (SELECT COUNT(*)  FROM coupons_likes \
@@ -232,7 +240,7 @@ def get_all_coupon_for_user_offset():
                                     INNER JOIN branches_location on coupons.branch_id = branches_location.branch_id \
                                     JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.branch_id \
                                     JOIN subcategory ON subcategory.subcategory_id = branches_subcategory.subcategory_id \
-                                    WHERE deleted = false AND coupons.coupon_id < %s ORDER BY coupons.coupon_id DESC LIMIT 6 OFFSET %s' % (payload['id'],coupon_id,offset))
+                                    WHERE deleted = false AND coupons.coupon_id < %s ORDER BY coupons.coupon_id DESC LIMIT 6 OFFSET %s' % (payload['id'], payload['id'], coupon_id,offset))
 
     
     selected_list_coupon = coupons_logo_schema.dump(list_coupon)
@@ -265,7 +273,7 @@ def get_all_taken_coupon_for_user():
 
 
 
-    selected_list_coupon = coupons_logo_schema.dump(list_coupon)
+    selected_list_coupon = coupons_taken_schema.dump(list_coupon)
     return jsonify({'data': selected_list_coupon.data})
 
 @coupon.route('/all/taken/for/user/offset/get/', methods = ['GET'])
@@ -295,7 +303,7 @@ def get_all_taken_coupon_for_user_offset():
 
 
 
-    selected_list_coupon = coupons_logo_schema.dump(list_coupon)
+    selected_list_coupon = coupons_taken_schema.dump(list_coupon)
     return jsonify({'data': selected_list_coupon.data})
 
 @coupon.route('/all/used/for/user/get/', methods = ['GET'])
@@ -322,7 +330,7 @@ def get_all_used_coupon_for_user():
 
 
 
-    selected_list_coupon = coupons_logo_schema.dump(list_coupon)
+    selected_list_coupon = coupons_taken_schema.dump(list_coupon)
     return jsonify({'data': selected_list_coupon.data})
 
 @coupon.route('/all/used/for/user/offset/get/', methods = ['GET'])
@@ -350,7 +358,7 @@ def get_all_used_coupon_for_user_offset():
 
 
 
-    selected_list_coupon = coupons_logo_schema.dump(list_coupon)
+    selected_list_coupon = coupons_taken_schema.dump(list_coupon)
     return jsonify({'data': selected_list_coupon.data})
 
 
@@ -375,7 +383,7 @@ def get_all_coupon_for_user_by_branch():
                                     WHERE coupons.branch_id = %s AND deleted = false ORDER BY start_date DESC LIMIT 6 OFFSET 0' % (payload['id'],branch_id))
 
 
-    selected_list_coupon = coupons_logo_schema.dump(list_coupon)
+    selected_list_coupon = coupons_taken_schema.dump(list_coupon)
     return jsonify({'data': selected_list_coupon.data})
 
 
@@ -403,7 +411,7 @@ def get_all_coupon_for_user_by_branch_offset():
 
 
 
-    selected_list_coupon = coupons_logo_schema.dump(list_coupon)
+    selected_list_coupon = coupons_taken_schema.dump(list_coupon)
     return jsonify({'data': selected_list_coupon.data})
 
 

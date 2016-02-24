@@ -136,7 +136,31 @@ class CouponLogoSchema(Schema):
                   'longitude',
                   'banner',
                   'category_id',
+                  'available',
+                  'taken')
+
+class CouponsTakenSchema(Schema):
+    class Meta:
+        fields = ('coupon_id',
+                  'branch_id',
+                  'company_id',
+                  'name',
+                  'coupon_folio',
+                  'description',
+                  'start_date',
+                  'end_date',
+                  'limit',
+                  'min_spent',
+                  'coupon_category_id',
+                  'logo',
+                  'total_likes',
+                  'user_like',
+                  'latitude',
+                  'longitude',
+                  'banner',
+                  'category_id',
                   'available')
+
 
 class TrendingCouponSchema(Schema):
     class Meta:
@@ -350,6 +374,7 @@ user_join_exchanges_coupon_schema = UserJoinExchanges(many=True)
 user_join_activity_newsfeed = UserActivityNewsfeed(many=True)
 
 coupons_likes_schema = CouponLike(many=True)
+coupons_taken_schema = CouponsTakenSchema(many=True)
 
 coupons_location_schema = CouponsLocation(many=True)
 

@@ -176,9 +176,9 @@ def get_friends():
                  FROM friends \
                  INNER JOIN users ON (friends.user_one_id = user_id  AND friends.user_one_id != %d) \
                  OR (friends.user_two_id=user_id  AND friends.user_two_id!=%d) \
-                 INNER JOIN users_image ON (friends.user_one_id = users_image.user_id AND friends.user_one_id != %d)\
+                 INNER JOIN users_image ON (friends.user_one_id = users_image.user_id AND friends.user_one_id != %d) \
                  OR (friends.user_two_id = users_image.user_id AND friends.user_two_id != %d) \
-                 WHERE (user_one_id = %d OR user_two_id = %d)\
+                 WHERE (user_one_id = %d OR user_two_id = %d) \
                  AND operation_id = 1' % (user_id, user_id, user_id, user_id, user_id, user_id, user_id)
 
         friends = db.engine.execute(query)
@@ -226,10 +226,14 @@ def add_friend():
 
             return jsonify({'message': 'Agregado correctamente'})
         else:
-            friendshipExist.operation_id = 1
+            if user_two.privacy_status == 0:
+                friendshipExist.operation_id = 1
+            elif user_two.privacy_status == 1:
+                friendshipExist.operation_id = 0
+            
             db.session.commit()
-
             socketio.emit('notification',{'data': 'someone triggered me'},namespace='/app',room = user_to_add)
+
         return jsonify({'message': 'registro existente'})
     return jsonify({'message': 'Oops! algo salió mal :('})
 
@@ -400,8 +404,10 @@ def set_experience(user_id, exp):
           badge_name.append(key)
 
     badges_tuple = tuple(badge_name)
-
-    badge = db.engine.execute("SELECT * FROM badges WHERE LOWER(name) in" + `badges_tuple`)
+    if len(badges_tuple) == 1:
+        badge = db.engine.execute("SELECT * FROM badges WHERE LOWER(name) in(" + `badges_tuple[0]`+")")
+    else:
+        badge = db.engine.execute("SELECT * FROM badges WHERE LOWER(name) in" + `badges_tuple`)
     badges = badge_schema.dump(badge)
 
     db.session.commit()
