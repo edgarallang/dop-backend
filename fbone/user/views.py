@@ -222,7 +222,7 @@ def add_friend():
             db.session.add(notification)
             db.session.commit()
 
-            socketio.emit('notification',{'data': 'friend',operation_id},namespace='/app',room = user_to_add)
+            socketio.emit('notification',{'data': 'friend'},namespace='/app',room = user_to_add)
 
             return jsonify({'message': 'Agregado correctamente'})
         else:
