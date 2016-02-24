@@ -226,10 +226,14 @@ def add_friend():
 
             return jsonify({'message': 'Agregado correctamente'})
         else:
-            friendshipExist.operation_id = 1
+            if user_two.privacy_status == 0:
+                friendshipExist.operation_id = 1
+            elif user_two.privacy_status == 1:
+                friendshipExist.operation_id = 0
+            
             db.session.commit()
-
             socketio.emit('notification',{'data': 'someone triggered me'},namespace='/app',room = user_to_add)
+            
         return jsonify({'message': 'registro existente'})
     return jsonify({'message': 'Oops! algo salió mal :('})
 
