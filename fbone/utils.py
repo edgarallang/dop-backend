@@ -66,7 +66,7 @@ BADGES = {
     'bronce': 50,
     'plata': 200,
     'oro': 500,
-    'rubi': 1000
+    'ruby': 1000
 }
 
 
