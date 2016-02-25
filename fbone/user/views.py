@@ -401,7 +401,7 @@ def set_experience(user_id, exp):
     badge_name = []
 
     for key, val in BADGES.iteritems():
-        if val >= old_exp && val <= user.exp:
+        if (val >= old_exp) and (val <= user.exp):
           badge_name.append(key)
 
     badges_tuple = tuple(badge_name)
