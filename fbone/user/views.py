@@ -254,7 +254,7 @@ def accept_friend():
 
         db.session.commit()
 
-        notification = Notification.query.filter_by(((Notification.object_id == friendsRelationship.friends_is) & (Notification.type == 'friend'))).first()
+        notification = Notification.query.filter_by(notification_id=request.json['notification_id']).first()
         notification.notification_date = today
 
         db.session.commit()
