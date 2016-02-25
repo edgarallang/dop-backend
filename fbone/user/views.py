@@ -415,12 +415,16 @@ def set_experience(user_id, exp):
         badge = db.engine.execute("SELECT * FROM badges WHERE LOWER(name) in(" + `badges_tuple[0]`+")")
     elif len(badges_tuple) > 1:
         badge = db.engine.execute("SELECT * FROM badges WHERE LOWER(name) in" + `badges_tuple`)
-    badges = badge_schema.dump(badge)
 
     db.session.commit()
-    
-    return jsonify({'message': 'experiencia asignada %d' % exp,
+
+    if len(badges_tuple) == 0:
+        badges = badge_schema.dump(badge)
+        return jsonify({ 'message': 'experiencia asignada %d' % exp })
+    else: 
+        return jsonify({'message': 'experiencia asignada %d' % exp,
                     'badges': badges.data })
+
 
 @user.route('/privacy_status/set', methods=['POST'])
 def set_privacy():
