@@ -265,6 +265,7 @@ def accept_friend():
                                         launcher_id = user_id,
                                         read = False
                                         )
+        db.session.add(notification)
         db.session.commit()
 
         socketio.emit('notification',{'data': 'someone triggered me'},namespace='/app',room = friendsRelationship.user_one_id)
