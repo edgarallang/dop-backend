@@ -246,7 +246,7 @@ def accept_friend():
 
         #user_id = User.query.get(payload['id']).user_id
 
-        friendsRelationship = Friends.query.filter_by(friends_id=request.json['friends_id']).first()
+        friendsRelationship = Friends.query.get(request.json['friends_id'])
 
         friendsRelationship.operation_id = 1
         #friendsRelationship.launcher_user_id = user_id
