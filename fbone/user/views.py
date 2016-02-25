@@ -237,7 +237,7 @@ def add_friend():
         return jsonify({'message': 'registro existente'})
     return jsonify({'message': 'Oops! algo salió mal :('})
 
-@user.route('/friends/accept', methods=['PUT'])
+@user.route('/friends/accept', methods=['POST'])
 def accept_friend():
     if request.headers.get('Authorization'):
         payload = parse_token(request, True)
