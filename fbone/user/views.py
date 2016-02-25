@@ -395,18 +395,19 @@ def get_used_coupons_by_user_likes_offset():
 
 @user.route('/<int:user_id>/<int:exp>/set', methods=['GET','PUT'])
 def set_experience(user_id, exp):
-    user = User.query.filter_by(user_id = user_id).first()
-    user.exp = user.exp + exp
+    user = User.query.get(user_id)
+    old_exp = user.exp
+    user.exp = old_exp + exp
     badge_name = []
 
     for key, val in BADGES.iteritems():
-        if user.exp >= val:
+        if val >= old_exp && val <= user.exp:
           badge_name.append(key)
 
     badges_tuple = tuple(badge_name)
     if len(badges_tuple) == 1:
         badge = db.engine.execute("SELECT * FROM badges WHERE LOWER(name) in(" + `badges_tuple[0]`+")")
-    else:
+    elif len(badges_tuple) > 1:
         badge = db.engine.execute("SELECT * FROM badges WHERE LOWER(name) in" + `badges_tuple`)
     badges = badge_schema.dump(badge)
 
