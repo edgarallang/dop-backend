@@ -417,11 +417,10 @@ def set_experience(user_id, exp):
         badge = db.engine.execute("SELECT * FROM badges WHERE LOWER(name) in" + `badges_tuple`)
 
     db.session.commit()
-
     if len(badges_tuple) == 0:
-        badges = badge_schema.dump(badge)
         return jsonify({ 'message': 'experiencia asignada %d' % exp })
-    else: 
+    else:
+        badges = badge_schema.dump(badge)
         return jsonify({'message': 'experiencia asignada %d' % exp,
                     'badges': badges.data })
 
