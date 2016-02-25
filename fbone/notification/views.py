@@ -81,7 +81,8 @@ def get_notifications():
 
         notifications_query = "SELECT notifications.notification_id, notifications.object_id, notifications.type, launcher_user.names AS "+"launcher_name"+",\
                                 launcher_user.surnames AS "+"launcher_surnames"+",launcher_user.user_id AS "+"launcher_id"+",friends.operation_id AS "+"friendship_status"+",\
-                                branches.name AS "+"newsfeed_activity"+", branches.company_id, notifications.read, notifications.notification_date,users_image.main_image AS "+"user_image"+", branches_design.logo AS "+"branch_image"+" FROM notifications\
+                                branches.name AS "+"newsfeed_activity"+", branches.company_id, notifications.read, notifications.notification_date,users_image.main_image AS "+"user_image"+",\
+                                branches_design.logo AS "+"branch_image"+", friends.launcher_user_id AS "+"launcher_friend"+" FROM notifications\
                                 LEFT JOIN clients_coupon ON notifications.object_id = clients_coupon.clients_coupon_id AND notifications.type= 'newsfeed'\
                                 LEFT JOIN coupons ON clients_coupon.coupon_id = coupons.coupon_id\
                                 LEFT JOIN branches ON coupons.branch_id = branches.branch_id\
@@ -113,7 +114,7 @@ def get_notifications_offset():
         notifications_query = "SELECT notifications.notification_id,notifications.object_id, notifications.type, launcher_user.names AS "+"launcher_name"+",\
                                 launcher_user.surnames AS "+"launcher_surnames"+",launcher_user.user_id AS "+"launcher_id"+",friends.operation_id AS "+"friendship_status"+",\
                                 branches.name AS "+"newsfeed_activity"+", branches.company_id, notifications.read, notifications.notification_date,users_image.main_image AS "+"user_image"+",\
-                                branches_design.logo AS "+"branch_image"+", friends.launcher_id AS "+"launcher_friend"+" FROM notifications\
+                                branches_design.logo AS "+"branch_image"+", friends.launcher_user_id AS "+"launcher_friend"+" FROM notifications\
                                 LEFT JOIN clients_coupon ON notifications.object_id = clients_coupon.clients_coupon_id AND notifications.type= 'newsfeed'\
                                 LEFT JOIN coupons ON clients_coupon.coupon_id = coupons.coupon_id\
                                 LEFT JOIN branches ON coupons.branch_id = branches.branch_id\
