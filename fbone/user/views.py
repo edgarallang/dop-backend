@@ -244,7 +244,7 @@ def accept_friend():
 
         today = datetime.now()
 
-        #user_id = User.query.get(payload['id']).user_id
+        user_id = User.query.get(payload['id']).user_id
 
         friendsRelationship = Friends.query.get(request.json['friends_id'])
 
@@ -257,6 +257,19 @@ def accept_friend():
         notification.notification_date = today
 
         db.session.commit()
+
+        notification = Notification(user_id = friendsRelationship.user_one_id,
+                                        object_id = friendsRelationship.friends_id,
+                                        type = "friend",
+                                        notification_date = today,
+                                        launcher_id = user_id,
+                                        read = False
+                                        )
+        db.session.add(notification)
+        db.session.commit()
+
+        socketio.emit('notification',{'data': 'someone triggered me'},namespace='/app',room = friendsRelationship.user_one_id)
+
         return jsonify({'data': 'Agregado correctamente'})
 
     return jsonify({'message': 'Oops! algo salió mal :('})
