@@ -244,13 +244,12 @@ def accept_friend():
 
         today = datetime.now()
 
-        user_id = User.query.get(payload['id']).user_id
+        #user_id = User.query.get(payload['id']).user_id
 
         friendsRelationship = Friends.query.filter_by(friends_id=request.json['friends_id']).first()
 
         friendsRelationship.operation_id = 1
-        friendsRelationship.notification_date = today
-        friendsRelationship.launcher_user_id = user_id
+        #friendsRelationship.launcher_user_id = user_id
 
         db.session.commit()
 
