@@ -228,6 +228,7 @@ def add_friend():
         else:
             if user_two.privacy_status == 0:
                 friendshipExist.operation_id = 1
+                friendshipExist.notification_date = datetime.now()
             elif user_two.privacy_status == 1:
                 friendshipExist.operation_id = 0
             
