@@ -228,7 +228,6 @@ def add_friend():
         else:
             if user_two.privacy_status == 0:
                 friendshipExist.operation_id = 1
-                friendshipExist.notification_date = datetime.now()
             elif user_two.privacy_status == 1:
                 friendshipExist.operation_id = 0
             
@@ -243,15 +242,22 @@ def accept_friend():
     if request.headers.get('Authorization'):
         payload = parse_token(request, True)
 
+        today = datetime.now()
+
         user_id = User.query.get(payload['id']).user_id
 
         friendsRelationship = Friends.query.filter_by(friends_id=request.json['friends_id']).first()
 
         friendsRelationship.operation_id = 1
+        friendsRelationship.notification_date = today
         friendsRelationship.launcher_user_id = user_id
 
         db.session.commit()
-        
+
+        notification = Notification.query.filter_by(((Notification.object_id == friendsRelationship.friends_is) & (Notification.type == 'friend'))).first()
+        notification.notification_date = today
+
+        db.session.commit()
         return jsonify({'data': 'Agregado correctamente'})
 
     return jsonify({'message': 'Oops! algo salió mal :('})
