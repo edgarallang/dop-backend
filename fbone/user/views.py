@@ -257,6 +257,8 @@ def accept_friend():
         notification.notification_date = today
 
         db.session.commit()
+
+        socketio.emit('notification',{'data': 'someone triggered me'},namespace='/app',room = friendsRelationship.user_one_id)
         return jsonify({'data': 'Agregado correctamente'})
 
     return jsonify({'message': 'Oops! algo salió mal :('})
