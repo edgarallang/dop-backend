@@ -669,7 +669,7 @@ def like_used_coupon():
 
             liked_user = ClientsCoupon.query.filter_by(clients_coupon_id = request.json['clients_coupon_id']).first()
 
-            if liked_user.user_id != payload['id'] 
+            if liked_user.user_id != payload['id']:
                 notification = Notification(user_id = liked_user.user_id,
                                             object_id = request.json['clients_coupon_id'],
                                             type = "newsfeed",
