@@ -669,19 +669,19 @@ def like_used_coupon():
 
             liked_user = ClientsCoupon.query.filter_by(clients_coupon_id = request.json['clients_coupon_id']).first()
 
-            notification = Notification(user_id = liked_user.user_id,
-                                        object_id = request.json['clients_coupon_id'],
-                                        type = "newsfeed",
-                                        notification_date = datetime.now(),
-                                        launcher_id = payload['id'],
-                                        read = False
-                                        )
-
-            socketio.emit('notification',{'data': 'someone triggered me'},namespace='/app',room=liked_user.user_id)
+            if liked_user.user_id != payload['id'] 
+                notification = Notification(user_id = liked_user.user_id,
+                                            object_id = request.json['clients_coupon_id'],
+                                            type = "newsfeed",
+                                            notification_date = datetime.now(),
+                                            launcher_id = payload['id'],
+                                            read = False
+                                            )
+                db.session.add(notification)
+                socketio.emit('notification',{'data': 'someone triggered me'},namespace='/app',room=liked_user.user_id)
 
 
             db.session.add(user_like)
-            db.session.add(notification)
             db.session.commit()
             return jsonify({'message': 'El like se asigno con éxito'})
         else:
