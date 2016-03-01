@@ -132,21 +132,13 @@ def get_notifications_offset():
 
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
-@socketio.on('join room', namespace='/app')
+@socketio.on('joinRoom', namespace='/app')
 def on_join_room(message):
     payload = parse_token_socket(message)
     session["id"] = payload["id"]
     room = session["id"]
     join_room(room)
-
-    #notifications = db.engine.execute('SELECT * FROM notifications WHERE user_id = %d AND readed = 0' % (payload['id']))
-
-
-    #notifications_list = notifications_schema.dump(notifications)
-
-    #emit('my response', {'data': notifications_list.data}, broadcast = True)
-    
-    #print room
+    print "Hey dude"
 
 @socketio.on('leave')
 def on_leave(data):
