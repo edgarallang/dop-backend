@@ -50,7 +50,7 @@ def send_notification(event,message,namespace,room):
 
 @notification.route('/test/<int:user_id>', methods=['GET'])
 def test_notification(user_id):
-    socketio.emit('notification',{'data': 'friend'})
+    socketio.emit('notification',{'data': 'friend'}, broadcast = True)
     print("send")
     return jsonify({'data': 'exito'})
 
@@ -156,6 +156,7 @@ def test_message(message):
 
 @socketio.on('connect')
 def test_connect():
+
     print "conectado "
     #emit('my response', {'data': 'Connected'})
 
