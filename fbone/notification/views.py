@@ -135,7 +135,7 @@ def get_notifications_offset():
 
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
-@socketio.on('joinRoom', namespace='/app')
+@socketio.on('joinRoom')
 def on_join_room(message):
     payload = parse_token_socket(message)
     session["id"] = payload["id"]
@@ -148,18 +148,18 @@ def on_leave(data):
     room = session['id']
     leave_room(room)
 
-@socketio.on('notification', namespace='/app')
+@socketio.on('notification')
 def test_message(message):
     emit('my response', {'data': 'data'}, broadcast = True)
     print "test"
     #emit('my response', {'data': message['data']}, broadcast=True)
 
-@socketio.on('connect', namespace='/app')
+@socketio.on('connect')
 def test_connect():
     print "conectado "
     #emit('my response', {'data': 'Connected'})
 
-@socketio.on('disconnect', namespace='/app')
+@socketio.on('disconnect')
 def test_disconnect():
     print('Client disconnected')
  
