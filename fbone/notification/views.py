@@ -44,6 +44,8 @@ def create_token(user):
 
 def send_notification(event,message,namespace,room):
     socketio.emit(event,{'data': message}, namespace='/app', room=liked_user.user_id)
+    
+    return jsonify({'data': 'exito'})
 
 
 @notification.route('/test/<int:user_id>', methods=['GET'])
