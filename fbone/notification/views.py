@@ -46,6 +46,9 @@ def send_notification(event,message,namespace,room):
     socketio.emit(event,{'data': message}, namespace='/app', room=liked_user.user_id)
 
 
+@notification.route('test/<int:user_id>', methods=['GET'])
+def test_notification(user_id):
+    socketio.emit(event,{'data': message}, namespace='/app', room=user_id)
 
 @notification.route('/<int:user_id>/profile/get', methods=['GET'])
 def get_profile(user_id):    
