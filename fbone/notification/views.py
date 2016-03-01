@@ -43,12 +43,14 @@ def create_token(user):
     return token.decode('unicode_escape')
 
 def send_notification(event,message,namespace,room):
+
+
     socketio.emit(event,{'data': message}, namespace='/app', room=liked_user.user_id)
     
 
 @notification.route('/test/<int:user_id>', methods=['GET'])
 def test_notification(user_id):
-    socketio.emit('notification',{'data': 'friend'},namespace='/app',room = user_id)
+    socketio.emit('notification',{'data': 'friend'})
     return jsonify({'data': 'exito'})
 
 @notification.route('/<int:user_id>/profile/get', methods=['GET'])
