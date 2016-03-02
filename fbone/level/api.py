@@ -27,7 +27,7 @@ def levels():
 def set_levels():
     for x in range(1, 51):
       result = int(math.ceil(15 * (math.pow(x, 1.3))))
-      new_level = Level(min_exp = result, badge_id = 0)
+      new_level = Level(min_exp = result, badge_id = 1)
 
       db.session.add(new_level)
 
