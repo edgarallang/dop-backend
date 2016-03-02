@@ -11,7 +11,6 @@ from ..utils import get_current_time, SEX_TYPE, STRING_LEN
 class Level(db.Model):
     __tablename__ = 'levels'
     level_id = Column(db.Integer, primary_key=True)
-    name = Column(db.String(STRING_LEN), nullable=False, unique=True)
     min_exp = Column(db.Integer)
     badge_id = Column(db.Integer, db.ForeignKey('badges.badge_id'),nullable=False)
 
