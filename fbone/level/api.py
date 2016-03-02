@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 import os
 import jwt
 import json
+import math
 import requests
 from flask import Blueprint, render_template, send_from_directory, abort, jsonify
 from flask import current_app as APP
@@ -23,13 +24,12 @@ def levels():
 
 @level.route('/set_levels', methods=['GET'])
 def set_levels():
-	first_flag = 0
-	second_flag = 15
+	for x in range(1, 51):
+      result = int(math.ceil(15 * (math.pow(x, 1.3))))
+      new_level = Level(min_exp = result, badge_id = 0)
 
-	for x in range(0, 20):
+      db.session.add(new_level)
 
-		result = first_flag + second_flag
-		print result
+    db.session.commit()
 
-		first_flag = second_flag
-		second_flag = second_flag + first_flag
+    return jsonify(message = "success")
