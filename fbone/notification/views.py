@@ -48,8 +48,13 @@ def send_notification(event,message,namespace,room):
 
 @notification.route('/test/<int:user_id>', methods=['GET'])
 def test_notification(user_id):
-    socketio.emit('notification',{'data': 'friend'}, broadcast = True)
+    socketio.emit('notification',{'data': 'friend'}, room = user_id)
     print("send")
+    return jsonify({'data': 'exito'})
+
+@notification.route('/test/global', methods=['GET'])
+def test_global_notification(user_id):
+    socketio.emit('notification',{'data': 'friend'}, broadcast = True)
     return jsonify({'data': 'exito'})
 
 @notification.route('/<int:user_id>/profile/get', methods=['GET'])
