@@ -23,6 +23,13 @@ def levels():
 
 @level.route('/set_levels', methods=['GET'])
 def set_levels():
+	first_flag = 0
+	second_flag = 15
 
-	for x in range(0, 19):
-		print x
+	for x in range(0, 20):
+
+		result = first_flag + second_flag
+		print result
+
+		first_flag = second_flag
+		second_flag = second_flag + first_flag
