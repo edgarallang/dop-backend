@@ -24,7 +24,7 @@ def levels():
 
 @level.route('/set_levels', methods=['GET'])
 def set_levels():
-	for x in range(1, 51):
+    for x in range(1, 51):
       result = int(math.ceil(15 * (math.pow(x, 1.3))))
       new_level = Level(min_exp = result, badge_id = 0)
 
