@@ -43,8 +43,6 @@ def create_token(user):
     return token.decode('unicode_escape')
 
 def send_notification(event,message,namespace,room):
-
-
     socketio.emit(event,{'data': message}, namespace='/app', room=liked_user.user_id)
     
 
