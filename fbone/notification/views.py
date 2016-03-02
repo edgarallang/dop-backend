@@ -43,9 +43,16 @@ def create_token(user):
     return token.decode('unicode_escape')
 
 def send_notification(event,message,namespace,room):
+
+
     socketio.emit(event,{'data': message}, namespace='/app', room=liked_user.user_id)
+    
 
-
+@notification.route('/test/<int:user_id>', methods=['GET'])
+def test_notification(user_id):
+    socketio.emit('notification',{'data': 'friend'}, broadcast = True)
+    print("send")
+    return jsonify({'data': 'exito'})
 
 @notification.route('/<int:user_id>/profile/get', methods=['GET'])
 def get_profile(user_id):    
@@ -81,13 +88,12 @@ def get_notifications():
 
         notifications_query = "SELECT notifications.notification_id, notifications.object_id, notifications.type, launcher_user.names AS "+"launcher_name"+",\
                                 launcher_user.surnames AS "+"launcher_surnames"+",launcher_user.user_id AS "+"launcher_id"+",friends.operation_id AS "+"friendship_status"+",\
-                                branches.name AS "+"newsfeed_activity"+", branches.company_id, notifications.read, notifications.notification_date,users_image.main_image AS "+"user_image"+", branches_design.logo AS "+"branch_image"+" FROM notifications\
+                                branches.name AS "+"newsfeed_activity"+", branches.company_id, notifications.read, notifications.notification_date,users_image.main_image AS "+"user_image"+", friends.launcher_user_id AS "+"launcher_friend"+" FROM notifications\
                                 LEFT JOIN clients_coupon ON notifications.object_id = clients_coupon.clients_coupon_id AND notifications.type= 'newsfeed'\
                                 LEFT JOIN coupons ON clients_coupon.coupon_id = coupons.coupon_id\
                                 LEFT JOIN branches ON coupons.branch_id = branches.branch_id\
                                 LEFT JOIN friends ON notifications.object_id = friends.friends_id AND notifications.type= 'friend'\
-                                LEFT JOIN users_image ON notifications.launcher_id = users_image.user_id AND notifications.type= 'friend'\
-                                LEFT JOIN branches_design ON branches.branch_id = branches_design.branch_id AND notifications.type= 'newsfeed'\
+                                LEFT JOIN users_image ON notifications.launcher_id = users_image.user_id\
                                 INNER JOIN users AS launcher_user ON notifications.launcher_id = launcher_user.user_id \
                                 WHERE notifications.user_id = %d ORDER BY notification_date DESC LIMIT 11" % (payload['id'])
 
@@ -112,14 +118,12 @@ def get_notifications_offset():
 
         notifications_query = "SELECT notifications.notification_id,notifications.object_id, notifications.type, launcher_user.names AS "+"launcher_name"+",\
                                 launcher_user.surnames AS "+"launcher_surnames"+",launcher_user.user_id AS "+"launcher_id"+",friends.operation_id AS "+"friendship_status"+",\
-                                branches.name AS "+"newsfeed_activity"+", branches.company_id, notifications.read, notifications.notification_date,users_image.main_image AS "+"user_image"+",\
-                                branches_design.logo AS "+"branch_image"+" FROM notifications\
+                                branches.name AS "+"newsfeed_activity"+", branches.company_id, notifications.read, notifications.notification_date,users_image.main_image AS "+"user_image"+", friends.launcher_user_id AS "+"launcher_friend"+" FROM notifications\
                                 LEFT JOIN clients_coupon ON notifications.object_id = clients_coupon.clients_coupon_id AND notifications.type= 'newsfeed'\
                                 LEFT JOIN coupons ON clients_coupon.coupon_id = coupons.coupon_id\
                                 LEFT JOIN branches ON coupons.branch_id = branches.branch_id\
                                 LEFT JOIN friends ON notifications.object_id = friends.friends_id AND notifications.type= 'friend'\
-                                LEFT JOIN users_image ON notifications.launcher_id = users_image.user_id AND notifications.type= 'friend'\
-                                LEFT JOIN branches_design ON branches.branch_id = branches_design.branch_id AND notifications.type= 'newsfeed'\
+                                LEFT JOIN users_image ON notifications.launcher_id = users_image.user_id \
                                 INNER JOIN users AS launcher_user ON notifications.launcher_id = launcher_user.user_id \
                                 WHERE notifications.user_id = %d ORDER BY notification_date DESC LIMIT 11 OFFSET %s " % (payload['id'], offset)
         notifications = db.engine.execute(notifications_query)
@@ -131,39 +135,32 @@ def get_notifications_offset():
 
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
-@socketio.on('join room', namespace='/app')
+@socketio.on('joinRoom')
 def on_join_room(message):
     payload = parse_token_socket(message)
     session["id"] = payload["id"]
     room = session["id"]
     join_room(room)
-
-    #notifications = db.engine.execute('SELECT * FROM notifications WHERE user_id = %d AND readed = 0' % (payload['id']))
-
-
-    #notifications_list = notifications_schema.dump(notifications)
-
-    #emit('my response', {'data': notifications_list.data}, broadcast = True)
-    
-    #print room
+    print "Hey dude"
 
 @socketio.on('leave')
 def on_leave(data):
     room = session['id']
     leave_room(room)
 
-@socketio.on('notification', namespace='/app')
+@socketio.on('notification')
 def test_message(message):
     emit('my response', {'data': 'data'}, broadcast = True)
     print "test"
     #emit('my response', {'data': message['data']}, broadcast=True)
 
-@socketio.on('connect', namespace='/app')
+@socketio.on('connect')
 def test_connect():
     print "conectado "
+    return jsonify({'message': 'Todo bien'})
     #emit('my response', {'data': 'Connected'})
 
-@socketio.on('disconnect', namespace='/app')
+@socketio.on('disconnect')
 def test_disconnect():
     print('Client disconnected')
  
