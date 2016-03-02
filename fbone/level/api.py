@@ -20,3 +20,9 @@ def levels():
       'lvl': 30
     }
     return jsonify(level=lvl)
+
+@level.route('/set_levels', methods=['GET'])
+def set_levels():
+
+	for x in range(0, 19):
+		print x
