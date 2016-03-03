@@ -74,6 +74,7 @@ class User(db.Model, UserMixin):
     google_key = Column(db.String(STRING_LEN))
     twitter_key = Column(db.String(STRING_LEN))
     privacy_status = Column(db.Integer)
+    level = Column(db.Integer)
     exp = Column(db.Integer)
     #users_image_user_id = db.relationship("UserImage", uselist=False, backref="users")
 
@@ -157,7 +158,8 @@ class UserJoinImage(Schema):
                   'twitter_key',
                   'main_image',
                   'user_image_id',
-                  'privacy_status')
+                  'privacy_status',
+                  'level')
 
 class FriendsSchema(Schema):
     class Meta:
