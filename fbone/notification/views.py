@@ -43,15 +43,18 @@ def create_token(user):
     return token.decode('unicode_escape')
 
 def send_notification(event,message,namespace,room):
-
-
-    socketio.emit(event,{'data': message}, namespace='/app', room=liked_user.user_id)
+    socketio.emit(event,{'data': message}, room=liked_user.user_id)
     
 
 @notification.route('/test/<int:user_id>', methods=['GET'])
 def test_notification(user_id):
-    socketio.emit('notification',{'data': 'friend'}, broadcast = True)
+    socketio.emit('notification',{'data': 'friend'}, room = user_id)
     print("send")
+    return jsonify({'data': 'exito'})
+
+@notification.route('/test/global', methods=['GET'])
+def test_global_notification():
+    socketio.emit('notification',{'data': 'friend'}, broadcast = True)
     return jsonify({'data': 'exito'})
 
 @notification.route('/<int:user_id>/profile/get', methods=['GET'])
@@ -141,7 +144,7 @@ def on_join_room(message):
     session["id"] = payload["id"]
     room = session["id"]
     join_room(room)
-    print "Hey dude"
+    return jsonify({'message': 'Todo bien'})
 
 @socketio.on('leave')
 def on_leave(data):
@@ -151,16 +154,13 @@ def on_leave(data):
 @socketio.on('notification')
 def test_message(message):
     emit('my response', {'data': 'data'}, broadcast = True)
-    print "test"
-    #emit('my response', {'data': message['data']}, broadcast=True)
+    return jsonify({'message': 'Todo bien'})
 
 @socketio.on('connect')
 def test_connect():
-    print "conectado "
     return jsonify({'message': 'Todo bien'})
-    #emit('my response', {'data': 'Connected'})
 
 @socketio.on('disconnect')
 def test_disconnect():
-    print('Client disconnected')
+    return jsonify({'message': 'Todo bien'})
  
