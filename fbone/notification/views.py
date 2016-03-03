@@ -53,7 +53,7 @@ def test_notification(user_id):
     return jsonify({'data': 'exito'})
 
 @notification.route('/test/global', methods=['GET'])
-def test_global_notification(user_id):
+def test_global_notification():
     socketio.emit('notification',{'data': 'friend'}, broadcast = True)
     return jsonify({'data': 'exito'})
 
