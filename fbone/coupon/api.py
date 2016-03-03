@@ -138,9 +138,13 @@ def use_coupon():
         branch_data = branch_schema.dump(branch)
 
         reward = assign_exp(payload['id'], USING)
+        user_level = level_up(payload['id'])
+
         return jsonify({'data': branch_data.data,
-                        'reward': reward
+                        'reward': reward,
+                        'level': user_level
                 })
+
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
 # GET methods

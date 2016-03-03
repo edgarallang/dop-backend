@@ -36,6 +36,15 @@ def create_token(user):
 
     return token.decode('unicode_escape')
 
+def level_up(user_id):
+    user = User.query.get(user_id)
+    for key, val in LEVELS.iteritems():
+        if user.exp >= val:
+            user.level = key
+    return user.level
+
+
+
 @login_required
 def index():
     if not current_user.is_authenticated():
@@ -58,8 +67,8 @@ def get_friends_by_id(userId):
 
 @user.route('/<int:userId>/profile', methods=['GET'])
 def profile(userId):
-    query = "SELECT users.user_id, users.names, users.surnames, users.birth_date, users.facebook_key, users.google_key,\
-                    users.twitter_key,users.privacy_status, users_image.main_image, users_image.user_image_id\
+    query = "SELECT users.user_id, users.names, users.surnames, users.birth_date, users.facebook_key, users.google_key, \
+                    users.twitter_key,users.privacy_status, users_image.main_image, users_image.user_image_id, level \
                     FROM users INNER JOIN users_image ON users.user_id = users_image.user_id\
                     WHERE users.user_id = %d" % (userId)
 
@@ -84,6 +93,8 @@ def facebook_login():
                             surnames = request.json['surnames'],
                             birth_date = request.json['birth_date'],
                             facebook_key = request.json['facebook_key'],
+                            level = 0,
+                            exp = 0,
                             privacy_status = 0)
 
         db.session.add(facebookUser)
@@ -469,6 +480,7 @@ def get_following():
 
         return jsonify({'data': people_list.data})
     return jsonify({'message': 'Oops! algo salió mal'})
+
 
 
         

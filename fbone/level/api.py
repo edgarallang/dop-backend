@@ -23,7 +23,7 @@ def levels():
     }
     return jsonify(level=lvl)
 
-@level.route('/set_levels', methods=['GET'])
+@level.route('/set_level_table', methods=['GET'])
 def set_levels():
     for x in range(1, 51):
       result = int(math.ceil(15 * (math.pow(x, 1.3))))
