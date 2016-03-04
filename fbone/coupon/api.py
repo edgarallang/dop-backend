@@ -90,8 +90,11 @@ def take_coupon():
             user_take.folio = folio
             db.session.commit()
             return jsonify({'message': 'El cupon se tomó con éxito','folio': folio})
+        else:
+            db.session.delete(client_coupon)
+            db.session.commit()
+            return jsonify({'message': 'El coupon se elimino con éxito'})
         return jsonify({'message': 'Ya tomaste este cupón'})
-
 
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
