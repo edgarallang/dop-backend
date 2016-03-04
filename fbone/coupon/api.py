@@ -59,6 +59,7 @@ def level_up(user_id):
     for key, val in LEVELS.iteritems():
         if user.exp >= val:
             user.level = key
+    db.session.commit()
     return user.level
 
 # POST methods
