@@ -74,6 +74,7 @@ class User(db.Model, UserMixin):
     google_key = Column(db.String(STRING_LEN))
     twitter_key = Column(db.String(STRING_LEN))
     privacy_status = Column(db.Integer)
+    level = Column(db.Integer)
     exp = Column(db.Integer)
     #users_image_user_id = db.relationship("UserImage", uselist=False, backref="users")
 
@@ -144,7 +145,9 @@ class UserSchema(Schema):
                   'facebook_key',
                   'google_key',
                   'twitter_key',
-                  'privacy_status')
+                  'privacy_status',
+                  'level',
+                  'exp')
 
 class UserJoinImage(Schema):
     class Meta:
@@ -157,7 +160,9 @@ class UserJoinImage(Schema):
                   'twitter_key',
                   'main_image',
                   'user_image_id',
-                  'privacy_status')
+                  'privacy_status',
+                  'level',
+                  'exp')
 
 class FriendsSchema(Schema):
     class Meta:
@@ -176,7 +181,9 @@ class UserJoinFriends(Schema):
                   'friend',
                   'facebook_key',
                   'privacy_status',
-                  'birth_date')
+                  'birth_date',
+                  'level',
+                  'exp')
 
 class FriendsCountSchema(Schema):
     class Meta:
@@ -196,7 +203,9 @@ class PeopleSchema(Schema):
                   'exp',
                   'user_image_id',
                   'main_image',
-                  'friend')
+                  'friend',
+                  'level',
+                  'exp')
 
 class UserJoinExchanges(Schema):
     class Meta:
