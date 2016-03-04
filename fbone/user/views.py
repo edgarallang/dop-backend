@@ -338,7 +338,7 @@ def delete_friend():
 @user.route('/<int:user_id>/profile/get', methods=['GET'])
 def get_profile(user_id):    
     query = 'SELECT users.names,users.surnames,users.twitter_key, users.facebook_key, users.google_key, users.user_id,\
-                    users.birth_date, users_image.main_image FROM users\
+                    users.birth_date, users_image.main_image FROM users, level\
              INNER JOIN users_image ON users.user_id = users_image.user_id WHERE users.user_id = %d' % user_id
 
     friends = db.engine.execute(query)
