@@ -146,7 +146,8 @@ class UserSchema(Schema):
                   'google_key',
                   'twitter_key',
                   'privacy_status',
-                  'level')
+                  'level',
+                  'exp')
 
 class UserJoinImage(Schema):
     class Meta:
@@ -160,7 +161,8 @@ class UserJoinImage(Schema):
                   'main_image',
                   'user_image_id',
                   'privacy_status',
-                  'level')
+                  'level',
+                  'exp')
 
 class FriendsSchema(Schema):
     class Meta:
@@ -180,7 +182,8 @@ class UserJoinFriends(Schema):
                   'facebook_key',
                   'privacy_status',
                   'birth_date',
-                  'level')
+                  'level',
+                  'exp')
 
 class FriendsCountSchema(Schema):
     class Meta:
@@ -201,7 +204,8 @@ class PeopleSchema(Schema):
                   'user_image_id',
                   'main_image',
                   'friend',
-                  'level')
+                  'level',
+                  'exp')
 
 class UserJoinExchanges(Schema):
     class Meta:
