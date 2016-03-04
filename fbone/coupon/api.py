@@ -54,6 +54,13 @@ def create_coupon(request):
 
         return "OK si se creo el cupon despues del pago"
 
+def level_up(user_id):
+    user = User.query.get(user_id)
+    for key, val in LEVELS.iteritems():
+        if user.exp >= val:
+            user.level = key
+    return user.level
+
 # POST methods
 
 @coupon.route('/user/take',methods=['POST'])
