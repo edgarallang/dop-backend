@@ -436,7 +436,7 @@ def get_trending_coupons():
                                         coupons.branch_id = branches_design.branch_id \
                                         INNER JOIN branches ON coupons.branch_id = branches.branch_id \
                                         INNER JOIN branches_location on coupons.branch_id = branches_location.branch_id \
-                                        WHERE deleted = false ORDER BY total_value DESC LIMIT 8' % user_id, user_id)
+                                        WHERE deleted = false ORDER BY total_value DESC LIMIT 8' % (user_id, user_id))
 
 
         selected_list_coupon = trending_coupon_schema.dump(list_coupon)
