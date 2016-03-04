@@ -181,7 +181,8 @@ class TrendingCouponSchema(Schema):
                   'latitude',
                   'longitude',
                   'banner',
-                  'available')
+                  'available',
+                  'taken')
 
 class NearestCouponSchema(Schema):
     class Meta:
