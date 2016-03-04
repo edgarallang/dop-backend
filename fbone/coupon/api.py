@@ -424,6 +424,7 @@ def get_trending_coupons():
     if request.headers.get('Authorization'):
         token_index = True
         payload = parse_token(request, token_index)
+        user_id = payload['id']
 
         list_coupon = db.engine.execute('SELECT *,\
                                         (SELECT COUNT(*) FROM coupons_likes  WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes, \
@@ -435,7 +436,7 @@ def get_trending_coupons():
                                         coupons.branch_id = branches_design.branch_id \
                                         INNER JOIN branches ON coupons.branch_id = branches.branch_id \
                                         INNER JOIN branches_location on coupons.branch_id = branches_location.branch_id \
-                                        WHERE deleted = false ORDER BY total_value DESC LIMIT 8' % payload['id'], payload['id'])
+                                        WHERE deleted = false ORDER BY total_value DESC LIMIT 8' % user_id, user_id)
 
 
         selected_list_coupon = trending_coupon_schema.dump(list_coupon)
