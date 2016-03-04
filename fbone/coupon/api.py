@@ -56,7 +56,7 @@ def create_coupon(request):
 
 def level_up(user_id):
     user = User.query.get(user_id)
-    print user_id, user
+    print user_id, user.exp
     for key, val in LEVELS.iteritems():
         if user.exp >= val:
             user.level = key
