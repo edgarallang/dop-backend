@@ -38,7 +38,8 @@ class Notifications(Schema):
                   'user_image',
                   'company_id',
                   'object_id',
-                  'launcher_friend')
+                  'launcher_friend',
+                  'branch_id')
 
 
 notifications_schema = Notifications(many=True)
