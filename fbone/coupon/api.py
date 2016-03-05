@@ -56,9 +56,12 @@ def create_coupon(request):
 
 def level_up(user_id):
     user = User.query.get(user_id)
+    print user_id, user.exp
     for key, val in LEVELS.iteritems():
         if user.exp >= val:
             user.level = key
+            print user.level
+    db.session.commit()
     return user.level
 
 # POST methods
