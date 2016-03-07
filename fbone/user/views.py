@@ -259,30 +259,31 @@ def accept_friend():
 
         friendsRelationship = Friends.query.get(request.json['friends_id'])
 
-        friendsRelationship.operation_id = 1
-        #friendsRelationship.launcher_user_id = user_id
+        if friendsRelationship.operation_id != 1
+            friendsRelationship.operation_id = 1
+            #friendsRelationship.launcher_user_id = user_id
 
-        db.session.commit()
+            db.session.commit()
 
-        notification = Notification.query.filter_by(notification_id=request.json['notification_id']).first()
-        notification.notification_date = today
+            notification = Notification.query.filter_by(notification_id=request.json['notification_id']).first()
+            notification.notification_date = today
 
-        db.session.commit()
+            db.session.commit()
 
-        notification = Notification(user_id = friendsRelationship.user_one_id,
-                                        object_id = friendsRelationship.friends_id,
-                                        type = "friend",
-                                        notification_date = today,
-                                        launcher_id = user_id,
-                                        read = False
-                                        )
-        db.session.add(notification)
-        db.session.commit()
+            notification = Notification(user_id = friendsRelationship.user_one_id,
+                                            object_id = friendsRelationship.friends_id,
+                                            type = "friend",
+                                            notification_date = today,
+                                            launcher_id = user_id,
+                                            read = False
+                                            )
+            db.session.add(notification)
+            db.session.commit()
 
-        socketio.emit('notification',{'data': 'someone triggered me'},room = friendsRelationship.user_one_id)
+            socketio.emit('notification',{'data': 'someone triggered me'},room = friendsRelationship.user_one_id)
 
-        return jsonify({'data': 'Agregado correctamente'})
-
+            return jsonify({'data': 'Agregado correctamente'})
+        return jsonify({'message': 'Oops! algo salió mal :('})
     return jsonify({'message': 'Oops! algo salió mal :('})
 
 @user.route('/friends/decline', methods=['PUT'])
