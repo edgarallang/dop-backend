@@ -387,7 +387,7 @@ def get_coupons_activity_by_user_likes():
                                     INNER JOIN branches ON coupons.branch_id = branches.branch_id \
                                     INNER JOIN branches_design ON coupons.branch_id = branches_design.branch_id \
                                     WHERE users.user_id = %s AND clients_coupon.used = true AND clients_coupon.private = false \
-                                    ORDER BY used_date DESC LIMIT %s OFFSET 0' % (user_profile_id, user_profile_id, limit))
+                                    ORDER BY used_date DESC LIMIT %s OFFSET 0' % (payload['id'], user_profile_id, limit))
 
         users_list = user_join_activity_newsfeed.dump(users)
         return jsonify({'data': users_list.data})
