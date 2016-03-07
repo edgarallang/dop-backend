@@ -355,7 +355,7 @@ def search_people():
 
         payload = parse_token(request, token_index)
         #list_coupon = db.engine.execute(query)
-        people = db.engine.execute("SELECT *, \
+        people = db.engine.execute("SELECT DISTINCT *, \
                                     (SELECT EXISTS (SELECT * FROM friends \
                                         WHERE friends.user_one_id = %d and friends.user_two_id = users.user_id)::bool) AS friend \
                                     FROM users \
