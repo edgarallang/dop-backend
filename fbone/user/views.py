@@ -259,7 +259,7 @@ def accept_friend():
 
         friendsRelationship = Friends.query.get(request.json['friends_id'])
 
-        if friendsRelationship.operation_id != 1
+        if friendsRelationship.operation_id != 1:
             friendsRelationship.operation_id = 1
             #friendsRelationship.launcher_user_id = user_id
 
