@@ -233,7 +233,7 @@ def add_friend():
             db.session.add(notification)
             db.session.commit()
 
-            socketio.emit('notification',{'data': 'friend'},room = user_to_add)
+            socketio.emit('notification',{'data': 'friend'}, room = user_to_add)
 
             return jsonify({'message': 'Agregado correctamente'})
         else:
@@ -243,7 +243,7 @@ def add_friend():
                 friendshipExist.operation_id = 0
             
             db.session.commit()
-            socketio.emit('notification',{'data': 'someone triggered me'},room = user_to_add)
+            socketio.emit('notification',{'data': 'someone triggered me'}, room = user_to_add)
 
         return jsonify({'message': 'registro existente'})
     return jsonify({'message': 'Oops! algo salió mal :('})
