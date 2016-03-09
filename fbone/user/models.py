@@ -249,7 +249,7 @@ class UserActivityNewsfeed(Schema):
 
 user_schema = UserSchema(many=True)
 user_joined_schema = UserJoinImage(many=True)
-friends_schema = FriendsSchema(many=True)
+friends_schema = FriendsSchema()
 user_join_friends = UserJoinFriends(many=True)
 user_join_exchanges_coupon_schema = UserJoinExchanges(many=True)
 user_join_activity_newsfeed = UserActivityNewsfeed(many=True)
