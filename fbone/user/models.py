@@ -168,8 +168,8 @@ class FriendsSchema(Schema):
     class Meta:
         fields = ('user_one_id',
                   'user_two_id',
-                  'status',
-                  'action_user_id')
+                  'operation_id',
+                  'launcher_user_id')
 
 class UserJoinFriends(Schema):
     class Meta:
