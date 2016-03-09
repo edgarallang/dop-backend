@@ -231,6 +231,7 @@ def add_friend():
                                         read = False )
             db.session.add(notification)
             db.session.commit()
+            
             friend_data = friends_schema.dump(friendsRelationship)
             socketio.emit('notification',{'data': 'friend'}, room = user_to_add)
 
