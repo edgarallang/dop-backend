@@ -260,30 +260,31 @@ def accept_friend():
 
         friendsRelationship = Friends.query.get(request.json['friends_id'])
 
-        friendsRelationship.operation_id = 1
-        #friendsRelationship.launcher_user_id = user_id
+        if friendsRelationship.operation_id != 1:
+            friendsRelationship.operation_id = 1
+            #friendsRelationship.launcher_user_id = user_id
 
-        db.session.commit()
+            db.session.commit()
 
-        notification = Notification.query.filter_by(notification_id=request.json['notification_id']).first()
-        notification.notification_date = today
+            notification = Notification.query.filter_by(notification_id=request.json['notification_id']).first()
+            notification.notification_date = today
 
-        db.session.commit()
+            db.session.commit()
 
-        notification = Notification(user_id = friendsRelationship.user_one_id,
-                                        object_id = friendsRelationship.friends_id,
-                                        type = "friend",
-                                        notification_date = today,
-                                        launcher_id = user_id,
-                                        read = False
-                                        )
-        db.session.add(notification)
-        db.session.commit()
+            notification = Notification(user_id = friendsRelationship.user_one_id,
+                                            object_id = friendsRelationship.friends_id,
+                                            type = "friend",
+                                            notification_date = today,
+                                            launcher_id = user_id,
+                                            read = False
+                                            )
+            db.session.add(notification)
+            db.session.commit()
 
-        socketio.emit('notification',{'data': 'someone triggered me'},room = friendsRelationship.user_one_id)
+            socketio.emit('notification',{'data': 'someone triggered me'},room = friendsRelationship.user_one_id)
 
-        return jsonify({'data': 'Agregado correctamente'})
-
+            return jsonify({'data': 'Agregado correctamente'})
+        return jsonify({'message': 'Oops! algo salió mal :('})
     return jsonify({'message': 'Oops! algo salió mal :('})
 
 @user.route('/friends/decline', methods=['PUT'])
@@ -355,7 +356,7 @@ def search_people():
 
         payload = parse_token(request, token_index)
         #list_coupon = db.engine.execute(query)
-        people = db.engine.execute("SELECT *, \
+        people = db.engine.execute("SELECT DISTINCT *, \
                                     (SELECT EXISTS (SELECT * FROM friends \
                                         WHERE friends.user_one_id = %d and friends.user_two_id = users.user_id)::bool) AS friend \
                                     FROM users \
@@ -387,7 +388,7 @@ def get_coupons_activity_by_user_likes():
                                     INNER JOIN branches ON coupons.branch_id = branches.branch_id \
                                     INNER JOIN branches_design ON coupons.branch_id = branches_design.branch_id \
                                     WHERE users.user_id = %s AND clients_coupon.used = true AND clients_coupon.private = false \
-                                    ORDER BY used_date DESC LIMIT %s OFFSET 0' % (user_profile_id, user_profile_id, limit))
+                                    ORDER BY used_date DESC LIMIT %s OFFSET 0' % (payload['id'], user_profile_id, limit))
 
         users_list = user_join_activity_newsfeed.dump(users)
         return jsonify({'data': users_list.data})
