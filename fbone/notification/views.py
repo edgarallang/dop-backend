@@ -140,11 +140,11 @@ def get_notifications_offset():
 
 @socketio.on('joinRoom')
 def on_join_room(message):
-    #payload = parse_token_socket(message)
-    #session["id"] = payload["id"]
-    #room = session["id"]
-    #join_room(room)
-    emit('my response', {'data': 'Joined to room'}, broadcast = True)
+    payload = parse_token_socket(message)
+    session["id"] = payload["id"]
+    room = session["id"]
+    join_room(room)
+    emit('my response', {'data': 'Joined to room'}, room = room)
     return jsonify({'message': 'Todo bien'})
 
 @socketio.on('leave')
