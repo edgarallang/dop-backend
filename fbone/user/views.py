@@ -359,7 +359,7 @@ def search_people():
         #list_coupon = db.engine.execute(query)
         people = db.engine.execute("SELECT DISTINCT *, \
                                     (SELECT EXISTS (SELECT * FROM friends \
-                                        WHERE friends.user_one_id = %d and friends.user_two_id = users.user_id)::bool) AS friend \
+                                        WHERE friends.user_one_id = %d and friends.user_two_id = users.user_id AND friends.operation_id = 1)::bool) AS friend \
                                     FROM users \
                                     INNER JOIN users_image on users.user_id = users_image.user_id \
                                     LEFT JOIN friends ON user_one_id = %d AND user_two_id = users.user_id \
