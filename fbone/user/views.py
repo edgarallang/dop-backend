@@ -362,7 +362,8 @@ def search_people():
                                         WHERE friends.user_one_id = %d and friends.user_two_id = users.user_id)::bool) AS friend \
                                     FROM users \
                                     INNER JOIN users_image on users.user_id = users_image.user_id \
-                                    WHERE users.names ILIKE '%s' OR users.surnames ILIKE '%s' " % (payload['id'], '%%' + text + '%%', '%%' + text + '%%'))
+                                    LEFT JOIN friends ON user_one_id = %d AND user_two_id = users.user_id \
+                                    WHERE users.names ILIKE '%s' OR users.surnames ILIKE '%s' " % (payload['id'], payload['id'], '%%' + text + '%%', '%%' + text + '%%'))
         
         selected_list_people = people_schema.dump(people, many=True)
         # pprint(selected_list_people, indent = 2)
