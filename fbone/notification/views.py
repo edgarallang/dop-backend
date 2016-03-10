@@ -144,6 +144,7 @@ def on_join_room(message):
     #session["id"] = payload["id"]
     #room = session["id"]
     #join_room(room)
+    emit('my response', {'data': 'Joined to room'}, broadcast = True)
     return jsonify({'message': 'Todo bien'})
 
 @socketio.on('leave')
