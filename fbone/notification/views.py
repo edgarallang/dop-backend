@@ -158,7 +158,7 @@ def test_message(message):
 
 @socketio.on('connect')
 def test_connect():
-    return "Hola"
+    return jsonify({'message': 'Todo bien'})
 
 @socketio.on('disconnect')
 def test_disconnect():
