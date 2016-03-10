@@ -698,7 +698,7 @@ def like_used_coupon():
                                             read = False
                                             )
                 db.session.add(notification)
-                socketio.emit('notification',{'data': 'someone triggered me'},namespace='/app',room=liked_user.user_id)
+                socketio.emit('notification',{'data': 'someone triggered me'},room=liked_user.user_id)
 
 
             db.session.add(user_like)

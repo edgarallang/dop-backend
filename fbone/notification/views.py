@@ -159,7 +159,7 @@ def test_message(message):
 
 @socketio.on('connect')
 def test_connect():
-    emit('my response', {'data': 'Connected'})
+    return jsonify({'message': 'Todo bien'})
 
 @socketio.on('disconnect')
 def test_disconnect():
