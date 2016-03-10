@@ -228,14 +228,15 @@ def add_friend():
                                         type = "friend",
                                         notification_date = datetime.now(),
                                         launcher_id = user_id,
-                                        read = False
-                                        )
+                                        read = False )
             db.session.add(notification)
             db.session.commit()
+            
+            friend_data = friends_schema.dump(friendsRelationship)
+            socketio.emit('notification',{'data': 'friend'}, room = user_to_add)
 
-            socketio.emit('notification',{'data': 'friend'},room = user_to_add)
-
-            return jsonify({'message': 'Agregado correctamente'})
+            return jsonify({ 'data': friend_data.data,
+                             'message': 'Agregado correctamente' })
         else:
             if user_two.privacy_status == 0:
                 friendshipExist.operation_id = 1
@@ -243,9 +244,10 @@ def add_friend():
                 friendshipExist.operation_id = 0
             
             db.session.commit()
-            socketio.emit('notification',{'data': 'someone triggered me'},room = user_to_add)
-
-        return jsonify({'message': 'registro existente'})
+            socketio.emit('notification',{'data': 'someone triggered me'}, room = user_to_add)
+        friend_data = friends_schema.dump(friendshipExist)
+        return jsonify({ 'data': friend_data.data,
+                         'message': 'registro existente'})
     return jsonify({'message': 'Oops! algo salió mal :('})
 
 @user.route('/friends/accept', methods=['POST'])
