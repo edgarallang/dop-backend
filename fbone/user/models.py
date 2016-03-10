@@ -205,7 +205,8 @@ class PeopleSchema(Schema):
                   'main_image',
                   'friend',
                   'level',
-                  'exp')
+                  'exp',
+                  'operation_id')
 
 class UserJoinExchanges(Schema):
     class Meta:
