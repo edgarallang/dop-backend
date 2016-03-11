@@ -293,7 +293,7 @@ def get_all_taken_coupon_for_user():
     selected_list_coupon = coupons_taken_schema.dump(list_coupon)
     return jsonify({'data': selected_list_coupon.data})
 
-@coupon.route('/all/taken/for/user/offset/get/', methods = ['POST'])
+@coupon.route('/all/taken/for/user/offset/get', methods = ['POST'])
 def get_all_taken_coupon_for_user_offset():
     token_index = True
     offset = request.json['offset']
