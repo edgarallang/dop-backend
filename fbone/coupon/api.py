@@ -296,7 +296,7 @@ def get_all_taken_coupon_for_user():
 @coupon.route('/all/taken/for/user/offset/get', methods = ['POST'])
 def get_all_taken_coupon_for_user_offset():
     if request.headers.get('Authorization'):
-
+        '''
         token_index = True
         offset = request.json['offset']
         taken_date = request.json['taken_date']
@@ -324,6 +324,8 @@ def get_all_taken_coupon_for_user_offset():
 
         selected_list_coupon = coupons_taken_schema.dump(list_coupon)
         return jsonify({'data': selected_list_coupon.data})
+        '''
+        return jsonify({'data':'hola'})
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
 @coupon.route('/all/used/for/user/get/', methods = ['GET'])
