@@ -305,7 +305,7 @@ def get_all_taken_coupon_for_user_offset():
 
         list_coupon_query = 'SELECT coupons.coupon_id, branches.branch_id, company_id, branches.name, coupon_folio, description, start_date, \
                                                 end_date, coupons.limit, min_spent, coupon_category_id, logo, branches_location.latitude, branches_location.longitude, \
-                                                banner, category_id, available, \
+                                                banner, category_id, available, clients_coupon.taken_date, \
                                         (SELECT COUNT(*)  FROM coupons_likes \
                                             WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes, \
                                         (SELECT COUNT(*)  FROM coupons_likes \
