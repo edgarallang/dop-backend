@@ -316,7 +316,7 @@ def get_all_taken_coupon_for_user_offset():
                                     JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.branch_id \
                                     JOIN subcategory ON subcategory.subcategory_id = branches_subcategory.subcategory_id WHERE used = false \
                                     AND users.user_id = %d \
-                                    AND deleted = false AND clients_coupon.taken_date < %s ORDER BY start_date DESC LIMIT 6 OFFSET %s' % (payload['id'], payload['id'], taken_date,offset))
+                                    AND deleted = false AND clients_coupon.taken_date < %s ORDER BY clients_coupon.taken_date DESC LIMIT 6 OFFSET %s' % (payload['id'], payload['id'], taken_date,offset))
 
 
 
