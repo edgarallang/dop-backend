@@ -170,15 +170,15 @@ def like_branch():
         if not branchFollower:
             branch_follower = BranchesFollower(branch_id = request.json['branch_id'],
                                       user_id = payload['id'],
-                                      date = request.json['date'])
+                                      date = datetime.now())
 
             db.session.add(branch_follower)
             db.session.commit()
-            return jsonify({'message': 'El like se asigno con éxito'})
+            return jsonify({'data': 'following'})
         else:
             db.session.delete(branchFollower)
             db.session.commit()
-            return jsonify({'message': 'El like se elimino con éxito'})
+            return jsonify({'data': 'unfollowing'})
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
 @company.route('/branch/<int:user_id>/following/get',methods=['GET'])
