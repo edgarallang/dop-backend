@@ -229,18 +229,18 @@ def get_all_coupon_for_user():
                                     INNER JOIN branches_location on coupons.branch_id = branches_location.branch_id \
                                     JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.branch_id \
                                     JOIN subcategory ON subcategory.subcategory_id = branches_subcategory.subcategory_id \
-                                    WHERE deleted = false ORDER BY coupons.coupon_id DESC LIMIT %s OFFSET 0' % (payload['id'], payload['id'], limit))
+                                    WHERE deleted = false ORDER BY coupons.start_date DESC LIMIT %s OFFSET 0' % (payload['id'], payload['id'], limit))
 
 
     selected_list_coupon = coupons_logo_schema.dump(list_coupon)
     pprint(selected_list_coupon)
     return jsonify({'data': selected_list_coupon.data})
 
-@coupon.route('/all/for/user/offset/get/', methods = ['GET'])
+@coupon.route('/all/for/user/offset/get/', methods = ['POST'])
 def get_all_coupon_for_user_offset():
     token_index = True
-    offset = request.args.get('offset')
-    coupon_id = request.args.get('coupon_id')
+    offset = request.json['offset']
+    start_date = request.json['start_date']
     payload = parse_token(request, token_index)
 
     list_coupon = db.engine.execute('SELECT coupon_id, branches.branch_id, company_id, branches.name, coupon_folio, description, start_date, \
@@ -257,7 +257,7 @@ def get_all_coupon_for_user_offset():
                                     INNER JOIN branches_location on coupons.branch_id = branches_location.branch_id \
                                     JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.branch_id \
                                     JOIN subcategory ON subcategory.subcategory_id = branches_subcategory.subcategory_id \
-                                    WHERE deleted = false AND coupons.coupon_id < %s ORDER BY coupons.coupon_id DESC LIMIT 6 OFFSET %s' % (payload['id'], payload['id'], coupon_id,offset))
+                                    WHERE deleted = false AND coupons.start_date <= %s ORDER BY coupons.coupon_id DESC LIMIT 6 OFFSET %s' % (payload['id'], payload['id'],"'"+start_date+"'",offset))
 
     
     selected_list_coupon = coupons_logo_schema.dump(list_coupon)
