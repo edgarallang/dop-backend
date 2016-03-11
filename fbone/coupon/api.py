@@ -296,12 +296,12 @@ def get_all_taken_coupon_for_user():
 @coupon.route('/all/taken/for/user/offset/get', methods = ['POST'])
 def get_all_taken_coupon_for_user_offset():
     if request.headers.get('Authorization'):
-        '''
+        
         token_index = True
         offset = request.json['offset']
         taken_date = request.json['taken_date']
         payload = parse_token(request, token_index)
-
+        '''
         list_coupon = db.engine.execute('SELECT coupons.coupon_id, branches.branch_id, company_id, branches.name, coupon_folio, description, start_date, \
                                                 end_date, coupons.limit, min_spent, coupon_category_id, logo, branches_location.latitude, branches_location.longitude, \
                                                 banner, category_id, available, \
