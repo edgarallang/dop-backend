@@ -236,7 +236,7 @@ def get_all_coupon_for_user():
     pprint(selected_list_coupon)
     return jsonify({'data': selected_list_coupon.data})
 
-@coupon.route('/all/for/user/offset/get/', methods = ['POST'])
+@coupon.route('/all/for/user/offset/get', methods = ['POST'])
 def get_all_coupon_for_user_offset():
     token_index = True
     offset = request.json['offset']
