@@ -328,7 +328,7 @@ def delete_friend():
         payload = parse_token(request, True)
         user_to_unfollow = User.query.get(request.json['user_two_id'])
 
-        friendsRelationship = Friends.query.filter((Friends.user_one_id == payload['id']) & (Friends.user_two_id == request.json['user_id'])).first()
+        friendsRelationship = Friends.query.filter((Friends.user_one_id == payload['id']) & (Friends.user_two_id == request.json['user_two_id'])).first()
         friendsRelationship.operation_id = 4
         
         db.session.commit()
