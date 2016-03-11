@@ -322,7 +322,7 @@ def block_friend():
 
     return jsonify({'message': 'Oops! algo salió mal :('})
 
-@user.route('/friends/unfollow', methods=['PUT'])
+@user.route('/friends/unfollow', methods=['POST'])
 def delete_friend():
     if request.headers.get('Authorization'):
         payload = parse_token(request, True)
