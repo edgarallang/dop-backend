@@ -322,14 +322,13 @@ def block_friend():
 
     return jsonify({'message': 'Oops! algo salió mal :('})
 
-@user.route('/friends/delete', methods=['PUT'])
+@user.route('/friends/unfollow', methods=['PUT'])
 def delete_friend():
     if request.headers.get('Authorization'):
         payload = parse_token(request, True)
-        action_user = User.query.get(payload['id']).user_id
-        user_to_delete = User.query.get(request.json['friends_id'])
+        user_to_unfollow = User.query.get(request.json['user_two_id'])
 
-        friendsRelationship = Friends.query.filter((Friends.user_one_id == action_user) & (Friends.user_two_id == request.json['friends_id'])).first()
+        friendsRelationship = Friends.query.filter((Friends.user_one_id == payload['id']) & (Friends.user_two_id == request.json['user_id'])).first()
         friendsRelationship.operation_id = 4
         
         db.session.commit()
