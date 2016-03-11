@@ -159,7 +159,8 @@ class CouponsTakenSchema(Schema):
                   'longitude',
                   'banner',
                   'category_id',
-                  'available')
+                  'available',
+                  'taken_date')
 
 
 class TrendingCouponSchema(Schema):
