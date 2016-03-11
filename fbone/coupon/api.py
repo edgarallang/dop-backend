@@ -243,7 +243,7 @@ def get_all_coupon_for_user_offset():
     start_date = request.json['start_date']
     payload = parse_token(request, token_index)
 
-    list_coupon = db.engine.execute('SELECT DISTINCT coupon_id, branches.branch_id, company_id, branches.name, coupon_folio, description, start_date, \
+    list_coupon = db.engine.execute('SELECT coupon_id, branches.branch_id, company_id, branches.name, coupon_folio, description, start_date, \
                                             end_date, coupons.limit, min_spent, coupon_category_id, logo, latitude, longitude, banner, category_id, available, \
                                     (SELECT EXISTS (SELECT * FROM clients_coupon \
                                         WHERE USER_id = %d AND clients_coupon.coupon_id = coupons.coupon_id AND used = false)::bool) AS taken, \
