@@ -293,11 +293,11 @@ def get_all_taken_coupon_for_user():
     selected_list_coupon = coupons_taken_schema.dump(list_coupon)
     return jsonify({'data': selected_list_coupon.data})
 
-@coupon.route('/all/taken/for/user/offset/get/', methods = ['GET'])
+@coupon.route('/all/taken/for/user/offset/get/', methods = ['POST'])
 def get_all_taken_coupon_for_user_offset():
     token_index = True
-    offset = request.args.get('offset')
-    taken_date = request.args.get('taken_date')
+    offset = request.json['offset']
+    taken_date = request.json['taken_date']
     payload = parse_token(request, token_index)
 
     list_coupon = db.engine.execute('SELECT coupons.coupon_id, branches.branch_id, company_id, branches.name, coupon_folio, description, start_date, \
