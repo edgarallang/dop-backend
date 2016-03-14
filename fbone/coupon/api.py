@@ -740,6 +740,22 @@ def like_coupon():
             return jsonify({'message': 'El like se elimino con éxito'})
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
+@coupon.route('/<int:coupon_id>/view', methods=['POST'])
+def add_view(coupon_id):
+    if request.headers.get('Authorization'):
+        token_index = True
+        payload = parse_token(request, token_index)
+
+        coupon = Coupons.query.get(coupon_id)
+        coupon.views = coupon.views + 1
+
+        db.session.commit()
+
+        return jsonify({'message': 'vistas actualizada'})
+    return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
+
+
+
 @coupon.route('/customize', methods=['POST'])
 def custom_coupon():
     if request.headers.get('Authorization'):
