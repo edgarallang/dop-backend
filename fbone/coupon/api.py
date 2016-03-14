@@ -747,7 +747,7 @@ def add_view():
         payload = parse_token(request, token_index)
 
         coupon_id = request.json['coupon_id']
-        coupon = Coupons.query.get(coupon_id)
+        coupon = Coupon.query.get(coupon_id)
         coupon.views = coupon.views + 1
 
         db.session.commit()
