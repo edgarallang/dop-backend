@@ -250,7 +250,8 @@ class RankingUsersSchema(Schema):
                   'main_image',
                   'total_used',
                   'exp',
-                  'level')
+                  'level',
+                  'is_friend')
 
 company_schema = CompanySchema()
 companies_schema = CompanySchema(many=True)
