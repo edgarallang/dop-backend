@@ -325,7 +325,7 @@ def branch_ranking(branch_id):
                        INNER JOIN coupons ON clients_coupon.coupon_id = coupons.coupon_id \
                        WHERE users.user_id = clients_coupon.user_id AND used = TRUE AND coupons.branch_id = %d) AS total_used, \
                        (SELECT EXISTS (SELECT * FROM friends \
-                                        WHERE friends.user_one_id = %d and friends.user_two_id = users.user_id AND friends.operation_id = 1)::bool) AS friend \
+                                        WHERE friends.user_one_id = %d and friends.user_two_id = users.user_id AND friends.operation_id = 1)::bool) AS is_friend \
                     FROM users JOIN (SELECT DISTINCT ON (user_id) * FROM clients_coupon ORDER BY user_id) AS client ON users.user_id = client.user_id \
                                JOIN users_image ON users.user_id = users_image.user_id \
                 ORDER BY total_used DESC LIMIT 20' % (branch_id, payload['id'])
