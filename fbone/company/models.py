@@ -251,7 +251,8 @@ class RankingUsersSchema(Schema):
                   'total_used',
                   'exp',
                   'level',
-                  'is_friend')
+                  'is_friend',
+                  'operation_id')
 
 company_schema = CompanySchema()
 companies_schema = CompanySchema(many=True)
