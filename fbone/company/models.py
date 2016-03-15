@@ -248,7 +248,9 @@ class RankingUsersSchema(Schema):
                   'privacy_status',
                   'user_id',
                   'main_image',
-                  'total_used')
+                  'total_used',
+                  'exp',
+                  'level')
 
 company_schema = CompanySchema()
 companies_schema = CompanySchema(many=True)
