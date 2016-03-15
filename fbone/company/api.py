@@ -318,14 +318,17 @@ def dashboard_branches():
 def branch_ranking(branch_id):
     if request.headers.get('Authorization'):
         token_index = True
+        payload = parse_token(request, token_index)
 
         query = 'SELECT DISTINCT users.*, client.clients_coupon_id, users_image.main_image, \
                     (SELECT COUNT(*) FROM clients_coupon \
                        INNER JOIN coupons ON clients_coupon.coupon_id = coupons.coupon_id \
                        WHERE users.user_id = clients_coupon.user_id AND used = TRUE AND coupons.branch_id = %d) AS total_used \
+                       (SELECT EXISTS (SELECT * FROM friends \
+                                        WHERE friends.user_one_id = %d and friends.user_two_id = users.user_id AND friends.operation_id = 1)::bool) AS friend \
                     FROM users JOIN (SELECT DISTINCT ON (user_id) * FROM clients_coupon ORDER BY user_id) AS client ON users.user_id = client.user_id \
                                JOIN users_image ON users.user_id = users_image.user_id \
-                ORDER BY total_used DESC LIMIT 20' % (branch_id)
+                ORDER BY total_used DESC LIMIT 20' % (branch_id, payload['id'])
 
         ranking_users = db.engine.execute(query)
         ranking_users_list = ranking_users_schema.dump(ranking_users).data
