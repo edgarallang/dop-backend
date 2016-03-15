@@ -354,6 +354,20 @@ class UserActivityNewsfeed(Schema):
                   'user_like',
                   'used_date')
 
+class CouponsViews(Schema):
+    class Meta:
+        fields = ('coupon_id',
+                  'coupon_folio',
+                  'name',
+                  'description',
+                  'start_date',
+                  'end_date',
+                  'limit',
+                  'min_spent',
+                  'available',
+                  'views',
+                  'total_likes')
+
 coupon_schema = CouponSchema()
 coupons_schema = CouponSchema(many=True)
 
@@ -380,7 +394,7 @@ coupons_likes_schema = CouponLike(many=True)
 coupons_taken_schema = CouponsTakenSchema(many=True)
 
 coupons_location_schema = CouponsLocation(many=True)
-
+coupons_views_schema = CouponsViews(many=True)
 
 
 
