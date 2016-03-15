@@ -481,6 +481,20 @@ def get_almost_expired_coupons():
         return jsonify({'data': selected_list_coupon.data})
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
+@coupon.route('/latest/stats/<int:branch_id>', methods=['GET'])
+def coupon_stats(branch_id):
+    list_coupon = db.engine.execute('SELECT coupon_id, coupon_folio,coupons.name, description, start_date, \
+                                            end_date, coupons.limit, min_spent, coupon_category_id, logo, banner, category_id, available,views,  \
+                                    (SELECT COUNT(*)  FROM coupons_likes   \
+                                        WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes   \
+                                    FROM coupons INNER JOIN branches_design ON   \
+                                    coupons.branch_id = branches_design.branch_id   \
+                                    JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.branch_id   \
+                                    JOIN subcategory ON subcategory.subcategory_id = branches_subcategory.subcategory_id   \
+                                    WHERE coupons.branch_id = 4 AND deleted = false AND coupons.end_date>now() ORDER BY start_date DESC LIMIT 4')
+    stats_list_coupon = coupons_views_schema.dump(list_coupon)
+    return jsonify({'data': stats_list_coupon.data})
+
 @coupon.route('/nearest/get/', methods=['GET', 'POST'])
 def nearest_coupons():
     latitude = request.args.get('latitude')
