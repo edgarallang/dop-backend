@@ -491,7 +491,7 @@ def coupon_stats(branch_id):
                                     coupons.branch_id = branches_design.branch_id   \
                                     JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.branch_id   \
                                     JOIN subcategory ON subcategory.subcategory_id = branches_subcategory.subcategory_id   \
-                                    WHERE coupons.branch_id = 4 AND deleted = false AND coupons.end_date>now() ORDER BY start_date DESC LIMIT 4')
+                                    WHERE coupons.branch_id = %d AND deleted = false AND coupons.end_date>now() ORDER BY start_date DESC LIMIT 4' % branch_id)
     stats_list_coupon = coupons_views_schema.dump(list_coupon)
     return jsonify({'data': stats_list_coupon.data})
 
