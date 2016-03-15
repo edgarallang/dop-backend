@@ -392,7 +392,7 @@ def get_all_coupon_for_user_by_branch():
     payload = parse_token(request, token_index)
 
     list_coupon = db.engine.execute('SELECT coupon_id, branches.branch_id, company_id, branches.name, coupon_folio, description, start_date, \
-                                            end_date, coupons.limit, min_spent, coupon_category_id, logo, latitude, longitude, banner, category_id, available, clients_coupon.taken_date, \
+                                            end_date, coupons.limit, min_spent, coupon_category_id, logo, latitude, longitude, banner, category_id, available, \
                                     (SELECT COUNT(*)  FROM coupons_likes \
                                         WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes, \
                                     (SELECT COUNT(*)  FROM coupons_likes \
@@ -401,13 +401,12 @@ def get_all_coupon_for_user_by_branch():
                                     coupons.branch_id = branches_design.branch_id \
                                     INNER JOIN branches ON coupons.branch_id = branches.branch_id \
                                     INNER JOIN branches_location on coupons.branch_id = branches_location.branch_id \
-                                    INNER JOIN clients_coupon on coupons.coupon_id = clients_coupon.coupon_id \
                                     JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.branch_id \
                                     JOIN subcategory ON subcategory.subcategory_id = branches_subcategory.subcategory_id \
                                     WHERE coupons.branch_id = %s AND deleted = false ORDER BY start_date DESC LIMIT 6 OFFSET 0' % (payload['id'], branch_id))
 
 
-    selected_list_coupon = coupons_taken_schema.dump(list_coupon)
+    selected_list_coupon = coupons_logo_schema.dump(list_coupon)
     return jsonify({'data': selected_list_coupon.data})
 
 
@@ -420,7 +419,7 @@ def get_all_coupon_for_user_by_branch_offset():
     payload = parse_token(request, token_index)
 
     list_coupon = db.engine.execute('SELECT coupon_id, branches.branch_id, company_id, branches.name, coupon_folio, description, start_date, \
-                                            end_date, coupons.limit, min_spent, coupon_category_id, logo, latitude, longitude, banner, category_id, available, clients_coupon.taken_date, \
+                                            end_date, coupons.limit, min_spent, coupon_category_id, logo, latitude, longitude, banner, category_id, available, \
                                     (SELECT COUNT(*)  FROM coupons_likes \
                                         WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes, \
                                     (SELECT COUNT(*)  FROM coupons_likes \
@@ -429,14 +428,13 @@ def get_all_coupon_for_user_by_branch_offset():
                                     coupons.branch_id = branches_design.branch_id \
                                     INNER JOIN branches ON coupons.branch_id = branches.branch_id \
                                     INNER JOIN branches_location on coupons.branch_id = branches_location.branch_id \
-                                    INNER JOIN clients_coupon on coupons.coupon_id = clients_coupon.coupon_id \
                                     JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.branch_id \
                                     JOIN subcategory ON subcategory.subcategory_id = branches_subcategory.subcategory_id \
                                     WHERE coupons.branch_id = %s AND deleted = false AND coupons.coupon_id < %s ORDER BY start_date DESC LIMIT 6 OFFSET %s' % (payload['id'],branch_id,coupon_id,offset))
 
 
 
-    selected_list_coupon = coupons_taken_schema.dump(list_coupon)
+    selected_list_coupon = coupons_logo_schema.dump(list_coupon)
     return jsonify({'data': selected_list_coupon.data})
 
 
