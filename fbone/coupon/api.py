@@ -891,6 +891,7 @@ def taken_by_location(branch_id):
     coupons_list = db.engine.execute(coupons_query)
 
     taken_coupons = taken_coupons_location_schema.dump(coupons_list)
+    return jsonify({'data' : taken_coupons.data})
 #SEARCH API
 @coupon.route('/search', methods = ['POST'])
 def search_all_coupon_user_offset():
