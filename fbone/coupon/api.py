@@ -490,7 +490,9 @@ def coupon_stats(branch_id):
     list_coupon = db.engine.execute('SELECT coupon_id, coupon_folio,coupons.name, description, start_date, \
                                             end_date, coupons.limit, min_spent, coupon_category_id, logo, banner, category_id, available,views,  \
                                     (SELECT COUNT(*)  FROM coupons_likes   \
-                                        WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes   \
+                                        WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes,   \
+                                    (SELECT COUNT(*)  FROM clients_coupon   \
+                                        WHERE coupons.coupon_id = clients_coupon.coupon_id) AS total_uses \
                                     FROM coupons INNER JOIN branches_design ON   \
                                     coupons.branch_id = branches_design.branch_id   \
                                     JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.branch_id   \

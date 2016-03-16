@@ -366,7 +366,8 @@ class CouponsViews(Schema):
                   'min_spent',
                   'available',
                   'views',
-                  'total_likes')
+                  'total_likes',
+                  'total_uses')
 
 coupon_schema = CouponSchema()
 coupons_schema = CouponSchema(many=True)
