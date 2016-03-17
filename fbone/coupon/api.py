@@ -489,12 +489,14 @@ def coupon_stats(branch_id):
     list_coupon = db.engine.execute('SELECT coupon_id, coupon_folio,coupons.name, description, start_date, \
                                             end_date, coupons.limit, min_spent, coupon_category_id, logo, banner, category_id, available,views,  \
                                     (SELECT COUNT(*)  FROM coupons_likes   \
-                                        WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes   \
+                                        WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes,   \
+                                    (SELECT COUNT(*)  FROM clients_coupon   \
+                                        WHERE coupons.coupon_id = clients_coupon.coupon_id) AS total_uses \
                                     FROM coupons INNER JOIN branches_design ON   \
                                     coupons.branch_id = branches_design.branch_id   \
                                     JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.branch_id   \
                                     JOIN subcategory ON subcategory.subcategory_id = branches_subcategory.subcategory_id   \
-                                    WHERE coupons.branch_id = 4 AND deleted = false AND coupons.end_date>now() ORDER BY start_date DESC LIMIT 4')
+                                    WHERE coupons.branch_id = %d AND deleted = false AND coupons.end_date>now() ORDER BY start_date DESC LIMIT 4' % branch_id)
     stats_list_coupon = coupons_views_schema.dump(list_coupon)
     return jsonify({'data': stats_list_coupon.data})
 
@@ -879,6 +881,16 @@ def create_nxn(request):
         return customizationSuccess
     return customizationSuccess
 
+@coupon.route('/taken/location/<int:branch_id>', methods = ['GET'])
+def taken_by_location(branch_id):
+    coupons_query = "SELECT coupons.coupon_id,coupons.name, coupons.description, clients_coupon.latitude, \
+                   clients_coupon.longitude, coupons.available FROM coupons \
+                   INNER JOIN clients_coupon ON coupons.coupon_id = clients_coupon.coupon_id AND \
+                   coupons.branch_id = %d" % branch_id
+    coupons_list = db.engine.execute(coupons_query)
+
+    taken_coupons = taken_coupons_location_schema.dump(coupons_list)
+    return jsonify({'data' : taken_coupons.data})
 #SEARCH API
 @coupon.route('/search', methods = ['POST'])
 def search_all_coupon_user_offset():

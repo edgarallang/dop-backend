@@ -366,7 +366,17 @@ class CouponsViews(Schema):
                   'min_spent',
                   'available',
                   'views',
-                  'total_likes')
+                  'total_likes',
+                  'total_uses')
+
+class TakenCouponsLocationSchema(Schema):
+    class Meta:
+        fields = ('coupon_id',
+                  'name',
+                  'description',
+                  'latitude',
+                  'longitude',
+                  'available')
 
 coupon_schema = CouponSchema()
 coupons_schema = CouponSchema(many=True)
@@ -396,6 +406,5 @@ coupons_taken_schema = CouponsTakenSchema(many=True)
 coupons_location_schema = CouponsLocation(many=True)
 coupons_views_schema = CouponsViews(many=True)
 
-
-
+taken_coupons_location_schema = TakenCouponsLocationSchema(many=True)
 
