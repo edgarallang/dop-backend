@@ -29,7 +29,7 @@ class Branch(db.Model):
     # branches_user_id = Column(db.Integer, db.ForeignKey("branches_user.branches_user_id"))
     branches_design = db.relationship("BranchDesign", uselist=False, backref="branches")
     branch = db.relationship('BranchAd', uselist=False, backref = 'branches')
-    branches_location_id = db.ForeignKey('branches_location.branches_location_id')
+    # branches_location_id = db.ForeignKey('branches_location.branches_location_id')
 
 # =====================================================================
 # Branches Design
@@ -121,8 +121,8 @@ class BranchUser(db.Model):
     branch = db.relationship('Branch',
                         backref=db.backref("branches_user", lazy="dynamic"))
 
-    #def __init__(self, branch):
-    #    self.branch = branch
+    def __init__(self, branch):
+        self.branch = branch
 
     def check_password(self, password):
         return self.password == password
