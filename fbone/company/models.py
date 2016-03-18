@@ -118,7 +118,8 @@ class BranchUser(db.Model):
     email = Column(db.String(STRING_LEN), nullable=False, unique=True)
     password = Column('password', db.String(STRING_LEN), nullable=False)
 
-    branch = db.relationship('Branch', backref="branches_user")
+    branch = db.relationship('Branch',
+                        backref=db.backref("branches_user", lazy="dynamic"))
 
     def __init__(self, branch):
         self.branch = branch
@@ -257,7 +258,7 @@ class RankingUsersSchema(Schema):
 company_schema = CompanySchema()
 companies_schema = CompanySchema(many=True)
 branch_schema = BranchSchema()
-branch_user_schema = BranchUserSchema()
+branch_user_schema = BranchUserSchema(many=True)
 branch_profile_schema = BranchesProfile(many=True)
 branch_profile_search_schema = BranchesProfileSearch(many=True)
 branch_ad_schema = BranchesAd(many=True)
