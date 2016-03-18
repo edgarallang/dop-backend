@@ -181,32 +181,31 @@ def get_coupon(coupon_id):
 
 @coupon.route('/all/<int:branch_id>/get', methods = ['GET'])
 def get_all_coupon_by_branch(branch_id):
-    list_coupon = Coupon.query.filter_by(deleted = False) \
-                              .filter_by(branch_id = branch_id) \
-                              .filter_by(coupon_category_id = 1).all()
+    # list_coupon = Coupon.query.filter_by(deleted = False) \
+    #                           .filter_by(branch_id = branch_id) \
+    #                           .filter_by(coupon_category_id = 1).all()
 
-    bond_query = 'SELECT * FROM coupons INNER JOIN bond_coupon \
-                  ON coupons.coupon_id = bond_coupon.coupon_id WHERE coupons.branch_id = %d' % branch_id
-    bond_coupons = db.engine.execute(bond_query)
+    # bond_query = 'SELECT * FROM coupons INNER JOIN bond_coupon \
+    #               ON coupons.coupon_id = bond_coupon.coupon_id WHERE coupons.branch_id = %d' % branch_id
+    # bond_coupons = db.engine.execute(bond_query)
 
-    discount_query = 'SELECT * FROM coupons INNER JOIN discount_coupon \
-                      ON coupons.coupon_id = discount_coupon.coupon_id WHERE coupons.branch_id = %d' % branch_id
-    discount_coupons = db.engine.execute(discount_query)
+    # discount_query = 'SELECT * FROM coupons INNER JOIN discount_coupon \
+    #                   ON coupons.coupon_id = discount_coupon.coupon_id WHERE coupons.branch_id = %d' % branch_id
+    # discount_coupons = db.engine.execute(discount_query)
 
-    nxn_query = 'SELECT * FROM coupons INNER JOIN nxn_coupon \
-                 ON coupons.coupon_id = nxn_coupon.coupon_id WHERE coupons.branch_id = %d' % branch_id
-    nxn_coupons = db.engine.execute(nxn_query)
+    # nxn_query = 'SELECT * FROM coupons INNER JOIN nxn_coupon \
+    #              ON coupons.coupon_id = nxn_coupon.coupon_id WHERE coupons.branch_id = %d' % branch_id
+    # nxn_coupons = db.engine.execute(nxn_query)
 
 
-    selected_list_coupon = coupons_schema.dump(list_coupon)
-    bondlist = bond_join_coupon_schema.dump(bond_coupons)
-    discountlist = discount_join_coupon_schema.dump(discount_coupons)
-    nxnlist = nxn_join_coupon_schema.dump(nxn_coupons)
+    # selected_list_coupon = coupons_schema.dump(list_coupon)
+    # bondlist = bond_join_coupon_schema.dump(bond_coupons)
+    # discountlist = discount_join_coupon_schema.dump(discount_coupons)
+    # nxnlist = nxn_join_coupon_schema.dump(nxn_coupons)
 
-    return jsonify({'new_promo': selected_list_coupon.data,
-                    'bond': bondlist.data,
-                    'discount': discountlist.data,
-                    'nxn': nxnlist.data })
+    list_coupon = Coupon.query.filter_by(branch_id = branch_id).all()
+    branches_coupons = coupons_schema.dump(list_coupon)
+    return jsonify({ 'data': branches_coupons.data })
     
 @coupon.route('/all/for/user/get/', methods = ['GET'])
 def get_all_coupon_for_user():
