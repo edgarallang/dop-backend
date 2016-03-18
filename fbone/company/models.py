@@ -163,7 +163,6 @@ def must_not_be_blank(data):
         raise ValidationError('Data not provided.')
 
 class BranchUserSchema(Schema):
-    #branch = fields.Nested(BranchSchema, validate=must_not_be_blank)
     class Meta:
         fields = ('branches_user_id',
                   'branch_id',
