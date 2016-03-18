@@ -118,8 +118,8 @@ class BranchUser(db.Model):
     email = Column(db.String(STRING_LEN), nullable=False, unique=True)
     password = Column('password', db.String(STRING_LEN), nullable=False)
 
-    #branch = db.relationship('Branch',
-    #                    backref=db.backref("branches_user", lazy="dynamic"))
+    branch = db.relationship('Branch',
+                        backref=db.backref("branches_user", lazy="dynamic"))
 
     #def __init__(self, branch):
     #    self.branch = branch
@@ -163,6 +163,7 @@ def must_not_be_blank(data):
         raise ValidationError('Data not provided.')
 
 class BranchUserSchema(Schema):
+    #branch = fields.Nested(BranchSchema, validate=must_not_be_blank)
     class Meta:
         fields = ('branches_user_id',
                   'branch_id',
