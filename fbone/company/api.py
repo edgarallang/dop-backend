@@ -101,7 +101,7 @@ def select_branch_profile(branch_id):
 
 @company.route('/me', methods = ['POST'])    
 def select_branch_user():
-    query = 'SELECT branches_user.branches_user_id, branch_id.branch_id, \
+    query = 'SELECT branches_user.branches_user_id, branches.branch_id, \
                     branches_user.name, branches_user.email, \
                     branches_location.latitude, branches_location.longitude FROM branches_user \
                     INNER JOIN branches ON branches_user.branch_id = branches.branch_id \
