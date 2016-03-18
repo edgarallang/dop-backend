@@ -884,7 +884,7 @@ def create_nxn(request):
 @coupon.route('/taken/location/<int:branch_id>', methods = ['GET'])
 def taken_by_location(branch_id):
     coupons_query = "SELECT coupons.coupon_id,coupons.name, coupons.description, clients_coupon.latitude, \
-                   clients_coupon.longitude, coupons.available FROM coupons \
+                   clients_coupon.longitude, coupons.available, clients_coupon.taken_date FROM coupons \
                    INNER JOIN clients_coupon ON coupons.coupon_id = clients_coupon.coupon_id AND \
                    coupons.branch_id = %d" % branch_id
     coupons_list = db.engine.execute(coupons_query)
