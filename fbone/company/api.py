@@ -105,9 +105,11 @@ def select_branch_user():
                     branches_user.name, branches_user.email, \
                     branches_location.latitude, branches_location.longitude FROM branches_user \
                     INNER JOIN branches ON branches_user.branch_id = branches.branch_id \
-                    INNER JOIN branches_location ON branches_user.branch_id = branches_location.branch_id'
+                    INNER JOIN branches_location ON branches_user.branch_id = branches_location.branch_id \
+                    WHERE branches_user.branches_user_id = %d' % request.json['branches_user_id']
 
     selected_branch = db.engine.execute(branch_data)
+
     branch = branch_user_schema.dump(selected_branch)
     #selectedBranchUser = BranchUser.query.get(request.json['branches_user_id'])
     #branchUser = branch_user_schema.dump(selectedBranchUser)
