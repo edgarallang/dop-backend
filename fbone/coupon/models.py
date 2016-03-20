@@ -376,7 +376,8 @@ class TakenCouponsLocationSchema(Schema):
                   'description',
                   'latitude',
                   'longitude',
-                  'available')
+                  'available',
+                  'taken_date')
 
 coupon_schema = CouponSchema()
 coupons_schema = CouponSchema(many=True)
