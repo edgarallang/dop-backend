@@ -37,8 +37,8 @@ def create_coupon(request):
         payment_data = request.json['paymentData']
         payload = parse_token(request, False)
         branch_id = BranchUser.query.get(payload['id']).branch_id
-        new_coupon = Coupon(branch_id = branch_id, 
-                            # name = request.json['name'], 
+        new_coupon = Coupon(branch_id = branch_id,
+                            # name = request.json['name'],
                             # start_date = request.json['start_date'],
                             # end_date = request.json['end_date'],
                             limit = payment_data['amountOfCoupon'],
@@ -115,7 +115,7 @@ def use_coupon():
 
         #client_coupon_exist = ClientsCoupon.query.join(Coupon, ClientsCoupon.coupon_id==Coupon.coupon_id).add_columns(ClientsCoupon.clients_coupon_id,ClientsCoupon.used, Coupon.branch_id).filter(and_(ClientsCoupon.coupon_id==coupon_id),(ClientsCoupon.user_id==payload['id'])).first()
         #client_coupon_json = clients_coupon_inner_coupon_schema.dump(client_coupon)
-        
+
 
         actual_date = datetime.now()
         client_coupon = ClientsCoupon.query.filter(and_(ClientsCoupon.coupon_id==coupon_id),(ClientsCoupon.user_id==payload['id']),(ClientsCoupon.used==False)).first()
@@ -143,10 +143,10 @@ def use_coupon():
 
             coupon = Coupon.query.get(request.json['coupon_id'])
             coupon.available = coupon.available - 1
-            
+
             db.session.commit()
 
-            
+
         branch = Branch.query.filter_by(branch_id = branch_id).first()
         branch_data = branch_schema.dump(branch)
 
@@ -206,7 +206,7 @@ def get_all_coupon_by_branch(branch_id):
     list_coupon = Coupon.query.filter_by(branch_id = branch_id).all()
     branches_coupons = coupons_schema.dump(list_coupon)
     return jsonify({ 'data': branches_coupons.data })
-    
+
 @coupon.route('/all/for/user/get/', methods = ['GET'])
 def get_all_coupon_for_user():
     #user_id = request.args.get('user_id')
@@ -258,7 +258,7 @@ def get_all_coupon_for_user_offset():
                                     JOIN subcategory ON subcategory.subcategory_id = branches_subcategory.subcategory_id \
                                     WHERE deleted = false AND coupons.start_date <= %s ORDER BY coupons.start_date DESC, coupons.coupon_id LIMIT 6 OFFSET %s' % (payload['id'], payload['id'],"'"+start_date+"'",offset))
 
-    
+
     selected_list_coupon = coupons_logo_schema.dump(list_coupon)
     pprint(selected_list_coupon)
     return jsonify({'data': selected_list_coupon.data})
@@ -295,7 +295,7 @@ def get_all_taken_coupon_for_user():
 @coupon.route('/all/taken/for/user/offset/get', methods = ['POST'])
 def get_all_taken_coupon_for_user_offset():
     if request.headers.get('Authorization'):
-        
+
         token_index = True
         offset = request.json['offset']
         taken_date = request.json['taken_date']
@@ -324,7 +324,7 @@ def get_all_taken_coupon_for_user_offset():
         list_coupon = db.engine.execute(list_coupon_query)
         selected_list_coupon = coupons_taken_schema.dump(list_coupon)
         return jsonify({'data': selected_list_coupon.data})
-        
+
         return jsonify({'data':'hola'})
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
@@ -516,7 +516,7 @@ def nearest_coupons():
     latitude = request.args.get('latitude')
     longitude = request.args.get('longitude')
     radio = request.args.get('radio')
-    
+
 
 
     query = 'SELECT branch_location_id, branch_id, state, city, latitude, longitude, distance, address, name, category_id, available, \
@@ -552,7 +552,7 @@ def nearest_coupons():
 
     nearestCoupons = db.engine.execute(query)
     nearest = nearest_coupon_schema.dump(nearestCoupons)
-    
+
     return jsonify({'data': nearest.data})
 
 @coupon.route('/all/get', methods = ['GET'])
@@ -594,13 +594,13 @@ def process_payment():
             "currency": "MXN",
             "description": "Compra de campaña",
             "reference_id": user.branch_id,
-            "card": request.json['token_id'], 
+            "card": request.json['token_id'],
             "details": {
               "email": user.email
             }
           })
       except conekta.ConektaError as e:
-          return jsonify({ 'message': e.message_to_purchaser })
+          return jsonify({ 'message': e['message_to_purchaser'] })
     #el pago no pudo ser procesado
     if (charge.status == 'paid'):
         message = create_coupon(request)
@@ -793,7 +793,7 @@ def custom_coupon():
         payload = parse_token(request, False)
 
         branch_id = BranchUser.query.get(payload['id']).branch_id
-        coupon_category = request.json['coupon_category_id'] 
+        coupon_category = request.json['coupon_category_id']
         if (coupon_category == 2):
             success = create_bond(request)
         elif (coupon_category == 3):
@@ -813,8 +813,8 @@ def create_bond(request):
     customizationSuccess = False
     bondCoupon = BondCoupon.query.filter_by(coupon_id = request.json['coupon_id']).first()
     if not bondCoupon:
-        newBondCoupon = BondCoupon(coupon_id = request.json['coupon_id'], 
-                                   coupon_category_id = request.json['coupon_category_id'], 
+        newBondCoupon = BondCoupon(coupon_id = request.json['coupon_id'],
+                                   coupon_category_id = request.json['coupon_category_id'],
                                    bond_size = request.json['bond_size'])
         coupon = Coupon.query.get(request.json['coupon_id'])
         coupon.coupon_category_id = request.json['coupon_category_id']
@@ -825,7 +825,7 @@ def create_bond(request):
         db.session.commit()
         customizationSuccess = True
         return customizationSuccess
-    else: 
+    else:
         bondCoupon.bond_size = request.json['bond_size']
         coupon = Coupon.query.get(request.json['coupon_id'])
         coupon.name = request.json['name']
@@ -840,8 +840,8 @@ def create_discount(request):
     customizationSuccess = False
     discountCoupon = DiscountCoupon.query.filter_by(coupon_id = request.json['coupon_id']).first()
     if not discountCoupon:
-        newDiscountCoupon = DiscountCoupon(coupon_id = request.json['coupon_id'], 
-                                           coupon_category_id = request.json['coupon_category_id'], 
+        newDiscountCoupon = DiscountCoupon(coupon_id = request.json['coupon_id'],
+                                           coupon_category_id = request.json['coupon_category_id'],
                                            percent = request.json['percent'])
         coupon = Coupon.query.get(request.json['coupon_id'])
         coupon.coupon_category_id = request.json['coupon_category_id']
@@ -852,7 +852,7 @@ def create_discount(request):
         db.session.commit()
         customizationSuccess = True
         return customizationSuccess
-    else: 
+    else:
         discountCoupon.percent = request.json['percent']
         coupon = Coupon.query.get(request.json['coupon_id'])
         coupon.name = request.json['name']
@@ -867,8 +867,8 @@ def create_nxn(request):
     customizationSuccess = False
     nxnCoupon = NxNCoupon.query.filter_by(coupon_id = request.json['coupon_id']).first()
     if not nxnCoupon:
-        newNxNCoupon = NxNCoupon(coupon_id = request.json['coupon_id'], 
-                                 coupon_category_id = request.json['coupon_category_id'], 
+        newNxNCoupon = NxNCoupon(coupon_id = request.json['coupon_id'],
+                                 coupon_category_id = request.json['coupon_category_id'],
                                  n1 = request.json['n1'],
                                  n2 = request.json['n2'])
         coupon = Coupon.query.get(request.json['coupon_id'])
@@ -880,7 +880,7 @@ def create_nxn(request):
         db.session.commit()
         customizationSuccess = True
         return customizationSuccess
-    else: 
+    else:
         nxnCoupon.n1 = request.json['n1']
         nxnCoupon.n2 = request.json['n2']
         coupon = Coupon.query.get(request.json['coupon_id'])
@@ -910,7 +910,7 @@ def search_all_coupon_user_offset():
     offset = request.json['offset']
     coupon_id = request.json['coupon_id']
     text = request.json['text']
-    
+
     payload = parse_token(request, token_index)
 
     list_coupon = "SELECT *, \
