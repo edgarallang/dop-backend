@@ -503,9 +503,10 @@ def coupon_stats(branch_id):
 @coupon.route('/used/ages/<int:branch_id>', methods = ['GET'])
 def used_by_ages(branch_id):
     used_coupons_query =  db.engine.execute("SELECT date_part('year',age(users.birth_date)) AS age, COUNT(*) FROM clients_coupon \
-                                            INNER JOIN users ON clients_coupon.user_id = users.user_id\
-                                            WHERE used = TRUE\
-                                            GROUP BY age")
+                                            INNER JOIN users ON clients_coupon.user_id = users.user_id \
+                                            INNER JOIN coupons ON clients_coupon.coupon_id = coupons.coupon_id \
+                                            WHERE used = TRUE AND coupons.branch_id = %d \
+                                            GROUP BY age" % branch_id)
 
     used_coupons_stats = used_coupons_by_age_schema.dump(used_coupons_query)
 
