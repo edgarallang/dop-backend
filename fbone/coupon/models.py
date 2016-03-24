@@ -379,6 +379,11 @@ class TakenCouponsLocationSchema(Schema):
                   'available',
                   'taken_date')
 
+class UsedCouponsByAge(Schema):
+    class Meta:
+        fields = ('age',
+                  'count')
+
 coupon_schema = CouponSchema()
 coupons_schema = CouponSchema(many=True)
 
@@ -409,3 +414,4 @@ coupons_views_schema = CouponsViews(many=True)
 
 taken_coupons_location_schema = TakenCouponsLocationSchema(many=True)
 
+used_coupons_by_age_schema = UsedCouponsByAge(many=True)
