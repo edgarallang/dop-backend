@@ -512,6 +512,17 @@ def used_by_ages(branch_id):
 
     return jsonify({'data': used_coupons_stats.data})
 
+@coupon.route('/used/gender/<int:branch_id>', methods = ['GET'])
+def used_by_gender(branch_id):
+    used_coupons_query =  db.engine.execute("SELECT users.gender, COUNT(*) FROM clients_coupon \
+                                            INNER JOIN users ON clients_coupon.user_id = users.user_id \
+                                            WHERE used = TRUE AND coupons.branch_id = %d \
+                                            GROUP BY users.gender" % branch_id)
+
+    used_coupons_stats = used_coupons_by_gender_schema.dump(used_coupons_query)
+
+    return jsonify({'data': used_coupons_stats.data})
+
 @coupon.route('/nearest/get/', methods=['GET', 'POST'])
 def nearest_coupons():
     latitude = request.args.get('latitude')

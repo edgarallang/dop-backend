@@ -76,6 +76,7 @@ class User(db.Model, UserMixin):
     privacy_status = Column(db.Integer)
     level = Column(db.Integer)
     exp = Column(db.Integer)
+    gender = Column(db.String(STRING_LEN))
     #users_image_user_id = db.relationship("UserImage", uselist=False, backref="users")
 
     # Images 

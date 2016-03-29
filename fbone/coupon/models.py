@@ -384,6 +384,11 @@ class UsedCouponsByAge(Schema):
         fields = ('age',
                   'count')
 
+class UsedCouponsByGender(Schema):
+    class Meta:
+        fields = ('gender',
+                  'count')
+
 coupon_schema = CouponSchema()
 coupons_schema = CouponSchema(many=True)
 
@@ -415,3 +420,4 @@ coupons_views_schema = CouponsViews(many=True)
 taken_coupons_location_schema = TakenCouponsLocationSchema(many=True)
 
 used_coupons_by_age_schema = UsedCouponsByAge(many=True)
+used_coupons_by_gender_schema = UsedCouponsByGender(many=True)
