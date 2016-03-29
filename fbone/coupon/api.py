@@ -516,6 +516,7 @@ def used_by_ages(branch_id):
 def used_by_gender(branch_id):
     used_coupons_query =  db.engine.execute("SELECT users.gender, COUNT(*) FROM clients_coupon \
                                             INNER JOIN users ON clients_coupon.user_id = users.user_id \
+                                            INNER JOIN coupons ON clients_coupon.coupon_id = coupons.coupon_id \
                                             WHERE used = TRUE AND coupons.branch_id = %d \
                                             GROUP BY users.gender" % branch_id)
 
