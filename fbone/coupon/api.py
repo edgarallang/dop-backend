@@ -910,7 +910,7 @@ def taken_by_location(branch_id):
     coupons_query = "SELECT coupons.coupon_id,coupons.name, coupons.description, clients_coupon.latitude, \
                    clients_coupon.longitude, coupons.available, clients_coupon.taken_date FROM coupons \
                    INNER JOIN clients_coupon ON coupons.coupon_id = clients_coupon.coupon_id AND \
-                   coupons.branch_id = %d" % branch_id
+                   coupons.branch_id = %d WHERE clients_coupon.used = false" % branch_id
     coupons_list = db.engine.execute(coupons_query)
 
     taken_coupons = taken_coupons_location_schema.dump(coupons_list)
