@@ -69,7 +69,7 @@ def generate_pdf():
     pdf_data = u''
     outputFilename = u'test.pdf'
 
-    resultFile = io.StringIO()
+    resultFile = open(outputFilename, "w+b")
 
     pisa.CreatePDF(u'<html><body><p>To PDF or not to PDF<p></body></html>', resultFile)
     rest = resultFile.getvalue()
