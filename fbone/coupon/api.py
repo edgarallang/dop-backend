@@ -7,7 +7,8 @@ import os
 import jwt
 import json
 import requests
-from flask import Blueprint, current_app, request, jsonify
+from flask import Blueprint, current_app, request, jsonify, render_template, redirect, url_for
+from flaskext.mail import Mail, Message
 from flask import current_app as app
 from flask.ext.login import login_required, current_user
 from jwt import DecodeError, ExpiredSignature
@@ -20,9 +21,10 @@ from marshmallow import pprint
 from sqlalchemy import and_
 from ..company import branch_schema
 from ..utils import *
+from xhtml2pdf import pisa
+from cStringIO import StringIO
 
-
-
+mail_ext = Mail(app)
 coupon = Blueprint('coupon', __name__, url_prefix='/api/coupon')
 # class methods
 def parse_token(req, token_index):
@@ -31,6 +33,17 @@ def parse_token(req, token_index):
     else:
         token = req.headers.get('Authorization').split()[1]
     return jwt.decode(token, app.config['TOKEN_SECRET'])
+
+@app.route('/generate/pdf')
+def your_view():
+    subject = "Mail with PDF"
+    receiver = "eduardo.quintero52@gmail.com"
+    mail_to_be_sent = Message(subject=subject, recipients=[receiver])
+    mail_to_be_sent.body = "This email contains PDF."
+    pdf = create_pdf(render_template('your/template.html'))
+    mail_to_be_sent.attach("file.pdf", "application/pdf", pdf.getvalue())
+    mail_ext.send(mail_to_be_sent)
+    return redirect(url_for('other_view'))
 
 def create_coupon(request):
     if request.headers.get('Authorization'):
