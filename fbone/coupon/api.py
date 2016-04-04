@@ -72,9 +72,8 @@ def generate_pdf():
     resultFile = open(outputFilename, "w+b")
 
     pisa.CreatePDF(u'<html><body><p>To PDF or not to PDF<p></body></html>', resultFile)
-    rest = resultFile.getvalue()
     resultFile.close()
-    return rest
+    return resultFile
 # POST methods
 
 @coupon.route('/user/take',methods=['POST'])
