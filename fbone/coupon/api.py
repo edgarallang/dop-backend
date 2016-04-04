@@ -21,7 +21,7 @@ from sqlalchemy import and_
 from ..company import branch_schema
 from ..utils import *
 from xhtml2pdf import pisa
-from StringIO import StringIO
+import cStringIO
 
 coupon = Blueprint('coupon', __name__, url_prefix='/api/coupon')
 # class methods
