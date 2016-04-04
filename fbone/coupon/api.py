@@ -74,7 +74,7 @@ def generate_pdf():
     pdf = io.StringIO()
     status = pisa.CreatePDF(pdf_data, dest=resultFile)
     resultFile.close()
-    return HttpResponse(resultFile, mimetype='application/pdf')
+    return resultFile
 # POST methods
 
 @coupon.route('/user/take',methods=['POST'])
