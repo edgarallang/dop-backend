@@ -71,7 +71,7 @@ def generate_pdf():
 
     resultFile = io.StringIO()
 
-    pisa.CreatePDF(io.StringIO(u'<html><body><p>To PDF or not to PDF<p></body></html>').encode("UTF-8"), resultFile)
+    pisa.CreatePDF(u'<html><body><p>To PDF or not to PDF<p></body></html>', resultFile)
     rest = resultFile.getvalue()
     resultFile.close()
     return rest
