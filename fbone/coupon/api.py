@@ -67,9 +67,14 @@ def level_up(user_id):
 @coupon.route('/generate/pdf', methods=['GET'])
 def generate_pdf():
     pdf_data = "<html><body><p>To PDF or not to PDF<p></body></html>"
+    outputFilename = "test.pdf"
+
+    resultFile = open(outputFilename, "w+b")
+
     pdf = io.StringIO()
-    pisa.CreatePDF(io.StringIO(pdf_data), pdf)
-    return pdf
+    status = pisa.CreatePDF(pdf_data, dest=resultFile)
+    resultFile.close()
+    return HttpResponse(resultFile, mimetype='application/pdf')
 # POST methods
 
 @coupon.route('/user/take',methods=['POST'])
