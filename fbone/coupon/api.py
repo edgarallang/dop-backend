@@ -64,6 +64,11 @@ def level_up(user_id):
     db.session.commit()
     return user.level
 
+@coupon.route('/generate/pdf', methods=['GET'])
+def generate_pdf():
+    pdf = StringIO()
+    pisa.CreatePDF(StringIO(pdf_data.encode('utf-8')), pdf)
+    return pdf
 # POST methods
 
 @coupon.route('/user/take',methods=['POST'])
