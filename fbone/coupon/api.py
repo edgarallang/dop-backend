@@ -21,7 +21,7 @@ from sqlalchemy import and_
 from ..company import branch_schema
 from ..utils import *
 from xhtml2pdf import pisa
-import cStringIO
+from cStringIO import StringIO
 
 coupon = Blueprint('coupon', __name__, url_prefix='/api/coupon')
 # class methods
@@ -66,19 +66,10 @@ def level_up(user_id):
 
 @coupon.route('/generate/pdf', methods=['GET'])
 def generate_pdf():
-    pisa.showLogging()
-    sourceHtml = "<html><body><p>To PDF or not to PDF<p></body></html>"
-    outputFilename = "test.pdf"
-
-    resultFile = open(outputFilename, "w+b")
-    # convert HTML to PDF
-    pisaStatus = pisa.CreatePDF(
-            sourceHtml,                # the HTML to convert
-            dest=resultFile)           # file handle to recieve result
-    # close output file
-    resultFile.close()                 # close output file
-    # return True on success and False on errors
-    return pisaStatus.err
+    pdf_data = render_template("<html><body><p>To PDF or not to PDF<p></body></html>")
+    pdf = StringIO()
+    pisa.CreatePDF(StringIO(pdf_data.encode('utf-8')), pdf)
+    return pdf
 # POST methods
 
 @coupon.route('/user/take',methods=['POST'])
