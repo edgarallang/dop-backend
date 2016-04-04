@@ -68,7 +68,7 @@ def level_up(user_id):
 def generate_pdf():
     pdf_data = "<html><body><p>To PDF or not to PDF<p></body></html>"
     pdf = StringIO()
-    pisa.CreatePDF(StringIO(pdf_data.encode('utf-8')), pdf)
+    pisa.CreatePDF(StringIO(pdf_data), pdf)
     return pdf
 # POST methods
 
