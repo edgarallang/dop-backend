@@ -66,7 +66,7 @@ def level_up(user_id):
 
 @coupon.route('/generate/pdf', methods=['GET'])
 def generate_pdf():
-    pdf_data =
+    pdf_data = u''
     outputFilename = u'test.pdf'
 
     resultFile = io.StringIO()
