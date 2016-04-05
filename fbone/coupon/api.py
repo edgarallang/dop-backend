@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime, timedelta
 import conekta
+import io
 conekta.api_key = 'key_ReaoWd2MyxP5QdUWKSuXBQ'
 conekta.locale = 'es'
 import os
@@ -21,7 +22,6 @@ from sqlalchemy import and_
 from ..company import branch_schema
 from ..utils import *
 from xhtml2pdf import pisa
-from cStringIO import StringIO
 
 coupon = Blueprint('coupon', __name__, url_prefix='/api/coupon')
 # class methods
@@ -66,10 +66,14 @@ def level_up(user_id):
 
 @coupon.route('/generate/pdf', methods=['GET'])
 def generate_pdf():
-    pdf_data = "<html><body><p>To PDF or not to PDF<p></body></html>"
-    pdf = StringIO()
-    pisa.CreatePDF(StringIO(pdf_data.encode('utf-8')), pdf)
-    return pdf
+    pdf_data = u''
+    outputFilename = u'test.pdf'
+
+    resultFile = open(outputFilename, "w+b")
+
+    pisa.CreatePDF(u'<html><body><p>To PDF or not to PDF<p></body></html>', resultFile)
+    resultFile.close()
+    return resultFile
 # POST methods
 
 @coupon.route('/user/take',methods=['POST'])
