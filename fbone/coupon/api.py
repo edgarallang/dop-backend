@@ -558,7 +558,7 @@ def nearest_coupons():
                 JOIN branches on z.branch_id = branches.branch_id \
                 JOIN branches_subcategory on z.branch_id = branches_subcategory.branch_id \
                 JOIN subcategory on subcategory.subcategory_id = branches_subcategory.subcategory_id \
-                JOIN coupons on branches.branch_id = coupons.branch_id AND deleted = false AND coupons.end_date>now() \
+                JOIN coupons on branches.branch_id = coupons.branch_id AND deleted = false AND active = true AND coupons.end_date>now() \
                 JOIN (   /* these are the query parameters */ \
                     SELECT '+ latitude +'  AS latpoint, '+ longitude +' AS longpoint, \
                            '+ radio +' AS radius,      111.045 AS distance_unit \
