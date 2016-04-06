@@ -35,7 +35,6 @@ def parse_token(req, token_index):
 def uses_by_coupon(coupon_id):
     #if request.headers.get('Authorization'):
     token_index = False
-    payload = parse_token(request, token_index)
 
     report_query = db.engine.execute("SELECT date_trunc('day', clients_coupon.used_date) 'day', count(*) \
                                 FROM clients_coupon \
