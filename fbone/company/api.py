@@ -4,6 +4,10 @@ import os
 import jwt
 import json
 import requests
+import conekta
+conekta.api_key = 'key_ReaoWd2MyxP5QdUWKSuXBQ'
+conekta.locale = 'es'
+
 from flask import Blueprint, current_app, request, jsonify
 from flask import current_app as app
 from flask.ext.login import login_required, current_user
