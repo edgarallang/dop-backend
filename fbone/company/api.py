@@ -51,33 +51,33 @@ def login():
         response = jsonify(message='Wrong Email or Password')
         response.status_code = 401
         return response
-    print 
+    print
     token = create_token(branchUser)
 
     return jsonify(token=token)
 
-@company.route('/select/companies', methods=['GET'])    
+@company.route('/select/companies', methods=['GET'])
 def companies():
     selectedCompanies = Company.query.all()
     companies = companies_schema.dump(selectedCompanies)
 
     return jsonify({'data': companies.data})
 
-@company.route('/<int:companyId>/get', methods=['GET'])    
+@company.route('/<int:companyId>/get', methods=['GET'])
 def select_company(companyId):
     selectedCompany = Company.query.get(companyId)
     company = company_schema.dump(selectedCompany)
 
     return jsonify({'data': company.data})
 
-@company.route('/branch/<int:branchId>/get', methods=['GET'])    
+@company.route('/branch/<int:branchId>/get', methods=['GET'])
 def select_branch(branchId):
     selectedBranch = Branch.query.get(branchId)
     branch = branch_schema.dump(selectedBranch)
-    
+
     return jsonify({'data': branch.data})
 
-@company.route('/branch/<int:branch_id>/profile/get', methods=['GET'])    
+@company.route('/branch/<int:branch_id>/profile/get', methods=['GET'])
 def select_branch_profile(branch_id):
     if request.headers.get('Authorization'):
         token_index = True
@@ -95,11 +95,11 @@ def select_branch_profile(branch_id):
 
         selectedBranch = db.engine.execute(query)
         branch = branch_profile_schema.dump(selectedBranch)
-        
+
         return jsonify({'data': branch.data})
     return jsonify({'message': 'Oops! algo salió mal'})
 
-@company.route('/me', methods = ['POST'])    
+@company.route('/me', methods = ['POST'])
 def select_branch_user():
     query = 'SELECT branches_user.branches_user_id, branches.branch_id, \
                     branches_user.name, branches_user.email, \
@@ -116,7 +116,7 @@ def select_branch_user():
 
     return jsonify({'data': branch.data})
 
-@company.route('/branch/<int:branchId>/update ', methods=['GET'])    
+@company.route('/branch/<int:branchId>/update ', methods=['GET'])
 def update_branch_user(branchId):
     Branch.query.filter_by(branch_id=branchId).update({"name": "Bob Marley"})
 
@@ -127,7 +127,7 @@ def nearest_branches():
     latitude = request.args.get('latitude')
     longitude = request.args.get('longitude')
     radio = request.args.get('radio')
-    
+
     filterQuery = ''
     prefixFilterQuery = 'AND branches_subcategory.subcategory_id = ANY(ARRAY'
     filterArray = request.json['filterArray']
@@ -167,7 +167,7 @@ def nearest_branches():
 
     nearestBranches = db.engine.execute(query)
     nearest = branches_location_schema.dump(nearestBranches)
-    
+
     return jsonify({'data': nearest.data})
 
 @company.route('/branch/follow',methods=['POST'])
@@ -348,6 +348,21 @@ def branch_ranking(branch_id):
 
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
+@company.route('/<int:branch_id>/credit/add', methods = ['GET'])
+def credit_add(branch_id):
+    if request.headers.get('Authorization'):
+        token_index = False
+        payload = parse_token(request, token_index)
+
+        payment_data = request.json['paymentData']
+
+        company = Company.query.get(Branch.query.get(branch_id).company_id)
+        company.credits = payment_data.total
+
+        db.session.commit()
+
+        return jsonify({'data': 'success'})
+    return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
 def number_of_rows(query):
     result = 0
@@ -355,4 +370,3 @@ def number_of_rows(query):
         print "ENTRO"
         result += 1
     return result
-
