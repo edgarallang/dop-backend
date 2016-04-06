@@ -7,7 +7,8 @@ from ..utils import *
 class Report(Schema):
     class Meta:
         dateformat = ('iso')
-        fields = ('branch_id')
+        fields = ('day',
+                  'count')
 
 
 report_schema = Report(many=True)
