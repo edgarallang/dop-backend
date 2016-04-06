@@ -367,15 +367,15 @@ def credit_add(branch_id):
             })
         except conekta.ConektaError as e:
             return jsonify({ 'message': e['message_to_purchaser'] })
-      #el pago no pudo ser procesado
-      if (charge.status == 'paid'):
-          company = Company.query.get(Branch.query.get(branch_id).company_id)
-          company.credits = payment_data.total
+        #el pago no pudo ser procesado
+        if (charge.status == 'paid'):
+            company = Company.query.get(Branch.query.get(branch_id).company_id)
+            company.credits = payment_data.total
 
-          db.session.commit()
+            db.session.commit()
 
-          return jsonify({'data': 'success'})
-      return jsonify({'message': 'Oops! algo salió mal, seguramente fue tu tarjeta sobregirada'})
+            return jsonify({'data': 'success'})
+        return jsonify({'message': 'Oops! algo salió mal, seguramente fue tu tarjeta sobregirada'})
 
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
