@@ -363,7 +363,7 @@ def credit_add(branch_id):
               "amount": payment_data['total'],
               "currency": "MXN",
               "description": "Compra de campaña",
-              "reference_id": user.branch_id,
+              "reference_id": branch_id,
               "card": request.json['token_id'],
               "details": {
                 "email": user.email
