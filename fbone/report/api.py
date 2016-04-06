@@ -8,7 +8,6 @@ from flask import Blueprint, current_app, request, jsonify
 from flask import current_app as app
 from flask.ext.login import login_required, current_user
 from jwt import DecodeError, ExpiredSignature
-from .models import *
 from ..extensions import db
 from .schemas import *
 
