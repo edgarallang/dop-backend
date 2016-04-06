@@ -19,6 +19,7 @@ from .frontend import frontend
 from .api import api
 from .badge import badge
 from .admin import admin
+from .report import report
 from .extensions import db, mail, cache, login_manager, oid, CORS, socketio
 from .utils import INSTANCE_FOLDER_PATH
 
@@ -36,7 +37,8 @@ DEFAULT_BLUEPRINTS = (
     api,
     admin,
     notification,
-    badge
+    badge,
+    report
 )
 
 
@@ -91,7 +93,7 @@ def configure_extensions(app):
     babel = Babel(app)
 
     socketio.init_app(app)
-    
+
 
     @babel.localeselector
     def get_locale():
