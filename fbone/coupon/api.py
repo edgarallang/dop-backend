@@ -605,7 +605,7 @@ def pseudo_delete(coupon_id):
     return jsonify({'message': 'El cupón ha sido eliminado'})
 
 
-@coupon.route('/payment/card', methods=['POST'])
+@coupon.route('/payment/campaign/card', methods=['POST'])
 def process_payment():
     payment_data = request.json['paymentData']
     if request.headers.get('Authorization'):

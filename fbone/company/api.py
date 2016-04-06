@@ -348,20 +348,35 @@ def branch_ranking(branch_id):
 
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
-@company.route('/<int:branch_id>/credit/add', methods = ['GET'])
+@company.route('/<int:branch_id>/credits/add', methods = ['GET'])
 def credit_add(branch_id):
     if request.headers.get('Authorization'):
         token_index = False
         payload = parse_token(request, token_index)
-
         payment_data = request.json['paymentData']
+        try:
+            charge = conekta.Charge.create({
+              "amount": payment_data['total'],
+              "currency": "MXN",
+              "description": "Compra de campaña",
+              "reference_id": user.branch_id,
+              "card": request.json['token_id'],
+              "details": {
+                "email": user.email
+              }
+            })
+        except conekta.ConektaError as e:
+            return jsonify({ 'message': e['message_to_purchaser'] })
+      #el pago no pudo ser procesado
+      if (charge.status == 'paid'):
+          company = Company.query.get(Branch.query.get(branch_id).company_id)
+          company.credits = payment_data.total
 
-        company = Company.query.get(Branch.query.get(branch_id).company_id)
-        company.credits = payment_data.total
+          db.session.commit()
 
-        db.session.commit()
+          return jsonify({'data': 'success'})
+      return jsonify({'message': 'Oops! algo salió mal, seguramente fue tu tarjeta sobregirada'})
 
-        return jsonify({'data': 'success'})
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
 def number_of_rows(query):
