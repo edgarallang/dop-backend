@@ -14,11 +14,12 @@ class Company(db.Model):
     __tablename__ = 'companies'
     company_id = Column(db.Integer, primary_key = True)
     name = Column(db.String(STRING_LEN), nullable = False, unique = True)
+    credits = Column(db.Integer)
 
     branches = db.relationship("Branch", uselist = False, backref = "companies")
 
 # =====================================================================
-# Branches 
+# Branches
 
 class Branch(db.Model):
     __tablename__ = 'branches'
@@ -86,7 +87,7 @@ class BranchAd(db.Model):
     duration = Column(db.Integer)
 
 # =====================================================================
-# Categories 
+# Categories
 
 class Category(db.Model):
     __tablename__ = 'categories'
@@ -95,7 +96,7 @@ class Category(db.Model):
 
 # =====================================================================
 
-# Branches follower 
+# Branches follower
 
 class BranchesFollower(db.Model):
     __tablename__ = 'branches_follower'
