@@ -11,7 +11,7 @@ from jwt import DecodeError, ExpiredSignature
 from ..extensions import db
 from .schemas import *
 
-badge = Blueprint('report', __name__, url_prefix='/api/report')
+report = Blueprint('report', __name__, url_prefix='/api/report')
 
 def create_token(user):
     payload = {
