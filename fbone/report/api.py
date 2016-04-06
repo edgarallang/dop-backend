@@ -36,11 +36,11 @@ def uses_by_coupon(coupon_id):
     #if request.headers.get('Authorization'):
     token_index = False
 
-    report_query = db.engine.execute("SELECT date_trunc('day', clients_coupon.used_date) 'day', count(*) \
+    report_query = db.engine.execute("SELECT date_trunc('day', clients_coupon.used_date) as day, count(*) \
                                 FROM clients_coupon \
                                 INNER JOIN coupons ON clients_coupon.coupon_id = coupons.coupon_id AND clients_coupon.used = TRUE \
                                 WHERE clients_coupon.coupon_id = %d \
-                                GROUP BY DAY" % (coupon_id) )
+                                GROUP BY day" % (coupon_id) )
 
     report = report_schema.dump(report_query)
     return jsonify({'data': report.data})
