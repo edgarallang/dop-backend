@@ -348,7 +348,7 @@ def branch_ranking(branch_id):
 
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
-@company.route('/<int:branch_id>/credits/add', methods = ['GET'])
+@company.route('/<int:branch_id>/credits/add', methods = ['GET', 'POST'])
 def credit_add(branch_id):
     if request.headers.get('Authorization'):
         token_index = False
