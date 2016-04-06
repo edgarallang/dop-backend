@@ -38,7 +38,7 @@ def uses_by_coupon(coupon_id):
         token_index = False
         payload = parse_token(request, token_index)
 
-        report_query = db.engine.execute("SELECT date_trunc('day', clients_coupon.used_date) "day", count(*) \
+        report_query = db.engine.execute("SELECT date_trunc('day', clients_coupon.used_date) 'day', count(*) \
                                     FROM clients_coupon \
                                     INNER JOIN coupons ON clients_coupon.coupon_id = coupons.coupon_id AND clients_coupon.used = TRUE \
                                     WHERE clients_coupon.coupon_id = %d \
