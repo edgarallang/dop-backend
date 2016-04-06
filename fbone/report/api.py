@@ -33,16 +33,16 @@ def parse_token(req, token_index):
 
 @report.route('/uses/<int:coupon_id>', methods=['GET'])
 def uses_by_coupon(coupon_id):
-    if request.headers.get('Authorization'):
-        token_index = True
-        payload = parse_token(request, token_index)
+    #if request.headers.get('Authorization'):
+    token_index = False
+    payload = parse_token(request, token_index)
 
-        report_query = db.engine.execute("SELECT date_trunc('day', clients_coupon.used_date) 'day', count(*) \
-                                    FROM clients_coupon \
-                                    INNER JOIN coupons ON clients_coupon.coupon_id = coupons.coupon_id AND clients_coupon.used = TRUE \
-                                    WHERE clients_coupon.coupon_id = %d \
-                                    GROUP BY DAY" % (coupon_id) )
+    report_query = db.engine.execute("SELECT date_trunc('day', clients_coupon.used_date) 'day', count(*) \
+                                FROM clients_coupon \
+                                INNER JOIN coupons ON clients_coupon.coupon_id = coupons.coupon_id AND clients_coupon.used = TRUE \
+                                WHERE clients_coupon.coupon_id = %d \
+                                GROUP BY DAY" % (coupon_id) )
 
-        report = report_schema.dump(report_query)
-        return jsonify({'data': report.data})
-    return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
+    report = report_schema.dump(report_query)
+    return jsonify({'data': report.data})
+    #return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
