@@ -374,7 +374,7 @@ def credit_add(branch_id):
         #el pago no pudo ser procesado
         if (charge.status == 'paid'):
             company = Company.query.get(Branch.query.get(branch_id).company_id)
-            company.credits = payment_data.total
+            company.credits = payment_data['total']
 
             db.session.commit()
 
