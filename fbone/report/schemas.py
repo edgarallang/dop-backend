@@ -4,10 +4,10 @@ from ..utils import *
 # =====================================================================
 # Report
 
-class Reports(Schema):
+class Report(Schema):
     class Meta:
         dateformat = ('iso')
         fields = ('branch_id')
 
 
-reports_schema = Reports(many=True)
+report_schema = Report(many=True)

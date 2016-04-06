@@ -43,6 +43,6 @@ def uses_by_coupon(coupon_id):
                                     WHERE clients_coupon.coupon_id = %d \
                                     GROUP BY DAY" % (coupon_id) )
 
-        report = report_data.dump(report_query)
+        report = report_schema.dump(report_query)
         return jsonify({'data': report.data})
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
