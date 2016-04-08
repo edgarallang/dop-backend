@@ -32,7 +32,7 @@ class Branch(db.Model):
     branch = db.relationship('BranchAd', uselist=False, backref = 'branches')
     # branches_location_id = db.ForeignKey('branches_location.branches_location_id')
 
-    branches_location = db.relationship('Branches_location',
+    branches_location = db.relationship('branches_location',
                         backref=db.backref("branch", lazy="dynamic"))
 
     def __init__(self, branches_location):
