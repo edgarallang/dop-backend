@@ -193,7 +193,7 @@ class BranchUserSchema(Schema):
     class Meta:
         fields = ('branches_user_id',
                   'branch_id',
-                  'name',
+                  'user_name',
                   'email',
                   'latitude',
                   'longitude',
