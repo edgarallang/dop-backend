@@ -45,7 +45,6 @@ def create_token(user):
 def send_notification(event,message,namespace,room):
     socketio.emit(event,{'data': message}, room=liked_user.user_id)
     
-
 @notification.route('/test/<int:user_id>', methods=['GET'])
 def test_notification(user_id):
     socketio.emit('notification',{'data': 'friend'}, room = user_id)
@@ -58,7 +57,7 @@ def test_global_notification():
     return jsonify({'data': 'exito'})
 
 @notification.route('/<int:user_id>/profile/get', methods=['GET'])
-def get_profile(user_id):    
+def get_profile(user_id):
     query = 'SELECT users.names,users.surnames,users.twitter_key, users.facebook_key, users.google_key, users.user_id,\
                     users.birth_date, users_image.main_image FROM users\
              INNER JOIN users_image ON users.user_id = users_image.user_id WHERE users.user_id = %d' % user_id
@@ -164,4 +163,3 @@ def test_connect():
 @socketio.on('disconnect')
 def test_disconnect():
     return jsonify({'message': 'Todo bien'})
- 
