@@ -154,11 +154,16 @@ class BranchUser(db.Model):
 
 # Serializer Schemas
 
+
+def must_not_be_blank(data):
+    if not data:
+        raise ValidationError('Data not provided.')
+
 class CompanySchema(Schema):
     class Meta:
         fields = ('company_id',
                   'name')
-                  
+
 class BranchesLocation(Schema):
     # branch = fields.Nested(BranchSchema, validate=must_not_be_blank)
     class Meta:
