@@ -65,11 +65,11 @@ class BranchLocation(db.Model):
     city = Column(db.String(STRING_LEN), nullable=False)
     address = Column(db.String(STRING_LEN), nullable=False)
 
-    branch = db.relationship('Branch',
-                        backref=db.backref("branches_location", lazy="dynamic"))
-
-    def __init__(self, branch):
-        self.branch = branch
+    # branch = db.relationship('Branch',
+    #                     backref=db.backref("branches_location", lazy="dynamic"))
+    #
+    # def __init__(self, branch):
+    #     self.branch = branch
 
 # =====================================================================
 # Marketing Package
