@@ -105,7 +105,7 @@ def select_branch_profile(branch_id):
 
 @company.route('/me', methods = ['POST'])
 def select_branch_user():
-    query = 'SELECT branches_user.branches_user_id, branches.branch_id, \
+    query = 'SELECT branches.*, branches_user.branches_user_id, branches.branch_id, \
                     branches_user.name, branches_user.email, \
                     branches_location.latitude, branches_location.longitude FROM branches_user \
                     INNER JOIN branches ON branches_user.branch_id = branches.branch_id \
@@ -115,10 +115,10 @@ def select_branch_user():
     branch_data = db.engine.execute(query)
     print branch_data
     branch = branch_user_schema.dump(branch_data)
-    selectedBranchUser = BranchUser.query.get(request.json['branches_user_id'])
-    branchUser = branch_user_schema.dump(selectedBranchUser)
+    # selectedBranchUser = BranchUser.query.get(request.json['branches_user_id'])
+    # branchUser = branch_user_schema.dump(selectedBranchUser)
 
-    return jsonify({'data': branchUser.data})
+    return jsonify({'data': branch.data})
 
 @company.route('/branch/<int:branchId>/update ', methods=['GET'])
 def update_branch_user(branchId):
