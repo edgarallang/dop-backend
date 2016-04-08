@@ -158,6 +158,22 @@ class CompanySchema(Schema):
     class Meta:
         fields = ('company_id',
                   'name')
+                  
+class BranchesLocation(Schema):
+    # branch = fields.Nested(BranchSchema, validate=must_not_be_blank)
+    class Meta:
+        fields = ('branch_location_id',
+                  'branch_id',
+                  'state',
+                  'longitude',
+                  'latitude',
+                  'city',
+                  'address',
+                  'distance',
+                  'name',
+                  'category_id',
+                  'logo',
+                  'company_id')
 
 class BranchSchema(Schema):
     branches_location = fields.Nested(BranchesLocation, validate=must_not_be_blank)
@@ -217,22 +233,6 @@ class BranchesAd(Schema):
                   'company_id',
                   'banner',
                   'logo')
-
-class BranchesLocation(Schema):
-    # branch = fields.Nested(BranchSchema, validate=must_not_be_blank)
-    class Meta:
-        fields = ('branch_location_id',
-                  'branch_id',
-                  'state',
-                  'longitude',
-                  'latitude',
-                  'city',
-                  'address',
-                  'distance',
-                  'name',
-                  'category_id',
-                  'logo',
-                  'company_id')
 
 class BranchesFollowedSchema(Schema):
     class Meta:
