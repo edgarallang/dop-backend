@@ -115,10 +115,10 @@ def select_branch_user():
     branch_data = db.engine.execute(query)
     print branch_data
     branch = branch_user_schema.dump(branch_data)
-    #selectedBranchUser = BranchUser.query.get(request.json['branches_user_id'])
-    #branchUser = branch_user_schema.dump(selectedBranchUser)
+    selectedBranchUser = BranchUser.query.get(request.json['branches_user_id'])
+    branchUser = branch_user_schema.dump(selectedBranchUser)
 
-    return jsonify({'data': branch.data})
+    return jsonify({'data': branchUser.data})
 
 @company.route('/branch/<int:branchId>/update ', methods=['GET'])
 def update_branch_user(branchId):
