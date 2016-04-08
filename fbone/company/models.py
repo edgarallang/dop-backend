@@ -160,7 +160,7 @@ class CompanySchema(Schema):
                   'name')
 
 class BranchSchema(Schema):
-    branches_location = fields.Nested(BranchesLocationSchema, validate=must_not_be_blank)
+    branches_location = fields.Nested(BranchesLocation, validate=must_not_be_blank)
     class Meta:
         fields = ('branch_id',
                   'company_id',
