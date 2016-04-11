@@ -199,7 +199,9 @@ class BranchUserSchema(Schema):
                   'longitude',
                   'branch_id',
                   'company_id',
-                  'name')
+                  'name',
+                  'banner',
+                  'logo')
 
 class BranchesProfile(Schema):
     class Meta:
