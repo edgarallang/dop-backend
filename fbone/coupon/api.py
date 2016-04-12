@@ -213,7 +213,7 @@ def get_all_coupon_by_branch(branch_id):
     # discountlist = discount_join_coupon_schema.dump(discount_coupons)
     # nxnlist = nxn_join_coupon_schema.dump(nxn_coupons)
 
-    list_coupon = Coupon.query.filter_by(branch_id = branch_id).all()
+    list_coupon = Coupon.query.filter_by(branch_id = branch_id, start_date != null ).all()
     branches_coupons = coupons_schema.dump(list_coupon)
     return jsonify({ 'data': branches_coupons.data })
 
