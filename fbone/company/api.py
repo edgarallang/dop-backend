@@ -87,7 +87,7 @@ def select_branch_profile(branch_id):
         token_index = True
         payload = parse_token(request, token_index)
         query = 'SELECT branches_location.branch_location_id, branches.branch_id, state, category_id, longitude, latitude, logo,  \
-                        city, address, branches.name, branches.company_id, banner,  \
+                        city, address, branches.name, branches.company_id, banner, logo,  \
                         (SELECT EXISTS (SELECT * FROM branches_follower \
                                 WHERE branch_id = %d AND user_id = %d)::bool) AS following \
                     FROM branches JOIN branches_location \
@@ -105,18 +105,19 @@ def select_branch_profile(branch_id):
 
 @company.route('/me', methods = ['POST'])
 def select_branch_user():
-    query = 'SELECT branches_user.branches_user_id, branches.branch_id, \
-                    branches_user.name, branches_user.email, \
+    query = 'SELECT branches.*, branches_user.branches_user_id, branches.branch_id, \
+                    branches_user.name as user_name, branches_user.email, logo, banner, \
                     branches_location.latitude, branches_location.longitude FROM branches_user \
                     INNER JOIN branches ON branches_user.branch_id = branches.branch_id \
                     INNER JOIN branches_location ON branches_user.branch_id = branches_location.branch_id \
+                    JOIN branches_design ON branches_design.branch_id = branches.branch_id \
                     WHERE branches_user.branches_user_id = %d' % request.json['branches_user_id']
 
     branch_data = db.engine.execute(query)
     print branch_data
     branch = branch_user_schema.dump(branch_data)
-    #selectedBranchUser = BranchUser.query.get(request.json['branches_user_id'])
-    #branchUser = branch_user_schema.dump(selectedBranchUser)
+    # selectedBranchUser = BranchUser.query.get(request.json['branches_user_id'])
+    # branchUser = branch_user_schema.dump(selectedBranchUser)
 
     return jsonify({'data': branch.data})
 

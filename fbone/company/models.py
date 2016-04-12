@@ -32,6 +32,12 @@ class Branch(db.Model):
     branch = db.relationship('BranchAd', uselist=False, backref = 'branches')
     # branches_location_id = db.ForeignKey('branches_location.branches_location_id')
 
+    # branches_location = db.relationship('branches_location',
+    #                     backref=db.backref("branch", lazy="dynamic"))
+    #
+    # def __init__(self, branches_location):
+    #     self.branches_location = branches_location
+
 # =====================================================================
 # Branches Design
 
@@ -59,11 +65,11 @@ class BranchLocation(db.Model):
     city = Column(db.String(STRING_LEN), nullable=False)
     address = Column(db.String(STRING_LEN), nullable=False)
 
-    branch = db.relationship('Branch',
-                        backref=db.backref("branches_location", lazy="dynamic"))
-
-    def __init__(self, branch):
-        self.branch = branch
+    # branch = db.relationship('Branch',
+    #                     backref=db.backref("branches_location", lazy="dynamic"))
+    #
+    # def __init__(self, branch):
+    #     self.branch = branch
 
 # =====================================================================
 # Marketing Package
@@ -148,30 +154,54 @@ class BranchUser(db.Model):
 
 # Serializer Schemas
 
-class CompanySchema(Schema):
-    class Meta:
-        fields = ('company_id',
-                  'name')
-
-class BranchSchema(Schema):
-    class Meta:
-        fields = ('branch_id',
-                  'company_id',
-                  'name')
 
 def must_not_be_blank(data):
     if not data:
         raise ValidationError('Data not provided.')
 
+class CompanySchema(Schema):
+    class Meta:
+        fields = ('company_id',
+                  'name')
+
+class BranchesLocation(Schema):
+    # branch = fields.Nested(BranchSchema, validate=must_not_be_blank)
+    class Meta:
+        fields = ('branch_location_id',
+                  'branch_id',
+                  'state',
+                  'longitude',
+                  'latitude',
+                  'city',
+                  'address',
+                  'distance',
+                  'name',
+                  'category_id',
+                  'logo',
+                  'company_id')
+
+class BranchSchema(Schema):
+    branches_location = fields.Nested(BranchesLocation, validate=must_not_be_blank)
+    class Meta:
+        fields = ('branch_id',
+                  'company_id',
+                  'name',
+                  'branches_location')
+
 class BranchUserSchema(Schema):
-    #branch = fields.Nested(BranchSchema, validate=must_not_be_blank)
+    # branch = fields.Nested(BranchSchema, validate=must_not_be_blank)
     class Meta:
         fields = ('branches_user_id',
                   'branch_id',
-                  'name',
+                  'user_name',
                   'email',
                   'latitude',
-                  'longitude')
+                  'longitude',
+                  'branch_id',
+                  'company_id',
+                  'name',
+                  'banner',
+                  'logo')
 
 class BranchesProfile(Schema):
     class Meta:
@@ -212,22 +242,6 @@ class BranchesAd(Schema):
                   'company_id',
                   'banner',
                   'logo')
-
-class BranchesLocation(Schema):
-    # branch = fields.Nested(BranchSchema, validate=must_not_be_blank)
-    class Meta:
-        fields = ('branch_location_id',
-                  'branch_id',
-                  'state',
-                  'longitude',
-                  'latitude',
-                  'city',
-                  'address',
-                  'distance',
-                  'name',
-                  'category_id',
-                  'logo',
-                  'company_id')
 
 class BranchesFollowedSchema(Schema):
     class Meta:
