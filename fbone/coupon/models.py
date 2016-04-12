@@ -118,6 +118,7 @@ class CouponSchema(Schema):
                   'coupon_category_id')
 
 class CouponLogoSchema(Schema):
+    dateformat = ('iso')
     class Meta:
         fields = ('coupon_id',
                   'branch_id',
