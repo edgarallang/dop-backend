@@ -116,7 +116,8 @@ class CouponSchema(Schema):
                   'limit',
                   'min_spent',
                   'coupon_category_id',
-                  'active')
+                  'active',
+                  'completed')
 
 class CouponLogoSchema(Schema):
     dateformat = ('iso')
