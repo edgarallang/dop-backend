@@ -73,7 +73,7 @@ def profile(userId):
                     WHERE users.user_id = %d" % (userId)
 
     #total_friends = get_friends_by_id(userId)
-    
+
     result = db.engine.execute(query)
     user_with_image = user_joined_schema.dump(result).data
 
@@ -93,7 +93,7 @@ def facebook_login():
                             surnames = request.json['surnames'],
                             birth_date = request.json['birth_date'],
                             facebook_key = request.json['facebook_key'],
-                            gender = request.json['gender'],
+                            gender = 'male',
                             level = 0,
                             exp = 0,
                             privacy_status = 0)
@@ -114,8 +114,8 @@ def facebook_login():
 
         userFirstEXP = UserFirstEXP(user_id = facebookUser.user_id,
                                     first_following = False,
-                                    first_follower = False, 
-                                    first_company_fav = False, 
+                                    first_follower = False,
+                                    first_company_fav = False,
                                     first_using = False)
 
         db.session.add(userFirstEXP)
@@ -181,7 +181,7 @@ def get_friends():
         payload = parse_token(request, True)
 
         user_id = User.query.get(payload['id']).user_id
-        
+
         query = 'SELECT DISTINCT ON (users.user_id) *, \
                     (SELECT EXISTS (SELECT * FROM friends \
                             WHERE friends.user_one_id = %d and friends.user_two_id = users.user_id and friends.operation_id = 1)::bool) AS friend \
@@ -232,7 +232,7 @@ def add_friend():
                                         read = False )
             db.session.add(notification)
             db.session.commit()
-            
+
             friend_data = friends_schema.dump(friendsRelationship)
             socketio.emit('notification',{'data': 'friend'}, room = user_to_add)
 
@@ -243,7 +243,7 @@ def add_friend():
                 friendshipExist.operation_id = 1
             elif user_two.privacy_status == 1:
                 friendshipExist.operation_id = 0
-            
+
             db.session.commit()
             socketio.emit('notification',{'data': 'someone triggered me'}, room = user_to_add)
         friend_data = friends_schema.dump(friendshipExist)
@@ -331,7 +331,7 @@ def delete_friend():
 
         friendsRelationship = Friends.query.filter((Friends.user_one_id == payload['id']) & (Friends.user_two_id == request.json['user_two_id'])).first()
         friendsRelationship.operation_id = 4
-        
+
         db.session.commit()
 
         return jsonify({'data': 'Has dejado de seguir a este usuario'})
@@ -339,7 +339,7 @@ def delete_friend():
     return jsonify({'message': 'Oops! algo salió mal :('})
 
 @user.route('/<int:user_id>/profile/get', methods=['GET'])
-def get_profile(user_id):    
+def get_profile(user_id):
     query = 'SELECT users.names,users.surnames,users.twitter_key, users.facebook_key, users.google_key, users.user_id,\
                     users.birth_date, users_image.main_image FROM users, level, exp \
              INNER JOIN users_image ON users.user_id = users_image.user_id WHERE users.user_id = %d' % user_id
@@ -364,7 +364,7 @@ def search_people():
                                     INNER JOIN users_image on users.user_id = users_image.user_id \
                                     LEFT JOIN friends ON user_one_id = %d AND user_two_id = users.user_id \
                                     WHERE users.names ILIKE '%s' OR users.surnames ILIKE '%s' " % (payload['id'], payload['id'], '%%' + text + '%%', '%%' + text + '%%'))
-        
+
         selected_list_people = people_schema.dump(people, many=True)
         # pprint(selected_list_people, indent = 2)
         return jsonify({'data': selected_list_people.data})
@@ -378,7 +378,7 @@ def get_coupons_activity_by_user_likes():
         user_id = User.query.get(payload['id']).user_id
         limit = request.args.get('limit')
         user_profile_id = request.args.get('user_profile_id')
-        
+
         users = db.engine.execute('SELECT coupons.branch_id,coupons.coupon_id,branches_design.logo,coupons.name,clients_coupon.clients_coupon_id,clients_coupon.latitude,clients_coupon.longitude \
                                     , users.names, users.surnames, users.user_id, users_image.main_image, branches.name AS branch_name, branches.company_id, clients_coupon.used_date, \
                                     (SELECT COUNT(*)  FROM clients_coupon_likes WHERE clients_coupon.clients_coupon_id = clients_coupon_likes.clients_coupon_id) AS total_likes, \
@@ -484,7 +484,3 @@ def get_following():
 
         return jsonify({'data': people_list.data})
     return jsonify({'message': 'Oops! algo salió mal'})
-
-
-
-        
