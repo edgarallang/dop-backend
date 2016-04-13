@@ -216,7 +216,7 @@ def get_all_coupon_by_branch(branch_id):
     #list_coupon = Coupon.query.filter_by(branch_id = branch_id).all()
     list_coupon = db.engine.execute('SELECT *, \
                                     ((coupons.available = 0) OR (coupons.end_date < now()) )::bool AS completed \
-                                    FROM coupons WHERE branch_id =' % branch_id)
+                                    FROM coupons WHERE branch_id = %d' % branch_id)
 
     branches_coupons = coupons_schema.dump(list_coupon)
     return jsonify({ 'data': branches_coupons.data })
