@@ -213,8 +213,8 @@ def get_all_coupon_by_branch(branch_id):
     # discountlist = discount_join_coupon_schema.dump(discount_coupons)
     # nxnlist = nxn_join_coupon_schema.dump(nxn_coupons)
 
-    # list_coupon = Coupon.query.filter(Coupon.branch_id == branch_id, Coupon.start_date != None ).all()
-    list_coupon = Coupon.query.filter_by(branch_id = branch_id).all()
+    #list_coupon = Coupon.query.filter_by(branch_id = branch_id).all()
+    list_coupon = db.engine.execute('SELECT * FROM coupons WHERE branch_id = %d' % branch_id)
     branches_coupons = coupons_schema.dump(list_coupon)
     return jsonify({ 'data': branches_coupons.data })
 
@@ -267,7 +267,7 @@ def get_all_coupon_for_user_offset():
                                     INNER JOIN branches_location on coupons.branch_id = branches_location.branch_id \
                                     JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.branch_id \
                                     JOIN subcategory ON subcategory.subcategory_id = branches_subcategory.subcategory_id \
-                                    WHERE deleted = false AND active=true AND coupons.start_date <= %s ORDER BY coupons.start_date DESC, coupons.coupon_id LIMIT 6 OFFSET %s' % (payload['id'], payload['id'],"'"+start_date+"'",offset))
+                                    WHERE deleted = false AND active=true AND coupons.start_date <= %s ORDER BY coupons.start_date DESC LIMIT 6 OFFSET %s' % (payload['id'], payload['id'],"'"+start_date+"'",offset))
 
 
     selected_list_coupon = coupons_logo_schema.dump(list_coupon)
