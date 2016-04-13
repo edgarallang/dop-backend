@@ -394,7 +394,8 @@ def credits_payment(branch_id):
 
         company = Company.query.get(Branch.query.get(branch_id).company_id)
 
-        company.credits = company.credits - payment_data['total']
+        company.credits = company.credits - (payment_data['total'] / 100)
+        db.session.commit() 
 
         return jsonify({'balance': company.credits})
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
