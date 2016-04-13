@@ -106,10 +106,11 @@ def select_branch_profile(branch_id):
 @company.route('/me', methods = ['POST'])
 def select_branch_user():
     query = 'SELECT branches.*, branches_user.branches_user_id, branches.branch_id, \
-                    branches_user.name as user_name, branches_user.email, logo, banner, \
+                    branches_user.name as user_name, branches_user.email, logo, banner, credits, \
                     branches_location.latitude, branches_location.longitude FROM branches_user \
                     INNER JOIN branches ON branches_user.branch_id = branches.branch_id \
                     INNER JOIN branches_location ON branches_user.branch_id = branches_location.branch_id \
+                    INNER JOIN companies ON branches.company_id = companies.company_id \
                     JOIN branches_design ON branches_design.branch_id = branches.branch_id \
                     WHERE branches_user.branches_user_id = %d' % request.json['branches_user_id']
 
@@ -375,13 +376,28 @@ def credit_add(branch_id):
         #el pago no pudo ser procesado
         if (charge.status == 'paid'):
             company = Company.query.get(Branch.query.get(branch_id).company_id)
-            company.credits = payment_data['total']
+            company.credits = payment_data['total'] / 100
 
             db.session.commit()
 
             return jsonify({'data': 'success'})
         return jsonify({'message': 'Oops! algo salió mal, seguramente fue tu tarjeta sobregirada'})
 
+    return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
+
+@company.route('/<int:branch_id>/credits/payment', methods = ['GET', 'POST'])
+def credits_payment(branch_id):
+    if request.headers.get('Authorization'):
+        token_index = False
+        payload = parse_token(request, token_index)
+        payment_data = request.json['paymentData']
+
+        company = Company.query.get(Branch.query.get(branch_id).company_id)
+
+        company.credits = company.credits - (payment_data['total'] / 100)
+        db.session.commit() 
+
+        return jsonify({'balance': company.credits})
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
 def number_of_rows(query):
