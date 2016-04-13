@@ -385,7 +385,7 @@ def credit_add(branch_id):
 
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
-@company.route('/<int:branch_id>/credits/add', methods = ['GET', 'POST'])
+@company.route('/<int:branch_id>/credits/payment', methods = ['GET', 'POST'])
 def credits_payment(branch_id):
     if request.headers.get('Authorization'):
         token_index = False
@@ -393,6 +393,11 @@ def credits_payment(branch_id):
         payment_data = request.json['paymentData']
 
         company = Company.query.get(Branch.query.get(branch_id).company_id)
+
+        company.credits = company.credits - paymentData.total
+
+        return jsonify({'balance': company.credits})
+    return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
 def number_of_rows(query):
     result = 0
