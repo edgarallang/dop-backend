@@ -139,7 +139,8 @@ class CouponLogoSchema(Schema):
                   'banner',
                   'category_id',
                   'available',
-                  'taken')
+                  'taken',
+                  'active')
 
 class CouponsTakenSchema(Schema):
     class Meta:
