@@ -382,7 +382,7 @@ def credit_add(branch_id):
                 bonus = (payment_data['total'] / 100) * 0.25
             if (payment_data['total'] >= 500000):
                 bonus = (payment_data['total'] / 100) * 0.4
-            company.credits = (payment_data['total'] / 100) + bonus
+            company.credits = company.credits + (payment_data['total'] / 100) + bonus
 
             db.session.commit()
 
