@@ -70,7 +70,7 @@ def level_up(user_id):
 
 @coupon.route('/generate/pdf', methods=['GET'])
 def generate_pdf():
-    pdfkit.from_url('http://google.com', 'out.pdf')
+    pdfkit.from_string('Hello!', 'out.pdf')
 
     return jsonify({'message': 'Generado'})
 # POST methods
