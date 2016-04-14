@@ -49,7 +49,9 @@ def create_coupon(request):
                             coupon_category_id = 1,
                             available = payment_data['amountOfCoupon'],
                             deleted = False,
-                            active = False)
+                            active = False),
+                            duration = payment_data['expireTime']
+
         db.session.add(new_coupon)
         db.session.commit()
 
