@@ -22,6 +22,7 @@ from marshmallow import pprint
 from sqlalchemy import and_
 from ..company import *
 from ..utils import *
+import pdfkit
 from xhtml2pdf import pisa
 
 coupon = Blueprint('coupon', __name__, url_prefix='/api/coupon')
@@ -69,14 +70,9 @@ def level_up(user_id):
 
 @coupon.route('/generate/pdf', methods=['GET'])
 def generate_pdf():
-    pdf_data = u''
-    outputFilename = u'test.pdf'
+    pdfkit.from_url('http://google.com', 'out.pdf')
 
-    resultFile = open(outputFilename, "w+b")
-
-    pisa.CreatePDF(u'<html><body><p>To PDF or not to PDF<p></body></html>', resultFile)
-    resultFile.close()
-    return resultFile
+    return jsonify({'message': 'Generado'})
 # POST methods
 
 @coupon.route('/user/take',methods=['POST'])
