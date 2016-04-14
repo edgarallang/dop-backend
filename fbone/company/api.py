@@ -376,9 +376,9 @@ def credit_add(branch_id):
         #el pago no pudo ser procesado
         if (charge.status == 'paid'):
             company = Company.query.get(Branch.query.get(branch_id).company_id)
-            if (payment_data['total'] >= 100000 && payment_data['total'] < 200000):
+            if (payment_data['total'] >= 100000) and (payment_data['total'] < 200000):
                 bonus = (payment_data['total'] / 100) * 0.1
-            if (payment_data['total'] >= 200000 && $scope.total < 500000):
+            if (payment_data['total'] >= 200000) and (payment_data['total'] < 500000):
                 bonus = (payment_data['total'] / 100) * 0.25
             if (payment_data['total'] >= 500000):
                 bonus = (payment_data['total'] / 100) * 0.4
