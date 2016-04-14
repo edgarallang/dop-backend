@@ -52,7 +52,7 @@ def create_coupon(request):
         db.session.add(new_coupon)
         db.session.commit()
 
-        return "OK si se creo el cupon despues del pago"
+        return "success"
 
 def level_up(user_id):
     user = User.query.get(user_id)
