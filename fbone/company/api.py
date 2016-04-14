@@ -394,7 +394,7 @@ def credits_payment(branch_id):
         payment_data = request.json['paymentData']
 
         company = Company.query.get(Branch.query.get(branch_id).company_id)
-        if company.credits < payment_data['total']:
+        if company.credits < (payment_data['total'] / 100):
             return jsonify({'message': 'Oops! no tienes suficientes créditos'})
         else:
             company.credits = company.credits - (payment_data['total'] / 100)
