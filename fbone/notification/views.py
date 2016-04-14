@@ -18,9 +18,6 @@ monkey.patch_all()
 
 notification = Blueprint('notification', __name__, url_prefix='/api/notification')
 
-
-
-
 def parse_token(req, token_index):
     if token_index:
         token = req.headers.get('Authorization').split()[0]
@@ -44,7 +41,7 @@ def create_token(user):
 
 def send_notification(event,message,namespace,room):
     socketio.emit(event,{'data': message}, room=liked_user.user_id)
-    
+
 @notification.route('/test/<int:user_id>', methods=['GET'])
 def test_notification(user_id):
     socketio.emit('notification',{'data': 'friend'}, room = user_id)

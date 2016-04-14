@@ -14,13 +14,13 @@ from flask.ext.login import login_required, current_user
 from jwt import DecodeError, ExpiredSignature
 from .models import *
 from ..user import *
-# from ..notification import Notification
+from ..notification import Notification
 from ..extensions import db, socketio
 from flask.ext.socketio import SocketIO, send, emit, join_room, leave_room
 from sqlalchemy.orm import joinedload
 from marshmallow import pprint
 from sqlalchemy import and_
-from ..company import branch_schema
+from ..company import *
 from ..utils import *
 from xhtml2pdf import pisa
 
@@ -635,6 +635,28 @@ def process_payment():
 
         return jsonify({ 'message': message })
     return jsonify({'message': 'Oops! algo salió mal, seguramente fue tu tarjeta sobregirada'})
+
+@coupon.route('/<int:branch_id>/credits/payment', methods = ['GET', 'POST'])
+def credits_payment(branch_id):
+    if request.headers.get('Authorization'):
+        token_index = False
+        payload = parse_token(request, token_index)
+        payment_data = request.json['paymentData']
+
+        company = Company.query.get(Branch.query.get(branch_id).company_id)
+        if company.credits < (payment_data['total'] / 100):
+            return jsonify({'message': 'Oops! no tienes suficientes créditos'})
+        else:
+            company.credits = company.credits - (payment_data['total'] / 100)
+            db.session.commit()
+
+            message = create_coupon(request)
+
+            return jsonify({'data': {
+                                'balance': company.credits,
+                                'status': message }
+                          })
+    return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
 @coupon.route('/used/get', methods=['GET'])
 def get_coupons_activity_by_user():

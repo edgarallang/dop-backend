@@ -15,7 +15,6 @@ from jwt import DecodeError, ExpiredSignature
 from .models import *
 from ..extensions import db
 from ..company import Branch, BranchUser
-from ..coupon import *
 
 company = Blueprint('company', __name__, url_prefix='/api/company')
 
@@ -384,28 +383,6 @@ def credit_add(branch_id):
             return jsonify({'data': 'success'})
         return jsonify({'message': 'Oops! algo salió mal, seguramente fue tu tarjeta sobregirada'})
 
-    return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
-
-@company.route('/<int:branch_id>/credits/payment', methods = ['GET', 'POST'])
-def credits_payment(branch_id):
-    if request.headers.get('Authorization'):
-        token_index = False
-        payload = parse_token(request, token_index)
-        payment_data = request.json['paymentData']
-
-        company = Company.query.get(Branch.query.get(branch_id).company_id)
-        if company.credits < (payment_data['total'] / 100):
-            return jsonify({'message': 'Oops! no tienes suficientes créditos'})
-        else:
-            company.credits = company.credits - (payment_data['total'] / 100)
-            db.session.commit()
-
-            message = create_coupon(request)
-
-            return jsonify({'data': {
-                                'balance': company.credits,
-                                'status': message }
-                          })
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
 def number_of_rows(query):
