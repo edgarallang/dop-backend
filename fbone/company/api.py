@@ -15,7 +15,7 @@ from jwt import DecodeError, ExpiredSignature
 from .models import *
 from ..extensions import db
 from ..company import Branch, BranchUser
-from ..coupon import *
+# from ..coupon import *
 
 company = Blueprint('company', __name__, url_prefix='/api/company')
 
