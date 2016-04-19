@@ -355,7 +355,9 @@ class UserActivityNewsfeed(Schema):
                   'branch_name',
                   'total_likes',
                   'user_like',
-                  'used_date')
+                  'used_date',
+                  'is_friend',
+                  'operation_id')
 
 class CouponsViews(Schema):
     class Meta:
