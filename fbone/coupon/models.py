@@ -359,7 +359,8 @@ class UserActivityNewsfeed(Schema):
                   'is_friend',
                   'operation_id',
                   'exp',
-                  'level')
+                  'level',
+                  'privacy_status')
 
 class CouponsViews(Schema):
     class Meta:
