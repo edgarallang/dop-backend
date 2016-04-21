@@ -505,7 +505,7 @@ def coupon_stats(branch_id):
                                     (SELECT COUNT(*)  FROM coupons_likes   \
                                         WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes,   \
                                     (SELECT COUNT(*)  FROM clients_coupon   \
-                                        WHERE coupons.coupon_id = clients_coupon.coupon_id AND coupons.used = true) AS total_uses \
+                                        WHERE coupons.coupon_id = clients_coupon.coupon_id AND clients_coupon.used = true) AS total_uses \
                                     FROM coupons INNER JOIN branches_design ON   \
                                     coupons.branch_id = branches_design.branch_id   \
                                     JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.branch_id   \
