@@ -41,7 +41,7 @@ def uses_by_coupon(coupon_id):
                                     FROM clients_coupon \
                                     INNER JOIN coupons ON clients_coupon.coupon_id = coupons.coupon_id AND clients_coupon.used = TRUE \
                                     WHERE clients_coupon.coupon_id = %d \
-                                    GROUP BY day" % (coupon_id) )
+                                    GROUP BY day ORDER BY day ASC" % (coupon_id) )
 
         report = report_schema.dump(report_query)
         return jsonify({'data': report.data})
