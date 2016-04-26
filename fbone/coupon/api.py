@@ -101,8 +101,12 @@ def take_coupon():
             folio = '%d%s%d' % (request.json['branch_id'], "{:%d%m%Y}".format(actual_date), user_take.clients_coupon_id)
             user_take.folio = folio
             db.session.commit()
+            coupon = Coupon.query.get(coupon_id)
+            coupon.available = coupon.available - 1
             return jsonify({'message': 'El cupon se tomó con éxito','folio': folio})
         else:
+            coupon = Coupon.query.get(coupon_id)
+            coupon.available = coupon.available + 1
             db.session.delete(client_coupon)
             db.session.commit()
             return jsonify({'message': 'El coupon se elimino con éxito'})
@@ -152,7 +156,7 @@ def use_coupon():
             client_coupon.used_date = actual_date
 
             coupon = Coupon.query.get(request.json['coupon_id'])
-            coupon.available = coupon.available - 1
+            #coupon.available = coupon.available - 1
 
             db.session.commit()
 
