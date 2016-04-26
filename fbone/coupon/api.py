@@ -103,6 +103,7 @@ def take_coupon():
             db.session.commit()
             coupon = Coupon.query.get(coupon_id)
             coupon.available = coupon.available - 1
+            db.session.commit()
             return jsonify({'message': 'El cupon se tomó con éxito','folio': folio})
         else:
             coupon = Coupon.query.get(coupon_id)
