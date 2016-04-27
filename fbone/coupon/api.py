@@ -104,13 +104,13 @@ def take_coupon():
             coupon = Coupon.query.get(coupon_id)
             coupon.available = coupon.available - 1
             db.session.commit()
-            return jsonify({'message': 'El cupon se tomó con éxito','folio': folio})
+            return jsonify({'message': 'El cupon se tomó con éxito','total': coupon.available})
         else:
             coupon = Coupon.query.get(coupon_id)
             coupon.available = coupon.available + 1
             db.session.delete(client_coupon)
             db.session.commit()
-            return jsonify({'message': 'El coupon se elimino con éxito'})
+            return jsonify({'message': 'El coupon se elimino con éxito','total': coupon.available})
         return jsonify({'message': 'Ya tomaste este cupón'})
 
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
