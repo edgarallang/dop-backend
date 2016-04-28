@@ -128,8 +128,16 @@ def update_branch_user(branchId):
 
     return jsonify({'data': ':P'})
 
-@company.route('/branch/<int:branchId>/upload/logo', methods=['GET'])
+
+ALLOWED_EXTENSIONS = set(['png'])
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
+
+@company.route('/branch/<int:branchId>/upload/logo', methods=['GET','POST'])
 def upload_logo(branchId):
+    request.file['file']
     print "Jejeje"
 
     return jsonify({'data':'JEJE'})
