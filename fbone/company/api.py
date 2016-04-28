@@ -146,6 +146,8 @@ def upload_logo(branchId):
 
     with open(filename, 'wb') as f:
         f.write(imgdata)
+        print "Jeje"
+    print "Jojo"
     #image.save(os.path.join('uploads/', filename))
     #print "Jejeje"
 
