@@ -130,6 +130,7 @@ def update_branch_user(branchId):
 
 
 ALLOWED_EXTENSIONS = set(['png'])
+app.config['UPLOAD_FOLDER'] = 'uploads/'
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -138,10 +139,16 @@ def allowed_file(filename):
 @company.route('/branch/<int:branchId>/upload/logo', methods=['GET','POST'])
 def upload_logo(branchId):
     image = request.json['file']
+    filename = "Hola"
+    image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
     print "Jejeje"
 
     return jsonify({'data':'JEJE'})
 
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'],
+                               filename)
 @company.route('/branch/nearest/', methods=['GET', 'POST'])
 def nearest_branches():
     latitude = request.args.get('latitude')
