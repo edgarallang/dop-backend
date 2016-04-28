@@ -137,7 +137,7 @@ def allowed_file(filename):
 
 @company.route('/branch/<int:branchId>/upload/logo', methods=['GET','POST'])
 def upload_logo(branchId):
-    request.file['file']
+    request.files['file']
     print "Jejeje"
 
     return jsonify({'data':'JEJE'})
