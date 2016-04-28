@@ -128,6 +128,12 @@ def update_branch_user(branchId):
 
     return jsonify({'data': ':P'})
 
+@company.route('/branch/<int:branchId>/upload/logo', methods=['GET'])
+def upload_logo(branchId):
+    print "Jejeje"
+
+    return jsonify({'data':'JEJE'})
+
 @company.route('/branch/nearest/', methods=['GET', 'POST'])
 def nearest_branches():
     latitude = request.args.get('latitude')
