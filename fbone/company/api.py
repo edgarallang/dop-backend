@@ -130,8 +130,7 @@ def update_branch_user(branchId):
 
 
 ALLOWED_EXTENSIONS = set(['png'])
-app.config['UPLOAD_FOLDER'] = 'uploads/'
-
+¡
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
@@ -140,7 +139,7 @@ def allowed_file(filename):
 def upload_logo(branchId):
     image = request.json['file']
     filename = "Hola"
-    image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+    image.save(os.path.join('uploads/', filename))
     print "Jejeje"
 
     return jsonify({'data':'JEJE'})
