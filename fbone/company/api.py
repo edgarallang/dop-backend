@@ -138,9 +138,9 @@ def allowed_file(filename):
 
 @company.route('/branch/<int:branchId>/upload/logo', methods=['GET','POST'])
 def upload_logo(branchId):
-    image = request.headers.get('file')
+    #image = request.headers.get('file')
     print "entro"
-    #image = request.files['file']
+    image = request.files['file']
     filename = "Hola.png"
     print image
 
