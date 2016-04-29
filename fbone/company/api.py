@@ -143,7 +143,7 @@ def upload_logo(branchId):
     #image = request.files['file']
 
     filename = "Hola.png"
-    print request.files
+    #print request.files
     #print image
 
     #data = image.replace(' ', '+')
