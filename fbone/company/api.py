@@ -151,7 +151,7 @@ def upload_logo(branchId):
     #data = image.replace(' ', '+')
     imgdata = base64.b64decode(image)
 
-    imagdata.save(filename)
+    imgdata.save(filename)
     #with open(filename, 'wb') as f:
     #    f.write(data)
     #    print "Jeje"
