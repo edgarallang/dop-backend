@@ -142,7 +142,7 @@ def allowed_file(filename):
 @company.route('/branch/<int:branchId>/upload/logo', methods=['GET','POST'])
 def upload_logo(branchId):
     image = request.form['file']
-    filename = "../Hola4.png"
+    filename = "Hola4.png"
     data = image.split(",")
     imgdata = base64.b64decode(data[1])
 
@@ -150,7 +150,7 @@ def upload_logo(branchId):
         f.write(imgdata)
 
 
-        original = Image.open('../Hola4.png')
+        original = Image.open('Hola4.png')
         original.show()
 
         width = original.width
@@ -161,8 +161,7 @@ def upload_logo(branchId):
         right = width
         bottom = height/2
 
-        cropped= original.crop((left, top, right, bottom))
-
+        cropped = original.crop((left, top, right, bottom))
         cropped.show()
 
     #with open(filename, 'wb') as f:
