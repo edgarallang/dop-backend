@@ -143,16 +143,16 @@ def upload_logo(branchId):
     print "entro"
     image = request.form['file']
 
-    filename = "../Hola3.png"
+    filename = "../Hola4.png"
     #print request.files
     #print image
 
     #data = image.replace(' ', '+')
-    #imgdata = base64.b64decode(data)
+    imgdata = base64.b64decode(image)
 
     #image.save(filename)
     with open(filename, 'wb') as f:
-        f.write(image)
+        f.write(imgdata)
         print "Jeje"
     print "Jojo"
 
