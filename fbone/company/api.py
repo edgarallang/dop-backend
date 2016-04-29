@@ -146,20 +146,23 @@ def upload_logo(branchId):
     data = image.split(",")
     imgdata = base64.b64decode(data[1])
 
-    original = Image.open(imgdata)
-    original.show()
+    with open(filename, 'wb') as f:
+        f.write(imgdata)
 
-    width = original.width
-    height = original.height
+        original = Image.open(f)
+        original.show()
 
-    left = 0
-    top = 0
-    right = width
-    bottom = height/2
+        width = original.width
+        height = original.height
 
-    cropped= original.crop((left, top, right, bottom))
+        left = 0
+        top = 0
+        right = width
+        bottom = height/2
 
-    cropped.show()
+        cropped= original.crop((left, top, right, bottom))
+
+        cropped.show()
 
     #with open(filename, 'wb') as f:
     #    f.write(cropped)
