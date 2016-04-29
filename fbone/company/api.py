@@ -143,18 +143,18 @@ def upload_logo(branchId):
     print "entro"
     image = request.form['file']
 
-
-    filename = "../Hola.png"
+    filename = "../Hola2.png"
     #print request.files
     #print image
+    base64_image_str = image[image.find(",")+1:]
 
     #data = image.replace(' ', '+')
-    imgdata = base64.b64decode(image)
+    #imgdata = base64.b64decode(data)
 
-    imgdata.save(filename)
-    #with open(filename, 'wb') as f:
-    #    f.write(data)
-    #    print "Jeje"
+    #image.save(filename)
+    with open(filename, 'wb') as f:
+        f.write(base64_image_str)
+        print "Jeje"
     print "Jojo"
 
     #image.save(os.path.join('uploads/', filename))
