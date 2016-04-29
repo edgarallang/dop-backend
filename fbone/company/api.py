@@ -139,15 +139,16 @@ def allowed_file(filename):
 @company.route('/branch/<int:branchId>/upload/logo', methods=['GET','POST'])
 def upload_logo(branchId):
     image = request.headers.get('file')
-    filename = "../Hola.png"
+    filename = "Hola.png"
 
 
     #data = image.replace(' ', '+')
     #imgdata = base64.b64decode(data)
 
-    with open(filename, 'wb') as f:
-        f.write(image)
-        print "Jeje"
+    image.save(os.path.join("../", filename))
+    #with open(filename, 'wb') as f:
+        #f.write(image)
+        #print "Jeje"
     print "Jojo"
 
     print image
