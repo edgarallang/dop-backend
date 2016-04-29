@@ -141,13 +141,14 @@ def upload_logo(branchId):
     #image = request.headers.get('file')
     print "entro"
     image = request.files['file']
+
     filename = "Hola.png"
-    print image
+
 
     #data = image.replace(' ', '+')
     #imgdata = base64.b64decode(data)
 
-    #image.save(os.path.join('', filename))
+    image.save(os.path.join('', filename))
     #with open(filename, 'wb') as f:
         #f.write(image)
         #print "Jeje"
