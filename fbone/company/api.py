@@ -160,7 +160,7 @@ def upload_logo(branchId):
     #image.save(os.path.join('uploads/', filename))
     #print "Jejeje"
 
-    return jsonify({'data':'JEJE'})
+    return jsonify({'data':image})
 
 @company.route('/branch/nearest/', methods=['GET', 'POST'])
 def nearest_branches():
