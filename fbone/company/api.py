@@ -6,6 +6,8 @@ import json
 import requests
 import conekta
 import base64
+from PIL import Image
+
 conekta.api_key = 'key_ReaoWd2MyxP5QdUWKSuXBQ'
 conekta.locale = 'es'
 
@@ -139,26 +141,28 @@ def allowed_file(filename):
 
 @company.route('/branch/<int:branchId>/upload/logo', methods=['GET','POST'])
 def upload_logo(branchId):
-    #image = request.headers.get('file')
-    print "entro"
     image = request.form['file']
-
     filename = "../Hola4.png"
-    #print request.files
-    #print image
-
-    #data = image.replace(' ', '+')
     data = image.split(",")
     imgdata = base64.b64decode(data[1])
 
-    #image.save(filename)
-    with open(filename, 'wb') as f:
-        f.write(imgdata)
-        print "Jeje"
-    print "Jojo"
+    original = Image.open(imgdata)
+    original.show()
 
-    #image.save(os.path.join('uploads/', filename))
-    #print "Jejeje"
+    width = original.width
+    height = original.height
+
+    left = 0
+    top = 0
+    right = width
+    bottom = height/2
+
+    cropped= original.crop((left, top, right, bottom))
+
+    cropped.show()
+
+    with open(filename, 'wb') as f:
+        f.write(cropped)
 
     return jsonify({'data':image})
 
