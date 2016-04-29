@@ -149,7 +149,8 @@ def upload_logo(branchId):
     with open(filename, 'wb') as f:
         f.write(imgdata)
 
-        original = Image.open(f)
+
+        original = Image.open('../Hola4.png')
         original.show()
 
         width = original.width
