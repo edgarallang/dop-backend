@@ -161,8 +161,8 @@ def upload_logo(branchId):
 
     cropped.show()
 
-    with open(filename, 'wb') as f:
-        f.write(cropped)
+    #with open(filename, 'wb') as f:
+    #    f.write(cropped)
 
     return jsonify({'data':image})
 
