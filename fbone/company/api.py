@@ -140,8 +140,7 @@ def allowed_file(filename):
 def upload_logo(branchId):
     #image = request.headers.get('file')
     print "entro"
-    import pdb; pdb.set_trace()
-    image = request.files['file']
+    image = request.form['file']
 
     filename = "Hola.png"
     #print request.files
@@ -150,7 +149,7 @@ def upload_logo(branchId):
     #data = image.replace(' ', '+')
     #imgdata = base64.b64decode(data)
 
-    #image.save(filename)
+    image.save(filename)
     #with open(filename, 'wb') as f:
         #f.write(image)
         #print "Jeje"
