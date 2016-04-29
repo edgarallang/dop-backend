@@ -9,6 +9,7 @@ import base64
 conekta.api_key = 'key_ReaoWd2MyxP5QdUWKSuXBQ'
 conekta.locale = 'es'
 
+from binascii import a2b_base64
 from flask import Blueprint, current_app, request, jsonify, redirect, url_for
 from flask import current_app as app
 from flask.ext.login import login_required, current_user
@@ -141,18 +142,23 @@ def upload_logo(branchId):
     #image = request.headers.get('file')
     print "entro"
     image = request.form['file']
+    binary_data = a2b_base64(image)
+
+    fd = open('image.png', 'wb')
+    fd.write(binary_data)
+    fd.close
 
     filename = "../Hola.png"
     #print request.files
     #print image
 
-    data = image.replace(' ', '+')
+    #data = image.replace(' ', '+')
     #imgdata = base64.b64decode(data)
 
     #image.save(filename)
-    with open(filename, 'wb') as f:
-        f.write(data)
-        print "Jeje"
+    #with open(filename, 'wb') as f:
+    #    f.write(data)
+    #    print "Jeje"
     print "Jojo"
 
     #image.save(os.path.join('uploads/', filename))
