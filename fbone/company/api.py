@@ -143,8 +143,8 @@ def upload_logo(branchId):
     image = request.files['file']
 
     filename = "Hola.png"
-
-
+    print "Files"
+    print image
     #data = image.replace(' ', '+')
     #imgdata = base64.b64decode(data)
 
