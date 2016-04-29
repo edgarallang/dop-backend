@@ -143,7 +143,9 @@ def upload_logo(branchId):
 
 
     #data = image.replace(' ', '+')
-    imgdata = decode_base64(image)
+    #imgdata = base64.b64decode(data)
+
+    imgdata = base64.decodestring(image)
 
     with open(filename, 'wb') as f:
         f.write(imgdata)
@@ -155,18 +157,6 @@ def upload_logo(branchId):
     #print "Jejeje"
 
     return jsonify({'data':'JEJE'})
-
-def decode_base64(data):
-    """Decode base64, padding being optional.
-
-    :param data: Base64 data as an ASCII byte string
-    :returns: The decoded byte string.
-
-    """
-    missing_padding = 4 - len(data) % 4
-    if missing_padding:
-        data += b'='* missing_padding
-    return base64.decodestring(data)
 
 @company.route('/branch/nearest/', methods=['GET', 'POST'])
 def nearest_branches():
