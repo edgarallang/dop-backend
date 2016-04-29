@@ -142,13 +142,11 @@ def upload_logo(branchId):
     filename = "Hola.jpg"
 
 
-    #data = image.replace(' ', '+')
-    #imgdata = base64.b64decode(data)
-
-    imgdata = base64.decodestring(image)
+    data = image.replace(' ', '+')
+    imgdata = base64.b64decode(data)
 
     with open(filename, 'wb') as f:
-        f.write(imgdata)
+        f.write(image)
         print "Jeje"
     print "Jojo"
 
