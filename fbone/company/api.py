@@ -140,15 +140,16 @@ def allowed_file(filename):
 def upload_logo(branchId):
     #image = request.headers.get('file')
     print "entro"
-    image = request.files['file']
+    #image = request.files['file']
 
     filename = "Hola.png"
-    print "Files"
-    print image
+    print request.files
+    #print image
+
     #data = image.replace(' ', '+')
     #imgdata = base64.b64decode(data)
 
-    image.save(filename)
+    #image.save(filename)
     #with open(filename, 'wb') as f:
         #f.write(image)
         #print "Jeje"
