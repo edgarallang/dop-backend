@@ -186,7 +186,7 @@ def upload_banner(companyId):
         bottom = size[1]/2
 
         cropped = original.crop((left, top, right, bottom))
-        cropped.save(directory+"/logo.png",'PNG')
+        cropped.save(directory+"/banner.png",'PNG')
 
     #with open(filename, 'wb') as f:
     #    f.write(cropped)
