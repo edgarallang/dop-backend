@@ -165,8 +165,6 @@ def upload_banner(companyId):
 
     directory = "../branches/images/%d" % companyId
 
-    company_directory = os.path.join(directory, 'temp.png')
-    print company_directory
 
     if not os.path.isdir(directory):
         os.makedirs(directory)
