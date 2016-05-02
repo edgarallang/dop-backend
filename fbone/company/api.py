@@ -143,7 +143,7 @@ def allowed_file(filename):
 def upload_logo(companyId):
     directory = "../branches/images/%d" % companyId
 
-    if not os.path.isdir(directory)
+    if not os.path.isdir(os.path.join(directory))
         os.makedirs(directory)
 
     image = request.form['file']
