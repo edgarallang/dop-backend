@@ -7,7 +7,6 @@ from flask import current_app
 
 context = ('/etc/ssl/websitessl/inmoon.crt', '/etc/ssl/websitessl/inmoon.key')
 
-PROJECT_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
 class BaseConfig(object):
 

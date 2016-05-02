@@ -162,6 +162,8 @@ def upload_logo(companyId):
 
 @company.route('/branch/<int:companyId>/upload/banner', methods=['GET','POST'])
 def upload_banner(companyId):
+    print os.path.abspath()
+
     directory = "../branches/images/%d" % companyId
 
     if not os.path.isdir(directory):
