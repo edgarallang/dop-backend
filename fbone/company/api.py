@@ -153,16 +153,16 @@ def upload_logo(branchId):
     original = Image.open('Hola4.png')
     original.show()
 
-    width = original.size
-    height = original.size
+    size = original.size
 
     left = 0
     top = 0
-    right = width[0]
-    bottom = height[1]/2
+    right = size[0]
+    bottom = size[1]/2
 
     cropped = original.crop((left, top, right, bottom))
 
+    cropped.save('Hola5')
 
     #with open(filename, 'wb') as f:
     #    f.write(cropped)
