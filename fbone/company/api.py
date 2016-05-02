@@ -174,26 +174,24 @@ def upload_banner(companyId):
     data = image.split(",")
     imgdata = base64.b64decode(data[1])
 
-    with open(temp_image, 'wb') as f:
-        f.write(imgdata)
+    #with open(temp_image, 'wb') as f:
+    #    f.write(imgdata)
 
-        original = Image.open(StringIO.StringIO(imgdata))
-        original.show()
+    original = Image.open(StringIO.StringIO(imgdata))
+    original.show()
 
-        size = original.size
+    size = original.size
 
-        left = 0
-        top = 0
-        right = size[0]
-        bottom = size[1]/2
+    left = 0
+    top = 0
+    right = size[0]
+    bottom = size[1]/2
 
-        cropped = original.crop((left, top, right, bottom))
-        cropped.save(directory+'/banner.png','PNG')
+    cropped = original.crop((left, top, right, bottom))
+    cropped.save(directory+'/banner.png','PNG')
 
-        os.remove(temp_image)
-        print "Listo"
-    #with open(filename, 'wb') as f:
-    #    f.write(cropped)
+    #os.remove(temp_image)
+    print "Listo"
 
     return jsonify({'data':'image'})
 
