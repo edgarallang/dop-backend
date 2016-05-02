@@ -7,7 +7,7 @@ import requests
 import conekta
 import base64
 from PIL import Image
-
+import StringIO
 conekta.api_key = 'key_ReaoWd2MyxP5QdUWKSuXBQ'
 conekta.locale = 'es'
 
