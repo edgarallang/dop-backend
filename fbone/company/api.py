@@ -154,7 +154,7 @@ def upload_logo(companyId):
     with open(temp_image, 'wb') as f:
         f.write(imgdata)
 
-        original = Image.open(directory+temp_image)
+        original = Image.open(temp_image)
         original.show()
 
         size = original.size
@@ -165,7 +165,6 @@ def upload_logo(companyId):
         bottom = size[1]/2
 
         cropped = original.crop((left, top, right, bottom))
-
         cropped.save(directory+"/logo.png",'PNG')
 
     #with open(filename, 'wb') as f:
