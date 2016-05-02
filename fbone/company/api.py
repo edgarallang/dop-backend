@@ -175,7 +175,7 @@ def upload_banner(companyId):
     with open(temp_image, 'wb') as f:
         f.write(imgdata)
 
-        company_directory = os.path.join(PROJECT_ROOT,temp_image)
+        company_directory = os.path.join(app.config.PROJECT_ROOT,temp_image)
 
         original = Image.open(company_directory)
         original.show()
