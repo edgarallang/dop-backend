@@ -139,18 +139,23 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
-@company.route('/branch/<int:branchId>/upload/logo', methods=['GET','POST'])
-def upload_logo(branchId):
-    #image = request.form['file']
-    #filename = "Hola4.png"
-    #data = image.split(",")
-    #imgdata = base64.b64decode(data[1])
+@company.route('/branch/<int:companyId>/upload/logo', methods=['GET','POST'])
+def upload_logo(companyId):
+    directory = "../branches/images/%d" % companyId
 
-    #with open(filename, 'wb') as f:
-    #    f.write(imgdata)
+    if not os.path.isdir(directory)
+        os.makedirs(directory)
+
+    image = request.form['file']
+    temp_image = directory + "/temp.png"
+    data = image.split(",")
+    imgdata = base64.b64decode(data[1])
+
+    with open(temp_image, 'wb') as f:
+        f.write(imgdata)
 
 
-    original = Image.open('Hola4.png')
+    original = Image.open(directory+temp_image)
     original.show()
 
     size = original.size
@@ -162,7 +167,7 @@ def upload_logo(branchId):
 
     cropped = original.crop((left, top, right, bottom))
 
-    cropped.save('Hola5','PNG')
+    cropped.save(directory+"/final.png",'PNG')
 
     #with open(filename, 'wb') as f:
     #    f.write(cropped)
