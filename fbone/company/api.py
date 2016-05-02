@@ -163,9 +163,8 @@ def upload_logo(companyId):
 @company.route('/branch/<int:companyId>/upload/banner', methods=['GET','POST'])
 def upload_banner(companyId):
 
-    #directory = "../branches/images/%d" % companyId
+    directory = "../branches/images/%d" % companyId
 
-    directory = "../branches/images/jej/"
 
     if not os.path.isdir(directory):
         os.makedirs(directory)
@@ -178,7 +177,7 @@ def upload_banner(companyId):
     with open(temp_image, 'wb') as f:
         f.write(imgdata)
 
-        script_dir = os.path.dirname(os.path.abspath(directory))
+        script_dir = os.path.dirname(os.path.abspath(directory+'23'))
         original = Image.open(os.path.join(script_dir, 'temp.png'))
 
         #original = Image.open(open(temp_image,'rb'))
