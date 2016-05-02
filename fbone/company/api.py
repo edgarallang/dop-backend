@@ -170,15 +170,10 @@ def upload_banner(companyId):
         os.makedirs(directory)
 
     image = request.form['file']
-    temp_image = directory + "/temp.png"
     data = image.split(",")
     imgdata = base64.b64decode(data[1])
 
-    #with open(temp_image, 'wb') as f:
-    #    f.write(imgdata)
-
     original = Image.open(StringIO.StringIO(imgdata))
-    original.show()
 
     size = original.size
 
@@ -190,7 +185,6 @@ def upload_banner(companyId):
     cropped = original.crop((left, top, right, bottom))
     cropped.save(directory+'/banner.png','PNG')
 
-    #os.remove(temp_image)
     print "Listo"
 
     return jsonify({'data':'image'})
