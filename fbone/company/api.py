@@ -158,8 +158,8 @@ def upload_logo(branchId):
 
     left = 0
     top = 0
-    right = width
-    bottom = height/2
+    right = width.width
+    bottom = height.height/2
 
     cropped = original.crop((left, top, right, bottom))
 
