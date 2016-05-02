@@ -151,7 +151,7 @@ def upload_logo(companyId):
     data = image.split(",")
     imgdata = base64.b64decode(data[1])
 
-    with open(temp_image, 'wb') as f:
+    with open(logo, 'wb') as f:
         f.write(imgdata)
 
 
