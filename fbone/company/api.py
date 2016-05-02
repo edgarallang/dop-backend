@@ -165,8 +165,8 @@ def upload_banner(companyId):
 
     #directory = "../branches/images/%d" % companyId
 
-    directory = "../branches/images/23"
-    
+    directory = "../branches/images/23/"
+
     if not os.path.isdir(directory):
         os.makedirs(directory)
 
