@@ -175,7 +175,7 @@ def upload_banner(companyId):
     with open(temp_image, 'wb') as f:
         f.write(imgdata)
 
-        original = Image.open(temp_image)
+        original = Image.open('Hola4.png')
         original.show()
 
         size = original.size
@@ -186,7 +186,7 @@ def upload_banner(companyId):
         bottom = size[1]/2
 
         cropped = original.crop((left, top, right, bottom))
-        cropped.save('banner.png','PNG')
+        cropped.save(directory+'/banner.png','PNG')
 
     #with open(filename, 'wb') as f:
     #    f.write(cropped)
