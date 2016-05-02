@@ -175,7 +175,9 @@ def upload_banner(companyId):
     with open(temp_image, 'wb') as f:
         f.write(imgdata)
 
-        original = Image.open('Hola4.png')
+        company_directory = os.path.join(temp_image)
+
+        original = Image.open(company_directory)
         original.show()
 
         size = original.size
