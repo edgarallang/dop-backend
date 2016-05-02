@@ -175,7 +175,7 @@ def upload_banner(companyId):
     with open(temp_image, 'wb') as f:
         f.write(imgdata)
 
-        original = Image.open(temp_image)
+        original = Image.open(directory+"/temp.png")
         original.show()
 
         size = original.size
