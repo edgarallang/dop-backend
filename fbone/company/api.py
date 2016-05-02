@@ -162,7 +162,7 @@ def upload_logo(branchId):
 
     cropped = original.crop((left, top, right, bottom))
 
-    cropped.save('Hola5')
+    cropped.save('Hola5','PNG')
 
     #with open(filename, 'wb') as f:
     #    f.write(cropped)
