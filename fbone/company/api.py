@@ -177,10 +177,7 @@ def upload_banner(companyId):
     with open(temp_image, 'wb') as f:
         f.write(imgdata)
 
-        #script_dir = os.path.abspath(directory)
-        #original = Image.open(os.path.join(script_dir, 'temp.png'))
         original = Image.open(StringIO.StringIO(imgdata))
-        #original = Image.open(open(temp_image,'rb'))
         original.show()
 
         size = original.size
@@ -193,6 +190,7 @@ def upload_banner(companyId):
         cropped = original.crop((left, top, right, bottom))
         cropped.save(directory+'/banner.png','PNG')
 
+        os.remove(temp_image)
         print "Listo"
     #with open(filename, 'wb') as f:
     #    f.write(cropped)
