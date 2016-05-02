@@ -147,6 +147,27 @@ def upload_logo(companyId):
         os.makedirs(directory)
 
     image = request.form['file']
+    logo = directory + "/logo.png"
+    data = image.split(",")
+    imgdata = base64.b64decode(data[1])
+
+    with open(temp_image, 'wb') as f:
+        f.write(imgdata)
+
+
+    #with open(filename, 'wb') as f:
+    #    f.write(cropped)
+
+    return jsonify({'data':'image'})
+
+@company.route('/branch/<int:companyId>/upload/banner', methods=['GET','POST'])
+def upload_logo(companyId):
+    directory = "../branches/images/%d" % companyId
+
+    if not os.path.isdir(directory):
+        os.makedirs(directory)
+
+    image = request.form['file']
     temp_image = directory + "/temp.png"
     data = image.split(",")
     imgdata = base64.b64decode(data[1])
