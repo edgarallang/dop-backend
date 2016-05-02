@@ -153,8 +153,8 @@ def upload_logo(branchId):
     original = Image.open('Hola4.png')
     original.show()
 
-    width = original.width
-    height = original.height
+    width = original.size
+    height = original.size
 
     left = 0
     top = 0
@@ -162,12 +162,12 @@ def upload_logo(branchId):
     bottom = height/2
 
     cropped = original.crop((left, top, right, bottom))
-    cropped.show()
+
 
     #with open(filename, 'wb') as f:
     #    f.write(cropped)
 
-    return jsonify({'data':image})
+    return jsonify({'data':'image'})
 
 @company.route('/branch/nearest/', methods=['GET', 'POST'])
 def nearest_branches():
