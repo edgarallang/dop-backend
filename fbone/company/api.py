@@ -177,9 +177,9 @@ def upload_banner(companyId):
     with open(temp_image, 'wb') as f:
         f.write(imgdata)
 
-        script_dir = os.path.abspath(directory)
-        original = Image.open(os.path.join(script_dir, 'temp.png'))
-
+        #script_dir = os.path.abspath(directory)
+        #original = Image.open(os.path.join(script_dir, 'temp.png'))
+        original = Image.open(StringIO(imgdata))
         #original = Image.open(open(temp_image,'rb'))
         original.show()
 
