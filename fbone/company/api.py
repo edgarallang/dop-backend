@@ -167,7 +167,7 @@ def upload_banner(companyId):
 
     company_directory = os.path.join(directory, 'temp.png')
     print company_directory
-    
+
     if not os.path.isdir(directory):
         os.makedirs(directory)
 
@@ -181,7 +181,7 @@ def upload_banner(companyId):
 
 
 
-        original = Image.open(company_directory)
+        original = Image.open(open(temp_image,'rb'))
         original.show()
 
         size = original.size
