@@ -162,7 +162,6 @@ def upload_logo(companyId):
 
 @company.route('/branch/<int:companyId>/upload/banner', methods=['GET','POST'])
 def upload_banner(companyId):
-    print os.path.abspath()
 
     directory = "../branches/images/%d" % companyId
 
@@ -180,7 +179,7 @@ def upload_banner(companyId):
         company_directory = os.path.join(directory, 'temp.png')
 
         print company_directory
-        
+
         original = Image.open(company_directory)
         original.show()
 
