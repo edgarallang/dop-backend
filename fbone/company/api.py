@@ -161,7 +161,7 @@ def upload_logo(companyId):
     return jsonify({'data':'image'})
 
 @company.route('/branch/<int:companyId>/upload/banner', methods=['GET','POST'])
-def upload_logo(companyId):
+def upload_banner(companyId):
     directory = "../branches/images/%d" % companyId
 
     if not os.path.isdir(directory):
