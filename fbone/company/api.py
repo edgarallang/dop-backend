@@ -167,7 +167,7 @@ def upload_logo(companyId):
 
     cropped = original.crop((left, top, right, bottom))
 
-    cropped.save(directory+"/final.png",'PNG')
+    cropped.save(directory+"/logo.png",'PNG')
 
     #with open(filename, 'wb') as f:
     #    f.write(cropped)
