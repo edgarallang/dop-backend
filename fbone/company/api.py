@@ -154,10 +154,6 @@ def upload_logo(companyId):
     with open(logo, 'wb') as f:
         f.write(imgdata)
 
-
-    #with open(filename, 'wb') as f:
-    #    f.write(cropped)
-
     return jsonify({'data':'image'})
 
 @company.route('/branch/<int:companyId>/upload/banner', methods=['GET','POST'])
@@ -180,7 +176,7 @@ def upload_banner(companyId):
     left = 0
     top = 0
     right = size[0]
-    bottom = size[1]/2
+    bottom = (size[1]/2)-31
 
     cropped = original.crop((left, top, right, bottom))
     cropped.save(directory+'/banner.png','PNG')
