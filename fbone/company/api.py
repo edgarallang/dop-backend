@@ -5,10 +5,14 @@ import jwt
 import json
 import requests
 import conekta
+import base64
+from PIL import Image
+import StringIO
 conekta.api_key = 'key_ReaoWd2MyxP5QdUWKSuXBQ'
 conekta.locale = 'es'
 
-from flask import Blueprint, current_app, request, jsonify
+from binascii import a2b_base64
+from flask import Blueprint, current_app, request, jsonify, redirect, url_for
 from flask import current_app as app
 from flask.ext.login import login_required, current_user
 from jwt import DecodeError, ExpiredSignature
@@ -127,6 +131,59 @@ def update_branch_user(branchId):
     Branch.query.filter_by(branch_id=branchId).update({"name": "Bob Marley"})
 
     return jsonify({'data': ':P'})
+
+
+ALLOWED_EXTENSIONS = set(['png'])
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
+
+@company.route('/branch/<int:companyId>/upload/logo', methods=['GET','POST'])
+def upload_logo(companyId):
+    directory = "../branches/images/%d" % companyId
+
+    if not os.path.isdir(directory):
+        os.makedirs(directory)
+
+    image = request.form['file']
+    logo = directory + "/logo.png"
+    data = image.split(",")
+    imgdata = base64.b64decode(data[1])
+
+    with open(logo, 'wb') as f:
+        f.write(imgdata)
+
+    return jsonify({'data':'image'})
+
+@company.route('/branch/<int:companyId>/upload/banner', methods=['GET','POST'])
+def upload_banner(companyId):
+
+    directory = "../branches/images/%d" % companyId
+
+
+    if not os.path.isdir(directory):
+        os.makedirs(directory)
+
+    image = request.form['file']
+    data = image.split(",")
+    imgdata = base64.b64decode(data[1])
+
+    original = Image.open(StringIO.StringIO(imgdata))
+
+    size = original.size
+
+    left = 0
+    top = 0
+    right = size[0]
+    bottom = (size[1]/2)-31
+
+    cropped = original.crop((left, top, right, bottom))
+    cropped.save(directory+'/banner.png','PNG')
+
+    print "Listo"
+
+    return jsonify({'data':'image'})
 
 @company.route('/branch/nearest/', methods=['GET', 'POST'])
 def nearest_branches():

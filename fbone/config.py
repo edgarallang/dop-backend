@@ -7,6 +7,7 @@ from flask import current_app
 
 context = ('/etc/ssl/websitessl/inmoon.crt', '/etc/ssl/websitessl/inmoon.key')
 
+
 class BaseConfig(object):
 
     PROJECT = "fbone"
@@ -109,4 +110,3 @@ class TestConfig(BaseConfig):
     PRESERVE_CONTEXT_ON_EXCEPTION = False
     SQLALCHEMY_ECHO = False
     SQLALCHEMY_DATABASE_URI = 'sqlite://'
-    
