@@ -14,7 +14,6 @@ from ..extensions import db, socketio, client
 from juggernaut import Juggernaut
 from gevent import socket, monkey
 from flask_pushjack import FlaskAPNS
-from app import client
 
 # config = {
 #     'APNS_CERTIFICATE': '../../certs/push.pem>'
