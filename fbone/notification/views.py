@@ -14,6 +14,7 @@ from ..extensions import db, socketio
 from juggernaut import Juggernaut
 from gevent import socket, monkey
 from flask_pushjack import FlaskAPNS
+from app import client
 
 # config = {
 #     'APNS_CERTIFICATE': '../../certs/push.pem>'
@@ -57,15 +58,16 @@ def push_test_global():
     # Send to single device.
     res = client.send(token, 'Hola', **options)
     # List of all tokens sent.
-    res.tokens
+    #res.tokens
     # List of any subclassed APNSServerError objects.
-    res.errors
+    #res.errors
     # Dict mapping token => APNSServerError.
-    res.token_errors
+    #res.token_errors
     # Send to multiple devices.
-    client.send([token], alert, **options)
+    #client.send([token], alert, **options)
     # Get expired tokens.
-    expired_tokens = client.get_expired_tokens()
+    #expired_tokens = client.get_expired_tokens()
+    return jsonify({'data': 'exito'})
 
 @notification.route('/test/<int:user_id>', methods=['GET'])
 def test_notification(user_id):
