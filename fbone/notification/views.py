@@ -61,7 +61,7 @@ def push_test_global():
     # List of any subclassed APNSServerError objects.
     print res.errors
     # Dict mapping token => APNSServerError.
-    #res.token_errors
+    print res.token_errors
     # Send to multiple devices.
     #client.send([token], alert, **options)
     # Get expired tokens.
