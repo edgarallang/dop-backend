@@ -13,8 +13,14 @@ from .models import *
 from ..extensions import db, socketio
 from juggernaut import Juggernaut
 from gevent import socket, monkey
+from flask_pushjack import FlaskAPNS
 
-monkey.patch_all()
+config = {
+    'APNS_CERTIFICATE': '../../certs/push.pem>'
+}
+
+client = FlaskAPNS()
+client.init_app(app)
 
 notification = Blueprint('notification', __name__, url_prefix='/api/notification')
 
