@@ -166,10 +166,11 @@ def upload_banner(companyId):
         os.makedirs(directory)
 
     image = request.form['file']
+    banner = directory + "/banner.png"
     data = image.split(",")
     imgdata = base64.b64decode(data[1])
 
-    with open(logo, 'wb') as f:
+    with open(banner, 'wb') as f:
         f.write(imgdata)
 
     #original = Image.open(StringIO.StringIO(imgdata))
