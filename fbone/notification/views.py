@@ -15,12 +15,11 @@ from juggernaut import Juggernaut
 from gevent import socket, monkey
 from flask_pushjack import FlaskAPNS
 
-config = {
-    'APNS_CERTIFICATE': '../../certs/push.pem>'
-}
+# config = {
+#     'APNS_CERTIFICATE': '../../certs/push.pem>'
+# }
 
-client = FlaskAPNS()
-client.init_app(app)
+
 
 notification = Blueprint('notification', __name__, url_prefix='/api/notification')
 
