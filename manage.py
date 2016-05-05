@@ -9,6 +9,8 @@ from flask_apscheduler import APScheduler
 from fbone.user import User, UserImage, UserLevel, ADMIN, ACTIVE
 from fbone.utils import MALE
 from OpenSSL import SSL
+from flask_pushjack import FlaskAPNS
+
 
 #context = SSL.Context(SSL.SSLv23_METHOD)
 #context.use_privatekey_file('/etc/ssl/websitessl/inmoon.key')
@@ -22,6 +24,9 @@ app.test_request_context().push()
 
 scheduler = APScheduler()
 scheduler.init_app(app)
+
+client = FlaskAPNS()
+client.init_app(app)
 
 manager = Manager(app)
 
@@ -56,4 +61,3 @@ manager.add_option('-c', '--config',
 
 if __name__ == "__main__":
     manager.run()
-
