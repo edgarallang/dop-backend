@@ -447,6 +447,16 @@ def credit_add(branch_id):
 
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
+@company.route('/<int:branch_id>/config/set', methods = ['GET', 'POST'])
+def set_config(branch_id):
+    if request.headers.get('Authorization'):
+        token_index = True
+        payload = parse_token(request, token_index)
+
+        longitude = request.json['longitude']
+        latitude = request.json['latitude']
+        address = request.json['address']
+
 def number_of_rows(query):
     result = 0
     for row in query:

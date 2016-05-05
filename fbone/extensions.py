@@ -18,6 +18,9 @@ oid = OpenID()
 from flask.ext.socketio import SocketIO, emit, join_room, leave_room, close_room, disconnect
 socketio = SocketIO()
 
+from flask_pushjack import FlaskAPNS
+client = FlaskAPNS()
+
 # from flask.ext.jwt import JWT
 # jwt = JWT()
 
