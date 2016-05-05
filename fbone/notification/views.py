@@ -59,14 +59,14 @@ def push_test_global():
     # List of all tokens sent.
     res.tokens
     # List of any subclassed APNSServerError objects.
-    res.errors
+    print res.errors
     # Dict mapping token => APNSServerError.
     #res.token_errors
     # Send to multiple devices.
     #client.send([token], alert, **options)
     # Get expired tokens.
     #expired_tokens = client.get_expired_tokens()
-    return jsonify({'data': 'exito'})
+    return jsonify({'data': res.tokens})
 
 @notification.route('/test/<int:user_id>', methods=['GET'])
 def test_notification(user_id):
