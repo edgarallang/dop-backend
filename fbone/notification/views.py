@@ -23,6 +23,8 @@ from flask_pushjack import FlaskAPNS
 
 notification = Blueprint('notification', __name__, url_prefix='/api/notification')
 
+
+
 def parse_token(req, token_index):
     if token_index:
         token = req.headers.get('Authorization').split()[0]
@@ -46,6 +48,24 @@ def create_token(user):
 
 def send_notification(event,message,namespace,room):
     socketio.emit(event,{'data': message}, room=liked_user.user_id)
+
+@notification.route('/push/test/global', methods=['GET'])
+def push_test_global():
+    token = '1124931f005c00b7ce00c4f76d6c75589b37680706190098939ccf7fbd244909'
+
+    options = {}
+    # Send to single device.
+    res = client.send(token, 'Hola', **options)
+    # List of all tokens sent.
+    res.tokens
+    # List of any subclassed APNSServerError objects.
+    res.errors
+    # Dict mapping token => APNSServerError.
+    res.token_errors
+    # Send to multiple devices.
+    client.send([token], alert, **options)
+    # Get expired tokens.
+    expired_tokens = client.get_expired_tokens()
 
 @notification.route('/test/<int:user_id>', methods=['GET'])
 def test_notification(user_id):
