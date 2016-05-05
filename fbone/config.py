@@ -15,7 +15,10 @@ class BaseConfig(object):
     # Get app root path, also can use flask.root_path.
     # ../../config.py
     PROJECT_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
+
     APNS_CERTIFICATE = PROJECT_ROOT+'/certs/push.pem'
+    APNS_SANDBOX = True
+    
     DEBUG = False
     TESTING = False
     use_reloader = False
