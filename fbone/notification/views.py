@@ -76,7 +76,7 @@ def push_test_global():
     #client.send([token], alert, **options)
     # Get expired tokens.
     #expired_tokens = client.get_expired_tokens()
-    return jsonify({'data': token_list.data})
+    return jsonify({'data': token_list.data.data})
 
 @notification.route('/test/<int:user_id>', methods=['GET'])
 def test_notification(user_id):
