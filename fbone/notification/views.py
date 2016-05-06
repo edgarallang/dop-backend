@@ -52,7 +52,7 @@ def send_notification(event,message,namespace,room):
 @notification.route('/push/test/global', methods=['GET'])
 def push_test_global():
     users_list = User.query.filter(User.device_token!=None)
-    token_list = device_tokens_schema.dump(users_list)
+    token_list = user_schema.dump(users_list)
 
     #token = '1124931f005c00b7ce00c4f76d6c75589b37680706190098939ccf7fbd244909'
 
