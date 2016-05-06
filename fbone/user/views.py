@@ -123,7 +123,7 @@ def facebook_login():
         db.session.add(userFirstEXP)
         db.session.commit()
     else:
-        if facebookUser.device_token not request.json['device_token']:
+        if facebookUser.device_token not == request.json['device_token']:
             facebookUser.device_token = request.json['device_token']
             facebookUser.device_os = request.json['device_os']
             db.session.commit()
