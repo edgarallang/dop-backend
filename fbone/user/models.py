@@ -265,6 +265,7 @@ user_join_activity_newsfeed = UserActivityNewsfeed(many=True)
 friends_count_schema = FriendsCountSchema(many=True)
 people_schema = PeopleSchema(many=True)
 device_tokens_schema = UserDeviceTokens(many=True)
+
     # ================================================================
     # Class methods
 
