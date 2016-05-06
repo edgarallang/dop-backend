@@ -54,10 +54,10 @@ def push_test_global():
     token = '1124931f005c00b7ce00c4f76d6c75589b37680706190098939ccf7fbd244909'
 
 
-    options = { "sound": "default","badge":0 }
+    options = { "sound": "default","badge":0,"extra":{"branch_id":5} }
 
     # Send to single device.
-    res = client.send(token, "Hello", **options, extra={'custom': 'data'})
+    res = client.send(token, "Hello", **options)
     # List of all tokens sent.
     res.tokens
     # List of any subclassed APNSServerError objects.
