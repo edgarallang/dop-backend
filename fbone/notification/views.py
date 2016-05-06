@@ -64,7 +64,7 @@ def push_test_global():
 
 
     # Send to single device.
-    res = client.send(token, 'Hola', **options)
+    res = client.send(token, 'Hola', options)
     # List of all tokens sent.
     res.tokens
     # List of any subclassed APNSServerError objects.
