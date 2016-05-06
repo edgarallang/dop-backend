@@ -60,7 +60,7 @@ def push_test_global():
     tokens = []
 
     for key in token_list_data:
-        print key['device_token']
+        tokens.append(key['device_token'])
 
     #token = '1124931f005c00b7ce00c4f76d6c75589b37680706190098939ccf7fbd244909'
 
@@ -79,7 +79,7 @@ def push_test_global():
     #client.send([token], alert, **options)
     # Get expired tokens.
     #expired_tokens = client.get_expired_tokens()
-    return jsonify({'data': token_list.data})
+    return jsonify({'data': tokens.data})
 
 @notification.route('/test/<int:user_id>', methods=['GET'])
 def test_notification(user_id):
