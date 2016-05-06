@@ -50,8 +50,8 @@ def create_token(user):
 def send_notification(event,message,namespace,room):
     socketio.emit(event,{'data': message}, room=liked_user.user_id)
 
-@notification.route('/push/test/global', methods=['GET'])
-def push_test_global():
+@notification.route('/push/test/global/<string:message>', methods=['GET'])
+def push_test_global(message):
     users_list = User.query.filter(User.device_token!=None)
     token_list = device_tokens_schema.dump(users_list)
 
@@ -68,7 +68,7 @@ def push_test_global():
     options = { "sound": "default","badge":0,"extra":{"branch_id":5} }
 
     # Send to single device.
-    res = client.send(tokens, "Hello", **options)
+    res = client.send(tokens, message, **options)
     # List of all tokens sent.
     #res.tokens
     # List of any subclassed APNSServerError objects.
