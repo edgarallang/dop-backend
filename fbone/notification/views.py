@@ -53,7 +53,7 @@ def send_notification(event,message,namespace,room):
 def push_test_global():
     token = '1124931f005c00b7ce00c4f76d6c75589b37680706190098939ccf7fbd244909'
 
-    options = {"sound": "default", "badge":5}
+    options = {"sound": "default", "badge":0}
     # Send to single device.
     res = client.send(token, 'Hola', **options)
     # List of all tokens sent.
