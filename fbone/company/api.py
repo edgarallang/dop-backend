@@ -453,11 +453,11 @@ def set_config(branch_id):
         token_index = False
         payload = parse_token(request, token_index)
 
-        longitude = request.json['data'].longitude
-        latitude = request.json['data'].latitude
-        state = request.json['data'].state
-        city = request.json['data'].city
-        address = request.json['data'].description
+        longitude = request.json['data']['longitude']
+        latitude = request.json['data']['latitude']
+        state = request.json['data']['state']
+        city = request.json['data']['city']
+        address = request.json['data']['description']
 
         branchLocation = BranchLocation.query.filter_by(branch_id = branch_id).first()
 
