@@ -470,6 +470,7 @@ def set_config(branch_id):
                                             address = address)
             db.session.add(branchLocation)
             db.session.commit()
+            return jsonify({'message': 'Localización creada.'})
         else:
             branchLocation.state = state
             branchLocation.longitude = longitude
@@ -478,7 +479,7 @@ def set_config(branch_id):
             branchLocation.address = address
 
             db.session.commit()
-            return jsonify({'message': 'Oops! algo salió mal, al parecer no tienes autorización'})
+            return jsonify({'message': 'Localización asignada.'})
     return jsonify({'message': 'Oops! algo salió mal, al parecer no tienes autorización'})
 
 def number_of_rows(query):
