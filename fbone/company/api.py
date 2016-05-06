@@ -365,7 +365,7 @@ def dashboard_branches():
 
     remaining = 8-result
 
-    if remaining>0:
+    if remaining > 0:
         filterArray = []
 
         for branch in selected_list_branch.data:
@@ -453,9 +453,33 @@ def set_config(branch_id):
         token_index = True
         payload = parse_token(request, token_index)
 
-        longitude = request.json['longitude']
-        latitude = request.json['latitude']
-        address = request.json['address']
+        longitude = request.json['data'].longitude
+        latitude = request.json['data'].latitude
+        state = request.json['data'].state
+        city = request.json['data'].city
+        address = request.json['data'].description
+
+        branchLocation = BranchLocation.query.filter_by(branch_id = branch_id).first()
+
+        if not branchLocation:
+            branchLocation = BranchLocation(branch_id = branch_id,
+                                            state = state,
+                                            longitude = longitude,
+                                            latitude = latitude,
+                                            city = city,
+                                            address = address)
+            db.session.add(branchLocation)
+            db.session.commit()
+        else:
+            branchLocation.state = state
+            branchLocation.longitude = longitude
+            branchLocation.latitude = latitude
+            branchLocation.city = city
+            branchLocation.address = address
+
+            db.session.commit()
+            return jsonify({'message': 'Oops! algo salió mal, al parecer no tienes autorización'})
+    return jsonify({'message': 'Oops! algo salió mal, al parecer no tienes autorización'})
 
 def number_of_rows(query):
     result = 0
