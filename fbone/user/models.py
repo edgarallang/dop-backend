@@ -250,6 +250,7 @@ class UserActivityNewsfeed(Schema):
                   'total_likes',
                   'user_like',
                   'used_date')
+
 class UserDeviceTokens(Schema):
     class Meta:
         fields = ('device_os',
