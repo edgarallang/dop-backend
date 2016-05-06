@@ -59,8 +59,8 @@ def push_test_global():
 
     tokens = []
 
-    for i in token_list_data:
-        print i
+    for key in token_list_data:
+        print key.device_token
 
     #token = '1124931f005c00b7ce00c4f76d6c75589b37680706190098939ccf7fbd244909'
 
