@@ -77,9 +77,11 @@ class User(db.Model, UserMixin):
     level = Column(db.Integer)
     exp = Column(db.Integer)
     gender = Column(db.String(STRING_LEN))
+    device_os = Column(db.String(STRING_LEN))
+    device_token = Column(db.String(STRING_LEN))
     #users_image_user_id = db.relationship("UserImage", uselist=False, backref="users")
 
-    # Images 
+    # Images
 
 class UserImage(db.Model, UserMixin):
     __tablename__ = 'users_image'
@@ -88,7 +90,7 @@ class UserImage(db.Model, UserMixin):
     main_image = Column(db.String(STRING_LEN))
 
 # ================================================================
-# User Level 
+# User Level
 
 class UserLevel(db.Model, UserMixin):
     __tablename__ = 'users_level'
@@ -98,7 +100,7 @@ class UserLevel(db.Model, UserMixin):
     exp = Column(db.Integer, nullable=False)
 
 # ================================================================
-# User Session 
+# User Session
 
 class UserSession(db.Model,UserMixin):
     __tablename__ = 'users_session'
@@ -108,7 +110,7 @@ class UserSession(db.Model,UserMixin):
     password = Column(db.String(STRING_LEN))
 
 # ================================================================
-# Friends 
+# Friends
 
 class Friends(db.Model,UserMixin):
     __tablename__ = 'friends'
@@ -116,7 +118,7 @@ class Friends(db.Model,UserMixin):
     user_one_id = Column(db.Integer, nullable=False)
     user_two_id = Column(db.Integer, nullable=False)
     operation_id = Column(db.Integer, nullable=False)
-    launcher_user_id = Column(db.Integer, nullable=False)  
+    launcher_user_id = Column(db.Integer, nullable=False)
 
 class UserFirstEXP(db.Model, UserMixin):
     __tablename__ = 'user_first_exp'
@@ -127,7 +129,7 @@ class UserFirstEXP(db.Model, UserMixin):
     first_company_fav = Column(db.Boolean, nullable = False)
     first_using = Column(db.Boolean, nullable = False)
 
-# Invited Friends 
+# Invited Friends
 
 class InvitedFriends(db.Model,UserMixin):
     __tablename__ = 'invited_friends'
@@ -290,5 +292,3 @@ people_schema = PeopleSchema(many=True)
 
     # def check_name(self, name):
     #     return User.query.filter(db.and_(User.names == names, User.email != self.id)).count() == 0
-
-
