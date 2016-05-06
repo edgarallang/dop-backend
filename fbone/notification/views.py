@@ -57,7 +57,7 @@ def push_test_global():
 
     tokens = []
 
-    for key, value in dict.token_list.data():
+    for key, value in token_list.data.iteritems():
         if key == "device_token":
             tokens.append(value)
 
