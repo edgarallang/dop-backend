@@ -10,6 +10,7 @@ from flask.ext.login import login_required, current_user
 from flask.ext.socketio import SocketIO, send, emit, join_room, leave_room
 from jwt import DecodeError, ExpiredSignature
 from .models import *
+from ..user import *
 from ..extensions import db, socketio, client
 from juggernaut import Juggernaut
 from gevent import socket, monkey
@@ -51,22 +52,27 @@ def send_notification(event,message,namespace,room):
 
 @notification.route('/push/test/global', methods=['GET'])
 def push_test_global():
-    token = '1124931f005c00b7ce00c4f76d6c75589b37680706190098939ccf7fbd244909'
+    users_list = User.query.filter(User.device_token!=None)
+    token_list = device_tokens_schema.dump(users_list)
 
-    options = {"sound": "default", "badge":0}
+    #token = '1124931f005c00b7ce00c4f76d6c75589b37680706190098939ccf7fbd244909'
+
+
+    #options = { "sound": "default","badge":0,"extra":{"branch_id":5} }
+
     # Send to single device.
-    res = client.send(token, 'Hola', **options)
+    #res = client.send(token, "Hello", **options)
     # List of all tokens sent.
-    res.tokens
+    #res.tokens
     # List of any subclassed APNSServerError objects.
-    print res.errors
+    #print res.errors
     # Dict mapping token => APNSServerError.
-    print res.token_errors
+    #print res.token_errors
     # Send to multiple devices.
     #client.send([token], alert, **options)
     # Get expired tokens.
     #expired_tokens = client.get_expired_tokens()
-    return jsonify({'data': res.tokens})
+    return jsonify({'data': token_list.data})
 
 @notification.route('/test/<int:user_id>', methods=['GET'])
 def test_notification(user_id):

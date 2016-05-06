@@ -96,7 +96,9 @@ def facebook_login():
                             gender = 'male',
                             level = 0,
                             exp = 0,
-                            privacy_status = 0)
+                            privacy_status = 0,
+                            device_os = request.json['device_os'],
+                            device_token = request.json['device_token'])
 
         db.session.add(facebookUser)
         db.session.commit()
@@ -120,6 +122,11 @@ def facebook_login():
 
         db.session.add(userFirstEXP)
         db.session.commit()
+    else:
+        if not facebookUser.device_token == request.json['device_token']:
+            facebookUser.device_token = request.json['device_token']
+            facebookUser.device_os = request.json['device_os']
+            db.session.commit()
 
     token = create_token(facebookUser)
 
