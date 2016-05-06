@@ -53,18 +53,12 @@ def send_notification(event,message,namespace,room):
 def push_test_global():
     token = '1124931f005c00b7ce00c4f76d6c75589b37680706190098939ccf7fbd244909'
 
-    options = { "aps": {
-                        "sound": "default",
-                        "badge":0
-                       },
-                "options": {
-                           "branch_id" : 4
-                           }
-               }
+    alert = {'message': 'Hello world', 'custom_field': 'Custom Data'}
 
+    options = { "sound": "default","badge":0 }
 
     # Send to single device.
-    res = client.send(token, 'Hola', options)
+    res = client.send(token, alert, **options)
     # List of all tokens sent.
     res.tokens
     # List of any subclassed APNSServerError objects.
