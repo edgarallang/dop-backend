@@ -450,7 +450,7 @@ def credit_add(branch_id):
 @company.route('/<int:branch_id>/config/set', methods = ['GET', 'POST'])
 def set_config(branch_id):
     if request.headers.get('Authorization'):
-        token_index = True
+        token_index = False
         payload = parse_token(request, token_index)
 
         longitude = request.json['data'].longitude
