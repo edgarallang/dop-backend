@@ -250,6 +250,10 @@ class UserActivityNewsfeed(Schema):
                   'total_likes',
                   'user_like',
                   'used_date')
+class UserDeviceTokens(Schema):
+    class Meta:
+        fields = ('device_os',
+                  'device_token')
 
 user_schema = UserSchema(many=True)
 user_joined_schema = UserJoinImage(many=True)
@@ -259,7 +263,7 @@ user_join_exchanges_coupon_schema = UserJoinExchanges(many=True)
 user_join_activity_newsfeed = UserActivityNewsfeed(many=True)
 friends_count_schema = FriendsCountSchema(many=True)
 people_schema = PeopleSchema(many=True)
-
+device_tokens_schema = UserDeviceTokens(many=True)
     # ================================================================
     # Class methods
 
