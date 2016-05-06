@@ -252,9 +252,7 @@ class UserActivityNewsfeed(Schema):
                   'used_date')
 
 class UserDeviceTokens(Schema):
-    class Meta:
-        fields = ('device_os',
-                  'device_token')
+        device_token = fields.Str()
 
 user_schema = UserSchema(many=True)
 user_joined_schema = UserJoinImage(many=True)
