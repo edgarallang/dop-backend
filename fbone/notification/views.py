@@ -64,9 +64,10 @@ def push_test_global(message):
 
     #token = '1124931f005c00b7ce00c4f76d6c75589b37680706190098939ccf7fbd244909'
 
-    notification_data = {
-                            "object_id": 5,
-                            "type": "branch"
+    notification_data = { "data": {
+                                "object_id": 5,
+                                "type": "branch"
+                            }
                          }
 
     options = { "sound": "default" ,"badge": 0,"extra": notification_data }
