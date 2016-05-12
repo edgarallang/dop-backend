@@ -53,9 +53,9 @@ def create_token(user):
 def send_notification(device_token, notification_data):
     options = { "sound": "default" ,"badge": 0,"extra": notification_data }
 
-    print 'Contenido notificacion'+`notification_data['data']['type']`
-    #if notification_data.data.type == 'user_like':
-    #    res = client.send(device_token, message, **options)
+    if notification_data['data']['type'] == 'user_like':
+        message = 'A '+notification_data['data']['launcher_name'] + ' le a gustado tu actividad.'
+        res = client.send(device_token, message, **options)
 
     return jsonify({'data': "Éxito"})
 
