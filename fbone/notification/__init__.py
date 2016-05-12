@@ -1,2 +1,2 @@
-from .views import notification
+from .views import *
 from .models import *
