@@ -50,9 +50,11 @@ def create_token(user):
 #def send_notification(event,message,namespace,room):
 #    socketio.emit(event,{'data': message}, room=liked_user.user_id)
 
-def send_notification(device_token, message, notification_data):
+def send_notification(device_token, notification_data):
     options = { "sound": "default" ,"badge": 0,"extra": notification_data }
-    res = client.send(device_token, message, **options)
+
+    if notification_data.type == 'user_like':
+        res = client.send(device_token, message, **options)
 
     return jsonify({'data': "Éxito"})
 

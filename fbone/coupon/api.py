@@ -795,13 +795,16 @@ def like_used_coupon():
                 db.session.add(notification)
 
                 liked_user_data = User.query.filter_by(user_id = liked_user.user_id).first()
+                launcher_user_data = User.query.filter_by(user_id = payload['id']).first()
+
                 notification_data = { "data": {
                                             "object_id": liked_user.user_id,
-                                            "type": "user"
+                                            "type": "user_like",
+                                            "launcher_names": launcher_user_data.names
                                         }
                                      }
                 if(liked_user_data.device_token != None):
-                    send_notification(liked_user_data.device_token, 'hola' , notification_data)
+                    send_notification(liked_user_data.device_token, notification_data)
                 #socketio.emit('notification',{'data': 'someone triggered me'},room=liked_user.user_id)
 
 
