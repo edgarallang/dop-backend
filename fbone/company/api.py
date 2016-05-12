@@ -478,30 +478,30 @@ def set_config(branch_id):
 def get_config(branch_id):
 
 @company.route('/auth/signup', methods = ['POST'])
-def signup_branch():
-    company = Company(name = request.json['name'],
-                      email = request.json['email'],
-                      credits = 0)
+    def signup_branch():
+        company = Company(name = request.json['name'],
+                          email = request.json['email'],
+                          credits = 0)
 
-    db.session.add(company)
-    db.session.commit()
+        db.session.add(company)
+        db.session.commit()
 
-    branch = Branch(company_id = company.company_id,
-                    name = '')
+        branch = Branch(company_id = company.company_id,
+                        name = '')
 
-    db.session.add(branch)
-    db.session.commit()
+        db.session.add(branch)
+        db.session.commit()
 
-    branch_user = BranchUser(branch_id = branch.branch_id,
-                             name = 'Admin',
-                             email = company.email,
-                             password = request.json['password'])
+        branch_user = BranchUser(branch_id = branch.branch_id,
+                                 name = 'Admin',
+                                 email = company.email,
+                                 password = request.json['password'])
 
-    db.session.add(branch_user)
-    db.session.commit()
+        db.session.add(branch_user)
+        db.session.commit()
 
-    token = create_token(branchUser)
-    return jsonify(token=token)
+        token = create_token(branchUser)
+        return jsonify(token=token)
 
 
 
