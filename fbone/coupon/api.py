@@ -800,8 +800,8 @@ def like_used_coupon():
                                             "type": "user"
                                         }
                                      }
-
-                send_notification(liked_user_data.device_token, 'hola' , notification_data)
+                if(liked_user_data.device_token != None):
+                    send_notification(liked_user_data.device_token, 'hola' , notification_data)
                 #socketio.emit('notification',{'data': 'someone triggered me'},room=liked_user.user_id)
 
 
