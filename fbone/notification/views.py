@@ -47,21 +47,39 @@ def create_token(user):
 
     return token.decode('unicode_escape')
 
-def send_notification(event,message,namespace,room):
-    socketio.emit(event,{'data': message}, room=liked_user.user_id)
+#def send_notification(event,message,namespace,room):
+#    socketio.emit(event,{'data': message}, room=liked_user.user_id)
 
-@notification.route('/push/test/global', methods=['GET'])
-def push_test_global():
+def send_notification(device_token, message, notification_data):
+    options = { "sound": "default" ,"badge": 0,"extra": notification_data }
+    res = client.send(device_token, message, **options)
+
+    return jsonify({'data': "Éxito"})
+
+@notification.route('/push/test/global/<string:message>', methods=['GET'])
+def push_test_global(message):
     users_list = User.query.filter(User.device_token!=None)
     token_list = device_tokens_schema.dump(users_list)
 
+    token_list_data = token_list.data
+
+    tokens = []
+
+    for key in token_list_data:
+        tokens.append(key['device_token'])
+
     #token = '1124931f005c00b7ce00c4f76d6c75589b37680706190098939ccf7fbd244909'
 
+    notification_data = { "data": {
+                                "object_id": 5,
+                                "type": "branch"
+                            }
+                         }
 
-    #options = { "sound": "default","badge":0,"extra":{"branch_id":5} }
+    options = { "sound": "default" ,"badge": 0,"extra": notification_data }
 
     # Send to single device.
-    #res = client.send(token, "Hello", **options)
+    res = client.send(tokens, message, **options)
     # List of all tokens sent.
     #res.tokens
     # List of any subclassed APNSServerError objects.
@@ -72,7 +90,7 @@ def push_test_global():
     #client.send([token], alert, **options)
     # Get expired tokens.
     #expired_tokens = client.get_expired_tokens()
-    return jsonify({'data': token_list.data})
+    return jsonify({'data': tokens})
 
 @notification.route('/test/<int:user_id>', methods=['GET'])
 def test_notification(user_id):
