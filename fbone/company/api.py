@@ -475,7 +475,7 @@ def set_config(branch_id):
     return jsonify({'message': 'Oops! algo salió mal, al parecer no tienes autorización'})
 
 @company.route('/<int:branch_id>/config/get', methods = ['GET', 'POST'])
-def get_config(branch_id):
+    def get_config(branch_id):
 
 @company.route('/auth/signup', methods = ['POST'])
     def signup_branch():
