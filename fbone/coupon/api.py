@@ -794,13 +794,14 @@ def like_used_coupon():
                                             )
                 db.session.add(notification)
 
+                liked_user_data = User.query.filter_by(user_id = liked_user.user_id)
                 notification_data = { "data": {
                                             "object_id": liked_user.user_id,
                                             "type": "user"
                                         }
                                      }
 
-                send_notification(liked_user.device_token,'hola',notification_data)
+                send_notification(liked_user_data.device_token,'hola',notification_data)
                 #socketio.emit('notification',{'data': 'someone triggered me'},room=liked_user.user_id)
 
 
