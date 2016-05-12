@@ -500,7 +500,7 @@ def signup_branch():
     db.session.add(branch_user)
     db.session.commit()
 
-    token = create_token(branchUser)
+    token = create_token(branch_user)
     return jsonify(token=token)
 
 
