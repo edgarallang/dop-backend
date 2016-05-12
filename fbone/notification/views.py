@@ -47,8 +47,14 @@ def create_token(user):
 
     return token.decode('unicode_escape')
 
-def send_notification(event,message,namespace,room):
-    socketio.emit(event,{'data': message}, room=liked_user.user_id)
+#def send_notification(event,message,namespace,room):
+#    socketio.emit(event,{'data': message}, room=liked_user.user_id)
+
+def send_notification(device_token, message, notification_data):
+    options = { "sound": "default" ,"badge": 0,"extra": notification_data }
+    res = client.send(device_token, message, **options)
+
+    return jsonify({'data': "Éxito"})
 
 @notification.route('/push/test/global/<string:message>', methods=['GET'])
 def push_test_global(message):
