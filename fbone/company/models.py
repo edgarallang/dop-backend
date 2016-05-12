@@ -124,13 +124,13 @@ class BranchUser(db.Model):
     branch_id = Column(db.Integer, db.ForeignKey('branches.branch_id'), nullable=False)
     name = Column(db.String(STRING_LEN), nullable=False)
     email = Column(db.String(STRING_LEN), nullable=False, unique=True)
-    password = Column('password', db.String(STRING_LEN), nullable=False)
+    password = Column(db.String(STRING_LEN), nullable=False)
 
     branch = db.relationship('Branch',
                         backref=db.backref("branches_user", lazy="dynamic"))
-
-    def __init__(self, branch):
-        self.branch = branch
+    # 
+    # def __init__(self, branch):
+    #     self.branch = branch
 
     def check_password(self, password):
         return self.password == password

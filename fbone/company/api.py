@@ -503,8 +503,6 @@ def signup_branch():
     token = create_token(branch_user)
     return jsonify(token=token)
 
-
-
 def number_of_rows(query):
     result = 0
     for row in query:
