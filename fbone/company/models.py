@@ -14,6 +14,7 @@ class Company(db.Model):
     __tablename__ = 'companies'
     company_id = Column(db.Integer, primary_key = True)
     name = Column(db.String(STRING_LEN), nullable = False, unique = True)
+    email = Column(db.String(STRING_LEN), nullable = False, unique = True)
     credits = Column(db.Integer)
 
     branches = db.relationship("Branch", uselist = False, backref = "companies")
@@ -25,7 +26,7 @@ class Branch(db.Model):
     __tablename__ = 'branches'
     branch_id = Column(db.Integer, primary_key=True)
     company_id = Column(db.Integer, db.ForeignKey('companies.company_id'), nullable = False)
-    name = Column(db.String(STRING_LEN), nullable=False, unique=True)
+    name = Column(db.String(STRING_LEN), nullable=True, unique=True)
 
     # branches_user_id = Column(db.Integer, db.ForeignKey("branches_user.branches_user_id"))
     branches_design = db.relationship("BranchDesign", uselist=False, backref="branches")

@@ -39,18 +39,6 @@ def parse_token(req, token_index):
         token = req.headers.get('Authorization').split()[1]
     return jwt.decode(token, app.config['TOKEN_SECRET'])
 
-@company.route('/auth/signup', methods=['POST'])
-def signup():
-    branchUser = BranchUser(email = request.json['email'],
-                            password = request.json['password'],
-                            branch_id = request.json['branch_id'],
-                            name = request.json['name'])
-    db.session.add(branchUser)
-    db.session.commit()
-    token = create_token(branchUser)
-
-    return jsonify(token=token)
-
 @company.route('/auth/login', methods=['POST'])
 def login():
     branchUser = BranchUser.query.filter_by(email = request.json['email']).first()
@@ -472,15 +460,50 @@ def set_config(branch_id):
             db.session.commit()
             return jsonify({'message': 'Localización creada.'})
         else:
-            branchLocation.state = state
-            branchLocation.longitude = longitude
-            branchLocation.latitude = latitude
-            branchLocation.city = city
-            branchLocation.address = address
+            if description:
+                branchLocation.state = state
+                branchLocation.longitude = longitude
+                branchLocation.latitude = latitude
+                branchLocation.city = city
+                branchLocation.address = address
+            else:
+                branchLocation.longitude = longitude
+                branchLocation.latitude = latitude
 
             db.session.commit()
             return jsonify({'message': 'Localización asignada.'})
     return jsonify({'message': 'Oops! algo salió mal, al parecer no tienes autorización'})
+
+@company.route('/<int:branch_id>/config/get', methods = ['GET', 'POST'])
+def get_config(branch_id):
+
+@company.route('/auth/signup', methods = ['POST'])
+def signup_branch():
+    company = Company(name = request.json['name'],
+                      email = request.json['email'],
+                      credits = 0)
+
+    db.session.add(company)
+    db.session.commit()
+
+    branch = Branch(company_id = company.company_id,
+                    name = '')
+
+    db.session.add(branch)
+    db.session.commit()
+
+    branch_user = BranchUser(branch_id = branch.branch_id,
+                             name = 'Admin',
+                             email = company.email,
+                             password = request.json['password'])
+
+    db.session.add(branch_user)
+    db.session.commit()
+
+    token = create_token(branchUser)
+    return jsonify(token=token)
+
+
 
 def number_of_rows(query):
     result = 0
