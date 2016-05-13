@@ -108,7 +108,6 @@ def select_branch_user():
 
     branch_data = db.engine.execute(query)
     print branch_data
-    import pdb; pdb.set_trace()
     branch = branch_user_schema.dump(branch_data)
     # selectedBranchUser = BranchUser.query.get(request.json['branches_user_id'])
     # branchUser = branch_user_schema.dump(selectedBranchUser)
