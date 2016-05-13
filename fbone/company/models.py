@@ -274,7 +274,7 @@ class RankingUsersSchema(Schema):
 company_schema = CompanySchema()
 companies_schema = CompanySchema(many=True)
 branch_schema = BranchSchema()
-branch_user_schema = BranchUserSchema()
+branch_user_schema = BranchUserSchema(many=True)
 branch_profile_schema = BranchesProfile(many=True)
 branch_profile_search_schema = BranchesProfileSearch(many=True)
 branch_ad_schema = BranchesAd(many=True)
