@@ -214,6 +214,7 @@ def add_friend():
         user_to_add = request.json['user_two_id']
         user_two = User.query.get(user_to_add)
         friendshipExist = Friends.query.filter(((Friends.user_one_id == user_id) & (Friends.user_two_id == user_to_add))).first()
+        launcher_user_data = User.query.filter_by(user_id = payload['id']).first()
 
         if not friendshipExist:
             #user_two = User.query.get(user_to_add)
