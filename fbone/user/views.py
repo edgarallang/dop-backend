@@ -251,7 +251,6 @@ def add_friend():
                                         "launcher_names": launcher_user_data.names
                                     }
                                  }
-            print 'datos del usuario '+`user_two`
             if(user_two.device_token != None):
                 send_notification(user_two.device_token, notification_data)
 
@@ -260,13 +259,25 @@ def add_friend():
             return jsonify({ 'data': friend_data.data,
                              'message': 'Agregado correctamente' })
         else:
+            notification_type = ''
             if user_two.privacy_status == 0:
                 friendshipExist.operation_id = 1
+                notification_type = 'now_friends'
             elif user_two.privacy_status == 1:
                 friendshipExist.operation_id = 0
+                notification_type = 'pending_friends'
 
             db.session.commit()
-            socketio.emit('notification',{'data': 'someone triggered me'}, room = user_to_add)
+
+            notification_data = { "data": {
+                                        "object_id": friendsRelationship.friends_id,
+                                        "type": notification_type,
+                                        "launcher_names": launcher_user_data.names
+                                    }
+                                 }
+             if(user_two.device_token != None):
+                 send_notification(user_two.device_token, notification_data)                     
+            #socketio.emit('notification',{'data': 'someone triggered me'}, room = user_to_add)
         friend_data = friends_schema.dump(friendshipExist)
         return jsonify({ 'data': friend_data.data,
                          'message': 'registro existente'})
