@@ -97,13 +97,13 @@ def select_branch_profile(branch_id):
 
 @company.route('/me', methods = ['POST'])
 def select_branch_user():
-    query = 'SELECT branches.*, branches_user.branches_user_id, branches.branch_id, \
+    query = 'SELECT branches.*, branches_user.branches_user_id, \
                     branches_user.name as user_name, branches_user.email, logo, banner, credits, \
                     branches_location.latitude, branches_location.longitude FROM branches_user \
-                    INNER JOIN branches ON branches_user.branch_id = branches.branch_id \
-                    INNER JOIN branches_location ON branches_user.branch_id = branches_location.branch_id \
-                    INNER JOIN companies ON branches.company_id = companies.company_id \
-                    JOIN branches_design ON branches_design.branch_id = branches.branch_id \
+                    LEFT JOIN branches ON branches_user.branch_id = branches.branch_id \
+                    LEFT JOIN branches_location ON branches_user.branch_id = branches_location.branch_id \
+                    LEFT JOIN companies ON branches.company_id = companies.company_id \
+                    LEFT JOIN branches_design ON branches_design.branch_id = branches.branch_id \
                     WHERE branches_user.branches_user_id = %d' % request.json['branches_user_id']
 
     branch_data = db.engine.execute(query)

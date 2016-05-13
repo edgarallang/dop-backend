@@ -128,7 +128,7 @@ class BranchUser(db.Model):
 
     branch = db.relationship('Branch',
                         backref=db.backref("branches_user", lazy="dynamic"))
-    # 
+    #
     # def __init__(self, branch):
     #     self.branch = branch
 
@@ -198,7 +198,6 @@ class BranchUserSchema(Schema):
                   'email',
                   'latitude',
                   'longitude',
-                  'branch_id',
                   'company_id',
                   'name',
                   'banner',
