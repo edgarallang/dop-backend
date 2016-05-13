@@ -54,8 +54,13 @@ def send_notification(device_token, notification_data):
     options = { "sound": "default" ,"badge": 0,"extra": notification_data }
 
     if notification_data['data']['type'] == 'user_like':
-        message = 'A '+notification_data['data']['launcher_names'] + ' le a gustado tu actividad.'
-        res = client.send(device_token, message, **options)
+        message = 'A '+notification_data['data']['launcher_names'] + ' le ha gustado tu actividad.'
+    if notification_data['data']['type'] == 'now_friends':
+        message = notification_data['data']['launcher_names'] + ' ahora te sigue.'
+    if notification_data['data']['type'] == 'pending_friends':
+        message = notification_data['data']['launcher_names'] + ' quiere seguirte.'
+
+    res = client.send(device_token, message, **options)
 
     return jsonify({'data': "Éxito"})
 

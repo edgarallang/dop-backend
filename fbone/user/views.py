@@ -217,10 +217,13 @@ def add_friend():
 
         if not friendshipExist:
             user_two = User.query.get(user_to_add)
+            notification_type = ''
             if user_two.privacy_status == 0:
                 operation_id = 1
+                notification_type = 'now_friends'
             elif user_two.privacy_status == 1:
                 operation_id = 0
+                notification_type = 'pending_friends'
 
             friendsRelationship  = Friends(user_one_id = user_id,
                                            user_two_id = user_to_add,
@@ -241,6 +244,16 @@ def add_friend():
             db.session.commit()
 
             friend_data = friends_schema.dump(friendsRelationship)
+
+            notification_data = { "data": {
+                                        "object_id": friendsRelationship.friends_id,
+                                        "type": notification_type,
+                                        "launcher_names": launcher_user_data.names
+                                    }
+                                 }
+            if(user_two.device_token != None):
+                send_notification(user_two.device_token, notification_data)
+
             socketio.emit('notification',{'data': 'friend'}, room = user_to_add)
 
             return jsonify({ 'data': friend_data.data,
