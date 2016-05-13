@@ -274,9 +274,9 @@ def add_friend():
                                         "type": notification_type,
                                         "launcher_names": launcher_user_data.names
                                     }
-                                 }
-             if(user_two.device_token != None):
-                 send_notification(user_two.device_token, notification_data)                     
+                                }
+            if(user_two.device_token != None):
+                send_notification(user_two.device_token, notification_data)                     
             #socketio.emit('notification',{'data': 'someone triggered me'}, room = user_to_add)
         friend_data = friends_schema.dump(friendshipExist)
         return jsonify({ 'data': friend_data.data,
