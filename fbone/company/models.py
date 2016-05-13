@@ -198,7 +198,6 @@ class BranchUserSchema(Schema):
                   'email',
                   'latitude',
                   'longitude',
-                  'branch_id',
                   'company_id',
                   'name',
                   'banner',
