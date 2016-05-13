@@ -216,7 +216,7 @@ def add_friend():
         friendshipExist = Friends.query.filter(((Friends.user_one_id == user_id) & (Friends.user_two_id == user_to_add))).first()
 
         if not friendshipExist:
-            user_two = User.query.get(user_to_add)
+            #user_two = User.query.get(user_to_add)
             notification_type = ''
             if user_two.privacy_status == 0:
                 operation_id = 1
