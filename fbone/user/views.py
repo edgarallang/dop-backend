@@ -210,7 +210,6 @@ def add_friend():
     if request.headers.get('Authorization'):
         payload = parse_token(request, True)
 
-        user_id = User.query.get(payload['id']).user_id
         user_to_add = request.json['user_two_id']
         user_two = User.query.get(user_to_add)
         friendshipExist = Friends.query.filter(((Friends.user_one_id == user_id) & (Friends.user_two_id == user_to_add))).first()
@@ -226,10 +225,10 @@ def add_friend():
                 operation_id = 0
                 notification_type = 'pending_friends'
 
-            friendsRelationship  = Friends(user_one_id = user_id,
+            friendsRelationship  = Friends(user_one_id = launcher_user_data.user_id,
                                            user_two_id = user_to_add,
                                            operation_id = operation_id,
-                                           launcher_user_id = user_id)
+                                           launcher_user_id = launcher_user_data.user_id)
 
 
             db.session.add(friendsRelationship)
@@ -239,7 +238,7 @@ def add_friend():
                                         object_id = friendsRelationship.friends_id,
                                         type = "friend",
                                         notification_date = datetime.now(),
-                                        launcher_id = user_id,
+                                        launcher_id = launcher_user_data.user_id,
                                         read = False )
             db.session.add(notification)
             db.session.commit()
@@ -291,13 +290,13 @@ def accept_friend():
 
         today = datetime.now()
 
-        user_id = User.query.get(payload['id']).user_id
+        user_two = User.query.get(payload['id'])
 
         friendsRelationship = Friends.query.get(request.json['friends_id'])
+        user_one = User.query.get(friendsRelationship.user_one)
 
         if friendsRelationship.operation_id != 1:
             friendsRelationship.operation_id = 1
-            #friendsRelationship.launcher_user_id = user_id
 
             db.session.commit()
 
@@ -310,13 +309,27 @@ def accept_friend():
                                             object_id = friendsRelationship.friends_id,
                                             type = "friend",
                                             notification_date = today,
-                                            launcher_id = user_id,
+                                            launcher_id = user_two.user_id,
                                             read = False
                                             )
             db.session.add(notification)
             db.session.commit()
 
-            socketio.emit('notification',{'data': 'someone triggered me'},room = friendsRelationship.user_one_id)
+            if user_two.privacy_status == 0:
+                notification_type = "now_friends"
+            else:
+                notification_type = "friend_accepted"
+
+            notification_data = { "data": {
+                                        "object_id": friendshipExist.friends_id,
+                                        "type": notification_type,
+                                        "launcher_names": user_one.names
+                                    }
+                                }
+
+            if(user_one.device_token != None):
+                send_notification(user_one.device_token, notification_data)
+            #socketio.emit('notification',{'data': 'someone triggered me'},room = friendsRelationship.user_one_id)
 
             return jsonify({'data': 'Agregado correctamente'})
         return jsonify({'message': 'Oops! algo salió mal :('})

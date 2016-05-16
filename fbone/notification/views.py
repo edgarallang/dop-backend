@@ -59,6 +59,8 @@ def send_notification(device_token, notification_data):
         message = notification_data['data']['launcher_names'] + ' ahora te sigue.'
     if notification_data['data']['type'] == 'pending_friends':
         message = notification_data['data']['launcher_names'] + ' quiere seguirte.'
+    if notification_data['data']['type'] == 'friend_accepted':
+        message = 'Ahora sigues a ' + notification_data['data']['launcher_names'] + '.'
 
     res = client.send(device_token, message, **options)
 
