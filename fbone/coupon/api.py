@@ -706,7 +706,7 @@ def get_coupons_activity_by_user_likes():
                                     INNER JOIN branches ON coupons.branch_id = branches.branch_id \
                                     INNER JOIN branches_design ON coupons.branch_id = branches_design.branch_id \
                                     LEFT JOIN friends ON friends.user_one_id = %d AND friends.user_two_id = users.user_id \
-                                    WHERE clients_coupon.used = true AND clients_coupon.private = false AND friends.operation_id = 1 ORDER BY used_date DESC LIMIT 6 OFFSET 0' % user_id, user_id, user_id)
+                                    WHERE clients_coupon.used = true AND clients_coupon.private = false AND friends.operation_id = 1 ORDER BY used_date DESC LIMIT 6 OFFSET 0' % (user_id, user_id, user_id)
 
         users_list = user_join_activity_newsfeed.dump(users)
 
