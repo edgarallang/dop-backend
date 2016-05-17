@@ -698,15 +698,15 @@ def get_coupons_activity_by_user_likes():
                                     (SELECT COUNT(*)  FROM clients_coupon_likes WHERE clients_coupon.clients_coupon_id = clients_coupon_likes.clients_coupon_id) AS total_likes, \
                                     (SELECT COUNT(*)  FROM clients_coupon_likes WHERE clients_coupon_likes.user_id = %d AND clients_coupon_likes.clients_coupon_id = clients_coupon.clients_coupon_id) AS user_like, \
                                     (SELECT EXISTS (SELECT * FROM friends \
-                                        WHERE friends.user_one_id = 3 AND friends.user_two_id = users.user_id AND friends.operation_id = 1)::bool) AS is_friend \
+                                        WHERE friends.user_one_id = %d AND friends.user_two_id = users.user_id AND friends.operation_id = 1)::bool) AS is_friend \
                                     FROM clients_coupon \
                                     INNER JOIN users ON clients_coupon.user_id=users.user_id  \
                                     INNER JOIN users_image ON users.user_id = users_image.user_id \
                                     INNER JOIN coupons ON clients_coupon.coupon_id = coupons.coupon_id \
                                     INNER JOIN branches ON coupons.branch_id = branches.branch_id \
                                     INNER JOIN branches_design ON coupons.branch_id = branches_design.branch_id \
-                                    LEFT JOIN friends ON friends.user_one_id = 3 AND friends.user_two_id = users.user_id \
-                                    WHERE clients_coupon.used = true AND clients_coupon.private = false ORDER BY used_date DESC LIMIT 6 OFFSET 0' % payload['id'])
+                                    LEFT JOIN friends ON friends.user_one_id = %d AND friends.user_two_id = users.user_id \
+                                    WHERE clients_coupon.used = true AND clients_coupon.private = false AND friends.operation_id = 1 ORDER BY used_date DESC LIMIT 6 OFFSET 0' % user_id, user_id, user_id)
 
         users_list = user_join_activity_newsfeed.dump(users)
 
@@ -727,13 +727,16 @@ def get_used_coupons_by_user_likes_offset():
                                     , users.names, users.surnames, users.user_id, users_image.main_image, branches.name AS branch_name, branches.company_id, clients_coupon.used_date, \
                                     (SELECT COUNT(*)  FROM clients_coupon_likes WHERE clients_coupon.clients_coupon_id = clients_coupon_likes.clients_coupon_id) AS total_likes, \
                                     (SELECT COUNT(*)  FROM clients_coupon_likes WHERE clients_coupon_likes.user_id = %d AND clients_coupon_likes.clients_coupon_id = clients_coupon.clients_coupon_id) AS user_like \
+                                    (SELECT EXISTS (SELECT * FROM friends \
+                                        WHERE friends.user_one_id = %d AND friends.user_two_id = users.user_id AND friends.operation_id = 1)::bool) AS is_friend \
                                     FROM clients_coupon \
                                     INNER JOIN users ON clients_coupon.user_id=users.user_id  \
                                     INNER JOIN users_image ON users.user_id = users_image.user_id \
                                     INNER JOIN coupons ON clients_coupon.coupon_id = coupons.coupon_id \
                                     INNER JOIN branches ON coupons.branch_id = branches.branch_id \
                                     INNER JOIN branches_design ON coupons.branch_id = branches_design.branch_id \
-                                    WHERE clients_coupon.used = true AND clients_coupon.used_date <= %s AND clients_coupon.private = false ORDER BY used_date DESC LIMIT 6 OFFSET %s' % (payload['id'], "'"+used_date+"'" , offset)
+                                    LEFT JOIN friends ON friends.user_one_id = %d AND friends.user_two_id = users.user_id \
+                                    WHERE clients_coupon.used = true AND clients_coupon.used_date <= %s AND clients_coupon.private = false AND friends.operation_id = 1 ORDER BY used_date DESC LIMIT 6 OFFSET %s' % (user_id, user_id, user_id, "'" + used_date + "'" , offset)
 
         print(query)
         users = db.engine.execute(query)
