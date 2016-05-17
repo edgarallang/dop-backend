@@ -293,7 +293,7 @@ def accept_friend():
         user_two = User.query.get(payload['id'])
 
         friendsRelationship = Friends.query.get(request.json['friends_id'])
-        user_one = User.query.get(friendsRelationship.user_one)
+        user_one = User.query.get(friendsRelationship.user_one_id)
 
         if friendsRelationship.operation_id != 1:
             friendsRelationship.operation_id = 1
@@ -321,9 +321,9 @@ def accept_friend():
                 notification_type = "friend_accepted"
 
             notification_data = { "data": {
-                                        "object_id": friendshipExist.friends_id,
+                                        "object_id": friendsRelationship.friends_id,
                                         "type": notification_type,
-                                        "launcher_names": user_one.names
+                                        "launcher_names": user_two.names
                                     }
                                 }
 
