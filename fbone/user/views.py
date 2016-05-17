@@ -293,7 +293,7 @@ def accept_friend():
         user_two = User.query.get(payload['id'])
 
         friendsRelationship = Friends.query.get(request.json['friends_id'])
-        user_one = User.query.get(friendsRelationship.user_one)
+        user_one = User.query.get(friendsRelationship.user_one_id)
 
         if friendsRelationship.operation_id != 1:
             friendsRelationship.operation_id = 1
