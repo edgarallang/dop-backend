@@ -321,7 +321,7 @@ def accept_friend():
                 notification_type = "friend_accepted"
 
             notification_data = { "data": {
-                                        "object_id": friendshipExist.friends_id,
+                                        "object_id": friendsRelationship.friends_id,
                                         "type": notification_type,
                                         "launcher_names": user_one.names
                                     }
