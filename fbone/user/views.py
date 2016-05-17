@@ -323,7 +323,7 @@ def accept_friend():
             notification_data = { "data": {
                                         "object_id": friendsRelationship.friends_id,
                                         "type": notification_type,
-                                        "launcher_names": user_one.names
+                                        "launcher_names": user_two.names
                                     }
                                 }
 
