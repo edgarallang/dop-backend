@@ -260,8 +260,8 @@ def add_friend():
                              'message': 'Agregado correctamente' })
         else:
             notification_type = ''
-            friendshipExist.launcher_id = launcher_user_data.user_id
-            
+            #friendshipExist.launcher_id = launcher_user_data.user_id
+
             if user_two.privacy_status == 0:
                 friendshipExist.operation_id = 1
                 notification_type = 'now_friends'
@@ -309,15 +309,15 @@ def accept_friend():
 
             db.session.commit()
 
-            notification = Notification(user_id = friendsRelationship.user_one_id,
+            #notification = Notification(user_id = friendsRelationship.user_one_id,
                                             object_id = friendsRelationship.friends_id,
                                             type = "friend",
                                             notification_date = today,
                                             launcher_id = payload['id'],
                                             read = False
                                             )
-            db.session.add(notification)
-            db.session.commit()
+            #db.session.add(notification)
+            #db.session.commit()
 
             if user_two.privacy_status == 0:
                 notification_type = "now_friends"
