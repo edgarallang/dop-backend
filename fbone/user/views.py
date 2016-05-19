@@ -260,6 +260,8 @@ def add_friend():
                              'message': 'Agregado correctamente' })
         else:
             notification_type = ''
+            friendshipExist.launcher_id = launcher_user_data.user_id
+            
             if user_two.privacy_status == 0:
                 friendshipExist.operation_id = 1
                 notification_type = 'now_friends'
@@ -267,6 +269,8 @@ def add_friend():
                 friendshipExist.operation_id = 0
                 notification_type = 'pending_friends'
 
+            notification = Notification.query.get(user_to_add)
+            launcher_user_id = launcher_user_data.user_id
             db.session.commit()
 
             notification_data = { "data": {
@@ -342,10 +346,13 @@ def decline_friend():
 
         user_id = User.query.get(payload['id']).user_id
         friendsRelationship = Friends.query.filter_by(friends_id=request.json['friends_id']).first()
-        friendsRelationship.operation_id = 2
-        friendsRelationship.launcher_user_id = user_id
+        if friendsRelationship:
+            friendsRelationship.operation_id = 2
+            friendsRelationship.launcher_user_id = user_id
 
-        db.session.commit()
+            notification = Notification.query.filter_by(notification_id=request.json['notification_id']).first()
+
+            db.session.commit()
 
         return jsonify({'data': 'Usuario rechazado'})
 
