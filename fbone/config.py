@@ -18,7 +18,6 @@ class BaseConfig(object):
 
     APNS_CERTIFICATE = PROJECT_ROOT+'/certs/push.pem'
     APNS_SANDBOX = True
-    APNS_ENABLED = False
 
     DEBUG = False
     TESTING = False
