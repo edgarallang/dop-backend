@@ -64,7 +64,6 @@ def send_notification(device_token, notification_data):
 
     res = client.send(device_token, message, **options)
 
-    return jsonify({'data': "Éxito"})
 
 @notification.route('/push/test/global/<string:message>', methods=['GET'])
 def push_test_global(message):
