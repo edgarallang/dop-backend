@@ -340,7 +340,7 @@ def decline_friend():
         friendsRelationship = Friends.query.filter_by(friends_id=request.json['friends_id']).first()
         if friendsRelationship:
             friendsRelationship.operation_id = 2
-            friendsRelationship.launcher_user_id = user_id
+            #friendsRelationship.launcher_user_id = user_id
 
             notification = Notification.query.filter_by(notification_id=request.json['notification_id']).first()
 
