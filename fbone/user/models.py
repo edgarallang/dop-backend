@@ -249,9 +249,7 @@ class UserActivityNewsfeed(Schema):
                   'branch_name',
                   'total_likes',
                   'user_like',
-                  'used_date',
-                  'exp',
-                  'level')
+                  'used_date')
 
 class UserDeviceTokens(Schema):
         device_token = fields.Str()
@@ -261,7 +259,7 @@ user_joined_schema = UserJoinImage(many=True)
 friends_schema = FriendsSchema()
 user_join_friends = UserJoinFriends(many=True)
 user_join_exchanges_coupon_schema = UserJoinExchanges(many=True)
-user_join_activity_newsfeed = UserActivityNewsfeed(many=True)
+user_join_activity_newsfeed_u = UserActivityNewsfeed(many=True)
 friends_count_schema = FriendsCountSchema(many=True)
 people_schema = PeopleSchema(many=True)
 device_tokens_schema = UserDeviceTokens(many=True)
