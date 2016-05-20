@@ -709,7 +709,7 @@ def get_coupons_activity_by_user_likes():
                                     WHERE clients_coupon.used = true AND clients_coupon.private = false AND friends.operation_id = 1 ORDER BY used_date DESC LIMIT 6 OFFSET 0' % (payload['id'], payload['id'], payload['id']))
 
         users_list = user_join_activity_newsfeed.dump(users)
-
+        print jsonify({'data': users_list.data})
         return jsonify({'data': users_list.data})
 
     return jsonify({'message': 'Oops! algo salió mal'})

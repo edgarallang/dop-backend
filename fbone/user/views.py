@@ -259,7 +259,6 @@ def add_friend():
             return jsonify({ 'data': friend_data.data,
                              'message': 'Agregado correctamente' })
         else:
-            notification_type = ''
             #friendshipExist.launcher_id = launcher_user_data.user_id
 
             if user_two.privacy_status == 0:
@@ -291,9 +290,7 @@ def add_friend():
 def accept_friend():
     if request.headers.get('Authorization'):
         payload = parse_token(request, True)
-
         today = datetime.now()
-
         user_two = User.query.get(payload['id'])
 
         friendsRelationship = Friends.query.get(request.json['friends_id'])
@@ -314,15 +311,10 @@ def accept_friend():
                                             type = "friend",
                                             notification_date = today,
                                             launcher_id = payload['id'],
-                                            read = False
-                                            )
+                                            read = False )
             db.session.add(notification)
             db.session.commit()
-
-            if user_two.privacy_status == 0:
-                notification_type = "now_friends"
-            else:
-                notification_type = "friend_accepted"
+            notification_type = "friend_accepted"
 
             notification_data = { "data": {
                                         "object_id": friendsRelationship.friends_id,
