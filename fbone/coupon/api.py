@@ -227,6 +227,11 @@ def get_all_coupon_by_branch(branch_id):
     branches_coupons = coupons_schema.dump(list_coupon)
     return jsonify({ 'data': branches_coupons.data })
 
+@coupon.route('/available/<int:coupon_id>', methods = ['GET'])
+def get_availables(coupon_id):
+    coupon = Coupon.query.get(coupon_id)
+    return jsonify({'available': coupon.available})
+
 @coupon.route('/all/for/user/get/', methods = ['GET'])
 def get_all_coupon_for_user():
     #user_id = request.args.get('user_id')
