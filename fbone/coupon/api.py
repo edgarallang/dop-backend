@@ -558,12 +558,12 @@ def nearest_coupons():
     longitude = request.args.get('longitude')
     radio = request.args.get('radio')
     payload = parse_token(request, token_index)
-
+    user_id = str(payload['id'])
 
     query = 'SELECT branch_location_id, branch_id, state, city, latitude, longitude, distance, address, name, category_id, available, \
                     coupon_name, coupon_id, description, start_date, end_date, min_spent, \
                 (SELECT EXISTS (SELECT * FROM clients_coupon \
-                    WHERE user_id = '+'5'+' AND clients_coupon.coupon_id = d.coupon_id AND used = false)::bool) AS taken \
+                    WHERE user_id = '+user_id+' AND clients_coupon.coupon_id = d.coupon_id AND used = false)::bool) AS taken \
                 FROM (SELECT coupons.name as coupon_name, coupons.coupon_id,coupons.start_date,coupons.end_date, coupons.limit ,coupons.min_spent, \
                              coupons.description, z.branch_location_id, z.branch_id, z.state, z.city, z.address, coupons.available, \
                     z.latitude, z.longitude, branches.name, subcategory.category_id, \
