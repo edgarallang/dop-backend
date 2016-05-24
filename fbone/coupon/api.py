@@ -498,8 +498,9 @@ def get_almost_expired_coupons():
 
         list_coupon = db.engine.execute('SELECT *,\
                                         (SELECT COUNT(*) FROM coupons_likes  WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes, \
-                                        (SELECT COUNT(*)  FROM coupons_likes  WHERE coupons_likes.user_id = %d AND coupons.coupon_id = coupons_likes.coupon_id) AS user_like \
-                                        FROM coupons INNER JOIN branches_design ON \
+                                        (SELECT COUNT(*)  FROM coupons_likes  WHERE coupons_likes.user_id = %d AND coupons.coupon_id = coupons_likes.coupon_id) AS user_like, \
+                                        (SELECT EXISTS (SELECT * FROM clients_coupon \
+                                        WHERE USER_id = %d AND clients_coupon.coupon_id = coupons.coupon_id AND used = false)::bool) AS taken \                                        FROM coupons INNER JOIN branches_design ON \
                                         coupons.branch_id = branches_design.branch_id \
                                         INNER JOIN branches ON coupons.branch_id = branches.branch_id \
                                         INNER JOIN branches_location on coupons.branch_id = branches_location.branch_id \
@@ -516,7 +517,9 @@ def coupon_stats(branch_id):
                                     (SELECT COUNT(*)  FROM coupons_likes   \
                                         WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes,   \
                                     (SELECT COUNT(*)  FROM clients_coupon   \
-                                        WHERE coupons.coupon_id = clients_coupon.coupon_id AND clients_coupon.used = true) AS total_uses \
+                                        WHERE coupons.coupon_id = clients_coupon.coupon_id AND clients_coupon.used = true) AS total_uses, \
+                                    (SELECT EXISTS (SELECT * FROM clients_coupon \
+                                        WHERE USER_id = %d AND clients_coupon.coupon_id = coupons.coupon_id AND used = false)::bool) AS taken \
                                     FROM coupons INNER JOIN branches_design ON   \
                                     coupons.branch_id = branches_design.branch_id   \
                                     JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.branch_id   \
