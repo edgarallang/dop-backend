@@ -556,13 +556,13 @@ def nearest_coupons():
     latitude = request.args.get('latitude')
     longitude = request.args.get('longitude')
     radio = request.args.get('radio')
-
+    payload = parse_token(request, token_index)
 
 
     query = 'SELECT branch_location_id, branch_id, state, city, latitude, longitude, distance, address, name, category_id, available, \
                     coupon_name, coupon_id, description, start_date, end_date, min_spent, \
                 (SELECT EXISTS (SELECT * FROM clients_coupon \
-                    WHERE user_id = %d AND clients_coupon.coupon_id = coupons.coupon_id AND used = false)::bool) AS taken \
+                    WHERE user_id = %d AND clients_coupon.coupon_id = d.coupon_id AND used = false)::bool) AS taken \
                 FROM (SELECT coupons.name as coupon_name, coupons.coupon_id,coupons.start_date,coupons.end_date, coupons.limit ,coupons.min_spent, \
                              coupons.description, z.branch_location_id, z.branch_id, z.state, z.city, z.address, coupons.available, \
                     z.latitude, z.longitude, branches.name, subcategory.category_id, \
@@ -590,7 +590,7 @@ def nearest_coupons():
                      AND p.longpoint + (p.radius / (p.distance_unit * COS(RADIANS(p.latpoint)))) \
                 ) AS d \
                 WHERE distance <= radius \
-                ORDER BY distance LIMIT 8'
+                ORDER BY distance LIMIT 8' % payload['id']
 
     nearestCoupons = db.engine.execute(query)
     nearest = nearest_coupon_schema.dump(nearestCoupons)
