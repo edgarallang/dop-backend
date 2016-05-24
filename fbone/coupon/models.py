@@ -202,8 +202,7 @@ class NearestCouponSchema(Schema):
                   'min_spent',
                   'latitude',
                   'longitude',
-                  'available',
-                  'taken')
+                  'available')
 
 class ToExpireCouponSchema(Schema):
     class Meta:
