@@ -478,7 +478,7 @@ def get_trending_coupons():
                                         ((SELECT COUNT(*) FROM coupons_likes  WHERE coupons.coupon_id = coupons_likes.coupon_id)*.30 + (SELECT COUNT(*) FROM clients_coupon WHERE coupons.coupon_id = clients_coupon.coupon_id AND clients_coupon.used = true)*1)as total_value,\
                                         (SELECT COUNT(*)  FROM coupons_likes  WHERE coupons_likes.user_id = %d AND coupons.coupon_id = coupons_likes.coupon_id) AS user_like, \
                                         (SELECT EXISTS (SELECT * FROM clients_coupon \
-                                        WHERE USER_id = %d AND clients_coupon.coupon_id = coupons.coupon_id AND used = false)::bool) AS taken \
+                                        WHERE user_id = %d AND clients_coupon.coupon_id = coupons.coupon_id AND used = false)::bool) AS taken \
                                         FROM coupons INNER JOIN branches_design ON \
                                         coupons.branch_id = branches_design.branch_id \
                                         INNER JOIN branches ON coupons.branch_id = branches.branch_id \
@@ -500,11 +500,11 @@ def get_almost_expired_coupons():
                                         (SELECT COUNT(*) FROM coupons_likes  WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes, \
                                         (SELECT COUNT(*)  FROM coupons_likes  WHERE coupons_likes.user_id = %d AND coupons.coupon_id = coupons_likes.coupon_id) AS user_like, \
                                         (SELECT EXISTS (SELECT * FROM clients_coupon \
-                                        WHERE USER_id = %d AND clients_coupon.coupon_id = coupons.coupon_id AND used = false)::bool) AS taken \                                        FROM coupons INNER JOIN branches_design ON \
+                                            WHERE user_id = %d AND clients_coupon.coupon_id = coupons.coupon_id AND used = false)::bool) AS taken \                                        FROM coupons INNER JOIN branches_design ON \
                                         coupons.branch_id = branches_design.branch_id \
                                         INNER JOIN branches ON coupons.branch_id = branches.branch_id \
                                         INNER JOIN branches_location on coupons.branch_id = branches_location.branch_id \
-                                        WHERE deleted = false  AND active=true AND coupons.end_date>now() ORDER BY coupons.end_date ASC LIMIT 8' % payload['id'])
+                                        WHERE deleted = false  AND active=true AND coupons.end_date>now() ORDER BY coupons.end_date ASC LIMIT 8' % (payload['id'], payload['id']))
 
         selected_list_coupon = toexpire_coupon_schema.dump(list_coupon)
         return jsonify({'data': selected_list_coupon.data})
@@ -517,9 +517,7 @@ def coupon_stats(branch_id):
                                     (SELECT COUNT(*)  FROM coupons_likes   \
                                         WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes,   \
                                     (SELECT COUNT(*)  FROM clients_coupon   \
-                                        WHERE coupons.coupon_id = clients_coupon.coupon_id AND clients_coupon.used = true) AS total_uses, \
-                                    (SELECT EXISTS (SELECT * FROM clients_coupon \
-                                        WHERE USER_id = %d AND clients_coupon.coupon_id = coupons.coupon_id AND used = false)::bool) AS taken \
+                                        WHERE coupons.coupon_id = clients_coupon.coupon_id AND clients_coupon.used = true) AS total_uses \
                                     FROM coupons INNER JOIN branches_design ON   \
                                     coupons.branch_id = branches_design.branch_id   \
                                     JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.branch_id   \
