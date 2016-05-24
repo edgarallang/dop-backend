@@ -591,7 +591,7 @@ def nearest_coupons():
                      AND p.longpoint + (p.radius / (p.distance_unit * COS(RADIANS(p.latpoint)))) \
                 ) AS d \
                 WHERE distance <= radius \
-                ORDER BY distance LIMIT 8' % payload['id']
+                ORDER BY distance LIMIT 8' % 5
 
     nearestCoupons = db.engine.execute(query)
     nearest = nearest_coupon_schema.dump(nearestCoupons)
