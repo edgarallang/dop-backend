@@ -259,7 +259,6 @@ def add_friend():
             return jsonify({ 'data': friend_data.data,
                              'message': 'Agregado correctamente' })
         else:
-            notification_type = ''
             #friendshipExist.launcher_id = launcher_user_data.user_id
 
             if user_two.privacy_status == 0:
@@ -291,9 +290,7 @@ def add_friend():
 def accept_friend():
     if request.headers.get('Authorization'):
         payload = parse_token(request, True)
-
         today = datetime.now()
-
         user_two = User.query.get(payload['id'])
 
         friendsRelationship = Friends.query.get(request.json['friends_id'])
@@ -314,15 +311,10 @@ def accept_friend():
                                             type = "friend",
                                             notification_date = today,
                                             launcher_id = payload['id'],
-                                            read = False
-                                            )
+                                            read = False )
             db.session.add(notification)
             db.session.commit()
-
-            if user_two.privacy_status == 0:
-                notification_type = "now_friends"
-            else:
-                notification_type = "friend_accepted"
+            notification_type = "friend_accepted"
 
             notification_data = { "data": {
                                         "object_id": friendsRelationship.friends_id,
@@ -445,7 +437,7 @@ def get_coupons_activity_by_user_likes():
                                     WHERE users.user_id = %s AND clients_coupon.used = true AND clients_coupon.private = false \
                                     ORDER BY used_date DESC LIMIT %s OFFSET 0' % (payload['id'], user_profile_id, limit))
 
-        users_list = user_join_activity_newsfeed.dump(users)
+        users_list = user_join_activity_newsfeed_u.dump(users)
         return jsonify({'data': users_list.data})
 
     return jsonify({'message': 'Oops! algo salió mal'})
