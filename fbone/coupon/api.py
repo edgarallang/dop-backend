@@ -553,6 +553,7 @@ def used_by_gender(branch_id):
 
 @coupon.route('/nearest/get/', methods=['GET', 'POST'])
 def nearest_coupons():
+    token_index = True
     latitude = request.args.get('latitude')
     longitude = request.args.get('longitude')
     radio = request.args.get('radio')
