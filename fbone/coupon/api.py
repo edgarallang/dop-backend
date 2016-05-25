@@ -390,7 +390,7 @@ def get_all_used_coupon_for_user():
                                     INNER JOIN clients_coupon on coupons.coupon_id = clients_coupon.coupon_id \
                                     JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.branch_id \
                                     JOIN subcategory ON subcategory.subcategory_id = branches_subcategory.subcategory_id WHERE used = true \
-                                    AND deleted = false  AND active=true ORDER BY coupons.coupon_id DESC LIMIT %s OFFSET 0' % (payload['id'], limit))
+                                    AND deleted = false  AND active=true ORDER BY clients_coupon.used_date DESC LIMIT %s OFFSET 0' % (payload['id'], limit))
 
 
 
@@ -401,7 +401,7 @@ def get_all_used_coupon_for_user():
 def get_all_used_coupon_for_user_offset():
     token_index = True
     offset = request.args.get('offset')
-    coupon_id = request.args.get('coupon_id')
+    used_date = request.args.get('used_date')
     payload = parse_token(request, token_index)
 
     list_coupon = db.engine.execute('SELECT coupons.coupon_id, branches.branch_id, company_id, branches.name, coupon_folio, description, start_date, \
@@ -418,7 +418,7 @@ def get_all_used_coupon_for_user_offset():
                                     INNER JOIN clients_coupon on coupons.coupon_id = clients_coupon.coupon_id \
                                     JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.branch_id \
                                     JOIN subcategory ON subcategory.subcategory_id = branches_subcategory.subcategory_id WHERE used = true \
-                                    AND deleted = false  AND active=true AND coupons.coupon_id < %s ORDER BY start_date DESC LIMIT 6 OFFSET %s' % (payload['id'],coupon_id,offset))
+                                    AND deleted = false  AND active=true AND clients_coupon.used_date <= %s ORDER BY used_date DESC LIMIT 6 OFFSET %s' % (payload['id'],used_date,offset))
 
 
 
