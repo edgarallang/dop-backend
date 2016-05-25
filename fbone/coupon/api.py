@@ -107,7 +107,7 @@ def take_coupon():
                 db.session.commit()
                 return jsonify({'message': 'El cupon se tomó con éxito','total': coupon.available})
             else:
-                return jsonify({'message': 'Cupon agotado','total': coupon.available})
+                return jsonify({'message': 'agotado','total': coupon.available})
         else:
             coupon = Coupon.query.get(coupon_id)
             coupon.available = coupon.available + 1
@@ -168,7 +168,7 @@ def use_coupon():
                                 'level': user_level
                         })
             else:
-                return jsonify({'message': 'cupon agotado'})
+                return jsonify({'message': 'agotado'})
         else:
             client_coupon.used = True
             client_coupon.used_date = actual_date
