@@ -441,11 +441,13 @@ def set_config(branch_id):
         token_index = False
         payload = parse_token(request, token_index)
 
-        longitude = request.json['data']['longitude']
-        latitude = request.json['data']['latitude']
-        state = request.json['data']['state']
-        city = request.json['data']['city']
-        address = request.json['data']['description']
+        messages = { locator: '',
+                     about: '' }
+        longitude = request.json['data']['locator']['longitude']
+        latitude = request.json['data']['locator']['latitude']
+        state = request.json['data']['locator']['state']
+        city = request.json['data']['locator']['city']
+        address = request.json['data']['locator']['description']
 
         branchLocation = BranchLocation.query.filter_by(branch_id = branch_id).first()
 
@@ -458,7 +460,7 @@ def set_config(branch_id):
                                             address = address)
             db.session.add(branchLocation)
             db.session.commit()
-            return jsonify({'message': 'Localización creada.'})
+            messages.locator = 'Localización creada.'
         else:
             if address:
                 branchLocation.state = state
@@ -471,7 +473,26 @@ def set_config(branch_id):
                 branchLocation.latitude = latitude
 
             db.session.commit()
-            return jsonify({'message': 'Localización asignada.'})
+            messages.locator = 'Localización asignada.'
+
+        branch = Branch.query.get(branch_id)
+
+        if request.json['data']['about']:
+            name = request.json['data']['about']['name']
+            phone = request.json['data']['about']['phone']
+            description request.json['data']['about']['description']
+
+            if name:
+                branch.name = name
+            if phone:
+                branch.phone = phone
+            if description:
+                branch.description = description
+
+            db.session.commit()
+            messages.about = 'Información asignada.'
+
+        return jsonify({messages: messages})
     return jsonify({'message': 'Oops! algo salió mal, al parecer no tienes autorización'})
 
 # @company.route('/<int:branch_id>/config/get', methods = ['GET', 'POST'])
