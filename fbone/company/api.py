@@ -460,7 +460,7 @@ def set_config(branch_id):
             db.session.commit()
             return jsonify({'message': 'Localización creada.'})
         else:
-            if description:
+            if address:
                 branchLocation.state = state
                 branchLocation.longitude = longitude
                 branchLocation.latitude = latitude
