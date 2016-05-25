@@ -487,7 +487,7 @@ def set_config(branch_id):
             if phone:
                 branch.phone = phone
             if description:
-                branch.description = description
+                branch.about = description
 
             db.session.commit()
             messages['about'] = 'Información asignada.'
