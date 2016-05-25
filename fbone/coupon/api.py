@@ -87,24 +87,27 @@ def take_coupon():
 
         client_coupon = ClientsCoupon.query.filter(and_(ClientsCoupon.coupon_id==coupon_id),(ClientsCoupon.user_id==payload['id']),(ClientsCoupon.used==False)).first()
         if not client_coupon:
-            user_take = ClientsCoupon(user_id = payload['id'],
-                                      coupon_id = coupon_id,
-                                      folio = '',
-                                      taken_date = actual_date,
-                                      latitude= request.json['latitude'],
-                                      longitude = request.json['longitude'],
-                                      used = False)
-
-
-            db.session.add(user_take)
-            db.session.commit()
-            folio = '%d%s%d' % (request.json['branch_id'], "{:%d%m%Y}".format(actual_date), user_take.clients_coupon_id)
-            user_take.folio = folio
-            db.session.commit()
             coupon = Coupon.query.get(coupon_id)
-            coupon.available = coupon.available - 1
-            db.session.commit()
-            return jsonify({'message': 'El cupon se tomó con éxito','total': coupon.available})
+            if coupon.available > 0:
+                user_take = ClientsCoupon(user_id = payload['id'],
+                                          coupon_id = coupon_id,
+                                          folio = '',
+                                          taken_date = actual_date,
+                                          latitude= request.json['latitude'],
+                                          longitude = request.json['longitude'],
+                                          used = False)
+
+
+                db.session.add(user_take)
+                db.session.commit()
+                folio = '%d%s%d' % (request.json['branch_id'], "{:%d%m%Y}".format(actual_date), user_take.clients_coupon_id)
+                user_take.folio = folio
+                db.session.commit()
+                coupon.available = coupon.available - 1
+                db.session.commit()
+                return jsonify({'message': 'El cupon se tomó con éxito','total': coupon.available})
+            else:
+                return jsonify({'message': 'Cupon agotado','total': coupon.available})
         else:
             coupon = Coupon.query.get(coupon_id)
             coupon.available = coupon.available + 1
@@ -136,22 +139,36 @@ def use_coupon():
         client_coupon = ClientsCoupon.query.filter(and_(ClientsCoupon.coupon_id==coupon_id),(ClientsCoupon.user_id==payload['id']),(ClientsCoupon.used==False)).first()
         #client_coupon = ClientsCoupon.query.filter_by(clients_coupon_id = client_coupon_exist.clients_coupon_id).first()
         if not client_coupon:
-            client_coupon = ClientsCoupon(user_id = payload['id'],
-                              coupon_id = request.json['coupon_id'],
-                              folio = '',
-                              taken_date = actual_date,
-                              latitude= request.json['latitude'],
-                              longitude = request.json['longitude'],
-                              used = True,
-                              used_date = actual_date)
-            db.session.add(client_coupon)
-            db.session.commit()
-            folio = '%d%s%d' % (request.json['branch_id'], "{:%d%m%Y}".format(actual_date), client_coupon.clients_coupon_id)
-            client_coupon.folio = folio
-
             coupon = Coupon.query.get(request.json['coupon_id'])
-            coupon.available = coupon.available - 1
-            db.session.commit()
+            if coupon.available > 0:
+                client_coupon = ClientsCoupon(user_id = payload['id'],
+                                  coupon_id = request.json['coupon_id'],
+                                  folio = '',
+                                  taken_date = actual_date,
+                                  latitude= request.json['latitude'],
+                                  longitude = request.json['longitude'],
+                                  used = True,
+                                  used_date = actual_date)
+                db.session.add(client_coupon)
+                db.session.commit()
+                folio = '%d%s%d' % (request.json['branch_id'], "{:%d%m%Y}".format(actual_date), client_coupon.clients_coupon_id)
+                client_coupon.folio = folio
+
+
+                coupon.available = coupon.available - 1
+                db.session.commit()
+                branch = Branch.query.filter_by(branch_id = branch_id).first()
+                branch_data = branch_schema.dump(branch)
+
+                reward = assign_exp(payload['id'], USING)
+                user_level = level_up(payload['id'])
+
+                return jsonify({'data': branch_data.data,
+                                'reward': reward,
+                                'level': user_level
+                        })
+            else:
+                return jsonify({'message': 'cupon agotado'})
         else:
             client_coupon.used = True
             client_coupon.used_date = actual_date
@@ -162,16 +179,16 @@ def use_coupon():
             db.session.commit()
 
 
-        branch = Branch.query.filter_by(branch_id = branch_id).first()
-        branch_data = branch_schema.dump(branch)
+            branch = Branch.query.filter_by(branch_id = branch_id).first()
+            branch_data = branch_schema.dump(branch)
 
-        reward = assign_exp(payload['id'], USING)
-        user_level = level_up(payload['id'])
+            reward = assign_exp(payload['id'], USING)
+            user_level = level_up(payload['id'])
 
-        return jsonify({'data': branch_data.data,
-                        'reward': reward,
-                        'level': user_level
-                })
+            return jsonify({'data': branch_data.data,
+                            'reward': reward,
+                            'level': user_level
+                    })
 
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
