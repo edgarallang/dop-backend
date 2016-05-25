@@ -203,7 +203,9 @@ class NearestCouponSchema(Schema):
                   'latitude',
                   'longitude',
                   'available',
-                  'taken')
+                  'taken',
+                  'total_likes',
+                  'user_like')
 
 class ToExpireCouponSchema(Schema):
     class Meta:
