@@ -441,8 +441,8 @@ def set_config(branch_id):
         token_index = False
         payload = parse_token(request, token_index)
 
-        messages = { locator: '',
-                     about: '' }
+        messages = { 'locator': '',
+                     'about': '' }
         longitude = request.json['data']['locator']['longitude']
         latitude = request.json['data']['locator']['latitude']
         state = request.json['data']['locator']['state']
