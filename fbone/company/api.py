@@ -480,7 +480,7 @@ def set_config(branch_id):
         if request.json['data']['about']:
             name = request.json['data']['about']['name']
             phone = request.json['data']['about']['phone']
-            description request.json['data']['about']['description']
+            description = request.json['data']['about']['description']
 
             if name:
                 branch.name = name
