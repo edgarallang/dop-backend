@@ -87,24 +87,27 @@ def take_coupon():
 
         client_coupon = ClientsCoupon.query.filter(and_(ClientsCoupon.coupon_id==coupon_id),(ClientsCoupon.user_id==payload['id']),(ClientsCoupon.used==False)).first()
         if not client_coupon:
-            user_take = ClientsCoupon(user_id = payload['id'],
-                                      coupon_id = coupon_id,
-                                      folio = '',
-                                      taken_date = actual_date,
-                                      latitude= request.json['latitude'],
-                                      longitude = request.json['longitude'],
-                                      used = False)
-
-
-            db.session.add(user_take)
-            db.session.commit()
-            folio = '%d%s%d' % (request.json['branch_id'], "{:%d%m%Y}".format(actual_date), user_take.clients_coupon_id)
-            user_take.folio = folio
-            db.session.commit()
             coupon = Coupon.query.get(coupon_id)
-            coupon.available = coupon.available - 1
-            db.session.commit()
-            return jsonify({'message': 'El cupon se tomó con éxito','total': coupon.available})
+            if coupon.available > 0:
+                user_take = ClientsCoupon(user_id = payload['id'],
+                                          coupon_id = coupon_id,
+                                          folio = '',
+                                          taken_date = actual_date,
+                                          latitude= request.json['latitude'],
+                                          longitude = request.json['longitude'],
+                                          used = False)
+
+
+                db.session.add(user_take)
+                db.session.commit()
+                folio = '%d%s%d' % (request.json['branch_id'], "{:%d%m%Y}".format(actual_date), user_take.clients_coupon_id)
+                user_take.folio = folio
+                db.session.commit()
+                coupon.available = coupon.available - 1
+                db.session.commit()
+                return jsonify({'message': 'El cupon se tomó con éxito','total': coupon.available})
+            else:
+                return jsonify({'message': 'agotado','total': coupon.available})
         else:
             coupon = Coupon.query.get(coupon_id)
             coupon.available = coupon.available + 1
@@ -136,22 +139,36 @@ def use_coupon():
         client_coupon = ClientsCoupon.query.filter(and_(ClientsCoupon.coupon_id==coupon_id),(ClientsCoupon.user_id==payload['id']),(ClientsCoupon.used==False)).first()
         #client_coupon = ClientsCoupon.query.filter_by(clients_coupon_id = client_coupon_exist.clients_coupon_id).first()
         if not client_coupon:
-            client_coupon = ClientsCoupon(user_id = payload['id'],
-                              coupon_id = request.json['coupon_id'],
-                              folio = '',
-                              taken_date = actual_date,
-                              latitude= request.json['latitude'],
-                              longitude = request.json['longitude'],
-                              used = True,
-                              used_date = actual_date)
-            db.session.add(client_coupon)
-            db.session.commit()
-            folio = '%d%s%d' % (request.json['branch_id'], "{:%d%m%Y}".format(actual_date), client_coupon.clients_coupon_id)
-            client_coupon.folio = folio
-
             coupon = Coupon.query.get(request.json['coupon_id'])
-            coupon.available = coupon.available - 1
-            db.session.commit()
+            if coupon.available > 0:
+                client_coupon = ClientsCoupon(user_id = payload['id'],
+                                  coupon_id = request.json['coupon_id'],
+                                  folio = '',
+                                  taken_date = actual_date,
+                                  latitude= request.json['latitude'],
+                                  longitude = request.json['longitude'],
+                                  used = True,
+                                  used_date = actual_date)
+                db.session.add(client_coupon)
+                db.session.commit()
+                folio = '%d%s%d' % (request.json['branch_id'], "{:%d%m%Y}".format(actual_date), client_coupon.clients_coupon_id)
+                client_coupon.folio = folio
+
+
+                coupon.available = coupon.available - 1
+                db.session.commit()
+                branch = Branch.query.filter_by(branch_id = branch_id).first()
+                branch_data = branch_schema.dump(branch)
+
+                reward = assign_exp(payload['id'], USING)
+                user_level = level_up(payload['id'])
+
+                return jsonify({'data': branch_data.data,
+                                'reward': reward,
+                                'level': user_level
+                        })
+            else:
+                return jsonify({'message': 'agotado'})
         else:
             client_coupon.used = True
             client_coupon.used_date = actual_date
@@ -162,16 +179,16 @@ def use_coupon():
             db.session.commit()
 
 
-        branch = Branch.query.filter_by(branch_id = branch_id).first()
-        branch_data = branch_schema.dump(branch)
+            branch = Branch.query.filter_by(branch_id = branch_id).first()
+            branch_data = branch_schema.dump(branch)
 
-        reward = assign_exp(payload['id'], USING)
-        user_level = level_up(payload['id'])
+            reward = assign_exp(payload['id'], USING)
+            user_level = level_up(payload['id'])
 
-        return jsonify({'data': branch_data.data,
-                        'reward': reward,
-                        'level': user_level
-                })
+            return jsonify({'data': branch_data.data,
+                            'reward': reward,
+                            'level': user_level
+                    })
 
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
@@ -226,6 +243,11 @@ def get_all_coupon_by_branch(branch_id):
 
     branches_coupons = coupons_schema.dump(list_coupon)
     return jsonify({ 'data': branches_coupons.data })
+
+@coupon.route('/available/<int:coupon_id>', methods = ['GET'])
+def get_availables(coupon_id):
+    coupon = Coupon.query.get(coupon_id)
+    return jsonify({'available': coupon.available})
 
 @coupon.route('/all/for/user/get/', methods = ['GET'])
 def get_all_coupon_for_user():
@@ -473,7 +495,7 @@ def get_trending_coupons():
                                         ((SELECT COUNT(*) FROM coupons_likes  WHERE coupons.coupon_id = coupons_likes.coupon_id)*.30 + (SELECT COUNT(*) FROM clients_coupon WHERE coupons.coupon_id = clients_coupon.coupon_id AND clients_coupon.used = true)*1)as total_value,\
                                         (SELECT COUNT(*)  FROM coupons_likes  WHERE coupons_likes.user_id = %d AND coupons.coupon_id = coupons_likes.coupon_id) AS user_like, \
                                         (SELECT EXISTS (SELECT * FROM clients_coupon \
-                                        WHERE USER_id = %d AND clients_coupon.coupon_id = coupons.coupon_id AND used = false)::bool) AS taken \
+                                        WHERE user_id = %d AND clients_coupon.coupon_id = coupons.coupon_id AND used = false)::bool) AS taken \
                                         FROM coupons INNER JOIN branches_design ON \
                                         coupons.branch_id = branches_design.branch_id \
                                         INNER JOIN branches ON coupons.branch_id = branches.branch_id \
@@ -490,15 +512,17 @@ def get_almost_expired_coupons():
     if request.headers.get('Authorization'):
         token_index = True
         payload = parse_token(request, token_index)
-
+        user_id = payload['id']
         list_coupon = db.engine.execute('SELECT *,\
                                         (SELECT COUNT(*) FROM coupons_likes  WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes, \
-                                        (SELECT COUNT(*)  FROM coupons_likes  WHERE coupons_likes.user_id = %d AND coupons.coupon_id = coupons_likes.coupon_id) AS user_like \
+                                        (SELECT COUNT(*)  FROM coupons_likes  WHERE coupons_likes.user_id = %d AND coupons.coupon_id = coupons_likes.coupon_id) AS user_like, \
+                                        (SELECT EXISTS (SELECT * FROM clients_coupon \
+                                            WHERE user_id = %d AND clients_coupon.coupon_id = coupons.coupon_id AND used = false)::bool) AS taken \
                                         FROM coupons INNER JOIN branches_design ON \
                                         coupons.branch_id = branches_design.branch_id \
                                         INNER JOIN branches ON coupons.branch_id = branches.branch_id \
                                         INNER JOIN branches_location on coupons.branch_id = branches_location.branch_id \
-                                        WHERE deleted = false  AND active=true AND coupons.end_date>now() ORDER BY coupons.end_date ASC LIMIT 8' % payload['id'])
+                                        WHERE deleted = false  AND active=true AND coupons.end_date>now() ORDER BY coupons.end_date ASC LIMIT 8' % (user_id, user_id))
 
         selected_list_coupon = toexpire_coupon_schema.dump(list_coupon)
         return jsonify({'data': selected_list_coupon.data})
@@ -546,14 +570,20 @@ def used_by_gender(branch_id):
 
 @coupon.route('/nearest/get/', methods=['GET', 'POST'])
 def nearest_coupons():
+    token_index = True
     latitude = request.args.get('latitude')
     longitude = request.args.get('longitude')
     radio = request.args.get('radio')
-
-
+    payload = parse_token(request, token_index)
+    user_id = str(payload['id'])
 
     query = 'SELECT branch_location_id, branch_id, state, city, latitude, longitude, distance, address, name, category_id, available, \
-                    coupon_name, coupon_id, description, start_date, end_date, min_spent \
+                    coupon_name, coupon_id, description, start_date, end_date, min_spent, \
+                (SELECT COUNT(*)  FROM coupons_likes \
+                        WHERE d.coupon_id = coupons_likes.coupon_id) AS total_likes, \
+                (SELECT COUNT(*)  FROM coupons_likes  WHERE coupons_likes.user_id = '+user_id+' AND d.coupon_id = coupons_likes.coupon_id) AS user_like, \
+                (SELECT EXISTS (SELECT * FROM clients_coupon \
+                    WHERE user_id = '+user_id+' AND clients_coupon.coupon_id = d.coupon_id AND used = false)::bool) AS taken \
                 FROM (SELECT coupons.name as coupon_name, coupons.coupon_id,coupons.start_date,coupons.end_date, coupons.limit ,coupons.min_spent, \
                              coupons.description, z.branch_location_id, z.branch_id, z.state, z.city, z.address, coupons.available, \
                     z.latitude, z.longitude, branches.name, subcategory.category_id, \
