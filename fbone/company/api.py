@@ -492,7 +492,7 @@ def set_config(branch_id):
             db.session.commit()
             messages['about'] = 'Información asignada.'
 
-        return jsonify({messages: messages})
+        return jsonify({'messages': messages})
     return jsonify({'message': 'Oops! algo salió mal, al parecer no tienes autorización'})
 
 # @company.route('/<int:branch_id>/config/get', methods = ['GET', 'POST'])
