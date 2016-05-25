@@ -564,7 +564,7 @@ def nearest_coupons():
                     coupon_name, coupon_id, description, start_date, end_date, min_spent, \
                 (SELECT COUNT(*)  FROM coupons_likes \
                         WHERE d.coupon_id = coupons_likes.coupon_id) AS total_likes, \
-                (SELECT COUNT(*)  FROM coupons_likes  WHERE coupons_likes.user_id = '+user_id+' AND coupons.coupon_id = coupons_likes.coupon_id) AS user_like, \
+                (SELECT COUNT(*)  FROM coupons_likes  WHERE coupons_likes.user_id = '+user_id+' AND d.coupon_id = coupons_likes.coupon_id) AS user_like, \
                 (SELECT EXISTS (SELECT * FROM clients_coupon \
                     WHERE user_id = '+user_id+' AND clients_coupon.coupon_id = d.coupon_id AND used = false)::bool) AS taken \
                 FROM (SELECT coupons.name as coupon_name, coupons.coupon_id,coupons.start_date,coupons.end_date, coupons.limit ,coupons.min_spent, \
