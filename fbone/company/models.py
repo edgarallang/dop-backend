@@ -27,6 +27,8 @@ class Branch(db.Model):
     branch_id = Column(db.Integer, primary_key=True)
     company_id = Column(db.Integer, db.ForeignKey('companies.company_id'), nullable = False)
     name = Column(db.String(STRING_LEN), nullable=True, unique=True)
+    phone = Column(db.String(STRING_LEN))
+    about = Column(db.String(STRING_LEN))
 
     # branches_user_id = Column(db.Integer, db.ForeignKey("branches_user.branches_user_id"))
     branches_design = db.relationship("BranchDesign", uselist=False, backref="branches")
