@@ -460,7 +460,7 @@ def set_config(branch_id):
                                             address = address)
             db.session.add(branchLocation)
             db.session.commit()
-            messages.locator = 'Localización creada.'
+            messages['locator'] = 'Localización creada.'
         else:
             if address:
                 branchLocation.state = state
@@ -473,7 +473,7 @@ def set_config(branch_id):
                 branchLocation.latitude = latitude
 
             db.session.commit()
-            messages.locator = 'Localización asignada.'
+            messages['locator'] = 'Localización asignada.'
 
         branch = Branch.query.get(branch_id)
 
@@ -490,7 +490,7 @@ def set_config(branch_id):
                 branch.description = description
 
             db.session.commit()
-            messages.about = 'Información asignada.'
+            messages['about'] = 'Información asignada.'
 
         return jsonify({messages: messages})
     return jsonify({'message': 'Oops! algo salió mal, al parecer no tienes autorización'})
