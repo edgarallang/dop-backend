@@ -28,17 +28,17 @@ class Notifications(Schema):
         dateformat = ('iso')
         fields = ('notification_id',
                   'type',
+                  'catcher_id',
                   'launcher_name',
                   'launcher_surnames',
                   'launcher_id',
-                  'friendship_status',
-                  'newsfeed_activity',
+                  'operation_id',
+                  'branches_name',
                   'read',
                   'notification_date',
                   'user_image',
                   'company_id',
                   'object_id',
-                  'launcher_friend',
                   'branch_id')
 
 
