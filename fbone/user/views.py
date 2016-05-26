@@ -227,14 +227,13 @@ def add_friend():
 
             friendsRelationship  = Friends(user_one_id = launcher_user_data.user_id,
                                            user_two_id = user_to_add,
-                                           operation_id = operation_id,
-                                           launcher_user_id = launcher_user_data.user_id)
+                                           operation_id = operation_id )
 
 
             db.session.add(friendsRelationship)
             db.session.commit()
 
-            notification = Notification(user_id = user_to_add,
+            notification = Notification(catcher_id = user_to_add,
                                         object_id = friendsRelationship.friends_id,
                                         type = "friend",
                                         notification_date = datetime.now(),

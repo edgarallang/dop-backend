@@ -14,7 +14,7 @@ from ..company import Branch, BranchUser
 class Notification(db.Model):
     __tablename__ = 'notifications'
     notification_id = Column(db.Integer, primary_key=True)
-    user_id = Column(db.Integer, db.ForeignKey('users.user_id'),nullable=False)
+    catcher_id = Column(db.Integer, db.ForeignKey('users.user_id'),nullable=False)
     object_id = Column(db.Integer)
     type = Column(db.String(STRING_LEN))
     notification_date = Column(db.DateTime, nullable=False)
