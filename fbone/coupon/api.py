@@ -720,7 +720,7 @@ def get_coupons_activity_by_user_likes():
     if request.headers.get('Authorization'):
         token_index = True
         payload = parse_token(request, token_index)
-        user_id = User.query.get(payload['id']).user_id
+        user_id = payload['id']
 
         users = db.engine.execute('SELECT coupons.branch_id,coupons.coupon_id,branches_design.logo,coupons.name,clients_coupon.clients_coupon_id,clients_coupon.latitude,clients_coupon.longitude, \
                                           users.names, users.surnames, users.user_id, users.exp, users.level, users_image.main_image, branches.name AS branch_name, \
@@ -749,7 +749,7 @@ def get_used_coupons_by_user_likes_offset():
     if request.headers.get('Authorization'):
         token_index = True
         payload = parse_token(request, token_index)
-        user_id = User.query.get(payload['id']).user_id
+        user_id = payload['id']
         offset = request.json['offset']
         used_date = request.json['used_date']
 
@@ -768,7 +768,7 @@ def get_used_coupons_by_user_likes_offset():
                                     LEFT JOIN friends ON friends.user_one_id = %d AND friends.user_two_id = users.user_id \
                                     WHERE clients_coupon.used = true AND clients_coupon.used_date <= %s AND clients_coupon.private = false AND friends.operation_id = 1 ORDER BY used_date DESC LIMIT 6 OFFSET %s' % (user_id, user_id, user_id, "'" + used_date + "'" , offset)
 
-        print(query)
+        
         users = db.engine.execute(query)
 
         users_list = user_join_activity_newsfeed.dump(users)
