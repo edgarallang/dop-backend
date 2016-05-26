@@ -157,8 +157,8 @@ def get_notifications():
                                             AND notifications.type = 'friend' \
                                          LEFT JOIN users_image ON notifications.launcher_id = users_image.user_id \
                                          INNER JOIN users AS launcher_user ON notifications.launcher_id = launcher_user.user_id \
-                                       WHERE notifications.catcher_id = %d  AND (operation_id IS NULL OR operation_id < 2 OR (launcher_id != %d AND operation_id = 1)) \
-                                        ORDER BY notification_date DESC LIMIT 11" % (payload['id'], payload['id'])
+                                         WHERE (operation_id IS NULL AND catcher_id = %d) OR (operation_id < 2) \
+                                        ORDER BY notification_date DESC LIMIT 11" % (payload['id'])
 
         notifications = db.engine.execute(notifications_query)
         notifications_list = notifications_schema.dump(notifications)
