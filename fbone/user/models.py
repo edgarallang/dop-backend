@@ -118,7 +118,6 @@ class Friends(db.Model,UserMixin):
     user_one_id = Column(db.Integer, nullable=False)
     user_two_id = Column(db.Integer, nullable=False)
     operation_id = Column(db.Integer, nullable=False)
-    launcher_user_id = Column(db.Integer, nullable=False)
 
 class UserFirstEXP(db.Model, UserMixin):
     __tablename__ = 'user_first_exp'

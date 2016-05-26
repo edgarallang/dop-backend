@@ -14,7 +14,7 @@ from ..company import Branch, BranchUser
 class Notification(db.Model):
     __tablename__ = 'notifications'
     notification_id = Column(db.Integer, primary_key=True)
-    user_id = Column(db.Integer, db.ForeignKey('users.user_id'),nullable=False)
+    catcher_id = Column(db.Integer, db.ForeignKey('users.user_id'),nullable=False)
     object_id = Column(db.Integer)
     type = Column(db.String(STRING_LEN))
     notification_date = Column(db.DateTime, nullable=False)
@@ -28,17 +28,17 @@ class Notifications(Schema):
         dateformat = ('iso')
         fields = ('notification_id',
                   'type',
+                  'catcher_id',
                   'launcher_name',
                   'launcher_surnames',
                   'launcher_id',
-                  'friendship_status',
-                  'newsfeed_activity',
+                  'operation_id',
+                  'branches_name',
                   'read',
                   'notification_date',
                   'user_image',
                   'company_id',
                   'object_id',
-                  'launcher_friend',
                   'branch_id')
 
 
