@@ -441,8 +441,8 @@ def set_config(branch_id):
         token_index = False
         payload = parse_token(request, token_index)
 
-        messages = { locator: '',
-                     about: '' }
+        messages = { 'locator': '',
+                     'about': '' }
         longitude = request.json['data']['locator']['longitude']
         latitude = request.json['data']['locator']['latitude']
         state = request.json['data']['locator']['state']
@@ -460,7 +460,7 @@ def set_config(branch_id):
                                             address = address)
             db.session.add(branchLocation)
             db.session.commit()
-            messages.locator = 'Localización creada.'
+            messages['locator'] = 'Localización creada.'
         else:
             if address:
                 branchLocation.state = state
@@ -473,7 +473,7 @@ def set_config(branch_id):
                 branchLocation.latitude = latitude
 
             db.session.commit()
-            messages.locator = 'Localización asignada.'
+            messages['locator'] = 'Localización asignada.'
 
         branch = Branch.query.get(branch_id)
 
@@ -487,12 +487,12 @@ def set_config(branch_id):
             if phone:
                 branch.phone = phone
             if description:
-                branch.description = description
+                branch.about = description
 
             db.session.commit()
-            messages.about = 'Información asignada.'
+            messages['about'] = 'Información asignada.'
 
-        return jsonify({messages: messages})
+        return jsonify({'messages': messages})
     return jsonify({'message': 'Oops! algo salió mal, al parecer no tienes autorización'})
 
 # @company.route('/<int:branch_id>/config/get', methods = ['GET', 'POST'])
