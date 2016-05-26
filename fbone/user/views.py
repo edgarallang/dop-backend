@@ -214,7 +214,7 @@ def add_friend():
         user_two = User.query.get(user_to_add)
         friendshipExist = Friends.query.filter(((Friends.user_one_id == payload['id']) & (Friends.user_two_id == user_to_add))).first()
         launcher_user_data = User.query.filter_by(user_id = payload['id']).first()
-
+        date = datetime.now()
         if not friendshipExist:
             #user_two = User.query.get(user_to_add)
             notification_type = ''
@@ -236,7 +236,7 @@ def add_friend():
             notification = Notification(catcher_id = user_to_add,
                                         object_id = friendsRelationship.friends_id,
                                         type = "friend",
-                                        notification_date = datetime.now(),
+                                        notification_date = date,
                                         launcher_id = launcher_user_data.user_id,
                                         read = False )
             db.session.add(notification)
@@ -267,7 +267,14 @@ def add_friend():
                 friendshipExist.operation_id = 0
                 notification_type = 'pending_friends'
 
-            notification = Notification.query.get(user_to_add)
+
+
+            if 'notification_id' in request.json:
+                notification_id = request.json['notification_id']
+                notification = Notification.query.get(notification_id)
+                notification.date = date
+                db.session.commit()
+
             launcher_user_id = launcher_user_data.user_id
             db.session.commit()
 
