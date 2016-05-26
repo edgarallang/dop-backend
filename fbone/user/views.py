@@ -312,7 +312,7 @@ def accept_friend():
 
             db.session.commit()
 
-            notification = Notification(user_id = friendsRelationship.user_one_id,
+            notification = Notification(    catcher_id = friendsRelationship.user_one_id,
                                             object_id = friendsRelationship.friends_id,
                                             type = "friend",
                                             notification_date = today,
@@ -329,7 +329,7 @@ def accept_friend():
                                     }
                                 }
 
-            if(user_one.device_token != None):
+            if user_one.device_token != None:
                 send_notification(user_one.device_token, notification_data)
             #socketio.emit('notification',{'data': 'someone triggered me'},room = friendsRelationship.user_one_id)
 
@@ -342,7 +342,7 @@ def decline_friend():
     if request.headers.get('Authorization'):
         payload = parse_token(request, True)
 
-        user_id = User.query.get(payload['id']).user_id
+        launcher_id = payload['id']
         friendsRelationship = Friends.query.filter_by(friends_id=request.json['friends_id']).first()
         if friendsRelationship:
             friendsRelationship.operation_id = 2
