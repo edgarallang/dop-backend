@@ -268,7 +268,9 @@ def add_friend():
                 friendshipExist.operation_id = 0
                 notification_type = 'pending_friends'
 
-            if request.json['notification_id']:
+
+
+            if request.json['notification_id'] != '':
                 notification_id = request.json['notification_id']
                 notification = Notification.query.get(notification_id)
                 notification.date = date
