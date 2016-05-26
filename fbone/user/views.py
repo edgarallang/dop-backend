@@ -270,7 +270,7 @@ def add_friend():
 
 
 
-            if request.json['notification_id'] != '':
+            if 'notification_id' in request.json:
                 notification_id = request.json['notification_id']
                 notification = Notification.query.get(notification_id)
                 notification.date = date
