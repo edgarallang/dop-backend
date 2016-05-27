@@ -305,8 +305,6 @@ def accept_friend():
         if friendsRelationship.operation_id != 1:
             friendsRelationship.operation_id = 1
 
-            db.session.commit()
-
             notification = Notification.query.filter_by(notification_id=request.json['notification_id']).first()
             notification.notification_date = today
 
@@ -318,8 +316,7 @@ def accept_friend():
             #                                 notification_date = today,
             #                                 launcher_id = payload['id'],
             #                                 read = False )
-            db.session.add(notification)
-            db.session.commit()
+
             notification_type = "friend_accepted"
 
             notification_data = { "data": {
