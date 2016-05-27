@@ -68,9 +68,11 @@ def get_friends_by_id(userId):
 @user.route('/<int:userId>/profile', methods=['GET'])
 def profile(userId):
     query = "SELECT users.user_id, users.names, users.surnames, users.birth_date, users.facebook_key, users.google_key, \
-                    users.twitter_key,users.privacy_status, users_image.main_image, users_image.user_image_id, level, exp \
-                    FROM users INNER JOIN users_image ON users.user_id = users_image.user_id\
-                    WHERE users.user_id = %d" % (userId)
+                    users.twitter_key,users.privacy_status, users_image.main_image, users_image.user_image_id, level, exp, \
+                    (SELECT EXISTS (SELECT * FROM friends \
+                            WHERE friends.user_one_id = %d AND friends.user_two_id = users.user_id AND friends.operation_id = 1)::bool) AS is_friend \
+                    FROM users INNER JOIN users_image ON users.user_id = users_image.user_id \
+                    WHERE users.user_id = %d" % (userId, userId)
 
     #total_friends = get_friends_by_id(userId)
 
