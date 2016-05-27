@@ -144,7 +144,7 @@ def get_notifications():
         token_index = True
         payload = parse_token(request, token_index)
 
-        notifications_query = "SELECT notifications.*, launcher_user.names AS launcher_name, catcher_user.names AS catcher_names, \
+        notifications_query = "SELECT notifications.*, launcher_user.names AS launcher_name, catcher_user.names AS catcher_name, \
                                        launcher_user.surnames AS launcher_surnames, catcher_user.surnames AS catcher_surnames, \
                                        friends.operation_id, branches.name AS branches_name, branches.company_id, branches.branch_id, \
                                        launcher_image.main_image AS launcher_image, catcher_image.main_image AS catcher_image \
