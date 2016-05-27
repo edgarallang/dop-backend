@@ -220,7 +220,9 @@ class BranchesProfile(Schema):
                   'company_id',
                   'banner',
                   'logo',
-                  'following')
+                  'following',
+                  'about',
+                  'phone')
 
 class BranchesProfileSearch(Schema):
     class Meta:
