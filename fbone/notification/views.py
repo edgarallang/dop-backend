@@ -144,10 +144,10 @@ def get_notifications():
         token_index = True
         payload = parse_token(request, token_index)
 
-        notifications_query = "SELECT notifications.*, launcher_user.names AS launcher_name, \
-                                       launcher_user.surnames AS launcher_surnames, friends.operation_id, \
-                                       branches.name AS branches_name, branches.company_id, branches.branch_id, \
-                                       users_image.main_image AS user_image \
+        notifications_query = "SELECT notifications.*, launcher_user.names AS launcher_name, catcher_user.names AS catcher_names, \
+                                       launcher_user.surnames AS launcher_surnames, catcher_user.surnames AS catcher_surnames, \
+                                       friends.operation_id, branches.name AS branches_name, branches.company_id, branches.branch_id, \
+                                       launcher_image.main_image AS launcher_image, catcher_image.main_image AS catcher_image \
                                     FROM notifications \
                                          LEFT JOIN clients_coupon ON notifications.object_id = clients_coupon.clients_coupon_id \
                                             AND notifications.type = 'newsfeed' \
@@ -155,10 +155,12 @@ def get_notifications():
                                          LEFT JOIN branches ON coupons.branch_id = branches.branch_id \
                                          LEFT JOIN friends ON notifications.object_id = friends.friends_id \
                                             AND notifications.type = 'friend' \
-                                         LEFT JOIN users_image ON notifications.launcher_id = users_image.user_id \
+                                         LEFT JOIN users_image AS launcher_image ON notifications.launcher_id = launcher_image.user_id \
+                                         LEFT JOIN users_image AS catcher_image ON notifications.catcher_id = catcher_image.user_id \
                                          INNER JOIN users AS launcher_user ON notifications.launcher_id = launcher_user.user_id \
-                                         WHERE (operation_id IS NULL AND catcher_id = %d) OR (operation_id < 2) \
-                                        ORDER BY notification_date DESC LIMIT 11" % (payload['id'])
+                                         INNER JOIN users AS catcher_user ON notifications.catcher_id = catcher_user.user_id \
+                                    WHERE notifications.catcher_id = %d  AND ( launcher_id != %d OR operation_id IS null) \
+                                         ORDER BY notification_date DESC LIMIT 11" % (payload['id'], payload['id'])
 
         notifications = db.engine.execute(notifications_query)
         notifications_list = notifications_schema.dump(notifications)
