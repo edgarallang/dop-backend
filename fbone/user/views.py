@@ -213,7 +213,7 @@ def add_friend():
         user_to_add = request.json['user_two_id']
         user_two = User.query.get(user_to_add)
         friendshipExist = Friends.query.filter(((Friends.user_one_id == payload['id']) & (Friends.user_two_id == user_to_add))).first()
-        launcher_user_data = User.query.filter_by(user_id = payload['id']).first()
+        launcher_user_data = User.query.get(payload['id'])
         date = datetime.now()
         if not friendshipExist:
             #user_two = User.query.get(user_to_add)
@@ -305,8 +305,6 @@ def accept_friend():
         if friendsRelationship.operation_id != 1:
             friendsRelationship.operation_id = 1
 
-            db.session.commit()
-
             notification = Notification.query.filter_by(notification_id=request.json['notification_id']).first()
             notification.notification_date = today
 
@@ -318,8 +316,7 @@ def accept_friend():
             #                                 notification_date = today,
             #                                 launcher_id = payload['id'],
             #                                 read = False )
-            db.session.add(notification)
-            db.session.commit()
+
             notification_type = "friend_accepted"
 
             notification_data = { "data": {
