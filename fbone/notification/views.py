@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+f# -*- coding: utf-8 -*-
 from datetime import datetime, timedelta
 import os
 import jwt
