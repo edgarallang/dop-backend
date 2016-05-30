@@ -134,7 +134,6 @@ def use_coupon():
         #client_coupon_exist = ClientsCoupon.query.join(Coupon, ClientsCoupon.coupon_id==Coupon.coupon_id).add_columns(ClientsCoupon.clients_coupon_id,ClientsCoupon.used, Coupon.branch_id).filter(and_(ClientsCoupon.coupon_id==coupon_id),(ClientsCoupon.user_id==payload['id'])).first()
         #client_coupon_json = clients_coupon_inner_coupon_schema.dump(client_coupon)
 
-
         actual_date = datetime.now()
         client_coupon = ClientsCoupon.query.filter(and_(ClientsCoupon.coupon_id==coupon_id),(ClientsCoupon.user_id==payload['id']),(ClientsCoupon.used==False)).first()
         #client_coupon = ClientsCoupon.query.filter_by(clients_coupon_id = client_coupon_exist.clients_coupon_id).first()
@@ -160,13 +159,14 @@ def use_coupon():
                 branch = Branch.query.filter_by(branch_id = branch_id).first()
                 branch_data = branch_schema.dump(branch)
 
-                reward = assign_exp(payload['id'], USING)
-                user_level = level_up(payload['id'])
+                #reward = assign_exp(payload['id'], USING)
+                #user_level = level_up(payload['id'])
 
-                return jsonify({'data': branch_data.data,
-                                'reward': reward,
-                                'level': user_level
-                        })
+                #return jsonify({'data': branch_data.data,
+                #                'reward': reward,
+                #                'level': user_level
+                #        })
+                return jsonify({'message':'123'})
             else:
                 return jsonify({'message': 'agotado'})
         else:
