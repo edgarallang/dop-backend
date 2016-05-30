@@ -149,7 +149,8 @@ def get_notifications():
                                        friends.operation_id, branches.name AS branches_name, branches.company_id, branches.branch_id, \
                                        launcher_image.main_image AS launcher_image, catcher_image.main_image AS catcher_image, \
                                        (SELECT EXISTS (SELECT * FROM friends \
-                                               WHERE friends.user_one_id = %d AND friends.user_two_id = launcher_user.user_id AND friends.operation_id = 1)::bool) AS is_friend \
+                                               WHERE friends.user_one_id = %d AND (friends.user_two_id = launcher_user.user_id OR friends.user_two_id = catcher_user.user_id) \
+                                               AND friends.operation_id = 1)::bool) AS is_friend \
                                     FROM notifications \
                                          LEFT JOIN clients_coupon ON notifications.object_id = clients_coupon.clients_coupon_id \
                                             AND notifications.type = 'newsfeed' \
