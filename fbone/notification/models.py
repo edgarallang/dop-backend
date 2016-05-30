@@ -42,7 +42,8 @@ class Notifications(Schema):
                   'catcher_image',
                   'company_id',
                   'object_id',
-                  'branch_id')
+                  'branch_id',
+                  'is_friend')
 
 
 notifications_schema = Notifications(many=True)
