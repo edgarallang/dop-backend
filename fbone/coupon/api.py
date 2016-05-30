@@ -166,7 +166,7 @@ def use_coupon():
                 #                'reward': reward,
                 #                'level': user_level
                 #        })
-                return jsonify({'message':'123'})
+                return jsonify({'data':'123','reward':'wasd','level':3})
             else:
                 return jsonify({'message': 'agotado'})
         else:
