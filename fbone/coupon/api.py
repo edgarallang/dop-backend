@@ -159,7 +159,7 @@ def use_coupon():
                 branch = Branch.query.filter_by(branch_id = branch_id).first()
                 branch_data = branch_schema.dump(branch)
 
-                #reward = assign_exp(payload['id'], USING)
+                reward = assign_exp(payload['id'], USING)
                 user_level = level_up(payload['id'])
 
                 #return jsonify({'data': branch_data.data,
