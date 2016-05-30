@@ -134,9 +134,7 @@ def set_read():
         db.session.commit()
         return jsonify({'message': 'Notificacion leida'})
 
-    return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
-
-
+    return jsonify({'message': 'Oops! algo salio mal, intentalo de nuevo, echale ganas'})
 
 @notification.route('/all/get', methods=['GET'])
 def get_notifications():
