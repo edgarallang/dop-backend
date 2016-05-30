@@ -222,7 +222,8 @@ class BranchesProfile(Schema):
                   'logo',
                   'following',
                   'about',
-                  'phone')
+                  'phone',
+                  'adults_only')
 
 class BranchesProfileSearch(Schema):
     class Meta:
