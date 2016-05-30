@@ -160,13 +160,13 @@ def use_coupon():
                 branch_data = branch_schema.dump(branch)
 
                 #reward = assign_exp(payload['id'], USING)
-                #user_level = level_up(payload['id'])
+                user_level = level_up(payload['id'])
 
                 #return jsonify({'data': branch_data.data,
                 #                'reward': reward,
                 #                'level': user_level
                 #        })
-                return jsonify({'data':branch_data.data,'reward':'','level':3})
+                return jsonify({'data':branch_data.data,'reward':'','level':user_level})
             else:
                 return jsonify({'message': 'agotado'})
         else:
