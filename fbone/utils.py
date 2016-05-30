@@ -132,7 +132,7 @@ BADGES = {
 #############################################
 
 def assign_exp(user_id, exp):
-    response = requests.put("https://inmoon.com.mx/api/user/"+`user_id`+"/"+`exp`+"/set")
+    response = requests.put("https://45.55.7.118:5000/api/user/"+`user_id`+"/"+`exp`+"/set")
     return response.json()
     # except: return jsonify({'message': 'Oops! algo salió mal'})
 
