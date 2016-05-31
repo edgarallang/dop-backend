@@ -343,7 +343,7 @@ def fisrt_job():
 def dashboard_branches():
     token_index = True
     payload = parse_token(request, token_index)
-    user_born = User.query.get(user_id).birth_date
+    user_born = User.query.get(payload['id']).birth_date
     age = calculate_age(user_born)
 
     if age >= 18:
