@@ -86,11 +86,11 @@ def set_experience(user_id, exp):
 
     db.session.commit()
     if len(badges_tuple) == 0:
-        return jsonify({ 'message': 'experiencia asignada %d' % exp })
+        return { 'message': 'experiencia asignada %d' % exp }
     else:
         badges = badge_schema.dump(badge)
-        return jsonify({'message': 'experiencia asignada %d' % exp,
-                        'badges': badges.data })
+        return {'message': 'experiencia asignada %d' % exp,
+                        'badges': badges.data }
 
 @coupon.route('/generate/pdf', methods=['GET'])
 def generate_pdf():
@@ -203,7 +203,6 @@ def use_coupon():
 
             reward = set_experience(payload['id'], USING)
             user_level = level_up(payload['id'])
-
             return jsonify({'data': branch_data.data, 'reward': reward, 'level': user_level })
 
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
