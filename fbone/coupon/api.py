@@ -182,7 +182,7 @@ def use_coupon():
                 coupon.available = coupon.available - 1
 
                 db.session.commit()
-                
+
                 branch = Branch.query.filter_by(branch_id = branch_id).first()
                 branch_data = branch_schema.dump(branch)
 
@@ -193,17 +193,12 @@ def use_coupon():
                 #                'reward': reward,
                 #                'level': user_level
                 #        })
-                return jsonify({'data': branch_data.data, 'reward': reward, 'level': user_level})
+                return jsonify({'data': branch_data.data, 'reward': reward, 'level': user_level })
             else:
                 return jsonify({'message': 'agotado'})
         else:
             client_coupon.used = True
             client_coupon.used_date = actual_date
-
-            coupon = Coupon.query.get(request.json['coupon_id'])
-            #coupon.available = coupon.available - 1
-            db.session.commit()
-
 
             branch = Branch.query.filter_by(branch_id = branch_id).first()
             branch_data = branch_schema.dump(branch)
