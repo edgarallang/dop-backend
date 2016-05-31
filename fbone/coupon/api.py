@@ -196,15 +196,15 @@ def use_coupon():
             client_coupon.used = True
             client_coupon.used_date = actual_date
 
-            branch = Branch.query.filter_by(branch_id = branch_id).first()
+            db.session.commit()
+
+            branch = Branch.query.get(branch_id)
             branch_data = branch_schema.dump(branch)
 
             reward = set_experience(payload['id'], USING)
             user_level = level_up(payload['id'])
 
-            return jsonify({'data': branch_data.data,
-                            'reward': reward,
-                            'level': user_level })
+            return jsonify({'data': branch_data.data, 'reward': reward, 'level': user_level })
 
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
