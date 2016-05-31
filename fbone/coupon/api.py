@@ -189,10 +189,6 @@ def use_coupon():
                 reward = set_experience(payload['id'], USING)
                 user_level = level_up(payload['id'])
 
-                #return jsonify({'data': branch_data.data,
-                #                'reward': reward,
-                #                'level': user_level
-                #        })
                 return jsonify({'data': branch_data.data, 'reward': reward, 'level': user_level })
             else:
                 return jsonify({'message': 'agotado'})
