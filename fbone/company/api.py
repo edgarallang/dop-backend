@@ -390,7 +390,7 @@ def dashboard_branches():
     return jsonify({'data': selected_list_branch.data+selected_list_extra.data})
 
 def calculate_age(born):
-    today = date.today()
+    today = datetime.now()
     return today.year - born.year - ((today.month, today.day) < (born.month, born.day))
 
 @company.route('/branch/<int:branch_id>/ranking/get', methods = ['GET'])
