@@ -36,14 +36,15 @@ def create_token(user):
 
     return token.decode('unicode_escape')
 
-def level_up(user_id):
-    user = User.query.get(user_id)
-    for key, val in LEVELS.iteritems():
-        if user.exp >= val:
-            user.level = key
-    return user.level
-
-
+# def level_up(user_id):
+#     user = User.query.get(user_id)
+#     print user_id, user.exp
+#     for key, val in LEVELS.iteritems():
+#         if user.exp >= val:
+#             user.level = key
+#             print user.level
+#     db.session.commit()
+#     return user.level
 
 @login_required
 def index():
