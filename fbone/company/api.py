@@ -344,7 +344,7 @@ def dashboard_branches():
     token_index = True
     payload = parse_token(request, token_index)
     user_born = User.query.get(user_id).birth_date
-    age = calculate_age(age_born)
+    age = calculate_age(user_born)
 
     if age >= 18:
         adBranches = 'SELECT * FROM branches\
