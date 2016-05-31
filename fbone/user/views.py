@@ -500,7 +500,7 @@ def set_experience(user_id, exp):
     else:
         badges = badge_schema.dump(badge)
         return jsonify({'message': 'experiencia asignada %d' % exp,
-                    'badges': badges.data })
+                        'badges': badges.data })
 
 
 @user.route('/privacy_status/set', methods=['POST'])

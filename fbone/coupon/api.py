@@ -68,6 +68,30 @@ def level_up(user_id):
     db.session.commit()
     return user.level
 
+def set_experience(user_id, exp):
+    user = User.query.get(user_id)
+    old_exp = user.exp
+    user.exp = old_exp + exp
+    badge_name = []
+
+    for key, val in BADGES.iteritems():
+        if (val > old_exp) and (val <= user.exp):
+          badge_name.append(key)
+
+    badges_tuple = tuple(badge_name)
+    if len(badges_tuple) == 1:
+        badge = db.engine.execute("SELECT * FROM badges WHERE LOWER(name) in(" + `badges_tuple[0]`+")")
+    elif len(badges_tuple) > 1:
+        badge = db.engine.execute("SELECT * FROM badges WHERE LOWER(name) in" + `badges_tuple`)
+
+    db.session.commit()
+    if len(badges_tuple) == 0:
+        return jsonify({ 'message': 'experiencia asignada %d' % exp })
+    else:
+        badges = badge_schema.dump(badge)
+        return jsonify({'message': 'experiencia asignada %d' % exp,
+                        'badges': badges.data })
+
 @coupon.route('/generate/pdf', methods=['GET'])
 def generate_pdf():
     x = pdfkit.from_string('Hello!', 'out.pdf')
@@ -135,7 +159,10 @@ def use_coupon():
         #client_coupon_json = clients_coupon_inner_coupon_schema.dump(client_coupon)
 
         actual_date = datetime.now()
-        client_coupon = ClientsCoupon.query.filter(and_(ClientsCoupon.coupon_id==coupon_id),(ClientsCoupon.user_id==payload['id']),(ClientsCoupon.used==False)).first()
+        client_coupon = ClientsCoupon.query.filter(and_(ClientsCoupon.coupon_id==coupon_id),
+                                                       (ClientsCoupon.user_id==payload['id']),
+                                                       (ClientsCoupon.used==False)).first()
+
         #client_coupon = ClientsCoupon.query.filter_by(clients_coupon_id = client_coupon_exist.clients_coupon_id).first()
         if not client_coupon:
             coupon = Coupon.query.get(request.json['coupon_id'])
@@ -159,7 +186,7 @@ def use_coupon():
                 branch = Branch.query.filter_by(branch_id = branch_id).first()
                 branch_data = branch_schema.dump(branch)
 
-                reward = assign_exp(payload['id'], USING)
+                reward = set_experience(payload['id'], USING)
                 user_level = level_up(payload['id'])
 
                 #return jsonify({'data': branch_data.data,
@@ -182,7 +209,7 @@ def use_coupon():
             branch = Branch.query.filter_by(branch_id = branch_id).first()
             branch_data = branch_schema.dump(branch)
 
-            reward = assign_exp(payload['id'], USING)
+            reward = set_experience(payload['id'], USING)
             user_level = level_up(payload['id'])
 
             return jsonify({'data': branch_data.data,
