@@ -96,7 +96,7 @@ def facebook_login():
                             surnames = request.json['surnames'],
                             birth_date = request.json['birth_date'],
                             facebook_key = request.json['facebook_key'],
-                            gender = 'male',
+                            gender = request.json['gender'],
                             level = 0,
                             exp = 0,
                             privacy_status = 0,
