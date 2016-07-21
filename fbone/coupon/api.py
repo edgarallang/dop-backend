@@ -164,10 +164,10 @@ def use_coupon():
                                                        (ClientsCoupon.used==False)).first()
 
         #client_coupon = ClientsCoupon.query.filter_by(clients_coupon_id = client_coupon_exist.clients_coupon_id).first()
-        if not client_coupon:
-            coupon = Coupon.query.get(request.json['coupon_id'])
-            if coupon.available > 0:
-                if coupon.branch_id == branch_id and qr_code == coupon.coupon_id:
+        if coupon.branch_id == branch_id and qr_code == coupon.coupon_id:
+            if not client_coupon:
+                coupon = Coupon.query.get(request.json['coupon_id'])
+                if coupon.available > 0:
                     client_coupon = ClientsCoupon(user_id = payload['id'],
                                       coupon_id = request.json['coupon_id'],
                                       folio = '',
@@ -192,22 +192,21 @@ def use_coupon():
 
                     return jsonify({'data': branch_data.data, 'reward': reward, 'level': user_level })
                 else:
-                    return jsonify({'message': 'error' })
+                    return jsonify({'message': 'agotado'})
             else:
-                return jsonify({'message': 'agotado'})
+                client_coupon.used = True
+                client_coupon.used_date = actual_date
+
+                db.session.commit()
+
+                branch = Branch.query.get(branch_id)
+                branch_data = branch_schema.dump(branch)
+
+                reward = set_experience(payload['id'], USING)
+                user_level = level_up(payload['id'])
+                return jsonify({'data': branch_data.data, 'reward': reward, 'level': user_level })
         else:
-            client_coupon.used = True
-            client_coupon.used_date = actual_date
-
-            db.session.commit()
-
-            branch = Branch.query.get(branch_id)
-            branch_data = branch_schema.dump(branch)
-
-            reward = set_experience(payload['id'], USING)
-            user_level = level_up(payload['id'])
-            return jsonify({'data': branch_data.data, 'reward': reward, 'level': user_level })
-
+            return jsonify({'data': 'error' })
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
 # GET methods
