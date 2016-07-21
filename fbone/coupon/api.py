@@ -167,29 +167,32 @@ def use_coupon():
         if not client_coupon:
             coupon = Coupon.query.get(request.json['coupon_id'])
             if coupon.available > 0:
-                client_coupon = ClientsCoupon(user_id = payload['id'],
-                                  coupon_id = request.json['coupon_id'],
-                                  folio = '',
-                                  taken_date = actual_date,
-                                  latitude= request.json['latitude'],
-                                  longitude = request.json['longitude'],
-                                  used = True,
-                                  used_date = actual_date)
-                db.session.add(client_coupon)
-                db.session.commit()
-                folio = '%d%s%d' % (request.json['branch_id'], "{:%d%m%Y}".format(actual_date), client_coupon.clients_coupon_id)
-                client_coupon.folio = folio
-                coupon.available = coupon.available - 1
+                if coupon.branch_id == branch_id:
+                    client_coupon = ClientsCoupon(user_id = payload['id'],
+                                      coupon_id = request.json['coupon_id'],
+                                      folio = '',
+                                      taken_date = actual_date,
+                                      latitude= request.json['latitude'],
+                                      longitude = request.json['longitude'],
+                                      used = True,
+                                      used_date = actual_date)
+                    db.session.add(client_coupon)
+                    db.session.commit()
+                    folio = '%d%s%d' % (request.json['branch_id'], "{:%d%m%Y}".format(actual_date), client_coupon.clients_coupon_id)
+                    client_coupon.folio = folio
+                    coupon.available = coupon.available - 1
 
-                db.session.commit()
+                    db.session.commit()
 
-                branch = Branch.query.filter_by(branch_id = branch_id).first()
-                branch_data = branch_schema.dump(branch)
+                    branch = Branch.query.filter_by(branch_id = branch_id).first()
+                    branch_data = branch_schema.dump(branch)
 
-                reward = set_experience(payload['id'], USING)
-                user_level = level_up(payload['id'])
+                    reward = set_experience(payload['id'], USING)
+                    user_level = level_up(payload['id'])
 
-                return jsonify({'data': branch_data.data, 'reward': reward, 'level': user_level })
+                    return jsonify({'data': branch_data.data, 'reward': reward, 'level': user_level })
+                else:
+                    return jsonify({'message': 'error' })
             else:
                 return jsonify({'message': 'agotado'})
         else:
