@@ -167,7 +167,7 @@ def use_coupon():
         if not client_coupon:
             coupon = Coupon.query.get(request.json['coupon_id'])
             if coupon.available > 0:
-                if coupon.branch_id == branch_id:
+                if coupon.branch_id == branch_id and qr_code == coupon.coupon_id:
                     client_coupon = ClientsCoupon(user_id = payload['id'],
                                       coupon_id = request.json['coupon_id'],
                                       folio = '',
