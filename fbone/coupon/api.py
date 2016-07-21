@@ -878,7 +878,7 @@ def like_coupon():
         if not userLike:
             user_like = CouponsLikes(coupon_id = request.json['coupon_id'],
                                       user_id = payload['id'],
-                                      date = request.json['date'])
+                                      date = datetime.now())
 
             db.session.add(user_like)
 
