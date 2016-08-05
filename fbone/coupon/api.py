@@ -13,6 +13,7 @@ from flask import current_app as app
 from flask.ext.login import login_required, current_user
 from jwt import DecodeError, ExpiredSignature
 from .models import *
+from ..badge import *
 from ..user import *
 from ..notification import *
 from ..extensions import db, socketio
