@@ -26,7 +26,7 @@ class Branch(db.Model):
     __tablename__ = 'branches'
     branch_id = Column(db.Integer, primary_key=True)
     company_id = Column(db.Integer, db.ForeignKey('companies.company_id'), nullable = False)
-    name = Column(db.String(STRING_LEN), nullable=True, unique=True)
+    name = Column(db.String(STRING_LEN), nullable=True)
     phone = Column(db.String(STRING_LEN))
     about = Column(db.String(STRING_LEN))
 
