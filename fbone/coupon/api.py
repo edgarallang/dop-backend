@@ -13,6 +13,7 @@ from flask import current_app as app
 from flask.ext.login import login_required, current_user
 from jwt import DecodeError, ExpiredSignature
 from .models import *
+from ..badge import *
 from ..user import *
 from ..notification import *
 from ..extensions import db, socketio
@@ -164,8 +165,9 @@ def use_coupon():
                                                        (ClientsCoupon.used==False)).first()
 
         #client_coupon = ClientsCoupon.query.filter_by(clients_coupon_id = client_coupon_exist.clients_coupon_id).first()
+        coupon = Coupon.query.get(request.json['coupon_id'])
+
         if not client_coupon:
-            coupon = Coupon.query.get(request.json['coupon_id'])
             if coupon.available > 0:
                 client_coupon = ClientsCoupon(user_id = payload['id'],
                                   coupon_id = request.json['coupon_id'],
@@ -204,7 +206,7 @@ def use_coupon():
             reward = set_experience(payload['id'], USING)
             user_level = level_up(payload['id'])
             return jsonify({'data': branch_data.data, 'reward': reward, 'level': user_level })
-
+    
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
 # GET methods
@@ -877,7 +879,7 @@ def like_coupon():
         if not userLike:
             user_like = CouponsLikes(coupon_id = request.json['coupon_id'],
                                       user_id = payload['id'],
-                                      date = request.json['date'])
+                                      date = datetime.now())
 
             db.session.add(user_like)
 

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime, timedelta
+from ..user import *
 import os
 import jwt
 import json
@@ -341,10 +342,22 @@ def fisrt_job():
 
 @company.route('/branch/dashboard', methods = ['GET'])
 def dashboard_branches():
-    adBranches = 'SELECT * FROM branches\
-             INNER JOIN branches_design ON branches.branch_id = branches_design.branch_id \
-             INNER JOIN branch_ad ON branches.branch_id = branch_ad.branch_id \
-             WHERE branch_ad.duration>0 ORDER BY branch_ad.start_date LIMIT 8'
+    token_index = True
+    payload = parse_token(request, token_index)
+    user_born = User.query.get(payload['id']).birth_date
+    age = calculate_age(user_born)
+
+    if age >= 18:
+        adBranches = 'SELECT * FROM branches\
+                 INNER JOIN branches_design ON branches.branch_id = branches_design.branch_id \
+                 INNER JOIN branch_ad ON branches.branch_id = branch_ad.branch_id \
+                 WHERE branch_ad.duration>0 ORDER BY branch_ad.start_date LIMIT 8'
+    else:
+        adBranches = 'SELECT * FROM branches\
+                 INNER JOIN branches_design ON branches.branch_id = branches_design.branch_id \
+                 INNER JOIN branch_ad ON branches.branch_id = branch_ad.branch_id \
+                 INNER JOIN branches_subcategory ON branches.branch_id = branches_subcategory.branch_id \
+                 WHERE branch_ad.duration>0 AND branches_subcategory.subcategory_id != 25 ORDER BY branch_ad.start_date LIMIT 8'
 
     branches = db.engine.execute(adBranches)
 
@@ -375,6 +388,10 @@ def dashboard_branches():
         selected_list_extra = branch_ad_schema.dump(extra_branches)
 
     return jsonify({'data': selected_list_branch.data+selected_list_extra.data})
+
+def calculate_age(born):
+    today = datetime.now()
+    return today.year - born.year - ((today.month, today.day) < (born.month, born.day))
 
 @company.route('/branch/<int:branch_id>/ranking/get', methods = ['GET'])
 def branch_ranking(branch_id):
