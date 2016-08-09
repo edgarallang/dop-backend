@@ -74,7 +74,7 @@ def select_branch(branchId):
 
     return jsonify({'data': branch.data})
 
-@company.route('/branch/<int:branch_id>/profile/get', methods=['GET'])
+@company.route('/branch/<int:branch_id>/profile/get', methods=['GET', 'POST'])
 def select_branch_profile(branch_id):
     import pdb; pdb.set_trace()
     if request.headers.get('Authorization'):
