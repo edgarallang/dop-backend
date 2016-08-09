@@ -52,6 +52,7 @@ def create_coupon(request):
                             available = payment_data['amountOfCoupon'],
                             deleted = False,
                             active = False,
+                            views = 0,
                             duration = payment_data['expireTime'])
 
         db.session.add(new_coupon)
@@ -206,7 +207,7 @@ def use_coupon():
             reward = set_experience(payload['id'], USING)
             user_level = level_up(payload['id'])
             return jsonify({'data': branch_data.data, 'reward': reward, 'level': user_level })
-    
+
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
 # GET methods
