@@ -118,7 +118,7 @@ def select_branch_tool_profile(branch_id):
                  WHERE branches.branch_id = %d' % (branch_id, branch_id)
 
         selectedBranch = db.engine.execute(query)
-        branch = branch_profile_schema.dump(selectedBranch)
+        branch = branch_profile_tool_schema.dump(selectedBranch)
 
         return jsonify({'data': branch.data})
     return jsonify({'message': 'Oops! algo salió mal'})
