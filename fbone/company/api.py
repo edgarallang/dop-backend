@@ -101,6 +101,28 @@ def select_branch_profile(branch_id):
         return jsonify({'data': branch.data})
     return jsonify({'message': 'Oops! algo salió mal'})
 
+@company.route('/branch/<int:branch_id>/profile/tool/get', methods=['GET'])
+def select_branch_profile(branch_id):
+    if request.headers.get('Authorization'):
+
+        payload = parse_token(request, token_index)
+        query = 'SELECT branches_location.branch_location_id, branches.branch_id, state, category_id, longitude, latitude, logo,  \
+                        city, address, branches.name, branches.company_id, banner, logo, phone, about,  \
+                        (SELECT EXISTS (SELECT * FROM branches_subcategory \
+                                WHERE branch_id = %d AND subcategory_id = 25)::bool) AS adults_only \
+                    FROM branches JOIN branches_location \
+                        ON branches.branch_id = branches_location.branch_id \
+                    JOIN branches_design ON branches_design.branch_id = branches.branch_id \
+                    JOIN branches_subcategory ON branches_subcategory.branch_id = branches.branch_id \
+                    JOIN subcategory ON subcategory.subcategory_id = branches_subcategory.subcategory_id \
+                 WHERE branches.branch_id = %d' % (branch_id, branch_id)
+
+        selectedBranch = db.engine.execute(query)
+        branch = branch_profile_schema.dump(selectedBranch)
+
+        return jsonify({'data': branch.data})
+    return jsonify({'message': 'Oops! algo salió mal'})
+
 @company.route('/me', methods = ['POST'])
 def select_branch_user():
     query = 'SELECT branches.*, branches_user.branches_user_id, \
