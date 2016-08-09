@@ -78,9 +78,9 @@ def select_branch(branchId):
 def select_branch_profile(branch_id):
     if request.headers.get('Authorization'):
         if not request.json['token_index']:
-            token_index = True
-        else:
             token_index = request.json['token_index']
+        else:
+            token_index = True
         payload = parse_token(request, token_index)
         query = 'SELECT branches_location.branch_location_id, branches.branch_id, state, category_id, longitude, latitude, logo,  \
                         city, address, branches.name, branches.company_id, banner, logo, phone, about,  \
