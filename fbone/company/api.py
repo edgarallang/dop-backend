@@ -102,7 +102,7 @@ def select_branch_profile(branch_id):
     return jsonify({'message': 'Oops! algo salió mal'})
 
 @company.route('/branch/<int:branch_id>/profile/tool/get', methods=['GET'])
-def select_branch_profile(branch_id):
+def select_branch_tool_profile(branch_id):
     if request.headers.get('Authorization'):
 
         payload = parse_token(request, token_index)
