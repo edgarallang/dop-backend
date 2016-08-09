@@ -76,7 +76,6 @@ def select_branch(branchId):
 
 @company.route('/branch/<int:branch_id>/profile/get', methods=['GET', 'POST'])
 def select_branch_profile(branch_id):
-    import pdb; pdb.set_trace()
     if request.headers.get('Authorization'):
         if not request.json['token_index']:
             token_index = request.json['token_index']
