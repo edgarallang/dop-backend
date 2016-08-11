@@ -568,8 +568,8 @@ def signup_branch():
     branches_subcategory = BranchSubcategory(subcategory_id = 99,
                                              branch_id = branch.branch_id)
 
-     db.session.add(branches_subcategory)
-     db.session.commit()
+    db.session.add(branches_subcategory)
+    db.session.commit()
 
     token = create_token(branch_user)
     return jsonify(token=token)
