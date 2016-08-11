@@ -56,6 +56,15 @@ class BranchDesign(db.Model):
     banner = Column(db.String(STRING_LEN), nullable=False)
 
 # =====================================================================
+
+# Branches subcategory
+
+class BranchSubcategory(db.Model):
+    __tablename__ = 'branches_subcategory'
+    branches_subcategory_id = Column(db.Integer, primary_key=True)
+    subcategory_id = Column(db.Integer)
+    branch_id = Column(db.Integer, db.ForeignKey('branches.branch_id'),nullable=False)
+# =====================================================================
 # Branches Location
 
 class BranchLocation(db.Model):
