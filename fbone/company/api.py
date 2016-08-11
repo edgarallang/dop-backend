@@ -565,7 +565,7 @@ def signup_branch():
     db.session.add(branch_user)
     db.session.commit()
 
-    branches_subcategory = BranchSubcategory(subcategory_id = 99,
+    branches_subcategory = BranchSubcategory(subcategory_id = 0,
                                              branch_id = branch.branch_id)
 
     db.session.add(branches_subcategory)
