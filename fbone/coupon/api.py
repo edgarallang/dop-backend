@@ -168,7 +168,7 @@ def use_coupon():
 
         coupon = Coupon.query.get(request.json['coupon_id'])
 
-        minutes = (actual_date-recently_used.used_date).days * 24 * 60
+        minutes = (actual_date-recently_used.used_date).total_seconds() / 60
 
         if recently_used and minutes > 20:
             if not client_coupon:
@@ -211,7 +211,7 @@ def use_coupon():
                 user_level = level_up(payload['id'])
                 return jsonify({'data': branch_data.data, 'reward': reward, 'level': user_level })
         else:
-            minutes_left = (actual_date - recently_used.used_date).total_seconds() / 60
+            minutes_left = 20 - minutes
             return jsonify({'message': 'error',"minutes": "JO "+str(minutes_left)})
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
