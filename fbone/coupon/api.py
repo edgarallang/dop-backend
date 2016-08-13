@@ -156,9 +156,9 @@ def use_coupon():
 
         actual_date = datetime.now()
         #WHEN USER HAS TAKEN A COUPON
-        #client_coupon = ClientsCoupon.query.filter(and_(ClientsCoupon.coupon_id==coupon_id),
-        #                                               (ClientsCoupon.user_id==payload['id']),
-        #                                               (ClientsCoupon.used==False)).first()
+        client_coupon = ClientsCoupon.query.filter(and_(ClientsCoupon.coupon_id==coupon_id),
+                                                       (ClientsCoupon.user_id==payload['id']),
+                                                       (ClientsCoupon.used==False)).first()
 
         recently_used = ClientsCoupon.query.filter(and_(ClientsCoupon.coupon_id==coupon_id),
                                                        (ClientsCoupon.user_id==payload['id']),
