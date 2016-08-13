@@ -211,7 +211,7 @@ def use_coupon():
                 user_level = level_up(payload['id'])
                 return jsonify({'data': branch_data.data, 'reward': reward, 'level': user_level })
         else:
-            minutes_left = recently_used.used_date
+            minutes_left = recently_used.used_date.days + " " + actual_date.days
             return jsonify({'message': 'error',"minutes": minutes_left})
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
