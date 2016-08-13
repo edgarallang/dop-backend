@@ -210,10 +210,7 @@ def use_coupon():
                 reward = set_experience(payload['id'], USING)
                 user_level = level_up(payload['id'])
                 return jsonify({'data': branch_data.data, 'reward': reward, 'level': user_level })
-        elif minutes > 20:
-
-            minutes = (actual_date-recently_used.used_date).total_seconds() / 60
-
+        else::
             minutes_left = 20 - minutes
             return jsonify({'message': 'error',"minutes": str(minutes_left)})
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
