@@ -166,7 +166,7 @@ def use_coupon():
 
         coupon = Coupon.query.get(request.json['coupon_id'])
 
-        minutes = (actual_date-client_coupon.used_date).days * 24 * 60
+        minutes = (actual_date-recently_used.used_date).days * 24 * 60
 
         if recently_used and minutes > 20:
             if not client_coupon:
