@@ -212,7 +212,7 @@ def use_coupon():
                 return jsonify({'data': branch_data.data, 'reward': reward, 'level': user_level })
         else:
             minutes_left = (recently_used.used_date - actual_date).days
-            return jsonify({'message': 'error',"minutes": recently_used.used_date})
+            return jsonify({'message': 'error',"minutes": minutes_left})
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
 # GET methods
