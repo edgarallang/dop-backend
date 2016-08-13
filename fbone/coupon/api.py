@@ -52,6 +52,7 @@ def create_coupon(request):
                             available = payment_data['amountOfCoupon'],
                             deleted = False,
                             active = False,
+                            views = 0,
                             duration = payment_data['expireTime'])
 
         db.session.add(new_coupon)
@@ -159,14 +160,15 @@ def use_coupon():
         #                                               (ClientsCoupon.user_id==payload['id']),
         #                                               (ClientsCoupon.used==False)).first()
 
-        client_coupon = ClientsCoupon.query.filter(and_(ClientsCoupon.coupon_id==coupon_id),
+        recently_used = ClientsCoupon.query.filter(and_(ClientsCoupon.coupon_id==coupon_id),
                                                        (ClientsCoupon.user_id==payload['id']),
                                                        (ClientsCoupon.used==True)).first()
-        minutes = (actual_date-client_coupon.used_date).days * 24 * 60
 
         coupon = Coupon.query.get(request.json['coupon_id'])
 
-        if minutes > 20:
+        minutes = (actual_date-client_coupon.used_date).days * 24 * 60
+
+        if recently_used and minutes > 20:
             if not client_coupon:
                 if coupon.available > 0:
                     client_coupon = ClientsCoupon(user_id = payload['id'],
@@ -209,8 +211,6 @@ def use_coupon():
         else:
             minutes_left = 20 - minutes
             return jsonify({'message': 'error',"minutes": minutes_left})
-
-    
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
 # GET methods

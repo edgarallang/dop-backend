@@ -26,7 +26,7 @@ class Branch(db.Model):
     __tablename__ = 'branches'
     branch_id = Column(db.Integer, primary_key=True)
     company_id = Column(db.Integer, db.ForeignKey('companies.company_id'), nullable = False)
-    name = Column(db.String(STRING_LEN), nullable=True, unique=True)
+    name = Column(db.String(STRING_LEN), nullable=True)
     phone = Column(db.String(STRING_LEN))
     about = Column(db.String(STRING_LEN))
 
@@ -55,6 +55,15 @@ class BranchDesign(db.Model):
     color_c = Column(db.String(STRING_LEN), nullable=False)
     banner = Column(db.String(STRING_LEN), nullable=False)
 
+# =====================================================================
+
+# Branches subcategory
+
+class BranchSubcategory(db.Model):
+    __tablename__ = 'branches_subcategory'
+    branches_subcategory_id = Column(db.Integer, primary_key=True)
+    subcategory_id = Column(db.Integer)
+    branch_id = Column(db.Integer, db.ForeignKey('branches.branch_id'),nullable=False)
 # =====================================================================
 # Branches Location
 
@@ -225,6 +234,24 @@ class BranchesProfile(Schema):
                   'phone',
                   'adults_only')
 
+class BranchesToolProfile(Schema):
+    class Meta:
+        fields = ('branch_location_id',
+                  'branch_id',
+                  'category_id',
+                  'state',
+                  'longitude',
+                  'latitude',
+                  'city',
+                  'address',
+                  'name',
+                  'company_id',
+                  'banner',
+                  'logo',
+                  'about',
+                  'phone',
+                  'adults_only')
+
 class BranchesProfileSearch(Schema):
     class Meta:
         fields = ('branch_location_id',
@@ -281,6 +308,7 @@ companies_schema = CompanySchema(many=True)
 branch_schema = BranchSchema()
 branch_user_schema = BranchUserSchema(many=True)
 branch_profile_schema = BranchesProfile(many=True)
+branch_profile_tool_schema = BranchesToolProfile(many=True)
 branch_profile_search_schema = BranchesProfileSearch(many=True)
 branch_ad_schema = BranchesAd(many=True)
 branches_location_schema = BranchesLocation(many=True)
