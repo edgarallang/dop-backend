@@ -20,7 +20,7 @@ from ..extensions import db, socketio
 from flask.ext.socketio import SocketIO, send, emit, join_room, leave_room
 from sqlalchemy.orm import joinedload
 from marshmallow import pprint
-from sqlalchemy import and_
+from sqlalchemy import and_, desc
 from ..company import *
 from ..utils import *
 import pdfkit
@@ -162,7 +162,7 @@ def use_coupon():
 
         recently_used = ClientsCoupon.query.filter(and_(ClientsCoupon.coupon_id==coupon_id),
                                                        (ClientsCoupon.user_id==payload['id']),
-                                                       (ClientsCoupon.used==True)).first()
+                                                       (ClientsCoupon.used==True)).first().order_by(desc(ClientsCoupon.used_date))
 
         coupon = Coupon.query.get(request.json['coupon_id'])
 
