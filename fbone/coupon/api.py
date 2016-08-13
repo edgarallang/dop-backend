@@ -154,7 +154,7 @@ def use_coupon():
         branch_id = request.json['branch_id']
 
 
-        actual_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        actual_date = datetime.now()
         #WHEN USER HAS TAKEN A COUPON
         client_coupon = ClientsCoupon.query.filter(and_(ClientsCoupon.coupon_id==coupon_id),
                                                        (ClientsCoupon.user_id==payload['id']),
@@ -212,7 +212,7 @@ def use_coupon():
                 return jsonify({'data': branch_data.data, 'reward': reward, 'level': user_level })
         else:
             minutes_left = actual_date
-            return jsonify({'message': 'error',"minutes": minutes_left})
+            return jsonify({'message': 'error',"minutes": recently_used.used_date})
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
 # GET methods
