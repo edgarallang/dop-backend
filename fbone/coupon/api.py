@@ -163,7 +163,7 @@ def use_coupon():
         recently_used = ClientsCoupon.query.filter(and_(ClientsCoupon.coupon_id==coupon_id),
                                                        (ClientsCoupon.user_id==payload['id']),
                                                        (ClientsCoupon.used==True))\
-                                                        .order_by(desc(ClientsCoupon.used_date))
+                                                        .order_by(desc(ClientsCoupon.used_date))\
                                                         .first()
 
         coupon = Coupon.query.get(request.json['coupon_id'])
