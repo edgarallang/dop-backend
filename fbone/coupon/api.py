@@ -154,7 +154,7 @@ def use_coupon():
         branch_id = request.json['branch_id']
 
 
-        actual_date = datetime.datetime.now()
+        actual_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         #WHEN USER HAS TAKEN A COUPON
         client_coupon = ClientsCoupon.query.filter(and_(ClientsCoupon.coupon_id==coupon_id),
                                                        (ClientsCoupon.user_id==payload['id']),
