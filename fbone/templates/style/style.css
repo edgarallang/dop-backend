@@ -275,6 +275,7 @@ figure img {
   height: auto;
   margin-left: -10px;
   margin-top: -5px;
+  position: absolute;
 }
 
 .dop-logo {
@@ -290,6 +291,17 @@ figure img {
   height: 100%;
   width: 100%;
   overflow: hidden;
+}
+
+.temporary-h1 {
+  font-family: "Avenir", helvetica;
+  font-weight: 500;
+  color: white;
+  line-height: 0 !important;
+  margin: 0px 15px 10px 15px;
+  padding: 0 15px 20px 15px;
+  font-size: 5em;
+  text-shadow: 0px 0px 10px #333;
 }
 
 @media all and (min-width: 768px) {
