@@ -279,6 +279,13 @@ figure img {
   margin: 0 auto;
   width: 80%;
 }
+.temporary-body {
+  position: absolute;
+  margin: 0 !important;
+  height: 100%;
+  width: 100%;
+}
+
 @media all and (min-width: 768px) {
   section.contact form input[type="text"]{
     width: 25%;
