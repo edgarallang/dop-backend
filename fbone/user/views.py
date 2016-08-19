@@ -254,7 +254,7 @@ def add_friend():
                                         "launcher_names": launcher_user_data.names
                                     }
                                  }
-            if(user_two.device_token != None):
+            if user_two.device_token != None  and user_two.device_token != "":
                 send_notification(user_two.device_token, notification_data)
 
             #socketio.emit('notification',{'data': 'friend'}, room = user_to_add)
@@ -292,7 +292,7 @@ def add_friend():
                                         "launcher_names": launcher_user_data.names
                                     }
                                 }
-            if(user_two.device_token != None):
+            if user_two.device_token != None and user_two.device_token != "":
                 send_notification(user_two.device_token, notification_data)
             #socketio.emit('notification',{'data': 'someone triggered me'}, room = user_to_add)
         friend_data = friends_schema.dump(friendshipExist)
@@ -334,7 +334,7 @@ def accept_friend():
                                     }
                                 }
 
-            if user_one.device_token != None:
+            if user_one.device_token != None and user_one.device_token != "":
                 send_notification(user_one.device_token, notification_data)
             #socketio.emit('notification',{'data': 'someone triggered me'},room = friendsRelationship.user_one_id)
 
