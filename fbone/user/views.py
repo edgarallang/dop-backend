@@ -275,7 +275,7 @@ def add_friend():
             if 'notification_id' in request.json:
                 notification_id = request.json['notification_id']
                 notification = Notification.query.get(notification_id)
-                notification.date = date
+                notification.notification_date = date
                 db.session.commit()
 
             launcher_user_id = launcher_user_data.user_id
@@ -343,13 +343,14 @@ def decline_friend():
         payload = parse_token(request, True)
 
         launcher_id = payload['id']
+        today = datetime.now()
         friendsRelationship = Friends.query.filter_by(friends_id=request.json['friends_id']).first()
         if friendsRelationship:
             friendsRelationship.operation_id = 2
             #friendsRelationship.launcher_user_id = user_id
 
             notification = Notification.query.filter_by(notification_id=request.json['notification_id']).first()
-
+            notification.notification_date = today
             db.session.commit()
 
         return jsonify({'data': 'Usuario rechazado'})
@@ -365,9 +366,9 @@ def block_friend():
 
         friendsRelationship = Friends.query.filter_by(friends_id=request.json['friends_id']).first()
 
-        friendsRelationship.operation_id = 3
-        friendsRelationship.launcher_user_id = user_id
+        friendsRelationship.operation_id = 3_id
 
+        friendsRelationship.launcher_user_id = user
         db.session.commit()
 
         return jsonify({'data': 'Usuario bloqueado'})
