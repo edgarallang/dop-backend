@@ -13,6 +13,7 @@ from ..extensions import db, socketio
 from marshmallow import pprint
 from ..notification import *
 from ..badge import *
+from sqlalchemy import or_, and_
 from flask.ext.socketio import SocketIO, send, emit, join_room, leave_room
 from ..utils import *
 
@@ -271,12 +272,16 @@ def add_friend():
                 notification_type = 'pending_friends'
 
 
-
-            if 'notification_id' in request.json:
-                notification_id = request.json['notification_id']
-                notification = Notification.query.get(notification_id)
-                notification.notification_date = date
+            find_notification = Notification.query.filter_by(object_id=friendshipExist.friends_id).first()
+            if find_notification:
+                find_notification.notification_date = date
                 db.session.commit()
+
+            #if 'notification_id' in request.json:
+            #    notification_id = request.json['notification_id']
+            #    notification = Notification.query.get(notification_id)
+            #    notification.notification_date = date
+            #    db.session.commit()
 
             launcher_user_id = launcher_user_data.user_id
             db.session.commit()
