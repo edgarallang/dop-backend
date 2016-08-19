@@ -366,7 +366,7 @@ def block_friend():
 
         friendsRelationship = Friends.query.filter_by(friends_id=request.json['friends_id']).first()
 
-        friendsRelationship.operation_id = 3_id
+        friendsRelationship.operation_id = 3
 
         friendsRelationship.launcher_user_id = user
         db.session.commit()
