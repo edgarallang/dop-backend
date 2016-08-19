@@ -285,8 +285,8 @@ def get_all_coupon_for_user():
                                         WHERE USER_id = %d AND clients_coupon.coupon_id = coupons.coupon_id AND used = false)::bool) AS taken, \
                                     (SELECT COUNT(*)  FROM coupons_likes \
                                         WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes, \
-                                    (SELECT COUNT(*)  FROM coupons_likes \
-                                        WHERE coupons_likes.user_id = %d AND coupons.coupon_id = coupons_likes.coupon_id) AS user_like \
+                                    (SELECT EXISTS (SELECT * FROM coupons_likes \
+                                        WHERE coupons_likes.user_id = %d AND coupons.coupon_id = coupons_likes.coupon_id)::bool) AS user_like \
                                     FROM coupons INNER JOIN branches_design ON \
                                     coupons.branch_id = branches_design.branch_id \
                                     INNER JOIN branches ON coupons.branch_id = branches.branch_id \
@@ -313,8 +313,8 @@ def get_all_coupon_for_user_offset():
                                         WHERE USER_id = %d AND clients_coupon.coupon_id = coupons.coupon_id AND used = false)::bool) AS taken, \
                                     (SELECT COUNT(*)  FROM coupons_likes \
                                         WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes, \
-                                    (SELECT COUNT(*)  FROM coupons_likes \
-                                        WHERE coupons_likes.user_id = %d AND coupons.coupon_id = coupons_likes.coupon_id) AS user_like \
+                                    (SELECT EXISTS (SELECT * FROM coupons_likes \
+                                        WHERE coupons_likes.user_id = %d AND coupons.coupon_id = coupons_likes.coupon_id)::bool) AS user_like \
                                     FROM coupons INNER JOIN branches_design ON \
                                     coupons.branch_id = branches_design.branch_id \
                                     INNER JOIN branches ON coupons.branch_id = branches.branch_id \
@@ -339,8 +339,8 @@ def get_all_taken_coupon_for_user():
                                             banner, category_id, available, clients_coupon.taken_date, \
                                     (SELECT COUNT(*)  FROM coupons_likes \
                                         WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes, \
-                                    (SELECT COUNT(*)  FROM coupons_likes \
-                                        WHERE coupons_likes.user_id = %d AND coupons.coupon_id = coupons_likes.coupon_id) AS user_like \
+                                    (SELECT EXISTS (SELECT * FROM coupons_likes \
+                                        WHERE coupons_likes.user_id = %d AND coupons.coupon_id = coupons_likes.coupon_id)::bool) AS user_like \
                                     FROM coupons INNER JOIN branches_design ON \
                                     coupons.branch_id = branches_design.branch_id \
                                     INNER JOIN branches ON coupons.branch_id = branches.branch_id \
@@ -372,8 +372,8 @@ def get_all_taken_coupon_for_user_offset():
                                                 banner, category_id, available, clients_coupon.taken_date, \
                                         (SELECT COUNT(*)  FROM coupons_likes \
                                             WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes, \
-                                        (SELECT COUNT(*)  FROM coupons_likes \
-                                            WHERE coupons_likes.user_id = %d AND coupons.coupon_id = coupons_likes.coupon_id) AS user_like \
+                                        (SELECT EXISTS (SELECT * FROM coupons_likes \
+                                            WHERE coupons_likes.user_id = %d AND coupons.coupon_id = coupons_likes.coupon_id)::bool) AS user_like \
                                         FROM coupons INNER JOIN branches_design ON \
                                         coupons.branch_id = branches_design.branch_id \
                                         INNER JOIN branches ON coupons.branch_id = branches.branch_id \
@@ -404,8 +404,8 @@ def get_all_used_coupon_for_user():
                                             banner, category_id, available, \
                                     (SELECT COUNT(*)  FROM coupons_likes \
                                         WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes, \
-                                    (SELECT COUNT(*)  FROM coupons_likes \
-                                        WHERE coupons_likes.user_id = %d AND coupons.coupon_id = coupons_likes.coupon_id) AS user_like \
+                                    (SELECT EXISTS (SELECT * FROM coupons_likes \
+                                        WHERE coupons_likes.user_id = %d AND coupons.coupon_id = coupons_likes.coupon_id)::bool) AS user_like \
                                     FROM coupons INNER JOIN branches_design ON \
                                     coupons.branch_id = branches_design.branch_id \
                                     INNER JOIN branches ON coupons.branch_id = branches.branch_id \
@@ -432,8 +432,8 @@ def get_all_used_coupon_for_user_offset():
                                             banner, category_id, available, \
                                     (SELECT COUNT(*)  FROM coupons_likes \
                                         WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes, \
-                                    (SELECT COUNT(*)  FROM coupons_likes \
-                                        WHERE coupons_likes.user_id = %d AND coupons.coupon_id = coupons_likes.coupon_id) AS user_like \
+                                    (SELECT EXISTS (SELECT * FROM coupons_likes \
+                                        WHERE coupons_likes.user_id = %d AND coupons.coupon_id = coupons_likes.coupon_id)::bool) AS user_like \
                                     FROM coupons INNER JOIN branches_design ON \
                                     coupons.branch_id = branches_design.branch_id \
                                     INNER JOIN branches ON coupons.branch_id = branches.branch_id \
@@ -459,8 +459,8 @@ def get_all_coupon_for_user_by_branch():
                                             end_date, coupons.limit, min_spent, coupon_category_id, logo, latitude, longitude, banner, category_id, available, \
                                     (SELECT COUNT(*)  FROM coupons_likes \
                                         WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes, \
-                                    (SELECT COUNT(*)  FROM coupons_likes \
-                                        WHERE coupons_likes.user_id = %d AND coupons.coupon_id = coupons_likes.coupon_id) AS user_like, \
+                                    (SELECT EXISTS (SELECT * FROM coupons_likes \
+                                        WHERE coupons_likes.user_id = %d AND coupons.coupon_id = coupons_likes.coupon_id)::bool) AS user_like, \
                                     (SELECT EXISTS (SELECT * FROM clients_coupon \
                                         WHERE user_id = %d AND clients_coupon.coupon_id = coupons.coupon_id AND used = false)::bool) AS taken \
                                     FROM coupons INNER JOIN branches_design ON \
@@ -488,8 +488,8 @@ def get_all_coupon_for_user_by_branch_offset():
                                             end_date, coupons.limit, min_spent, coupon_category_id, logo, latitude, longitude, banner, category_id, available, \
                                     (SELECT COUNT(*)  FROM coupons_likes \
                                         WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes, \
-                                    (SELECT COUNT(*)  FROM coupons_likes \
-                                        WHERE coupons_likes.user_id = %d AND coupons.coupon_id = coupons_likes.coupon_id) AS user_like, \
+                                    (SELECT EXISTS (SELECT * FROM coupons_likes \
+                                        WHERE coupons_likes.user_id = %d AND coupons.coupon_id = coupons_likes.coupon_id)::bool) AS user_like, \
                                     (SELECT EXISTS (SELECT * FROM clients_coupon \
                                         WHERE user_id = %d AND clients_coupon.coupon_id = coupons.coupon_id AND used = false)::bool) AS taken \
                                     FROM coupons INNER JOIN branches_design ON \
@@ -516,7 +516,7 @@ def get_trending_coupons():
         list_coupon = db.engine.execute('SELECT *,\
                                         (SELECT COUNT(*) FROM coupons_likes  WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes, \
                                         ((SELECT COUNT(*) FROM coupons_likes  WHERE coupons.coupon_id = coupons_likes.coupon_id)*.30 + (SELECT COUNT(*) FROM clients_coupon WHERE coupons.coupon_id = clients_coupon.coupon_id AND clients_coupon.used = true)*1)as total_value,\
-                                        (SELECT COUNT(*)  FROM coupons_likes  WHERE coupons_likes.user_id = %d AND coupons.coupon_id = coupons_likes.coupon_id) AS user_like, \
+                                        (SELECT EXISTS (SELECT * FROM coupons_likes  WHERE coupons_likes.user_id = %d AND coupons.coupon_id = coupons_likes.coupon_id)::bool) AS user_like, \
                                         (SELECT EXISTS (SELECT * FROM clients_coupon \
                                         WHERE user_id = %d AND clients_coupon.coupon_id = coupons.coupon_id AND used = false)::bool) AS taken \
                                         FROM coupons INNER JOIN branches_design ON \
@@ -538,7 +538,7 @@ def get_almost_expired_coupons():
         user_id = payload['id']
         list_coupon = db.engine.execute('SELECT *,\
                                         (SELECT COUNT(*) FROM coupons_likes  WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes, \
-                                        (SELECT COUNT(*)  FROM coupons_likes  WHERE coupons_likes.user_id = %d AND coupons.coupon_id = coupons_likes.coupon_id) AS user_like, \
+                                        (SELECT EXISTS (SELECT * FROM coupons_likes  WHERE coupons_likes.user_id = %d AND coupons.coupon_id = coupons_likes.coupon_id)::bool) AS user_like, \
                                         (SELECT EXISTS (SELECT * FROM clients_coupon \
                                             WHERE user_id = %d AND clients_coupon.coupon_id = coupons.coupon_id AND used = false)::bool) AS taken \
                                         FROM coupons INNER JOIN branches_design ON \
@@ -604,7 +604,7 @@ def nearest_coupons():
                     coupon_name, coupon_id, description, start_date, end_date, min_spent, \
                 (SELECT COUNT(*)  FROM coupons_likes \
                         WHERE d.coupon_id = coupons_likes.coupon_id) AS total_likes, \
-                (SELECT COUNT(*)  FROM coupons_likes  WHERE coupons_likes.user_id = '+user_id+' AND d.coupon_id = coupons_likes.coupon_id) AS user_like, \
+                (SELECT EXISTS (SELECT * FROM coupons_likes  WHERE coupons_likes.user_id = '+user_id+' AND d.coupon_id = coupons_likes.coupon_id)::bool) AS user_like, \
                 (SELECT EXISTS (SELECT * FROM clients_coupon \
                     WHERE user_id = '+user_id+' AND clients_coupon.coupon_id = d.coupon_id AND used = false)::bool) AS taken \
                 FROM (SELECT coupons.name as coupon_name, coupons.coupon_id,coupons.start_date,coupons.end_date, coupons.limit ,coupons.min_spent, \
@@ -780,7 +780,7 @@ def get_used_coupons_by_user_likes_offset():
                                           users.names, users.surnames, users.user_id, users.exp, users.level, users_image.main_image, branches.name AS branch_name, \
                                           branches.company_id, clients_coupon.used_date, friends.operation_id, users.privacy_status, \
                                     (SELECT COUNT(*)  FROM clients_coupon_likes WHERE clients_coupon.clients_coupon_id = clients_coupon_likes.clients_coupon_id) AS total_likes, \
-                                    (SELECT COUNT(*)  FROM clients_coupon_likes WHERE clients_coupon_likes.user_id = %d AND clients_coupon_likes.clients_coupon_id = clients_coupon.clients_coupon_id) AS user_like, \
+                                    (SELECT EXISTS (SELECT * FROM clients_coupon_likes WHERE clients_coupon_likes.user_id = %d AND clients_coupon_likes.clients_coupon_id = clients_coupon.clients_coupon_id)::bool) AS user_like, \
                                     (SELECT EXISTS (SELECT * FROM friends \
                                         WHERE friends.user_one_id = %d AND friends.user_two_id = users.user_id AND friends.operation_id = 1)::bool) AS is_friend \
                                     FROM clients_coupon \
@@ -810,7 +810,7 @@ def get_used_coupons_by_coupon():
         query = 'SELECT coupons.branch_id,coupons.coupon_id,branches_design.logo,coupons.name,clients_coupon.clients_coupon_id,clients_coupon.latitude,clients_coupon.longitude \
                                     , users.names, users.surnames, users.user_id, users_image.main_image, branches.name AS branch_name, \
                                     (SELECT COUNT(*)  FROM clients_coupon_likes WHERE clients_coupon.clients_coupon_id = clients_coupon_likes.clients_coupon_id) AS total_likes, \
-                                    (SELECT COUNT(*)  FROM clients_coupon_likes WHERE clients_coupon_likes.user_id = %d AND clients_coupon_likes.clients_coupon_id = clients_coupon.clients_coupon_id) AS user_like \
+                                    (SELECT EXISTS (SELECT * FROM clients_coupon_likes WHERE clients_coupon_likes.user_id = %d AND clients_coupon_likes.clients_coupon_id = clients_coupon.clients_coupon_id)::bool) AS user_like \
                                     FROM clients_coupon \
                                     INNER JOIN users ON clients_coupon.user_id=users.user_id  \
                                     INNER JOIN users_image ON users.user_id = users_image.user_id \
@@ -1046,8 +1046,8 @@ def search_all_coupon_user_offset():
     list_coupon = "SELECT *, \
             (SELECT COUNT(*)  FROM coupons_likes \
             WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes, \
-            (SELECT COUNT(*)  FROM coupons_likes \
-            WHERE coupons_likes.user_id = %d AND coupons.coupon_id = coupons_likes.coupon_id) AS user_like \
+            (SELECT EXISTS (SELECT * FROM coupons_likes \
+            WHERE coupons_likes.user_id = %d AND coupons.coupon_id = coupons_likes.coupon_id)::bool) AS user_like \
             FROM coupons INNER JOIN branches_design ON \
             coupons.branch_id = branches_design.branch_id \
             INNER JOIN branches ON coupons.branch_id = branches.branch_id \
