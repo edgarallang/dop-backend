@@ -749,7 +749,7 @@ def get_coupons_activity_by_user_likes():
                                           users.names, users.surnames, users.user_id, users.exp, users.level, users_image.main_image, branches.name AS branch_name, \
                                           branches.company_id, clients_coupon.used_date, friends.operation_id, users.privacy_status, \
                                     (SELECT COUNT(*)  FROM clients_coupon_likes WHERE clients_coupon.clients_coupon_id = clients_coupon_likes.clients_coupon_id) AS total_likes, \
-                                    (SELECT COUNT(*)  FROM clients_coupon_likes WHERE clients_coupon_likes.user_id = %d AND clients_coupon_likes.clients_coupon_id = clients_coupon.clients_coupon_id) AS user_like, \
+                                    (SELECT EXISTS (SELECT * FROM clients_coupon_likes WHERE clients_coupon_likes.user_id = %d AND clients_coupon_likes.clients_coupon_id = clients_coupon.clients_coupon_id)::bool) AS user_like, \
                                     (SELECT EXISTS (SELECT * FROM friends \
                                         WHERE friends.user_one_id = %d AND friends.user_two_id = users.user_id AND friends.operation_id = 1)::bool) AS is_friend \
                                     FROM clients_coupon \
