@@ -525,7 +525,7 @@ def set_privacy():
     return jsonify({'message': 'Oops! algo salió mal'})
 
 @user.route('/privacy_status/get', methods=['GET'])
-def set_privacy():
+def get_privacy():
     if request.headers.get('Authorization'):
         token_index = True
         payload = parse_token(request, token_index)
