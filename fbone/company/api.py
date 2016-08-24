@@ -408,6 +408,7 @@ def dashboard_branches():
 
         remainingBranches = 'SELECT * FROM branches \
                               JOIN branches_design ON branches.branch_id = branches_design.branch_id \
+                              INNER JOIN branches_subcategory ON branches.branch_id = branches_subcategory.branch_id \
                               ' + filterQuery + ' ORDER BY RANDOM() LIMIT %d' % (remaining)
 
         extra_branches = db.engine.execute(remainingBranches)
