@@ -64,8 +64,12 @@ def send_notification(device_token, notification_data, device_os):
 
     if device_os == 'ios':
         res = apns_client.send(device_token, message, **options)
+        return jsonify({'message': 'success'})
     else:
         res = gcm_client.send(device_token, message, **options)
+        return jsonify({'message': 'success'})
+    
+    return jsonify({'message': 'error'})
 
 
 @notification.route('/push/test/global/<string:message>', methods=['GET'])
