@@ -861,7 +861,7 @@ def like_used_coupon():
                                         }
                                      }
                 if liked_user_data.device_token != None and liked_user_data.device_token != "":
-                    send_notification(liked_user_data.device_token, notification_data)
+                    send_notification(liked_user_data.device_token, notification_data, liked_user_data.device_os)
                 #socketio.emit('notification',{'data': 'someone triggered me'},room=liked_user.user_id)
 
 
