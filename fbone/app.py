@@ -20,7 +20,7 @@ from .api import api
 from .badge import badge
 from .admin import admin
 from .report import report
-from .extensions import db, mail, cache, login_manager, oid, CORS, socketio, client
+from .extensions import db, mail, cache, login_manager, oid, CORS, socketio, apns_client, gcm_client
 from .utils import INSTANCE_FOLDER_PATH
 
 
@@ -94,7 +94,8 @@ def configure_extensions(app):
 
     socketio.init_app(app)
 
-    client.init_app(app)
+    apns_client.init_app(app)
+    gcm_client.init_app(app)
 
 
     @babel.localeselector
