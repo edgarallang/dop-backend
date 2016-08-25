@@ -67,7 +67,7 @@ def send_notification(device_token, notification_data, device_os):
         return jsonify({'message': 'success'})
     else:
         options = { "to": device_token, "notification": { "body": message, "title":"dop", "icon":"new" }, "data": notification_data }
-        res = gcm_client.send(device_token, message, **options)
+        res = gcm_client.send(device_token, message)
         return jsonify({'message': 'success'})
     
     return jsonify({'message': 'error'})
