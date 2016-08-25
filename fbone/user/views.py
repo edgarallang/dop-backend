@@ -92,6 +92,11 @@ def avatar(user_id, filename):
 @user.route('/login/facebook', methods=['POST'])
 def facebook_login():
     facebookUser = User.query.filter_by(facebook_key = request.json['facebook_key']).first()
+    
+    is_adult = false
+    if request.json['birth_date']:
+        user_born = request.json['birth_date']
+        is_adult = calculate_age(user_born)
     if not facebookUser:
         facebookUser = User(names = request.json['names'],
                             surnames = request.json['surnames'],
@@ -102,7 +107,8 @@ def facebook_login():
                             exp = 0,
                             privacy_status = 0,
                             device_os = request.json['device_os'],
-                            device_token = request.json['device_token'])
+                            device_token = request.json['device_token'],
+                            adult = is_adult)
 
         db.session.add(facebookUser)
         db.session.commit()
@@ -130,11 +136,20 @@ def facebook_login():
         if not facebookUser.device_token == request.json['device_token']:
             facebookUser.device_token = request.json['device_token']
             facebookUser.device_os = request.json['device_os']
+            facebookUser.adult = is_adult
             db.session.commit()
 
     token = create_token(facebookUser)
 
     return jsonify(token=token)
+
+def calculate_age(born):
+    today = datetime.now()
+    age = today.year - born.year - ((today.month, today.day) < (born.month, born.day))
+    if age >= 18:
+        return true
+    else:
+        return false
 
 @user.route('/login/twitter', methods=['POST'])
 def twitter_login():

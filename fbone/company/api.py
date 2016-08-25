@@ -369,10 +369,9 @@ def fisrt_job():
 def dashboard_branches():
     token_index = True
     payload = parse_token(request, token_index)
-    user_born = User.query.get(payload['id']).birth_date
-    age = calculate_age(user_born)
+    is_adult = User.query.get(payload['id']).adult
 
-    if age >= 18:
+    if is_adult:
         adBranches = 'SELECT * FROM branches\
                     INNER JOIN branches_design ON branches.branch_id = branches_design.branch_id \
                     INNER JOIN branch_ad ON branches.branch_id = branch_ad.branch_id \
