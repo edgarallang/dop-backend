@@ -93,7 +93,7 @@ def avatar(user_id, filename):
 def facebook_login():
     facebookUser = User.query.filter_by(facebook_key = request.json['facebook_key']).first()
     
-    is_adult = false
+    is_adult = False
     if request.json['birth_date']:
         user_born = request.json['birth_date']
         is_adult = calculate_age(user_born)
@@ -147,9 +147,9 @@ def calculate_age(born):
     today = datetime.now()
     age = today.year - born.year - ((today.month, today.day) < (born.month, born.day))
     if age >= 18:
-        return true
+        return True
     else:
-        return false
+        return False
 
 @user.route('/login/twitter', methods=['POST'])
 def twitter_login():
