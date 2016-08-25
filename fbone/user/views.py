@@ -94,9 +94,7 @@ def facebook_login():
     facebookUser = User.query.filter_by(facebook_key = request.json['facebook_key']).first()
     
     is_adult = False
-    if request.json['birth_date']:
-        user_born = request.json['birth_date']
-        is_adult = calculate_age(user_born)
+    
     if not facebookUser:
         facebookUser = User(names = request.json['names'],
                             surnames = request.json['surnames'],
@@ -136,7 +134,7 @@ def facebook_login():
         if not facebookUser.device_token == request.json['device_token']:
             facebookUser.device_token = request.json['device_token']
             facebookUser.device_os = request.json['device_os']
-            facebookUser.adult = is_adult
+            facebookUser.adult = calculate_age(facebookUser.birth_date)
             db.session.commit()
 
     token = create_token(facebookUser)
