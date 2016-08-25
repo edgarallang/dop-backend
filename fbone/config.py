@@ -19,6 +19,8 @@ class BaseConfig(object):
     APNS_CERTIFICATE = PROJECT_ROOT+'/certs/push.pem'
     APNS_SANDBOX = True
 
+    GCM_API_KEY = "AIzaSyAMR7PtdU1BNEgXQvzZKSv8nZsJKR5Hr94"
+
     DEBUG = False
     TESTING = False
     use_reloader = False

@@ -274,7 +274,8 @@ class BranchesAd(Schema):
                   'name',
                   'company_id',
                   'banner',
-                  'logo')
+                  'logo',
+                  'subcategory_id')
 
 class BranchesFollowedSchema(Schema):
     class Meta:

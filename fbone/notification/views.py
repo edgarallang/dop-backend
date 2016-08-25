@@ -11,7 +11,7 @@ from flask.ext.socketio import SocketIO, send, emit, join_room, leave_room
 from jwt import DecodeError, ExpiredSignature
 from .models import *
 from ..user import *
-from ..extensions import db, socketio, client
+from ..extensions import db, socketio, apns_client, gcm_client
 from juggernaut import Juggernaut
 from gevent import socket, monkey
 from flask_pushjack import FlaskAPNS
@@ -50,7 +50,7 @@ def create_token(user):
 #def send_notification(event,message,namespace,room):
 #    socketio.emit(event,{'data': message}, room=liked_user.user_id)
 
-def send_notification(device_token, notification_data):
+def send_notification(device_token, notification_data, device_os):
     options = { "sound": "default" ,"badge": 0,"extra": notification_data }
 
     if notification_data['data']['type'] == 'user_like':
@@ -62,7 +62,14 @@ def send_notification(device_token, notification_data):
     if notification_data['data']['type'] == 'friend_accepted':
         message = 'Ahora sigues a ' + notification_data['data']['launcher_names'] + '.'
 
-    res = client.send(device_token, message, **options)
+    if device_os == 'ios':
+        res = apns_client.send(device_token, message, **options)
+        return jsonify({'message': 'success'})
+    else:
+        res = gcm_client.send(device_token, message, **options)
+        return jsonify({'message': 'success'})
+    
+    return jsonify({'message': 'error'})
 
 
 @notification.route('/push/test/global/<string:message>', methods=['GET'])
@@ -88,7 +95,7 @@ def push_test_global(message):
     options = { "sound": "default" ,"badge": 0,"extra": notification_data }
 
     # Send to single device.
-    res = client.send(tokens, message, **options)
+    res = apns_client.send(tokens, message, **options)
     # List of all tokens sent.
     #res.tokens
     # List of any subclassed APNSServerError objects.
