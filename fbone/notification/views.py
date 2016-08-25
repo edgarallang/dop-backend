@@ -66,7 +66,7 @@ def send_notification(device_token, notification_data, device_os):
         res = apns_client.send(device_token, message, **options)
         return jsonify({'message': 'success'})
     else:
-        options = { "notification": { "body": message, "title":"dop", "icon":"new" }}
+        options = { "notification": { "body": message, "title":"dop", "icon":"ic_stat_dop" }}
         res = gcm_client.send(device_token, message, **options)
         return jsonify({'message': 'success'})
     
