@@ -524,6 +524,20 @@ def set_privacy():
         return jsonify({'message': 'user privacy is set :D'})
     return jsonify({'message': 'Oops! algo salió mal'})
 
+@user.route('/device_token/set', methods=['POST'])
+def set_device_token():
+    if request.headers.get('Authorization'):
+        token_index = True
+        payload = parse_token(request, token_index)
+        device_token = request.json['device_token']
+        user = User.query.get(payload['id'])
+        user.device_token = device_token
+
+        db.session.commit()
+
+        return jsonify({'message': 'set succeeded'})
+    return jsonify({'message': 'Oops! algo salió mal'})
+
 @user.route('/privacy_status/get', methods=['GET'])
 def get_privacy():
     if request.headers.get('Authorization'):
