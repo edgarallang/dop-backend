@@ -51,7 +51,6 @@ def create_token(user):
 #    socketio.emit(event,{'data': message}, room=liked_user.user_id)
 
 def send_notification(device_token, notification_data, device_os):
-    options = { "sound": "default" ,"badge": 0,"extra": notification_data }
 
     if notification_data['data']['type'] == 'user_like':
         message = 'A '+notification_data['data']['launcher_names'] + ' le ha gustado tu actividad.'
@@ -63,9 +62,11 @@ def send_notification(device_token, notification_data, device_os):
         message = 'Ahora sigues a ' + notification_data['data']['launcher_names'] + '.'
 
     if device_os == 'ios':
+        options = { "sound": "default" ,"badge": 0,"extra": notification_data }
         res = apns_client.send(device_token, message, **options)
         return jsonify({'message': 'success'})
     else:
+        options = { "notification": { "body": message, "title":"dop", "icon":"ic_stat_dop" }}
         res = gcm_client.send(device_token, message, **options)
         return jsonify({'message': 'success'})
     
