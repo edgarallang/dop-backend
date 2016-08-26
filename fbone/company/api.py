@@ -372,17 +372,17 @@ def dashboard_branches():
     user = User.query.get(payload['id'])
 
     #if user.adult:
+    # adBranches = 'SELECT * FROM branches\
+    #             INNER JOIN branches_design ON branches.branch_id = branches_design.branch_id \
+    #             INNER JOIN branch_ad ON branches.branch_id = branch_ad.branch_id \
+    #             INNER JOIN branches_subcategory ON branches.branch_id = branches_subcategory.branch_id \
+    #             WHERE branch_ad.duration>0 ORDER BY branch_ad.start_date LIMIT 8'
+    #else:
     adBranches = 'SELECT * FROM branches\
-                INNER JOIN branches_design ON branches.branch_id = branches_design.branch_id \
-                INNER JOIN branch_ad ON branches.branch_id = branch_ad.branch_id \
-                INNER JOIN branches_subcategory ON branches.branch_id = branches_subcategory.branch_id \
-                WHERE branch_ad.duration>0 ORDER BY branch_ad.start_date LIMIT 8'
-    # else:
-    #     adBranches = 'SELECT * FROM branches\
-    #              INNER JOIN branches_design ON branches.branch_id = branches_design.branch_id \
-    #              INNER JOIN branch_ad ON branches.branch_id = branch_ad.branch_id \
-    #              INNER JOIN branches_subcategory ON branches.branch_id = branches_subcategory.branch_id \
-    #              WHERE branch_ad.duration>0 AND branches_subcategory.subcategory_id != 25 ORDER BY branch_ad.start_date LIMIT 8'
+             INNER JOIN branches_design ON branches.branch_id = branches_design.branch_id \
+             INNER JOIN branch_ad ON branches.branch_id = branch_ad.branch_id \
+             INNER JOIN branches_subcategory ON branches.branch_id = branches_subcategory.branch_id \
+             WHERE branch_ad.duration>0 AND branches_subcategory.subcategory_id != 25 ORDER BY branch_ad.start_date LIMIT 8'
 
     branches = db.engine.execute(adBranches)
 
