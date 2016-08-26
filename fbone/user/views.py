@@ -558,7 +558,7 @@ def get_privacy():
         payload = parse_token(request, token_index)
         user = User.query.get(payload['id'])
 
-        return jsonify({'privacy_status': user.privacy_status })
+        return jsonify({'privacy_status': user.privacy_status, 'adult': user.adult })
     return jsonify({'message': 'Oops! algo salió mal'})
 
 @user.route('/following/get', methods=['GET'])

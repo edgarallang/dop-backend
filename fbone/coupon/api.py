@@ -536,6 +536,7 @@ def get_almost_expired_coupons():
         token_index = True
         payload = parse_token(request, token_index)
         user_id = payload['id']
+
         list_coupon = db.engine.execute('SELECT *,\
                                         (SELECT COUNT(*) FROM coupons_likes  WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes, \
                                         (SELECT EXISTS (SELECT * FROM coupons_likes  WHERE coupons_likes.user_id = %d AND coupons.coupon_id = coupons_likes.coupon_id)::bool) AS user_like, \
@@ -545,6 +546,7 @@ def get_almost_expired_coupons():
                                         coupons.branch_id = branches_design.branch_id \
                                         INNER JOIN branches ON coupons.branch_id = branches.branch_id \
                                         INNER JOIN branches_location on coupons.branch_id = branches_location.branch_id \
+                                        JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.branch_id   \
                                         WHERE deleted = false  AND active=true AND coupons.end_date>now() ORDER BY coupons.end_date ASC LIMIT 8' % (user_id, user_id))
 
         selected_list_coupon = toexpire_coupon_schema.dump(list_coupon)
