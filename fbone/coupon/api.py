@@ -532,7 +532,7 @@ def get_trending_coupons():
                                         INNER JOIN branches ON coupons.branch_id = branches.branch_id \
                                         INNER JOIN branches_location on coupons.branch_id = branches_location.branch_id \
                                         JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.branch_id   \
-                                        WHERE deleted = false %s  AND active=true ORDER BY total_value DESC LIMIT 8' % (user_id, user_id, adult_validation))
+                                        WHERE deleted = false %s  AND active=true AND coupons.end_date>now() ORDER BY total_value DESC LIMIT 8' % (user_id, user_id, adult_validation))
 
 
         selected_list_coupon = trending_coupon_schema.dump(list_coupon)
@@ -546,6 +546,12 @@ def get_almost_expired_coupons():
         payload = parse_token(request, token_index)
         user_id = payload['id']
 
+        user = User.query.get(user_id)
+
+        adult_validation = ''
+        if not user.adult:
+            adult_validation = 'AND branches_subcategory.subcategory_id!=25'
+
         list_coupon = db.engine.execute('SELECT *,\
                                         (SELECT COUNT(*) FROM coupons_likes  WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes, \
                                         (SELECT EXISTS (SELECT * FROM coupons_likes  WHERE coupons_likes.user_id = %d AND coupons.coupon_id = coupons_likes.coupon_id)::bool) AS user_like, \
@@ -556,7 +562,7 @@ def get_almost_expired_coupons():
                                         INNER JOIN branches ON coupons.branch_id = branches.branch_id \
                                         INNER JOIN branches_location on coupons.branch_id = branches_location.branch_id \
                                         JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.branch_id   \
-                                        WHERE deleted = false  AND active=true AND coupons.end_date>now() ORDER BY coupons.end_date ASC LIMIT 8' % (user_id, user_id))
+                                        WHERE deleted = false %s AND active=true AND coupons.end_date>now() ORDER BY coupons.end_date ASC LIMIT 8' % (user_id, user_id, adult_validation))
 
         selected_list_coupon = toexpire_coupon_schema.dump(list_coupon)
         return jsonify({'data': selected_list_coupon.data})
