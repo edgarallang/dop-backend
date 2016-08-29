@@ -516,7 +516,7 @@ def get_trending_coupons():
         user = User.query.get(user_id)
 
         adult_validation = ''
-        if user.adult:
+        if not user.adult:
             adult_validation = 'AND branches_subcategory.subcategory_id!=25'
 
 
