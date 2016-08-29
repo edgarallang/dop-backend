@@ -515,7 +515,10 @@ def get_trending_coupons():
 
         user = User.query.get(user_id)
 
-        #if user.adult:
+        adult_validation = ''
+        if user.adult:
+            adult_validation = 'AND branches_subcategory.subcategory_id!=25'
+
 
 
         list_coupon = db.engine.execute('SELECT *,\
@@ -529,7 +532,7 @@ def get_trending_coupons():
                                         INNER JOIN branches ON coupons.branch_id = branches.branch_id \
                                         INNER JOIN branches_location on coupons.branch_id = branches_location.branch_id \
                                         JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.branch_id   \
-                                        WHERE deleted = false AND branches_subcategory.subcategory_id!=25  AND active=true ORDER BY total_value DESC LIMIT 8' % (user_id, user_id))
+                                        WHERE deleted = false %s  AND active=true ORDER BY total_value DESC LIMIT 8' % (user_id, user_id, adult_validation))
 
 
         selected_list_coupon = trending_coupon_schema.dump(list_coupon)
