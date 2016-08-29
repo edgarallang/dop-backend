@@ -189,7 +189,8 @@ class TrendingCouponSchema(Schema):
                   'longitude',
                   'banner',
                   'available',
-                  'taken')
+                  'taken',
+                  'subcategory_id')
 
 class NearestCouponSchema(Schema):
     class Meta:
@@ -205,7 +206,8 @@ class NearestCouponSchema(Schema):
                   'available',
                   'taken',
                   'total_likes',
-                  'user_like')
+                  'user_like',
+                  'subcategory_id')
 
 class ToExpireCouponSchema(Schema):
     class Meta:
@@ -227,7 +229,8 @@ class ToExpireCouponSchema(Schema):
                   'longitude',
                   'banner',
                   'available',
-                  'taken')
+                  'taken',
+                  'subcategory_id')
 
 class BondJoinCouponSchema(Schema):
     class Meta:
