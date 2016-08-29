@@ -619,9 +619,9 @@ def nearest_coupons():
 
     user = User.query.get(user_id)
 
-        adult_validation = ''
-        if not user.adult:
-            adult_validation = 'AND branches_subcategory.subcategory_id!=25'
+    adult_validation = ''
+    if not user.adult:
+        adult_validation = 'AND branches_subcategory.subcategory_id!=25'
 
     query = 'SELECT branch_location_id, branch_id, state, city, latitude, longitude, distance, address, name, category_id, available, \
                     coupon_name, coupon_id, description, start_date, end_date, min_spent, \
