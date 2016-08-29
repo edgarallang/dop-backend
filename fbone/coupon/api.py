@@ -617,6 +617,12 @@ def nearest_coupons():
     payload = parse_token(request, token_index)
     user_id = str(payload['id'])
 
+    user = User.query.get(user_id)
+
+        adult_validation = ''
+        if not user.adult:
+            adult_validation = 'AND branches_subcategory.subcategory_id!=25'
+
     query = 'SELECT branch_location_id, branch_id, state, city, latitude, longitude, distance, address, name, category_id, available, \
                     coupon_name, coupon_id, description, start_date, end_date, min_spent, \
                 (SELECT COUNT(*)  FROM coupons_likes \
@@ -649,7 +655,7 @@ def nearest_coupons():
                 AND z.longitude \
                  BETWEEN p.longpoint - (p.radius / (p.distance_unit * COS(RADIANS(p.latpoint)))) \
                      AND p.longpoint + (p.radius / (p.distance_unit * COS(RADIANS(p.latpoint)))) \
-                AND subcategory.subcategory_id!=25 \
+                '+ adult_validation +' \
                 ) AS d \
                 WHERE distance <= radius \
                 ORDER BY distance LIMIT 8'
