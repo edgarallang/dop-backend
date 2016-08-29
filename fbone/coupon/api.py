@@ -649,6 +649,7 @@ def nearest_coupons():
                 AND z.longitude \
                  BETWEEN p.longpoint - (p.radius / (p.distance_unit * COS(RADIANS(p.latpoint)))) \
                      AND p.longpoint + (p.radius / (p.distance_unit * COS(RADIANS(p.latpoint)))) \
+                AND subcategory.subcategory_id!=25
                 ) AS d \
                 WHERE distance <= radius \
                 ORDER BY distance LIMIT 8'
