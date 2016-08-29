@@ -515,7 +515,7 @@ def get_trending_coupons():
 
         user = User.query.get(user_id)
 
-        if user.adult:
+        #if user.adult:
 
 
         list_coupon = db.engine.execute('SELECT *,\
