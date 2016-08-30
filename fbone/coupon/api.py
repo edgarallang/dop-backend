@@ -461,10 +461,9 @@ def get_all_used_coupon_for_user_offset():
     return jsonify({'data': selected_list_coupon.data})
 
 
-@coupon.route('/all/for/user/by/branch/get/', methods = ['GET'])
-def get_all_coupon_for_user_by_branch():
+@coupon.route('/all/for/user/by/branch/<int:branch_id>/get', methods = ['GET'])
+def get_all_coupon_for_user_by_branch(branch_id):
     token_index = True
-    branch_id = request.args.get('branch_id')
     payload = parse_token(request, token_index)
 
     list_coupon = db.engine.execute('SELECT coupon_id, branches.branch_id, company_id, branches.name, coupon_folio, description, start_date, \
