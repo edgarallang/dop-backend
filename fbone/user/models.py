@@ -79,6 +79,8 @@ class User(db.Model, UserMixin):
     gender = Column(db.String(STRING_LEN))
     device_os = Column(db.String(STRING_LEN))
     device_token = Column(db.String(STRING_LEN))
+    adult = Column(db.Boolean)
+
     #users_image_user_id = db.relationship("UserImage", uselist=False, backref="users")
 
     # Images

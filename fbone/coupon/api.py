@@ -281,8 +281,13 @@ def get_all_coupon_for_user():
     limit = request.args.get('limit')
     payload = parse_token(request, token_index)
 
+    user = User.query.get(payload['id'])
+    adult_validation = ''
+    if not user.adult:
+        adult_validation = 'AND branches_subcategory.subcategory_id!=25'
+
     list_coupon = db.engine.execute('SELECT coupon_id, branches.branch_id, company_id, branches.name, coupon_folio, description, start_date, \
-                                            end_date, coupons.limit, min_spent, coupon_category_id, logo, latitude, longitude, banner, category_id, available, \
+                                            end_date, coupons.limit, min_spent, coupon_category_id, logo, latitude, longitude, banner, category_id, available,subcategory_id, \
                                     (SELECT EXISTS (SELECT * FROM clients_coupon \
                                         WHERE USER_id = %d AND clients_coupon.coupon_id = coupons.coupon_id AND used = false)::bool) AS taken, \
                                     (SELECT COUNT(*)  FROM coupons_likes \
@@ -295,7 +300,7 @@ def get_all_coupon_for_user():
                                     INNER JOIN branches_location on coupons.branch_id = branches_location.branch_id \
                                     JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.branch_id \
                                     JOIN subcategory ON subcategory.subcategory_id = branches_subcategory.subcategory_id \
-                                    WHERE deleted = false AND active=true AND branches_subcategory.subcategory_id!=25 ORDER BY coupons.start_date DESC LIMIT %s OFFSET 0' % (payload['id'], payload['id'], limit))
+                                    WHERE deleted = false AND active=true AND coupons.available>0 %s ORDER BY coupons.start_date DESC LIMIT %s OFFSET 0' % (payload['id'], payload['id'], adult_validation, limit))
 
 
     selected_list_coupon = coupons_logo_schema.dump(list_coupon)
@@ -309,8 +314,13 @@ def get_all_coupon_for_user_offset():
     start_date = request.json['start_date']
     payload = parse_token(request, token_index)
 
+    user = User.query.get(payload['id'])
+    adult_validation = ''
+    if not user.adult:
+        adult_validation = 'AND branches_subcategory.subcategory_id!=25'
+
     list_coupon = db.engine.execute('SELECT coupon_id, branches.branch_id, company_id, branches.name, coupon_folio, description, start_date, \
-                                            end_date, coupons.limit, min_spent, coupon_category_id, logo, latitude, longitude, banner, category_id, available, \
+                                            end_date, coupons.limit, min_spent, coupon_category_id, logo, latitude, longitude, banner, category_id, available, subcategory_id, \
                                     (SELECT EXISTS (SELECT * FROM clients_coupon \
                                         WHERE USER_id = %d AND clients_coupon.coupon_id = coupons.coupon_id AND used = false)::bool) AS taken, \
                                     (SELECT COUNT(*)  FROM coupons_likes \
@@ -323,7 +333,7 @@ def get_all_coupon_for_user_offset():
                                     INNER JOIN branches_location on coupons.branch_id = branches_location.branch_id \
                                     JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.branch_id \
                                     JOIN subcategory ON subcategory.subcategory_id = branches_subcategory.subcategory_id \
-                                    WHERE deleted = false AND active=true AND coupons.start_date <= %s ORDER BY coupons.start_date DESC LIMIT 6 OFFSET %s' % (payload['id'], payload['id'],"'"+start_date+"'",offset))
+                                    WHERE deleted = false AND active=true AND coupons.start_date <= %s AND available>0 %s ORDER BY coupons.start_date DESC LIMIT 6 OFFSET %s' % (payload['id'], payload['id'],"'"+start_date+"'", adult_validation,offset))
 
 
     selected_list_coupon = coupons_logo_schema.dump(list_coupon)
@@ -515,6 +525,14 @@ def get_trending_coupons():
         payload = parse_token(request, token_index)
         user_id = payload['id']
 
+        user = User.query.get(user_id)
+
+        adult_validation = ''
+        if not user.adult:
+            adult_validation = 'AND branches_subcategory.subcategory_id!=25'
+
+
+
         list_coupon = db.engine.execute('SELECT *,\
                                         (SELECT COUNT(*) FROM coupons_likes  WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes, \
                                         ((SELECT COUNT(*) FROM coupons_likes  WHERE coupons.coupon_id = coupons_likes.coupon_id)*.30 + (SELECT COUNT(*) FROM clients_coupon WHERE coupons.coupon_id = clients_coupon.coupon_id AND clients_coupon.used = true)*1)as total_value,\
@@ -525,7 +543,8 @@ def get_trending_coupons():
                                         coupons.branch_id = branches_design.branch_id \
                                         INNER JOIN branches ON coupons.branch_id = branches.branch_id \
                                         INNER JOIN branches_location on coupons.branch_id = branches_location.branch_id \
-                                        WHERE deleted = false  AND active=true ORDER BY total_value DESC LIMIT 8' % (user_id, user_id))
+                                        JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.branch_id   \
+                                        WHERE deleted = false %s  AND active=true AND coupons.end_date>now() ORDER BY total_value DESC LIMIT 8' % (user_id, user_id, adult_validation))
 
 
         selected_list_coupon = trending_coupon_schema.dump(list_coupon)
@@ -538,6 +557,13 @@ def get_almost_expired_coupons():
         token_index = True
         payload = parse_token(request, token_index)
         user_id = payload['id']
+
+        user = User.query.get(user_id)
+
+        adult_validation = ''
+        if not user.adult:
+            adult_validation = 'AND branches_subcategory.subcategory_id!=25'
+
         list_coupon = db.engine.execute('SELECT *,\
                                         (SELECT COUNT(*) FROM coupons_likes  WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes, \
                                         (SELECT EXISTS (SELECT * FROM coupons_likes  WHERE coupons_likes.user_id = %d AND coupons.coupon_id = coupons_likes.coupon_id)::bool) AS user_like, \
@@ -547,7 +573,8 @@ def get_almost_expired_coupons():
                                         coupons.branch_id = branches_design.branch_id \
                                         INNER JOIN branches ON coupons.branch_id = branches.branch_id \
                                         INNER JOIN branches_location on coupons.branch_id = branches_location.branch_id \
-                                        WHERE deleted = false  AND active=true AND coupons.end_date>now() ORDER BY coupons.end_date ASC LIMIT 8' % (user_id, user_id))
+                                        JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.branch_id   \
+                                        WHERE deleted = false %s AND active=true AND coupons.end_date>now() AND coupons.available>0 ORDER BY coupons.end_date ASC LIMIT 8' % (user_id, user_id, adult_validation))
 
         selected_list_coupon = toexpire_coupon_schema.dump(list_coupon)
         return jsonify({'data': selected_list_coupon.data})
@@ -602,7 +629,13 @@ def nearest_coupons():
     payload = parse_token(request, token_index)
     user_id = str(payload['id'])
 
-    query = 'SELECT branch_location_id, branch_id, state, city, latitude, longitude, distance, address, name, category_id, available, \
+    user = User.query.get(user_id)
+
+    adult_validation = ''
+    if not user.adult:
+        adult_validation = 'AND branches_subcategory.subcategory_id!=25'
+
+    query = 'SELECT branch_location_id, branch_id, state, city, latitude, longitude, distance, address, name, category_id, subcategory_id, available, \
                     coupon_name, coupon_id, description, start_date, end_date, min_spent, \
                 (SELECT COUNT(*)  FROM coupons_likes \
                         WHERE d.coupon_id = coupons_likes.coupon_id) AS total_likes, \
@@ -611,7 +644,7 @@ def nearest_coupons():
                     WHERE user_id = '+user_id+' AND clients_coupon.coupon_id = d.coupon_id AND used = false)::bool) AS taken \
                 FROM (SELECT coupons.name as coupon_name, coupons.coupon_id,coupons.start_date,coupons.end_date, coupons.limit ,coupons.min_spent, \
                              coupons.description, z.branch_location_id, z.branch_id, z.state, z.city, z.address, coupons.available, \
-                    z.latitude, z.longitude, branches.name, subcategory.category_id, \
+                    z.latitude, z.longitude, branches.name, subcategory.category_id, subcategory.subcategory_id, \
                     p.radius,\
                     p.distance_unit \
                              * DEGREES(ACOS(COS(RADIANS(p.latpoint)) \
@@ -623,7 +656,7 @@ def nearest_coupons():
                 JOIN branches on z.branch_id = branches.branch_id \
                 JOIN branches_subcategory on z.branch_id = branches_subcategory.branch_id \
                 JOIN subcategory on subcategory.subcategory_id = branches_subcategory.subcategory_id \
-                JOIN coupons on branches.branch_id = coupons.branch_id AND deleted = false AND active = true AND coupons.end_date>now() \
+                JOIN coupons on branches.branch_id = coupons.branch_id AND deleted = false AND active = true AND coupons.end_date>now() AND available>0 \
                 JOIN (   /* these are the query parameters */ \
                     SELECT '+ latitude +'  AS latpoint, '+ longitude +' AS longpoint, \
                            '+ radio +' AS radius,      111.045 AS distance_unit \
@@ -634,6 +667,7 @@ def nearest_coupons():
                 AND z.longitude \
                  BETWEEN p.longpoint - (p.radius / (p.distance_unit * COS(RADIANS(p.latpoint)))) \
                      AND p.longpoint + (p.radius / (p.distance_unit * COS(RADIANS(p.latpoint)))) \
+                '+ adult_validation +' \
                 ) AS d \
                 WHERE distance <= radius \
                 ORDER BY distance LIMIT 8'
