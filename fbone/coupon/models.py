@@ -119,7 +119,8 @@ class CouponSchema(Schema):
                   'active',
                   'completed',
                   'remaining',
-                  'available')
+                  'available',
+                  'company_id')
 
 class CouponLogoSchema(Schema):
     dateformat = ('iso')
