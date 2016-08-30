@@ -279,7 +279,7 @@ def get_all_coupon_for_user():
     limit = request.args.get('limit')
     payload = parse_token(request, token_index)
 
-    user = User.query.get(user_id)
+    user = User.query.get(payload['id'])
     adult_validation = ''
     if not user.adult:
         adult_validation = 'AND branches_subcategory.subcategory_id!=25'
@@ -312,7 +312,7 @@ def get_all_coupon_for_user_offset():
     start_date = request.json['start_date']
     payload = parse_token(request, token_index)
 
-    user = User.query.get(user_id)
+    user = User.query.get(payload['id'])
     adult_validation = ''
     if not user.adult:
         adult_validation = 'AND branches_subcategory.subcategory_id!=25'
