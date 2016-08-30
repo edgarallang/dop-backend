@@ -553,7 +553,9 @@ def signup_branch():
     db.session.commit()
 
     branch = Branch(company_id = company.company_id,
-                    name = '')
+                    name = '',
+                    about = '',
+                    phone = '')
 
     db.session.add(branch)
     db.session.commit()
