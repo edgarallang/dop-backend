@@ -121,7 +121,8 @@ def take_coupon():
                                           taken_date = actual_date,
                                           latitude= request.json['latitude'],
                                           longitude = request.json['longitude'],
-                                          used = False)
+                                          used = False,
+                                          private = False)
 
 
                 db.session.add(user_take)
@@ -180,7 +181,8 @@ def use_coupon():
                                       latitude= request.json['latitude'],
                                       longitude = request.json['longitude'],
                                       used = True,
-                                      used_date = actual_date)
+                                      used_date = actual_date,
+                                      private = False)
                     db.session.add(client_coupon)
                     db.session.commit()
                     folio = '%d%s%d' % (request.json['branch_id'], "{:%d%m%Y}".format(actual_date), client_coupon.clients_coupon_id)
