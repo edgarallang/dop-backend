@@ -250,7 +250,8 @@ class UserActivityNewsfeed(Schema):
                   'branch_name',
                   'total_likes',
                   'user_like',
-                  'used_date')
+                  'used_date',
+                  'private')
 
 class UserDeviceTokens(Schema):
         device_token = fields.Str()
