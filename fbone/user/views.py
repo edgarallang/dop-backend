@@ -449,6 +449,9 @@ def get_coupons_activity_by_user_likes():
         limit = request.args.get('limit')
         user_profile_id = request.args.get('user_profile_id')
 
+        private = 'AND clients_coupon.private = False'
+        if user_profile_id == user_id:
+            private = ''
         users = db.engine.execute('SELECT coupons.branch_id,coupons.coupon_id,branches_design.logo,coupons.name,clients_coupon.clients_coupon_id,clients_coupon.latitude,clients_coupon.longitude \
                                     , users.names, users.surnames, users.user_id, users_image.main_image, branches.name AS branch_name, branches.company_id, clients_coupon.used_date, \
                                     (SELECT COUNT(*)  FROM clients_coupon_likes WHERE clients_coupon.clients_coupon_id = clients_coupon_likes.clients_coupon_id) AS total_likes, \
@@ -459,8 +462,8 @@ def get_coupons_activity_by_user_likes():
                                     INNER JOIN coupons ON clients_coupon.coupon_id = coupons.coupon_id \
                                     INNER JOIN branches ON coupons.branch_id = branches.branch_id \
                                     INNER JOIN branches_design ON coupons.branch_id = branches_design.branch_id \
-                                    WHERE users.user_id = %s AND clients_coupon.used = true AND clients_coupon.private = false \
-                                    ORDER BY used_date DESC LIMIT %s OFFSET 0' % (payload['id'], user_profile_id, limit))
+                                    WHERE users.user_id = %s AND clients_coupon.used = true %s \
+                                    ORDER BY used_date DESC LIMIT %s OFFSET 0' % (payload['id'], user_profile_id, private ,limit))
 
         users_list = user_join_activity_newsfeed_u.dump(users)
         return jsonify({'data': users_list.data})
