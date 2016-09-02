@@ -450,7 +450,7 @@ def get_coupons_activity_by_user_likes():
         user_profile_id = request.args.get('user_profile_id')
 
         private = 'AND clients_coupon.private = false'
-        if user_profile_id is payload['id']:
+        if int(user_profile_id) is int(payload['id']):
             private = ''
 
         users = db.engine.execute('SELECT coupons.branch_id,coupons.coupon_id,branches_design.logo,coupons.name,clients_coupon.clients_coupon_id,clients_coupon.latitude,clients_coupon.longitude \
