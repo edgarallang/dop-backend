@@ -215,6 +215,23 @@ def use_coupon():
             return jsonify({'message': 'error',"minutes": str(minutes_left)})
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
+@coupon.route('/user/privacy',methods=['POST'])
+def set_coupon_privacy():
+    if request.headers.get('Authorization'):
+        token_index = True
+        payload = parse_token(request, token_index)
+        folio = request.json['folio']
+
+        client_coupon = ClientsCoupon.query.filter(ClientsCoupon.folio==request.json['folio']).first()
+
+        if client_coupon:
+            client_coupon.private = True
+            db.session.commit()
+            return jsonify({'message': 'success'})
+
+    return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
+
+
 # GET methods
 @coupon.route('/<int:coupon_id>/get', methods = ['GET'])
 def get_coupon(coupon_id):
