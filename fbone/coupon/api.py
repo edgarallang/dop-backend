@@ -121,7 +121,8 @@ def take_coupon():
                                           taken_date = actual_date,
                                           latitude= request.json['latitude'],
                                           longitude = request.json['longitude'],
-                                          used = False)
+                                          used = False,
+                                          private = False)
 
 
                 db.session.add(user_take)
@@ -180,7 +181,8 @@ def use_coupon():
                                       latitude= request.json['latitude'],
                                       longitude = request.json['longitude'],
                                       used = True,
-                                      used_date = actual_date)
+                                      used_date = actual_date,
+                                      private = False)
                     db.session.add(client_coupon)
                     db.session.commit()
                     folio = '%d%s%d' % (request.json['branch_id'], "{:%d%m%Y}".format(actual_date), client_coupon.clients_coupon_id)
@@ -195,7 +197,7 @@ def use_coupon():
                     reward = set_experience(payload['id'], USING)
                     user_level = level_up(payload['id'])
 
-                    return jsonify({'data': branch_data.data, 'reward': reward, 'level': user_level })
+                    return jsonify({'data': branch_data.data, 'reward': reward, 'level': user_level, 'folio': folio })
                 else:
                     return jsonify({'message': 'agotado'})
             else:
@@ -209,11 +211,28 @@ def use_coupon():
 
                 reward = set_experience(payload['id'], USING)
                 user_level = level_up(payload['id'])
-                return jsonify({'data': branch_data.data, 'reward': reward, 'level': user_level })
+                return jsonify({'data': branch_data.data, 'reward': reward, 'level': user_level, 'folio': client_coupon.folio })
         else:
             minutes_left = 20 - minutes
             return jsonify({'message': 'error',"minutes": str(minutes_left)})
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
+
+@coupon.route('/user/privacy',methods=['POST'])
+def set_coupon_privacy():
+    if request.headers.get('Authorization'):
+        token_index = True
+        payload = parse_token(request, token_index)
+        folio = request.json['folio']
+
+        client_coupon = ClientsCoupon.query.filter(ClientsCoupon.folio==request.json['folio']).first()
+
+        if client_coupon:
+            client_coupon.private = True
+            db.session.commit()
+            return jsonify({'message': 'success'})
+
+    return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
+
 
 # GET methods
 @coupon.route('/<int:coupon_id>/get', methods = ['GET'])

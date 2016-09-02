@@ -77,6 +77,7 @@ class ClientsCoupon(db.Model):
     longitude = Column(db.Numeric, nullable=False)
     used = Column(db.Boolean, nullable = False)
     used_date = Column(db.DateTime, nullable=False)
+    private = Column(db.Boolean, nullable = False)
 
     coupons_user = db.relationship('User', uselist=False, backref='clients_coupon')
     clients_coupons = db.relationship('Coupon', uselist=False, backref='clients_coupon')
@@ -119,8 +120,7 @@ class CouponSchema(Schema):
                   'active',
                   'completed',
                   'remaining',
-                  'available',
-                  'company_id')
+                  'available')
 
 class CouponLogoSchema(Schema):
     dateformat = ('iso')
