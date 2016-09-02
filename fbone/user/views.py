@@ -445,7 +445,8 @@ def get_coupons_activity_by_user_likes():
     if request.headers.get('Authorization'):
         token_index = True
         payload = parse_token(request, token_index)
-        user_id = User.query.get(payload['id']).user_id
+        #user_id = User.query.get(payload['id']).user_id
+        user_id = payload['id']
         limit = request.args.get('limit')
         user_profile_id = request.args.get('user_profile_id')
 
@@ -463,8 +464,8 @@ def get_coupons_activity_by_user_likes():
                                     INNER JOIN coupons ON clients_coupon.coupon_id = coupons.coupon_id \
                                     INNER JOIN branches ON coupons.branch_id = branches.branch_id \
                                     INNER JOIN branches_design ON coupons.branch_id = branches_design.branch_id \
-                                    WHERE users.user_id = %s AND clients_coupon.used = true  \
-                                    ORDER BY used_date DESC LIMIT %s OFFSET 0' % (payload['id'], user_profile_id ,limit))
+                                    WHERE users.user_id = %s AND clients_coupon.used = true %s \
+                                    ORDER BY used_date DESC LIMIT %s OFFSET 0' % (payload['id'], user_profile_id, private ,limit))
 
         users_list = user_join_activity_newsfeed_u.dump(users)
         return jsonify({'data': users_list.data})
