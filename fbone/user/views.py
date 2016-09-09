@@ -567,7 +567,7 @@ def get_privacy():
     if request.headers.get('Authorization'):
         token_index = True
         payload = parse_token(request, token_index)
-
+        user = User.query.get(payload['id'])
         return jsonify({'privacy_status': user.privacy_status })
     return jsonify({'message': 'Oops! algo salió mal'})
 
