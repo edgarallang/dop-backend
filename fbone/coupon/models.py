@@ -205,6 +205,7 @@ class NearestCouponSchema(Schema):
                   'latitude',
                   'longitude',
                   'available',
+                  'limit'
                   'taken',
                   'total_likes',
                   'user_like',
