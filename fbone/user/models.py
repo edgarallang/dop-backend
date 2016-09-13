@@ -182,7 +182,7 @@ class UserJoinFriends(Schema):
                   'names',
                   'surnames',
                   'main_image',
-                  'friend',
+                  'is_friend',
                   'facebook_key',
                   'privacy_status',
                   'birth_date',
@@ -207,7 +207,7 @@ class PeopleSchema(Schema):
                   'exp',
                   'user_image_id',
                   'main_image',
-                  'friend',
+                  'is_friend',
                   'level',
                   'exp',
                   'operation_id')

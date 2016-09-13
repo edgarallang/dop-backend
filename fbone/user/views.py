@@ -69,12 +69,15 @@ def get_friends_by_id(userId):
 
 @user.route('/<int:userId>/profile', methods=['GET'])
 def profile(userId):
+    payload = parse_token(request, True)
+
+    main_user_id = payload['id']
     query = "SELECT users.user_id, users.names, users.surnames, users.birth_date, users.facebook_key, users.google_key, \
                     users.twitter_key,users.privacy_status, users_image.main_image, users_image.user_image_id, level, exp, \
                     (SELECT EXISTS (SELECT * FROM friends \
                             WHERE friends.user_one_id = %d AND friends.user_two_id = users.user_id AND friends.operation_id = 1)::bool) AS is_friend \
                     FROM users INNER JOIN users_image ON users.user_id = users_image.user_id \
-                    WHERE users.user_id = %d" % (userId, userId)
+                    WHERE users.user_id = %d" % (main_user_id, userId)
 
     #total_friends = get_friends_by_id(userId)
 
@@ -92,9 +95,9 @@ def avatar(user_id, filename):
 @user.route('/login/facebook', methods=['POST'])
 def facebook_login():
     facebookUser = User.query.filter_by(facebook_key = request.json['facebook_key']).first()
-    
+
     is_adult = False
-    
+
     if not facebookUser:
         facebookUser = User(names = request.json['names'],
                             surnames = request.json['surnames'],
@@ -208,7 +211,7 @@ def get_friends():
 
         query = 'SELECT DISTINCT ON (users.user_id) *, \
                     (SELECT EXISTS (SELECT * FROM friends \
-                            WHERE friends.user_one_id = %d and friends.user_two_id = users.user_id and friends.operation_id = 1)::bool) AS friend \
+                            WHERE friends.user_one_id = %d and friends.user_two_id = users.user_id and friends.operation_id = 1)::bool) AS is_friend \
                  FROM friends \
                  INNER JOIN users ON (friends.user_one_id = user_id  AND friends.user_one_id != %d) \
                  OR (friends.user_two_id=user_id  AND friends.user_two_id!=%d) \
@@ -429,7 +432,7 @@ def search_people():
         #list_coupon = db.engine.execute(query)
         people = db.engine.execute("SELECT DISTINCT *, \
                                     (SELECT EXISTS (SELECT * FROM friends \
-                                        WHERE friends.user_one_id = %d and friends.user_two_id = users.user_id AND friends.operation_id = 1)::bool) AS friend \
+                                        WHERE friends.user_one_id = %d and friends.user_two_id = users.user_id AND friends.operation_id = 1)::bool) AS is_friend \
                                     FROM users \
                                     INNER JOIN users_image on users.user_id = users_image.user_id \
                                     LEFT JOIN friends ON user_one_id = %d AND user_two_id = users.user_id \
@@ -564,7 +567,7 @@ def get_privacy():
     if request.headers.get('Authorization'):
         token_index = True
         payload = parse_token(request, token_index)
-
+        user = User.query.get(payload['id'])
         return jsonify({'privacy_status': user.privacy_status })
     return jsonify({'message': 'Oops! algo salió mal'})
 
@@ -576,7 +579,7 @@ def get_following():
 
         people = db.engine.execute('SELECT *, \
                                     (SELECT EXISTS (SELECT * FROM friends \
-                                        WHERE friends.user_one_id = %d and friends.user_two_id = users.user_id)::bool) AS friend \
+                                        WHERE friends.user_one_id = %d and friends.user_two_id = users.user_id)::bool) AS is_friend \
                                     FROM friends INNER JOIN users \
                                         ON users.user_id = friends.user_two_id \
                                         INNER JOIN users_image ON users_image.user_id = users.user_id \
