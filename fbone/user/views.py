@@ -545,7 +545,7 @@ def set_privacy():
 
         db.session.commit()
 
-        return jsonify({'message': 'user privacy is set :D'})
+        return jsonify({'message': 'success'})
     return jsonify({'message': 'Oops! algo salió mal'})
 
 @user.route('/device_token/set', methods=['POST'])

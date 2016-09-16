@@ -69,7 +69,7 @@ def send_notification(device_token, notification_data, device_os):
         options = { "notification": { "body": message, "title":"dop", "icon":"ic_stat_dop" }}
         res = gcm_client.send(device_token, message, **options)
         return jsonify({'message': 'success'})
-    
+
     return jsonify({'message': 'error'})
 
 
@@ -190,7 +190,7 @@ def get_notifications_offset():
 
         notifications_query = "SELECT notifications.notification_id,notifications.object_id, notifications.type, launcher_user.names AS launcher_name,\
                                 launcher_user.surnames AS "+"launcher_surnames"+",launcher_user.user_id AS "+"launcher_id"+",friends.operation_id AS "+"friendship_status"+",\
-                                branches.name AS "+"newsfeed_activity"+", branches.company_id, branches.branch_id, notifications.read, notifications.notification_date,users_image.main_image AS "+"user_image"+", friends.launcher_user_id AS "+"launcher_friend"+" FROM notifications\
+                                branches.name AS "+"newsfeed_activity"+", branches.company_id, branches.branch_id, notifications.read, notifications.notification_date,users_image.main_image AS "+"user_image"+", friends.user_one_id AS "+"launcher_friend"+" FROM notifications\
                                 LEFT JOIN clients_coupon ON notifications.object_id = clients_coupon.clients_coupon_id AND notifications.type= 'newsfeed'\
                                 LEFT JOIN coupons ON clients_coupon.coupon_id = coupons.coupon_id\
                                 LEFT JOIN branches ON coupons.branch_id = branches.branch_id\
