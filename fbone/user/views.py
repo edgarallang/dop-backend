@@ -94,55 +94,56 @@ def avatar(user_id, filename):
 
 @user.route('/login/facebook', methods=['POST'])
 def facebook_login():
-    facebookUser = User.query.filter_by(facebook_key = request.json['facebook_key']).first()
+    print request
+    # facebookUser = User.query.filter_by(facebook_key = request.json['facebook_key']).first()
 
-    is_adult = False
+    # is_adult = False
 
-    if not facebookUser:
-        facebookUser = User(names = request.json['names'],
-                            surnames = request.json['surnames'],
-                            birth_date = request.json['birth_date'],
-                            facebook_key = request.json['facebook_key'],
-                            gender = request.json['gender'],
-                            level = 0,
-                            exp = 0,
-                            privacy_status = 0,
-                            device_os = request.json['device_os'],
-                            device_token = request.json['device_token'],
-                            adult = is_adult)
+    # if not facebookUser:
+    #     facebookUser = User(names = request.json['names'],
+    #                         surnames = request.json['surnames'],
+    #                         birth_date = request.json['birth_date'],
+    #                         facebook_key = request.json['facebook_key'],
+    #                         gender = request.json['gender'],
+    #                         level = 0,
+    #                         exp = 0,
+    #                         privacy_status = 0,
+    #                         device_os = request.json['device_os'],
+    #                         device_token = request.json['device_token'],
+    #                         adult = is_adult)
 
-        db.session.add(facebookUser)
-        db.session.commit()
+    #     db.session.add(facebookUser)
+    #     db.session.commit()
 
-        userSession = UserSession(user_id=facebookUser.user_id,
-                                  email=request.json['email'])
+    #     userSession = UserSession(user_id=facebookUser.user_id,
+    #                               email=request.json['email'])
 
-        db.session.add(userSession)
-        db.session.commit()
+    #     db.session.add(userSession)
+    #     db.session.commit()
 
-        userImage = UserImage(user_id=facebookUser.user_id,
-                              main_image=request.json['main_image'])
-        db.session.add(userImage)
-        db.session.commit()
+    #     userImage = UserImage(user_id=facebookUser.user_id,
+    #                           main_image=request.json['main_image'])
+    #     db.session.add(userImage)
+    #     db.session.commit()
 
-        userFirstEXP = UserFirstEXP(user_id = facebookUser.user_id,
-                                    first_following = False,
-                                    first_follower = False,
-                                    first_company_fav = False,
-                                    first_using = False)
+    #     userFirstEXP = UserFirstEXP(user_id = facebookUser.user_id,
+    #                                 first_following = False,
+    #                                 first_follower = False,
+    #                                 first_company_fav = False,
+    #                                 first_using = False)
 
-        db.session.add(userFirstEXP)
-        db.session.commit()
-    else:
-        if not facebookUser.device_token == request.json['device_token']:
-            facebookUser.device_token = request.json['device_token']
-            facebookUser.device_os = request.json['device_os']
-            facebookUser.adult = calculate_age(facebookUser.birth_date)
-            db.session.commit()
+    #     db.session.add(userFirstEXP)
+    #     db.session.commit()
+    # else:
+    #     if not facebookUser.device_token == request.json['device_token']:
+    #         facebookUser.device_token = request.json['device_token']
+    #         facebookUser.device_os = request.json['device_os']
+    #         facebookUser.adult = calculate_age(facebookUser.birth_date)
+    #         db.session.commit()
 
-    token = create_token(facebookUser)
+    # token = create_token(facebookUser)
 
-    return jsonify(token=token)
+    # return jsonify(token=token)
 
 def calculate_age(born):
     today = datetime.now()
