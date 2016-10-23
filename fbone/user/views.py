@@ -95,6 +95,7 @@ def avatar(user_id, filename):
 @user.route('/login/facebook', methods=['POST'])
 def facebook_login():
     print request
+    return jsonify({"Hola":"Hola"})
     # facebookUser = User.query.filter_by(facebook_key = request.json['facebook_key']).first()
 
     # is_adult = False
