@@ -69,7 +69,7 @@ def send_notification(device_token, notification_data, device_os):
         options = { "notification": { "body": message, "title":"dop", "icon":"ic_stat_dop" }}
         res = gcm_client.send(device_token, message, **options)
         return jsonify({'message': 'success'})
-    
+
     return jsonify({'message': 'error'})
 
 
@@ -188,16 +188,27 @@ def get_notifications_offset():
 
         #notification_id = request.args.get('notification_id')
 
-        notifications_query = "SELECT notifications.notification_id,notifications.object_id, notifications.type, launcher_user.names AS launcher_name,\
-                                launcher_user.surnames AS "+"launcher_surnames"+",launcher_user.user_id AS "+"launcher_id"+",friends.operation_id AS "+"friendship_status"+",\
-                                branches.name AS "+"newsfeed_activity"+", branches.company_id, branches.branch_id, notifications.read, notifications.notification_date,users_image.main_image AS "+"user_image"+", friends.launcher_user_id AS "+"launcher_friend"+" FROM notifications\
-                                LEFT JOIN clients_coupon ON notifications.object_id = clients_coupon.clients_coupon_id AND notifications.type= 'newsfeed'\
-                                LEFT JOIN coupons ON clients_coupon.coupon_id = coupons.coupon_id\
-                                LEFT JOIN branches ON coupons.branch_id = branches.branch_id\
-                                LEFT JOIN friends ON notifications.object_id = friends.friends_id AND notifications.type= 'friend'\
-                                LEFT JOIN users_image ON notifications.launcher_id = users_image.user_id \
-                                INNER JOIN users AS launcher_user ON notifications.launcher_id = launcher_user.user_id \
-                                WHERE notifications.user_id = %d ORDER BY notification_date DESC LIMIT 11 OFFSET %s " % (payload['id'], offset)
+        notifications_query = "SELECT notifications.*, launcher_user.names AS launcher_name, catcher_user.names AS catcher_name, \
+                                       launcher_user.surnames AS launcher_surnames, catcher_user.surnames AS catcher_surnames, \
+                                       friends.operation_id, branches.name AS branches_name, branches.company_id, branches.branch_id, \
+                                       launcher_image.main_image AS launcher_image, catcher_image.main_image AS catcher_image, \
+                                       (SELECT EXISTS (SELECT * FROM friends \
+                                               WHERE friends.user_one_id = %d AND (friends.user_two_id = launcher_user.user_id OR friends.user_two_id = catcher_user.user_id) \
+                                               AND friends.operation_id = 1)::bool) AS is_friend \
+                                    FROM notifications \
+                                         LEFT JOIN clients_coupon ON notifications.object_id = clients_coupon.clients_coupon_id \
+                                            AND notifications.type = 'newsfeed' \
+                                         LEFT JOIN coupons ON clients_coupon.coupon_id = coupons.coupon_id \
+                                         LEFT JOIN branches ON coupons.branch_id = branches.branch_id \
+                                         LEFT JOIN friends ON notifications.object_id = friends.friends_id \
+                                            AND notifications.type = 'friend' \
+                                         LEFT JOIN users_image AS launcher_image ON notifications.launcher_id = launcher_image.user_id \
+                                         LEFT JOIN users_image AS catcher_image ON notifications.catcher_id = catcher_image.user_id \
+                                         INNER JOIN users AS launcher_user ON notifications.launcher_id = launcher_user.user_id \
+                                         INNER JOIN users AS catcher_user ON notifications.catcher_id = catcher_user.user_id \
+                                    WHERE (notifications.catcher_id = %d AND (operation_id < 2 OR operation_id IS null)) \
+                                    OR ( launcher_id = %d AND operation_id < 2) \
+                                         ORDER BY notification_date DESC LIMIT 11 OFFSET %s " % (payload['id'], payload['id'], payload['id'], offset)
         notifications = db.engine.execute(notifications_query)
 
         notifications_list = notifications_schema.dump(notifications)
