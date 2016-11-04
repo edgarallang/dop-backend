@@ -217,6 +217,27 @@ def use_coupon():
             return jsonify({'message': 'error',"minutes": str(minutes_left)})
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
+@coupon.route('/report',methods=['POST'])
+def user_report():
+    if request.headers.get('Authorization'):
+        token_index = True
+        payload = parse_token(request, token_index)
+
+        report = CouponReport( user_id = payload['id'],
+                               branch_id = request.json['branch_id'],
+                               coupon_id = request.json['coupon_id'],
+                               branch_indiference = request.json['branch_indiference'],
+                               camera_broken = request.json['camera_broken'],
+                               app_broken = request.json['app_broken'],
+                               qr_lost = request.json['qr_lost'] )
+
+        db.session.add(report)
+        db.session.commit()
+
+        coupons_report = coupons_report_schema.dump(report) 
+        return jsonify({ 'data': coupons_report.data })
+    return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
+
 @coupon.route('/user/privacy',methods=['POST'])
 def set_coupon_privacy():
     if request.headers.get('Authorization'):

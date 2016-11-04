@@ -103,24 +103,45 @@ class CouponsUsedLikes(db.Model):
     coupons_user = db.relationship('User', uselist=False, backref='clients_coupon_likes')
     clients_coupons = db.relationship('ClientsCoupon', uselist=False, backref='clients_coupon_likes')
 
+class CouponReport(db.Model):
+    __tablename__ = 'problems_report'
+    id = Column(db.Integer, primary_key=True)
+    user_id = Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
+    branch_id = Column(db.Integer, db.ForeignKey('branches.branch_id'), nullable=False)
+    coupon_id = Column(db.Integer, db.ForeignKey('coupons.coupon_id'), nullable=False)
+    branch_indiference = Column(db.Boolean)
+    camera_broken = Column(db.Boolean)
+    app_broken = Column(db.Boolean)
+    qr_lost = Column(db.Boolean)
 # Serializer Schemas
 
-class CouponSchema(Schema):
+class CouponReportSchema(Schema):
     class Meta:
-        fields = ('coupon_id',
-                  'branch_id',
-                  'name',
-                  'coupon_folio',
-                  'description',
-                  'start_date',
-                  'end_date',
-                  'limit',
-                  'min_spent',
-                  'coupon_category_id',
-                  'active',
-                  'completed',
-                  'remaining',
-                  'available')
+        fields = ( 'user_id',
+                   'branch_id',
+                   'coupon_id',
+                   'branch_indiference',
+                   'camera_broken',
+                   'app_broken',
+                   'qr_lost' )
+
+
+class CouponSchema(Schema):
+  class Meta:
+      fields = ('coupon_id',
+                'branch_id',
+                'name',
+                'coupon_folio',
+                'description',
+                'start_date',
+                'end_date',
+                'limit',
+                'min_spent',
+                'coupon_category_id',
+                'active',
+                'completed',
+                'remaining',
+                'available')
 
 class CouponLogoSchema(Schema):
     dateformat = ('iso')
@@ -439,3 +460,5 @@ taken_coupons_location_schema = TakenCouponsLocationSchema(many=True)
 
 used_coupons_by_age_schema = UsedCouponsByAge(many=True)
 used_coupons_by_gender_schema = UsedCouponsByGender(many=True)
+
+coupons_report_schema = CouponReportSchema(many=True)
