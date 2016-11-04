@@ -461,4 +461,4 @@ taken_coupons_location_schema = TakenCouponsLocationSchema(many=True)
 used_coupons_by_age_schema = UsedCouponsByAge(many=True)
 used_coupons_by_gender_schema = UsedCouponsByGender(many=True)
 
-coupons_report_schema = CouponReportSchema(many=True)
+coupons_report_schema = CouponReportSchema()
