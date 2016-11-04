@@ -308,7 +308,7 @@ def following_branch_offset(user_id, last_branch, offset):
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
 #SEARCH API
-@company.route('/branch/search/', methods = ['GET','POST'])
+@company.route('/branch/search/', methods = ['GET'])
 def search_branch():
     if request.headers.get('Authorization'):
         token_index = True

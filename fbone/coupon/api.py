@@ -659,7 +659,7 @@ def used_by_gender(branch_id):
 
     return jsonify({'data': used_coupons_stats.data})
 
-@coupon.route('/nearest/get/', methods=['GET', 'POST'])
+@coupon.route('/nearest/get/', methods=['GET'])
 def nearest_coupons():
     token_index = True
     latitude = request.args.get('latitude')

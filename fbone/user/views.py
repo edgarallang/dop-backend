@@ -422,7 +422,7 @@ def get_profile(user_id):
     return jsonify({'data': friends_list.data})
 
 #SEARCH API
-@user.route('/people/search/', methods = ['GET','POST'])
+@user.route('/people/search/', methods = ['GET'])
 def search_people():
     if request.headers.get('Authorization'):
         token_index = True
