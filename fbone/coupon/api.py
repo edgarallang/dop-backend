@@ -67,6 +67,7 @@ def level_up(user_id):
         if user.exp >= val:
             user.level = key
             print user.level
+            break
     db.session.commit()
     return user.level
 
@@ -234,7 +235,7 @@ def user_report():
         db.session.add(report)
         db.session.commit()
 
-        coupons_report = coupons_report_schema.dump(report) 
+        coupons_report = coupons_report_schema.dump(report)
         return jsonify({ 'data': coupons_report.data })
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
@@ -245,7 +246,7 @@ def set_coupon_privacy():
         payload = parse_token(request, token_index)
         folio = request.json['folio']
 
-        client_coupon = ClientsCoupon.query.filter(ClientsCoupon.folio==request.json['folio']).first()
+        client_coupon = ClientsCoupon.query.filter(ClientsCoupon.folio == request.json['folio']).first()
 
         if client_coupon:
             client_coupon.private = True
