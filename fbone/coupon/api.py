@@ -146,7 +146,7 @@ def take_coupon():
 
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
-@coupon.route('/user/redeem',methods=['POST'])
+@coupon.route('/user/redeem', methods=['POST'])
 def use_coupon():
     if request.headers.get('Authorization'):
         token_index = True
@@ -197,7 +197,7 @@ def use_coupon():
 
                     reward = set_experience(payload['id'], USING)
                     user_level = level_up(payload['id'])
-
+                    db.session.commit()
                     return jsonify({'data': branch_data.data, 'reward': reward, 'level': user_level, 'folio': folio })
                 else:
                     return jsonify({'message': 'agotado'})
