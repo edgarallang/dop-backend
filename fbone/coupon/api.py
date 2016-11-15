@@ -60,6 +60,7 @@ def create_coupon(request):
 
         return "success"
 
+#leveling up
 def level_up(user_id):
     user = User.query.get(user_id)
     print user_id, user.exp
