@@ -687,7 +687,7 @@ def nearest_coupons():
                     WHERE user_id = '+user_id+' AND clients_coupon.coupon_id = d.coupon_id AND used = false)::bool) AS taken \
                 FROM (SELECT coupons.name as coupon_name, coupons.coupon_id,coupons.start_date,coupons.end_date, coupons.limit ,coupons.min_spent, \
                              coupons.description, z.branch_location_id, z.branch_id, z.state, z.city, z.address, coupons.available, \
-                    z.latitude, z.longitude, branches.name, subcategory.category_id, subcategory.subcategory_id, \
+                    z.latitude, z.longitude, branches.name, branches.company_id, branches_design.logo, subcategory.category_id, subcategory.subcategory_id, \
                     p.radius,\
                     p.distance_unit \
                              * DEGREES(ACOS(COS(RADIANS(p.latpoint)) \
@@ -698,7 +698,7 @@ def nearest_coupons():
                 FROM branches_location AS z \
                 JOIN branches on z.branch_id = branches.branch_id \
                 JOIN branches_subcategory on z.branch_id = branches_subcategory.branch_id \
-                JOIN branches_design ON z.branch_id = branches_design.branch_id \
+                JOIN branches_design ON branches.branch_id = branches_design.branch_id \
                 JOIN subcategory on subcategory.subcategory_id = branches_subcategory.subcategory_id \
                 JOIN coupons on branches.branch_id = coupons.branch_id AND deleted = false AND active = true AND coupons.end_date>now() AND available>0 \
                 JOIN (   /* these are the query parameters */ \
