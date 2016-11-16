@@ -218,6 +218,7 @@ class NearestCouponSchema(Schema):
     class Meta:
         fields = ('coupon_id',
                   'branch_id',
+                  'company_id',
                   'name',
                   'description',
                   'start_date',
@@ -229,7 +230,9 @@ class NearestCouponSchema(Schema):
                   'taken',
                   'total_likes',
                   'user_like',
-                  'subcategory_id')
+                  'subcategory_id',
+                  'distance',
+                  'logo')
 
 class ToExpireCouponSchema(Schema):
     class Meta:

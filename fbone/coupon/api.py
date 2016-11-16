@@ -676,10 +676,10 @@ def nearest_coupons():
 
     adult_validation = ''
     if not user.adult:
-        adult_validation = 'AND branches_subcategory.subcategory_id!=25'
+        adult_validation = 'AND branches_subcategory.subcategory_id != 25'
 
-    query = 'SELECT branch_location_id, branch_id, state, city, latitude, longitude, distance, address, name, category_id, subcategory_id, available, \
-                    coupon_name, coupon_id, description, start_date, end_date, min_spent, \
+    query = 'SELECT branch_location_id, branch_id, company_id, state, city, latitude, longitude, distance, address, name, category_id, subcategory_id, available, \
+                    coupon_name, coupon_id, description, start_date, end_date, min_spent, logo, \
                 (SELECT COUNT(*)  FROM coupons_likes \
                         WHERE d.coupon_id = coupons_likes.coupon_id) AS total_likes, \
                 (SELECT EXISTS (SELECT * FROM coupons_likes  WHERE coupons_likes.user_id = '+user_id+' AND d.coupon_id = coupons_likes.coupon_id)::bool) AS user_like, \
@@ -698,6 +698,7 @@ def nearest_coupons():
                 FROM branches_location AS z \
                 JOIN branches on z.branch_id = branches.branch_id \
                 JOIN branches_subcategory on z.branch_id = branches_subcategory.branch_id \
+                JOIN branches_design ON z.branch_id = branches_design.branch_id \
                 JOIN subcategory on subcategory.subcategory_id = branches_subcategory.subcategory_id \
                 JOIN coupons on branches.branch_id = coupons.branch_id AND deleted = false AND active = true AND coupons.end_date>now() AND available>0 \
                 JOIN (   /* these are the query parameters */ \
