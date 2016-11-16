@@ -678,13 +678,14 @@ def nearest_coupons():
     if not user.adult:
         adult_validation = 'AND branches_subcategory.subcategory_id != 25'
 
-    query = "SELECT branch_location_id, branch_id, company_id, state, city, latitude, longitude, distance, address, name, category_id, subcategory_id, available, \
+    query = "SELECT branch_location_id, branch_id, company_id, state, city, latitude, longitude, distance, address, \
+                    name, category_id, subcategory_id, available, \
                     coupon_name, coupon_id, description, start_date, end_date, min_spent, logo, \
                 (SELECT COUNT(*)  FROM coupons_likes \
                         WHERE d.coupon_id = coupons_likes.coupon_id) AS total_likes, \
-                (SELECT EXISTS (SELECT * FROM coupons_likes  WHERE coupons_likes.user_id = '+user_id+' AND d.coupon_id = coupons_likes.coupon_id)::bool) AS user_like, \
+                (SELECT EXISTS (SELECT * FROM coupons_likes  WHERE coupons_likes.user_id = "+ user_id +" AND d.coupon_id = coupons_likes.coupon_id)::bool) AS user_like, \
                 (SELECT EXISTS (SELECT * FROM clients_coupon \
-                    WHERE user_id = '+user_id+' AND clients_coupon.coupon_id = d.coupon_id AND used = false)::bool) AS taken \
+                    WHERE user_id = "+ user_id +" AND clients_coupon.coupon_id = d.coupon_id AND used = false)::bool) AS taken \
                 FROM (SELECT coupons.name as coupon_name, coupons.coupon_id,coupons.start_date,coupons.end_date, coupons.limit ,coupons.min_spent, \
                              coupons.description, z.branch_location_id, z.branch_id, z.state, z.city, z.address, coupons.available, \
                     z.latitude, z.longitude, branches.name, branches.company_id, branches_design.logo, subcategory.category_id, subcategory.subcategory_id, \
@@ -702,8 +703,8 @@ def nearest_coupons():
                 JOIN subcategory on subcategory.subcategory_id = branches_subcategory.subcategory_id \
                 JOIN coupons on branches.branch_id = coupons.branch_id AND deleted = false AND active = true AND coupons.end_date>now() AND available>0 \
                 JOIN (   /* these are the query parameters */ \
-                    SELECT '+ latitude +'  AS latpoint, '+ longitude +' AS longpoint, \
-                           '+ radio +' AS radius,      111.045 AS distance_unit \
+                    SELECT "+ latitude +"  AS latpoint, "+ longitude +" AS longpoint, \
+                           "+ radio +" AS radius,      111.045 AS distance_unit \
                 ) AS p ON 1=1 \
                 WHERE z.latitude \
                  BETWEEN p.latpoint  - (p.radius / p.distance_unit) \
@@ -711,7 +712,7 @@ def nearest_coupons():
                 AND z.longitude \
                  BETWEEN p.longpoint - (p.radius / (p.distance_unit * COS(RADIANS(p.latpoint)))) \
                      AND p.longpoint + (p.radius / (p.distance_unit * COS(RADIANS(p.latpoint)))) \
-                '+ adult_validation +' \
+                "+ adult_validation +" \
                 ) AS d \
                 WHERE distance <= radius \
                 ORDER BY distance LIMIT 8"
