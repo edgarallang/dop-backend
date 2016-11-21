@@ -264,15 +264,6 @@ def add_friend():
 
             friend_data = friends_schema.dump(friendsRelationship)
 
-            notification_data = { "data": {
-                                        "object_id": friendsRelationship.friends_id,
-                                        "type": notification_type,
-                                        "launcher_names": launcher_user_data.names
-                                    }
-                                 }
-            if user_two.device_token != None  and user_two.device_token != "":
-                send_notification(user_two.device_token, notification_data, user_two.device_os)
-
             #socketio.emit('notification',{'data': 'friend'}, room = user_to_add)
 
             return jsonify({ 'data': friend_data.data,
@@ -375,7 +366,6 @@ def decline_friend():
             db.session.commit()
 
         return jsonify({'data': 'Usuario rechazado'})
-
     return jsonify({'message': 'Oops! algo salió mal :('})
 
 @user.route('/friends/block', methods=['PUT'])
