@@ -293,15 +293,15 @@ def add_friend():
             launcher_user_id = launcher_user_data.user_id
             db.session.commit()
 
-            notification_data = { "data": {
-                                        "object_id": friendshipExist.friends_id,
-                                        "type": notification_type,
-                                        "launcher_names": launcher_user_data.names
-                                    }
-                                }
-            if user_two.device_token != None and user_two.device_token != "":
-                send_notification(user_two.device_token, notification_data, user_two.device_os)
-            #socketio.emit('notification',{'data': 'someone triggered me'}, room = user_to_add)
+            # notification_data = { "data": {
+            #                             "object_id": friendshipExist.friends_id,
+            #                             "type": notification_type,
+            #                             "launcher_names": launcher_user_data.names
+            #                         }
+            #                     }
+            # if user_two.device_token != None and user_two.device_token != "":
+            #     send_notification(user_two.device_token, notification_data, user_two.device_os)
+            # #socketio.emit('notification',{'data': 'someone triggered me'}, room = user_to_add)
         friend_data = friends_schema.dump(friendshipExist)
         return jsonify({ 'data': friend_data.data,
                          'message': 'registro existente'})
