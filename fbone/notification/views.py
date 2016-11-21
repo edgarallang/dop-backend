@@ -95,7 +95,7 @@ def follow_push_notification():
                                 }
                              }
         if user_two.device_token != None  and user_two.device_token != "":
-            send_notification(user_two.device_token, notification_data, user_two.device_os)
+            # send_notification(user_two.device_token, notification_data, user_two.device_os)
 
             if notification_data['data']['type'] == 'user_like':
                 message = 'A '+notification_data['data']['launcher_names'] + ' le ha gustado tu actividad.'
@@ -106,7 +106,7 @@ def follow_push_notification():
             if notification_data['data']['type'] == 'friend_accepted':
                 message = 'Ahora sigues a ' + notification_data['data']['launcher_names'] + '.'
 
-            if device_os == 'ios':
+            if user_two.device_os == 'ios':
                 options = { "sound": "default", "badge": 0, "extra": notification_data }
                 res = apns_client.send(device_token, message, **options)
                 return jsonify({'message': 'success'})
