@@ -111,7 +111,7 @@ def follow_push_notification():
                 res = apns_client.send(user_two.device_token, message, **options)
                 return jsonify({'message': 'success'})
             else:
-                options = { "notification": { "body": message, "title":"dop", "icon":"ic_stat_dop" }}
+                options = { "notification": { "body": message, "title": "dop", "icon": "ic_stat_dop" }}
                 res = gcm_client.send(user_two.device_token, message, **options)
                 return jsonify({'message': 'success'})
 
