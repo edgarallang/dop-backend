@@ -72,7 +72,7 @@ def send_notification(device_token, notification_data, device_os):
 
     return jsonify({'message': 'error'})
 
-@notification.route('/push/follow')
+@notification.route('/push/follow', methods=['POST'])
 def follow_push_notification():
     if request.headers.get('Authorization'):
         payload = parse_token(request, True)
