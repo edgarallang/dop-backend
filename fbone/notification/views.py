@@ -81,6 +81,13 @@ def follow_push_notification():
         user_two = User.query.get(user_to_add)
         friendsRelationship = Friends.query.filter(((Friends.user_one_id == payload['id']) & (Friends.user_two_id == user_to_add))).first()
         launcher_user_data = User.query.get(payload['id'])
+        notification_type = ''
+        if user_two.privacy_status == 0:
+            operation_id = 1
+            notification_type = 'now_friends'
+        elif user_two.privacy_status == 1:
+            operation_id = 0
+            notification_type = 'pending_friends'
         notification_data = { "data": {
                                     "object_id": friendsRelationship.friends_id,
                                     "type": notification_type,
