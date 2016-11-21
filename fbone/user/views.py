@@ -285,10 +285,10 @@ def add_friend():
                 db.session.commit()
 
             if 'notification_id' in request.json:
-               notification_id = request.json['notification_id']
-               notification = Notification.query.get(notification_id)
-               notification.notification_date = date
-               db.session.commit()
+                notification_id = request.json['notification_id']
+                notification = Notification.query.get(notification_id)
+                notification.notification_date = date
+                db.session.commit()
 
             launcher_user_id = launcher_user_data.user_id
             db.session.commit()
