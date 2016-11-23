@@ -186,7 +186,7 @@ def use_coupon():
                                       longitude = request.json['longitude'],
                                       used = True,
                                       used_date = actual_date,
-                                      private = False)
+                                      private = True)
                     db.session.add(client_coupon)
                     db.session.commit()
                     folio = '%d%s%d' % (request.json['branch_id'], "{:%d%m%Y}".format(actual_date), client_coupon.clients_coupon_id)
@@ -248,11 +248,12 @@ def set_coupon_privacy():
         token_index = True
         payload = parse_token(request, token_index)
         folio = request.json['folio']
+        private = request.json['privacy_status']
 
         client_coupon = ClientsCoupon.query.filter(ClientsCoupon.folio == request.json['folio']).first()
 
         if client_coupon:
-            client_coupon.private = True
+            client_coupon.private = private
             db.session.commit()
             return jsonify({'message': 'success'})
 
