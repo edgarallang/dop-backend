@@ -187,7 +187,8 @@ class UserJoinFriends(Schema):
                   'privacy_status',
                   'birth_date',
                   'level',
-                  'exp')
+                  'exp',
+                  'operation_id')
 
 class FriendsCountSchema(Schema):
     class Meta:

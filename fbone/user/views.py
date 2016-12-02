@@ -371,15 +371,14 @@ def decline_friend():
 @user.route('/friends/block', methods=['PUT'])
 def block_friend():
     if request.headers.get('Authorization'):
+        
         payload = parse_token(request, True)
-
         user_id = User.query.get(payload['id']).user_id
 
         friendsRelationship = Friends.query.filter_by(friends_id=request.json['friends_id']).first()
-
         friendsRelationship.operation_id = 3
-
         friendsRelationship.launcher_user_id = user
+
         db.session.commit()
 
         return jsonify({'data': 'Usuario bloqueado'})
