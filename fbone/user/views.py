@@ -557,8 +557,11 @@ def get_privacy():
         token_index = True
         payload = parse_token(request, token_index)
         user = User.query.get(payload['id'])
-        result = db.engine.execute( 'SELECT * FROM users \
-                    INNER JOIN user_first_exp ON users.user_id = user_first_exp.user_id \
+        result = db.engine.execute( 'SELECT u.privacy_status, flag.first_following, \
+                                            flag.first_follower, flag.first_company_fav,\
+                                            flag.first_using \
+                                            FROM users as u \
+                    INNER JOIN user_first_exp as flag ON users.user_id = user_first_exp.user_id \
                     WHERE users.user_id = %d' % (payload['id']))
         flags = user_flags_schema.dump(result)
         return jsonify({ 'flags': flags.data })
