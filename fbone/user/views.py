@@ -561,7 +561,7 @@ def get_privacy():
                     INNER JOIN user_first_exp ON users.user_id = user_first_exp.user_id \
                     WHERE users.user_id = %d' % (payload['id']))
         flags = user_flags_schema.dump(result)
-        return jsonify({ 'flags': flags })
+        return jsonify({ 'flags': flags.data })
     return jsonify({'message': 'Oops! algo salió mal'})
 
 @user.route('/following/get', methods=['GET'])
