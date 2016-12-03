@@ -233,6 +233,14 @@ class UserJoinExchanges(Schema):
                   'total_likes',
                   'user_like')
 
+class UserFlags(Schema):
+    class Meta:
+        fields = ('privacy_status',
+                  'first_following',
+                  'first_follower',
+                  'first_company_fav',
+                  'first_using')
+
 
 class UserActivityNewsfeed(Schema):
     class Meta:
@@ -265,6 +273,7 @@ user_join_exchanges_coupon_schema = UserJoinExchanges(many=True)
 user_join_activity_newsfeed_u = UserActivityNewsfeed(many=True)
 friends_count_schema = FriendsCountSchema(many=True)
 people_schema = PeopleSchema(many=True)
+user_flags_schema = UserFlags()
 device_tokens_schema = UserDeviceTokens(many=True)
 
     # ================================================================

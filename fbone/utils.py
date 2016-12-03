@@ -122,7 +122,7 @@ LEVELS = {
 ############## BADGES CONSTANTS ############
 
 BADGES = {
-    'bronce': 5,
+    'bienvenida': 5,
     'plata': 200,
     'oro': 500,
     'ruby': 1000

@@ -371,7 +371,7 @@ def decline_friend():
 @user.route('/friends/block', methods=['PUT'])
 def block_friend():
     if request.headers.get('Authorization'):
-        
+
         payload = parse_token(request, True)
         user_id = User.query.get(payload['id']).user_id
 
@@ -557,7 +557,11 @@ def get_privacy():
         token_index = True
         payload = parse_token(request, token_index)
         user = User.query.get(payload['id'])
-        return jsonify({'privacy_status': user.privacy_status })
+        result = db.engine.execute( 'SELECT * FROM users \
+                    INNER JOIN user_first_exp ON users.user_id = user_first_exp.user_id \
+                    WHERE users.user_id = %d' % (payload['id']))
+        flags = user_flags_schema.dump(result)
+        return jsonify({ 'flags': flags })
     return jsonify({'message': 'Oops! algo salió mal'})
 
 @user.route('/following/get', methods=['GET'])

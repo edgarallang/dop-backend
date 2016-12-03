@@ -80,7 +80,7 @@ def set_experience(user_id, exp):
     user.exp = old_exp + exp
     badge_name = []
 
-    for key, val in BADGES.iteritems():
+    for key, val in sorted(BADGES.iteritems(), key=lambda x: x[1]):
         if (val > old_exp) and (val <= user.exp):
           badge_name.append(key)
 
@@ -317,7 +317,7 @@ def get_all_coupon_by_branch(branch_id):
 @coupon.route('/available/<int:coupon_id>', methods = ['GET'])
 def get_availables(coupon_id):
     coupon = Coupon.query.get(coupon_id)
-    return jsonify({'available': coupon.available})
+    return jsonify({ 'available': coupon.available })
 
 @coupon.route('/all/for/user/get/', methods = ['GET'])
 def get_all_coupon_for_user():
@@ -329,7 +329,7 @@ def get_all_coupon_for_user():
     user = User.query.get(payload['id'])
     adult_validation = ''
     if not user.adult:
-        adult_validation = 'AND branches_subcategory.subcategory_id!=25'
+        adult_validation = 'AND branches_subcategory.subcategory_id != 25'
 
     list_coupon = db.engine.execute('SELECT coupon_id, branches.branch_id, company_id, branches.name, coupon_folio, description, start_date, \
                                             end_date, coupons.limit, min_spent, coupon_category_id, logo, latitude, longitude, banner, category_id, coupons.available, subcategory.subcategory_id, \
@@ -345,7 +345,7 @@ def get_all_coupon_for_user():
                                     INNER JOIN branches_location on coupons.branch_id = branches_location.branch_id \
                                     JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.branch_id \
                                     JOIN subcategory ON subcategory.subcategory_id = branches_subcategory.subcategory_id \
-                                    WHERE deleted = false AND coupons.available>0 %s AND active=true ORDER BY coupons.start_date DESC LIMIT %s OFFSET 0' % (payload['id'], payload['id'], adult_validation, limit))
+                                    WHERE deleted = false AND coupons.available > 0 %s AND active=true ORDER BY coupons.start_date DESC LIMIT %s OFFSET 0' % (payload['id'], payload['id'], adult_validation, limit))
 
 
     selected_list_coupon = coupons_logo_schema.dump(list_coupon)
