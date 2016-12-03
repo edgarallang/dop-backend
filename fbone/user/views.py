@@ -562,7 +562,7 @@ def get_privacy():
                                             flag.first_using \
                                             FROM users as u \
                     INNER JOIN user_first_exp as flag ON u.user_id = flag.user_id \
-                    WHERE users.user_id = %d' % (payload['id']))
+                    WHERE u.user_id = %d' % (payload['id']))
         flags = user_flags_schema.dump(result)
         return jsonify({ 'flags': flags.data })
     return jsonify({'message': 'Oops! algo salió mal'})
