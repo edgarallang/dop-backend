@@ -551,7 +551,7 @@ def set_device_token():
         return jsonify({'message': 'set succeeded'})
     return jsonify({'message': 'Oops! algo salió mal'})
 
-@user.route('/privacy_status/get', methods=['GET'])
+@user.route('/flags/get', methods=['GET'])
 def get_privacy():
     if request.headers.get('Authorization'):
         token_index = True
