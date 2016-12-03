@@ -553,18 +553,18 @@ def set_device_token():
 
 @user.route('/flags/get', methods=['GET'])
 def get_privacy():
-    if request.headers.get('Authorization'):
+    #if request.headers.get('Authorization'):
         token_index = True
         payload = parse_token(request, token_index)
-        user = User.query.get(payload['id'])
-        result = db.engine.execute( 'SELECT u.privacy_status, flag.first_following, \
+        # user = User.query.get(payload['id'])
+        result = db.engine.execute('SELECT u.privacy_status, flag.first_following, \
                                             flag.first_follower, flag.first_company_fav,\
                                             flag.first_using \
                                             FROM users as u \
                     INNER JOIN user_first_exp as flag ON u.user_id = flag.user_id \
-                    WHERE u.user_id = %d' % (payload['id']))
+                    WHERE u.user_id = 3')
         flags = user_flags_schema.dump(result)
-        return jsonify({ 'flags': flags.data })
+        return jsonify({ 'data': flags.data })
     return jsonify({'message': 'Oops! algo salió mal'})
 
 @user.route('/following/get', methods=['GET'])

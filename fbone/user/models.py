@@ -273,7 +273,7 @@ user_join_exchanges_coupon_schema = UserJoinExchanges(many=True)
 user_join_activity_newsfeed_u = UserActivityNewsfeed(many=True)
 friends_count_schema = FriendsCountSchema(many=True)
 people_schema = PeopleSchema(many=True)
-user_flags_schema = UserFlags()
+user_flags_schema = UserFlags(many=True)
 device_tokens_schema = UserDeviceTokens(many=True)
 
     # ================================================================
