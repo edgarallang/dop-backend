@@ -561,7 +561,7 @@ def get_privacy():
                                             flag.first_follower, flag.first_company_fav,\
                                             flag.first_using \
                                             FROM users as u \
-                    INNER JOIN user_first_exp as flag ON users.user_id = user_first_exp.user_id \
+                    INNER JOIN user_first_exp as flag ON u.user_id = flag.user_id \
                     WHERE users.user_id = %d' % (payload['id']))
         flags = user_flags_schema.dump(result)
         return jsonify({ 'flags': flags.data })
