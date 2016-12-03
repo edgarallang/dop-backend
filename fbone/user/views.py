@@ -555,7 +555,7 @@ def set_device_token():
 def get_privacy():
     #if request.headers.get('Authorization'):
         token_index = True
-        payload = parse_token(request, token_index)
+        #payload = parse_token(request, token_index)
         # user = User.query.get(payload['id'])
         result = db.engine.execute('SELECT u.privacy_status, flag.first_following, \
                                             flag.first_follower, flag.first_company_fav,\
