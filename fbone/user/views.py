@@ -565,7 +565,7 @@ def get_privacy():
                     WHERE u.user_id = 3')
         flags = user_flags_schema.dump(result)
         return jsonify({ 'data': flags.data })
-    return jsonify({'message': 'Oops! algo salió mal'})
+    #return jsonify({'message': 'Oops! algo salió mal'})
 
 @user.route('/following/get', methods=['GET'])
 def get_following():
