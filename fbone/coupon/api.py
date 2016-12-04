@@ -202,13 +202,11 @@ def use_coupon():
                     user_level = level_up(payload['id'])
                     db.session.commit()
 
-                    if request.json['first_using']:
-                        user_first_exp = UserFirstEXP.query.get(payload['id'])
+                    if not request.json['first_using']:
+                        user_first_exp = UserFirstEXP.query.filter_by(user_id = payload['id']).first()
                         user_first_exp.first_using = True
 
                         db.session.commit()
-
-
 
                     return jsonify({'data': branch_data.data, 'reward': reward, 'level': user_level, 'folio': folio })
                 else:
