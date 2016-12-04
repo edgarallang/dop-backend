@@ -167,8 +167,8 @@ def use_coupon():
 
         recently_used = ClientsCoupon.query.filter(and_(ClientsCoupon.coupon_id==coupon_id),
                                                        (ClientsCoupon.user_id==payload['id']),
-                                                       (ClientsCoupon.used==True))\
-                                                        .order_by(desc(ClientsCoupon.used_date))\
+                                                       (ClientsCoupon.used==True)) \
+                                                        .order_by(desc(ClientsCoupon.used_date)) \
                                                         .first()
 
         coupon = Coupon.query.get(request.json['coupon_id'])
@@ -201,6 +201,15 @@ def use_coupon():
                     reward = set_experience(payload['id'], USING)
                     user_level = level_up(payload['id'])
                     db.session.commit()
+
+                    if request.json['first_using']:
+                        user_first_exp = UserFirstEXP.query.get(payload['id'])
+                        user_first_exp.first_using = True
+
+                        db.session.commit()
+
+
+
                     return jsonify({'data': branch_data.data, 'reward': reward, 'level': user_level, 'folio': folio })
                 else:
                     return jsonify({'message': 'agotado'})
