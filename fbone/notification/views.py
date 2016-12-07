@@ -73,7 +73,7 @@ def send_notification(device_token, notification_data, device_os):
     return jsonify({'message': 'error'})
 
 @notification.route('/push/like', methods=['POST'])
-def follow_push_notification():
+def like_push_notification():
     if request.headers.get('Authorization'):
         payload = parse_token(request, True)
         user_to_notify = request.json['user_two_id']
@@ -94,6 +94,7 @@ def follow_push_notification():
             options = { "notification": { "body": message, "title":"dop", "icon":"ic_stat_dop" }}
             res = gcm_client.send(device_token, message, **options)
             return jsonify({'message': 'success'})
+    return jsonify({'message': 'error'})
 
 
 @notification.route('/push/follow', methods=['POST'])
