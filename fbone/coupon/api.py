@@ -943,14 +943,14 @@ def like_used_coupon():
                 liked_user_data = User.query.filter_by(user_id = liked_user.user_id).first()
                 launcher_user_data = User.query.filter_by(user_id = payload['id']).first()
 
-                notification_data = { "data": {
-                                            "object_id": liked_user.user_id,
-                                            "type": "user_like",
-                                            "launcher_names": launcher_user_data.names
-                                        }
-                                     }
-                if liked_user_data.device_token != None and liked_user_data.device_token != "":
-                    callback = send_notification(liked_user_data.device_token, notification_data, liked_user_data.device_os)
+                # notification_data = { "data": {
+                #                             "object_id": liked_user.user_id,
+                #                             "type": "user_like",
+                #                             "launcher_names": launcher_user_data.names
+                #                         }
+                #                      }
+                # if liked_user_data.device_token != None and liked_user_data.device_token != "":
+                #     callback = send_notification(liked_user_data.device_token, notification_data, liked_user_data.device_os)
 
             db.session.add(user_like)
             db.session.commit()
