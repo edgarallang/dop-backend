@@ -72,6 +72,30 @@ def send_notification(device_token, notification_data, device_os):
 
     return jsonify({'message': 'error'})
 
+@notification.route('/push/like', methods=['POST'])
+def follow_push_notification():
+    if request.headers.get('Authorization'):
+        payload = parse_token(request, True)
+        user_to_notify = request.json['user_two_id']
+        launcher_user_data = User.query.get(payload['id'])
+
+        notification_data = { "data": {
+                                    "object_id": user_to_notify,
+                                    "type": "user_like",
+                                    "launcher_names": launcher_user_data.names
+                                }
+                             }
+
+        if device_os == 'ios':
+            options = { "sound": "default" ,"badge": 0,"extra": notification_data }
+            res = apns_client.send(device_token, message, **options)
+            return jsonify({'message': 'success'})
+        else:
+            options = { "notification": { "body": message, "title":"dop", "icon":"ic_stat_dop" }}
+            res = gcm_client.send(device_token, message, **options)
+            return jsonify({'message': 'success'})
+
+
 @notification.route('/push/follow', methods=['POST'])
 def follow_push_notification():
     if request.headers.get('Authorization'):
