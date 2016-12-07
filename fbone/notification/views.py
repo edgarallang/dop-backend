@@ -77,6 +77,7 @@ def like_push_notification():
     if request.headers.get('Authorization'):
         payload = parse_token(request, True)
         user_to_notify = request.json['user_two_id']
+        user_two = User.query.get(user_to_notify)
         launcher_user_data = User.query.get(payload['id'])
 
         notification_data = { "data": {
@@ -86,13 +87,13 @@ def like_push_notification():
                                 }
                              }
 
-        if device_os == 'ios':
+        if user_two.device_os == 'ios':
             options = { "sound": "default" ,"badge": 0,"extra": notification_data }
-            res = apns_client.send(device_token, message, **options)
+            res = apns_client.send(user_two.device_token, message, **options)
             return jsonify({'message': 'success'})
         else:
             options = { "notification": { "body": message, "title":"dop", "icon":"ic_stat_dop" }}
-            res = gcm_client.send(device_token, message, **options)
+            res = gcm_client.send(user_two.device_token, message, **options)
             return jsonify({'message': 'success'})
     return jsonify({'message': 'error'})
 
