@@ -79,6 +79,7 @@ def like_push_notification():
         user_to_notify = request.json['user_two_id']
         user_two = User.query.get(user_to_notify)
         launcher_user_data = User.query.get(payload['id'])
+        message = 'A '+ launcher_user_data.names + ' le ha gustado tu actividad.'
 
         notification_data = { "data": {
                                     "object_id": user_to_notify,
