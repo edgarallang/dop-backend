@@ -92,6 +92,43 @@ def avatar(user_id, filename):
     dir_path = os.path.join(APP.config['UPLOAD_FOLDER'], 'user_%s' % user_id)
     return send_from_directory(dir_path, filename, as_attachment=True)
 
+@user.route('/signup/email', methods=['POST'])
+def signup_email():
+    emailUser = User.query.filter_by(email = request.json['email']).first()
+    if emailUser:
+        return jsonify({'data', 'email_exist'})
+
+    birth_date = request.json['birth_date']
+    is_adult = calculate_age(birth_date)
+    emailUser = User(names = request.json['names'],
+                     surnames = request.json['surnames'],
+                     birth_date = birth_date,
+                     level = 0,
+                     exp = 0,
+                     privacy_status = 0,
+                     device_os = request.json['device_os'],
+                     adult = is_adult)
+
+    db.session.add(emailUser)
+    db.session.commit()
+    token = create_token(emailUser)
+    return jsonify(token=token)
+
+@user.route('/login/email', methods=['POST'])
+def email_login():
+    emailUser = User.query.filter_by(email = request.json['email']).first()
+
+    if not emailUser:
+        return jsonify({ 'data': 'not_exist' })
+
+    userSession = UserSession.query.filter_by(user_id = emailUser.user_id).first()
+    gotPass = request.json['password']
+    if userSession.password == gotPass:
+        token = create_token(emailUser)
+        return jsonify(token=token)
+    else:
+        return jsonify({'data': 'wrong_password'})
+
 @user.route('/login/facebook', methods=['POST'])
 def facebook_login():
     facebookUser = User.query.filter_by(facebook_key = request.json['facebook_key']).first()

@@ -89,7 +89,7 @@ def like_push_notification():
                              }
 
         if user_two.device_os == 'ios':
-            options = { "sound": "default" ,"badge": 0,"extra": notification_data }
+            options = { "sound": "default", "badge": 0,"extra": notification_data }
             res = apns_client.send(user_two.device_token, message, **options)
             return jsonify({'message': 'success'})
         else:
