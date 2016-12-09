@@ -116,7 +116,7 @@ def signup_email():
 
 @user.route('/login/email', methods=['POST'])
 def email_login():
-    emailUser = User.query.filter_by(email = request.json['email']).first()
+    emailUser = UserSession.query.filter_by(email = request.json['email']).first()
 
     if not emailUser:
         return jsonify({ 'data': 'not_exist' })
