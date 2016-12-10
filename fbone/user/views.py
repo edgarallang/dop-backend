@@ -98,7 +98,6 @@ def email_verification():
     if emailUser:
         return jsonify({'data', 'email_exist'})
 
-    birth_date = request.json['birth_date']
 
     emailUser = UserSession(names = request.json['email'])
 
