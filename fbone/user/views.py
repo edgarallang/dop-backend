@@ -109,14 +109,14 @@ def email_verification():
 
         token = create_token(newUser)
         return jsonify(token=token)
-        
-    return jsonify({'data', 'email_exist'})
+
+    return jsonify({'data': 'email_exist'})
 
 @user.route('/signup/email', methods=['POST'])
 def signup_email():
     emailUser = User.query.filter_by(email = request.json['email']).first()
     if emailUser:
-        return jsonify({'data', 'email_exist'})
+        return jsonify({'data': 'email_exist'})
 
     birth_date = request.json['birth_date']
     is_adult = calculate_age(birth_date)
