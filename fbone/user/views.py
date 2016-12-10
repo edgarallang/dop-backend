@@ -93,7 +93,7 @@ def avatar(user_id, filename):
     return send_from_directory(dir_path, filename, as_attachment=True)
 
 @user.route('/signup/email/verification', methods=['POST'])
-def signup_email():
+def email_verification():
     emailUser = UserSession.query.filter_by(email = request.json['email']).first()
     if emailUser:
         return jsonify({'data', 'email_exist'})
