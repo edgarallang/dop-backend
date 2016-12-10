@@ -95,10 +95,7 @@ def avatar(user_id, filename):
 @user.route('/signup/email/verification', methods=['POST'])
 def email_verification():
     emailUser = UserSession.query.filter_by(email = request.json['email']).first()
-    if emailUser:
-        return jsonify({'data', 'email_exist'})
-
-    else:
+    if not emailUser:
         newUser = User(adult = False)
 
         db.session.add(newUser)
@@ -112,6 +109,8 @@ def email_verification():
 
         token = create_token(newUser)
         return jsonify(token=token)
+        
+    return jsonify({'data', 'email_exist'})
 
 @user.route('/signup/email', methods=['POST'])
 def signup_email():
