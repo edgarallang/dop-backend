@@ -98,22 +98,20 @@ def email_verification():
     if emailUser:
         return jsonify({'data', 'email_exist'})
 
+    else:
+        newUser = User(adult = False)
 
+        db.session.add(newUser)
+        db.session.commit()
 
+        emailUser = UserSession(user_id = newUser.user_id, email = request.json['email'],
+                                password = request.json['password'])
 
-    newUser = User(adult = False)
+        db.session.add(emailUser)
+        db.session.commit()
 
-    db.session.add(newUser)
-    db.session.commit()
-
-    emailUser = UserSession(user_id = newUser.user_id, email = request.json['email'],
-                            password = request.json['password'])
-
-    db.session.add(emailUser)
-    db.session.commit()
-
-    token = create_token(newUser)
-    return jsonify(token=token)
+        token = create_token(newUser)
+        return jsonify(token=token)
 
 @user.route('/signup/email', methods=['POST'])
 def signup_email():
