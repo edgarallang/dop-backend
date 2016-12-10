@@ -99,7 +99,7 @@ def email_verification():
         return jsonify({'data', 'email_exist'})
 
 
-    emailUser = UserSession(names = request.json['email'])
+    emailUser = UserSession(email = request.json['email'])
 
     newUser = User()
 
