@@ -107,7 +107,8 @@ def email_verification():
                      level = 0,
                      exp = 0,
                      privacy_status = 0,
-                     device_os = None)
+                     device_os = None
+                     is_adult = False)
 
     db.session.add(newUser)
     db.session.commit()
