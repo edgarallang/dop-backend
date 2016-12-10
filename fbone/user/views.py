@@ -92,6 +92,23 @@ def avatar(user_id, filename):
     dir_path = os.path.join(APP.config['UPLOAD_FOLDER'], 'user_%s' % user_id)
     return send_from_directory(dir_path, filename, as_attachment=True)
 
+@user.route('/signup/email/verification', methods=['POST'])
+def signup_email():
+    emailUser = UserSession.query.filter_by(email = request.json['email']).first()
+    if emailUser:
+        return jsonify({'data', 'email_exist'})
+
+    birth_date = request.json['birth_date']
+
+    emailUser = UserSession(names = request.json['email'])
+
+    newUser = User()
+
+    db.session.add(newUser)
+    db.session.commit()
+    token = create_token(newUser)
+    return jsonify(token=token)
+
 @user.route('/signup/email', methods=['POST'])
 def signup_email():
     emailUser = User.query.filter_by(email = request.json['email']).first()
