@@ -99,15 +99,19 @@ def email_verification():
         return jsonify({'data', 'email_exist'})
 
 
-    emailUser = UserSession(email = request.json['email'],
-                            password = request.json['password'])
+
 
     newUser = User(adult = False)
 
     db.session.add(newUser)
-    db.session.add(emailUser)
-
     db.session.commit()
+
+    emailUser = UserSession(user_id = newUser.user_id, email = request.json['email'],
+                            password = request.json['password'])
+
+    db.session.add(emailUser)
+    db.session.commit()
+
     token = create_token(newUser)
     return jsonify(token=token)
 
