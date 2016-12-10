@@ -101,7 +101,13 @@ def email_verification():
 
     emailUser = UserSession(email = request.json['email'])
 
-    newUser = User()
+    newUser = User(names = None,
+                     surnames = None,
+                     birth_date = None,
+                     level = 0,
+                     exp = 0,
+                     privacy_status = 0,
+                     device_os = None)
 
     db.session.add(newUser)
     db.session.commit()
