@@ -7,9 +7,10 @@ import requests
 from flask import Blueprint, request, jsonify, session
 from flask import current_app as app
 from flask.ext.login import login_required, current_user
+from flask.ext.mail import Mail, Message as MailMessage
 from jwt import DecodeError, ExpiredSignature
 from .models import *
-from ..extensions import db, socketio
+from ..extensions import db, socketio, mail
 from marshmallow import pprint
 from ..notification import *
 from ..badge import *
@@ -92,11 +93,31 @@ def avatar(user_id, filename):
     dir_path = os.path.join(APP.config['UPLOAD_FOLDER'], 'user_%s' % user_id)
     return send_from_directory(dir_path, filename, as_attachment=True)
 
+@user.route('/signup/email/verification', methods=['POST'])
+def email_verification():
+    emailUser = UserSession.query.filter_by(email = request.json['email']).first()
+    if not emailUser:
+        newUser = User(adult = False)
+
+        db.session.add(newUser)
+        db.session.commit()
+
+        emailUser = UserSession(user_id = newUser.user_id, email = request.json['email'],
+                                password = request.json['password'])
+
+        db.session.add(emailUser)
+        db.session.commit()
+
+        token = create_token(newUser)
+        return jsonify(token=token)
+
+    return jsonify({'data': 'email_exist'})
+
 @user.route('/signup/email', methods=['POST'])
 def signup_email():
     emailUser = User.query.filter_by(email = request.json['email']).first()
     if emailUser:
-        return jsonify({'data', 'email_exist'})
+        return jsonify({'data': 'email_exist'})
 
     birth_date = request.json['birth_date']
     is_adult = calculate_age(birth_date)
@@ -116,7 +137,7 @@ def signup_email():
 
 @user.route('/login/email', methods=['POST'])
 def email_login():
-    emailUser = User.query.filter_by(email = request.json['email']).first()
+    emailUser = UserSession.query.filter_by(email = request.json['email']).first()
 
     if not emailUser:
         return jsonify({ 'data': 'not_exist' })
@@ -128,6 +149,14 @@ def email_login():
         return jsonify(token=token)
     else:
         return jsonify({'data': 'wrong_password'})
+
+@user.route('/forgot/password', methods=['GET'])
+def forgot_password():
+    msg = MailMessage('Hi', sender = 'eduardo@halleydevs.com', recipients = ['eduardo.quintero52@gmail.com'])
+    msg.body = "This is the email body sending with flask!"
+    mail.send(msg)
+    #msg.html = '<b>HTML</b> body'
+    return jsonify({'data': 'success'})
 
 @user.route('/login/facebook', methods=['POST'])
 def facebook_login():
