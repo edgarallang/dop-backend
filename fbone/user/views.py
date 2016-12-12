@@ -605,17 +605,17 @@ def set_privacy():
 
 @user.route('/device_token/set', methods=['POST'])
 def set_device_token():
-    # if request.headers.get('Authorization'):
-    token_index = True
-    payload = parse_token(request, token_index)
-    device_token = request.json['device_token']
-    user = User.query.get(payload['id'])
-    user.device_token = device_token
+    if request.headers.get('Authorization'):
+        token_index = True
+        payload = parse_token(request, token_index)
+        device_token = request.json['device_token']
+        user = User.query.get(payload['id'])
+        user.device_token = device_token
 
-    db.session.commit()
+        db.session.commit()
 
-    return jsonify({'message': 'set succeeded'})
-    # return jsonify({'message': 'Oops! algo salió mal'})
+        return jsonify({'message': 'set_succeeded'})
+    return jsonify({'message': 'Oops! algo salió mal'})
 
 @user.route('/flags/get', methods=['GET'])
 def get_privacy():
