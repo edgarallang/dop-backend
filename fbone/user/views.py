@@ -150,7 +150,7 @@ def email_login():
     else:
         return jsonify({'data': 'wrong_password'})
 
-@user.route('/forgot/password', methods=['POST'])
+@user.route('/forgot/password', methods=['GET'])
 def forgot_password():
     msg = MailMessage('Hi', sender = 'no-reply@hallydevs.com', recipients = ['eduardo.quintero52@gmail.com'])
     msg.body = "This is the email body sending with flask!"
@@ -158,7 +158,7 @@ def forgot_password():
     #msg.html = '<b>HTML</b> body'
     return jsonify({'data': 'success'})
 
-@user.route('/login/facebook', methods=['GET'])
+@user.route('/login/facebook', methods=['POST'])
 def facebook_login():
     facebookUser = User.query.filter_by(facebook_key = request.json['facebook_key']).first()
 
