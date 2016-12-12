@@ -150,7 +150,7 @@ def email_login():
     else:
         return jsonify({'data': 'wrong_password'})
 
-@user.route('forgot/password', methods=['POST'])
+@user.route('/forgot/password', methods=['POST'])
 def forgot_password():
     msg = MailMessage('Hi', sender = 'no-reply@hallydevs.com', recipients = ['eduardo.quintero52@gmail.com'])
     msg.body = "This is the email body sending with flask!"
