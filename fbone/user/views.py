@@ -19,6 +19,7 @@ from flask.ext.socketio import SocketIO, send, emit, join_room, leave_room
 from ..utils import *
 
 user = Blueprint('user', __name__, url_prefix='/api/user')
+mail = Mail(app)
 
 def parse_token(req, token_index):
     if token_index:
