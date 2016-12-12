@@ -152,7 +152,7 @@ def email_login():
 
 @user.route('/forgot/password', methods=['GET'])
 def forgot_password():
-    msg = MailMessage('Hi', sender = 'no-reply@hallydevs.com', recipients = ['eduardo.quintero52@gmail.com'])
+    msg = MailMessage('Hi', sender = 'eduardo@halleydevs.com', recipients = ['eduardo.quintero52@gmail.com'])
     msg.body = "This is the email body sending with flask!"
     mail.send(msg)
     #msg.html = '<b>HTML</b> body'
