@@ -7,6 +7,7 @@ import requests
 from flask import Blueprint, request, jsonify, session
 from flask import current_app as app
 from flask.ext.login import login_required, current_user
+from flask.ext.mail import Mail, Message as MailMessage
 from jwt import DecodeError, ExpiredSignature
 from .models import *
 from ..extensions import db, socketio
@@ -148,6 +149,14 @@ def email_login():
         return jsonify(token=token)
     else:
         return jsonify({'data': 'wrong_password'})
+
+@user.route('forgot/password', methods=['POST'])
+def forgot_password():
+    msg = MailMessage('Hi', sender = 'no-reply@hallydevs.com', recipients = ['eduardo.quintero52@gmail.com'])
+    msg.body = "This is the email body sending with flask!"
+    mail.send(msg)
+    #msg.html = '<b>HTML</b> body'
+    return jsonify({'data': 'success'})
 
 @user.route('/login/facebook', methods=['POST'])
 def facebook_login():
