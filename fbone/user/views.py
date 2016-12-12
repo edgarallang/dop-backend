@@ -158,7 +158,7 @@ def forgot_password():
     #msg.html = '<b>HTML</b> body'
     return jsonify({'data': 'success'})
 
-@user.route('/login/facebook', methods=['POST'])
+@user.route('/login/facebook', methods=['GET'])
 def facebook_login():
     facebookUser = User.query.filter_by(facebook_key = request.json['facebook_key']).first()
 
