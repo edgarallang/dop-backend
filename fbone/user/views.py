@@ -10,7 +10,7 @@ from flask.ext.login import login_required, current_user
 from flask.ext.mail import Mail, Message as MailMessage
 from jwt import DecodeError, ExpiredSignature
 from .models import *
-from ..extensions import db, socketio
+from ..extensions import db, socketio, mail
 from marshmallow import pprint
 from ..notification import *
 from ..badge import *
@@ -19,7 +19,6 @@ from flask.ext.socketio import SocketIO, send, emit, join_room, leave_room
 from ..utils import *
 
 user = Blueprint('user', __name__, url_prefix='/api/user')
-mail = Mail(app)
 
 def parse_token(req, token_index):
     if token_index:
