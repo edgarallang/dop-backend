@@ -109,7 +109,6 @@ def upload_logo():
 
         name = '%s%s' % ("{:%d%m%Y%s}".format(date),'.png')
 
-        is_adult = calculate_age(birth_date)
 
         if image:
             image.save(os.path.join(directory, name))
@@ -117,7 +116,7 @@ def upload_logo():
             user.names = names
             user.surnames = surnames
             user.birth_date = birth_date
-            user.adult = is_adult
+            user.adult = calculate_age(user.birth_date)
             db.session.commit()
 
 
