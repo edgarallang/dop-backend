@@ -110,7 +110,7 @@ def upload_logo():
 
         is_adult = calculate_age(datetime.strptime(birth_date, "%m/%d/%Y"))
 
-        if request.files['photo'] not None:
+        if 'photo' in request.files:
             image = request.files['photo']
             name = '%s%s' % ("{:%d%m%Y%s}".format(date),'.png')
             image.save(os.path.join(directory, name))
