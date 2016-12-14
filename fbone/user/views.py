@@ -99,12 +99,11 @@ def upload_logo():
         if not os.path.isdir(directory):
             os.makedirs(directory)
 
-        print "Simon"
         image = request.files['photo']
 
         route = directory + "/profile.png"
         date = datetime.now()
-        name = '%s' % "{:%d%m%Y}".format(date)
+        name = '%s%s' % ("{:%d%m%Y}".format(date),'.png')
         if image:
             image.save(os.path.join(directory, name))
 
