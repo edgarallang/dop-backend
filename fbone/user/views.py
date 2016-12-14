@@ -100,8 +100,8 @@ def upload_logo():
             os.makedirs(directory)
 
         image = request.files['photo']
-
-        print request.files['names']
+        print "OK"
+        print "" + request.files['names']
 
         route = directory + "/profile.png"
         date = datetime.now()
