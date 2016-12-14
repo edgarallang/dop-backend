@@ -157,7 +157,7 @@ def signup_email():
         return jsonify({'data': 'email_exist'})
 
     birth_date = request.json['birth_date']
-    is_adult = calculate_age(birth_date)
+    is_adult = calculate_age(datetime.strptime(birth_date, "%m/%d/%Y"))
     emailUser = User(names = request.json['names'],
                      surnames = request.json['surnames'],
                      birth_date = birth_date,
@@ -199,7 +199,7 @@ def forgot_password():
 def facebook_login():
     facebookUser = User.query.filter_by(facebook_key = request.json['facebook_key']).first()
 
-    is_adult = False
+    is_adult = calculate_age(datetime.strptime(request.json['birth_date'], "%m/%d/%Y"))
 
     if not facebookUser:
         facebookUser = User(names = request.json['names'],
@@ -240,7 +240,7 @@ def facebook_login():
         if not facebookUser.device_token == request.json['device_token']:
             facebookUser.device_token = request.json['device_token']
             facebookUser.device_os = request.json['device_os']
-            facebookUser.adult = calculate_age(facebookUser.birth_date)
+            facebookUser.adult = calculate_age(datetime.strptime(facebookUser.birth_date, "%m/%d/%Y"))
             db.session.commit()
 
     token = create_token(facebookUser)
