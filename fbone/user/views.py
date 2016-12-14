@@ -100,15 +100,20 @@ def upload_logo():
             os.makedirs(directory)
 
         print "Simon"
-        image = request.files['photo']
+        files = request.files['photo']
+
         print "request image"
+
         route = directory + "/profile.png"
-        data = image.split(",")
-        imgdata = base64.b64decode(data[1])
+        for file in files:
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(directory,filename))
+        #data = image.split(",")
+        #imgdata = base64.b64decode(data[1])
         print "almos write"
-        with open(route, 'wb') as f:
-            print "access"
-            f.write(imgdata)
+        #with open(route, 'wb') as f:
+        #    print "access"
+        #    f.write(image)
 
         print "complete"
 
