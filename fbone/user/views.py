@@ -109,7 +109,7 @@ def upload_logo():
 
         name = '%s%s' % ("{:%d%m%Y%s}".format(date),'.png')
 
-        is_adult = calculate_age(datetime.strptime(birthday))
+        is_adult = calculate_age(datetime.strptime(birth_date))
 
         if image:
             image.save(os.path.join(directory, name))
