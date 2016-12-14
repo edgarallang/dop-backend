@@ -106,8 +106,7 @@ def upload_logo():
 
         route = directory + "/profile.png"
         for file in files:
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(directory,filename))
+            file.save(os.path.join(directory,"filename"))
         #data = image.split(",")
         #imgdata = base64.b64decode(data[1])
         print "almos write"
