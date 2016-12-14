@@ -103,6 +103,7 @@ def upload_logo():
         names = request.form['names']
         surnames = request.form['surnames']
         birth_date = request.form['birthday']
+        gender = request.form['gender']
 
         route = directory + "/profile.png"
         date = datetime.now()
@@ -113,12 +114,14 @@ def upload_logo():
 
         if image:
             image.save(os.path.join(directory, name))
-            user = User.query.filter_by(user_id = payload['id']).first()
-            user.names = names
-            user.surnames = surnames
-            user.birth_date = birth_date
-            user.adult = is_adult
-            db.session.commit()
+        
+        user = User.query.filter_by(user_id = payload['id']).first()
+        user.names = names
+        user.surnames = surnames
+        user.birth_date = birth_date
+        user.gender = gender
+        user.adult = is_adult
+        db.session.commit()
 
 
         return jsonify({'data':'image'})
