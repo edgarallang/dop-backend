@@ -635,7 +635,7 @@ def set_device_token():
 
         db.session.commit()
 
-        return jsonify({'message': 'set succeeded'})
+        return jsonify({'message': 'set_succeeded'})
     return jsonify({'message': 'Oops! algo salió mal'})
 
 @user.route('/flags/get', methods=['GET'])
