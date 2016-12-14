@@ -243,7 +243,6 @@ def facebook_login():
         if not facebookUser.device_token == request.json['device_token']:
             facebookUser.device_token = request.json['device_token']
             facebookUser.device_os = request.json['device_os']
-            facebookUser.adult = calculate_age(datetime.strptime(facebookUser.birth_date, "%m/%d/%Y"))
             db.session.commit()
     token = create_token(facebookUser)
 
