@@ -99,7 +99,6 @@ def upload_logo():
         if not os.path.isdir(directory):
             os.makedirs(directory)
 
-        image = request.files['photo']
         names = request.form['names']
         surnames = request.form['surnames']
         birth_date = request.form['birthday']
@@ -108,11 +107,12 @@ def upload_logo():
         route = directory + "/profile.png"
         date = datetime.now()
 
-        name = '%s%s' % ("{:%d%m%Y%s}".format(date),'.png')
 
         is_adult = calculate_age(datetime.strptime(birth_date, "%m/%d/%Y"))
 
-        if image:
+        if request.files['photo'] not None:
+            image = request.files['photo']
+            name = '%s%s' % ("{:%d%m%Y%s}".format(date),'.png')
             image.save(os.path.join(directory, name))
         
         user = User.query.filter_by(user_id = payload['id']).first()
