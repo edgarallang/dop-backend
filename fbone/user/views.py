@@ -99,13 +99,18 @@ def upload_logo():
         if not os.path.isdir(directory):
             os.makedirs(directory)
 
+        print "Simon"
         image = request.form['photo']
+        print "request image"
         route = directory + "/profile.png"
         #data = image.split(",")
         #imgdata = base64.b64decode(data[1])
-        imgdata = base64.b64decode(image)
+        print "almos write"
         with open(route, 'wb') as f:
-            f.write(imgdata)
+            print "access"
+            f.write(image)
+            
+        print "complete"
 
         return jsonify({'data':'image'})
     return jsonify({'message': 'Oops! algo salió mal :('})
