@@ -4,6 +4,8 @@ import os
 import jwt
 import json
 import requests
+import base64
+from binascii import a2b_base64
 from flask import Blueprint, request, jsonify, session
 from flask import current_app as app
 from flask.ext.login import login_required, current_user
