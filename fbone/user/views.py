@@ -95,6 +95,7 @@ def upload_logo():
         payload = parse_token(request, True)
 
         directory = "../users/images/%d" % payload['id']
+        db_directory = "users/images/%d/" % payload['id']
 
         if not os.path.isdir(directory):
             os.makedirs(directory)
@@ -114,7 +115,7 @@ def upload_logo():
             image = request.files['photo']
             name = '%s%s' % ("{:%d%m%Y%s}".format(date),'.png')
             image.save(os.path.join(directory, name))
-            userImage.main_image = app.config['DOMAIN'] + directory + name
+            userImage.main_image = app.config['DOMAIN'] + db_directory + name
             db.session.commit()
         
         user = User.query.filter_by(user_id = payload['id']).first()
