@@ -94,7 +94,7 @@ def upload_logo():
     if request.headers.get('Authorization'):
         payload = parse_token(request, True)
 
-        directory = "../users/images/%d" % payload['user_id']
+        directory = "../users/images/%d" % payload['id']
 
         if not os.path.isdir(directory):
             os.makedirs(directory)
