@@ -87,7 +87,7 @@ def profile(userId):
 
     return jsonify({'data': user_with_image})
 
-@company.route('/profile/photo', methods=['GET','POST'])
+@user.route('/profile/photo', methods=['GET','POST'])
 def upload_logo(companyId):
     if request.headers.get('Authorization'):
         payload = parse_token(request, True)
