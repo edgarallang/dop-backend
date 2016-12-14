@@ -100,7 +100,7 @@ def upload_logo():
             os.makedirs(directory)
 
         print "Simon"
-        image = request.form['photo']
+        image = request.file['photo']
         print "request image"
         route = directory + "/profile.png"
         #data = image.split(",")
@@ -109,7 +109,7 @@ def upload_logo():
         with open(route, 'wb') as f:
             print "access"
             f.write(image)
-            
+
         print "complete"
 
         return jsonify({'data':'image'})
