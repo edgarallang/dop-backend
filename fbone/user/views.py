@@ -101,6 +101,8 @@ def upload_logo():
 
         image = request.files['photo']
 
+        print request.files['names']
+
         route = directory + "/profile.png"
         date = datetime.now()
         name = '%s%s' % ("{:%d%m%Y%s}".format(date),'.png')
