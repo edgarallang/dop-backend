@@ -103,12 +103,12 @@ def upload_logo():
         image = request.files['photo']
         print "request image"
         route = directory + "/profile.png"
-        #data = image.split(",")
-        #imgdata = base64.b64decode(data[1])
+        data = image.split(",")
+        imgdata = base64.b64decode(data[1])
         print "almos write"
         with open(route, 'wb') as f:
             print "access"
-            f.write(image)
+            f.write(imgdata)
 
         print "complete"
 
