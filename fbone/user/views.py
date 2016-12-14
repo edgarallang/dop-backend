@@ -100,7 +100,7 @@ def upload_logo():
             os.makedirs(directory)
 
         print "Simon"
-        image = request.file['photo']
+        image = request.files['photo']
         print "request image"
         route = directory + "/profile.png"
         #data = image.split(",")
