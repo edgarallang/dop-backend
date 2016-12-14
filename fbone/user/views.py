@@ -200,7 +200,7 @@ def facebook_login():
     facebookUser = User.query.filter_by(facebook_key = request.json['facebook_key']).first()
 
     is_adult = calculate_age(datetime.strptime(request.json['birth_date'], "%m/%d/%Y"))
-
+    facebookUser.adult = is_adult
     if not facebookUser:
         facebookUser = User(names = request.json['names'],
                             surnames = request.json['surnames'],
@@ -242,7 +242,7 @@ def facebook_login():
             facebookUser.device_os = request.json['device_os']
             facebookUser.adult = calculate_age(datetime.strptime(facebookUser.birth_date, "%m/%d/%Y"))
             db.session.commit()
-
+    db.session.commit()
     token = create_token(facebookUser)
 
     return jsonify(token=token)
