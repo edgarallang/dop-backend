@@ -102,15 +102,20 @@ def upload_logo():
         image = request.files['photo']
         names = request.form['names']
         surnames = request.form['surnames']
-        birthday = request.form['birthday']
-
-        print birthday
+        birth_date = request.form['birthday']
 
         route = directory + "/profile.png"
         date = datetime.now()
+
         name = '%s%s' % ("{:%d%m%Y%s}".format(date),'.png')
         if image:
             image.save(os.path.join(directory, name))
+            user = User.query.filter_by(user_id = payload['id']).first()
+            user.names = names
+            user.surnames = surnames
+            user.birth_date = birth_date
+            db.session.commit()
+
 
         return jsonify({'data':'image'})
     return jsonify({'message': 'Oops! algo salió mal :('})
