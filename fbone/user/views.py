@@ -102,8 +102,8 @@ def upload_logo():
         image = request.form['photo']
         route = directory + "/profile.png"
         #data = image.split(",")
-        imgdata = base64.b64decode(data[1])
-
+        #imgdata = base64.b64decode(data[1])
+        imgdata = base64.b64decode(image)
         with open(route, 'wb') as f:
             f.write(imgdata)
 
