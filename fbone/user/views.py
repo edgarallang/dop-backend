@@ -104,16 +104,18 @@ def upload_logo():
         birth_date = request.form['birthday']
         gender = request.form['gender']
 
-        route = directory + "/profile.png"
         date = datetime.now()
 
 
         is_adult = calculate_age(datetime.strptime(birth_date, "%m/%d/%Y"))
 
+        userImage = UserImage.query.filter_by(user_id = payload['id']).first()
         if 'photo' in request.files:
             image = request.files['photo']
             name = '%s%s' % ("{:%d%m%Y%s}".format(date),'.png')
             image.save(os.path.join(directory, name))
+            userImage.main_image = app.config['DOMAIN'] + directory + name
+            db.session.commit()
         
         user = User.query.filter_by(user_id = payload['id']).first()
         user.names = names
@@ -144,8 +146,11 @@ def email_verification():
 
         emailUser = UserSession(user_id = newUser.user_id, email = request.json['email'],
                                 password = request.json['password'])
+        userImage = UserImage(user_id=newUser.user_id,
+                              main_image="")
 
         db.session.add(emailUser)
+        db.session.add(userImage)
         db.session.commit()
 
         token = create_token(newUser)
