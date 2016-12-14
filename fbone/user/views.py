@@ -102,19 +102,10 @@ def upload_logo():
         print "Simon"
         image = request.files['photo']
 
-        print "request image"
-
         route = directory + "/profile.png"
+        name = datetime.now() + ".png"
         if image:
-            image.save(os.path.join(directory,"jojo"))
-        #data = image.split(",")
-        #imgdata = base64.b64decode(data[1])
-        print "almos write"
-        #with open(route, 'wb') as f:
-        #    print "access"
-        #    f.write(image)
-
-        print "complete"
+            image.save(os.path.join(directory, name))
 
         return jsonify({'data':'image'})
     return jsonify({'message': 'Oops! algo salió mal :('})
