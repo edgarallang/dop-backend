@@ -87,6 +87,27 @@ def profile(userId):
 
     return jsonify({'data': user_with_image})
 
+@company.route('/profile/photo', methods=['GET','POST'])
+def upload_logo(companyId):
+    if request.headers.get('Authorization'):
+        payload = parse_token(request, True)
+
+        directory = "../users/images/%d" % payload['user_id']
+
+        if not os.path.isdir(directory):
+            os.makedirs(directory)
+
+        image = request.form['photo']
+        route = directory + "/profile.png"
+        data = image.split(",")
+        imgdata = base64.b64decode(data[1])
+
+        with open(route, 'wb') as f:
+            f.write(imgdata)
+
+        return jsonify({'data':'image'})
+    return jsonify({'message': 'Oops! algo salió mal :('})
+
 @user.route('/<int:user_id>/avatar/<path:filename>')
 @login_required
 def avatar(user_id, filename):
