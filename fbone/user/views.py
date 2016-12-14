@@ -199,8 +199,7 @@ def forgot_password():
 def facebook_login():
     facebookUser = User.query.filter_by(facebook_key = request.json['facebook_key']).first()
 
-    is_adult = calculate_age(datetime.strptime(request.json['birth_date'], "%m/%d/%Y"))
-    facebookUser.adult = is_adult
+
     if not facebookUser:
         facebookUser = User(names = request.json['names'],
                             surnames = request.json['surnames'],
@@ -212,7 +211,7 @@ def facebook_login():
                             privacy_status = 0,
                             device_os = request.json['device_os'],
                             device_token = request.json['device_token'],
-                            adult = is_adult)
+                            adult = calculate_age(datetime.strptime(facebookUser.birth_date, "%m/%d/%Y")))
 
         db.session.add(facebookUser)
         db.session.commit()
@@ -237,12 +236,14 @@ def facebook_login():
         db.session.add(userFirstEXP)
         db.session.commit()
     else:
+        is_adult = calculate_age(datetime.strptime(facebookUser.birth_date, "%m/%d/%Y"))
+        facebookUser.adult = is_adult
+        db.session.commit()
         if not facebookUser.device_token == request.json['device_token']:
             facebookUser.device_token = request.json['device_token']
             facebookUser.device_os = request.json['device_os']
             facebookUser.adult = calculate_age(datetime.strptime(facebookUser.birth_date, "%m/%d/%Y"))
             db.session.commit()
-    db.session.commit()
     token = create_token(facebookUser)
 
     return jsonify(token=token)
