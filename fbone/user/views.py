@@ -100,16 +100,26 @@ def upload_logo():
         if not os.path.isdir(directory):
             os.makedirs(directory)
 
-        names = request.form['names']
-        surnames = request.form['surnames']
-        birth_date = request.form['birthday']
-        gender = request.form['gender']
+        user = User.query.filter_by(user_id = payload['id']).first()
 
-        date = datetime.now()
-
-
-        is_adult = calculate_age(datetime.strptime(birth_date, "%m/%d/%Y"))
-
+        if 'names' in request.form:
+            names = request.form['names']
+            user.names = names
+        if 'surnames' in request.form:
+            surnames = request.form['surnames']
+            user.surnames = surnames
+        if 'birthday' in request.form:
+            birth_date = request.form['birthday']
+            user.birth_date = birth_date
+            date = datetime.now()
+            is_adult = calculate_age(datetime.strptime(birth_date, "%m/%d/%Y"))
+            user.adult = is_adult
+        if 'gender' in request.form:
+            gender = request.form['gender']
+            user.gender = gender
+        
+        db.session.commit()
+        
         userImage = UserImage.query.filter_by(user_id = payload['id']).first()
         if 'photo' in request.files:
             image = request.files['photo']
@@ -117,15 +127,6 @@ def upload_logo():
             image.save(os.path.join(directory, name))
             userImage.main_image = app.config['DOMAIN'] + db_directory + name
             db.session.commit()
-        
-        user = User.query.filter_by(user_id = payload['id']).first()
-        user.names = names
-        user.surnames = surnames
-        user.birth_date = birth_date
-        user.gender = gender
-        user.adult = is_adult
-        db.session.commit()
-
 
         return jsonify({'data':'image'})
     return jsonify({'message': 'Oops! algo salió mal :('})
