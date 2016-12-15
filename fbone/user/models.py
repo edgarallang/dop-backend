@@ -167,7 +167,8 @@ class UserJoinImage(Schema):
                   'privacy_status',
                   'level',
                   'exp',
-                  'is_friend')
+                  'is_friend',
+                  'email')
 
 class FriendsSchema(Schema):
     class Meta:

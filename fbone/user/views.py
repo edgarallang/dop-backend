@@ -76,10 +76,11 @@ def profile(userId):
 
     main_user_id = payload['id']
     query = "SELECT users.user_id, users.names, users.surnames, users.birth_date, users.facebook_key, users.google_key, \
-                    users.twitter_key,users.privacy_status, users_image.main_image, users_image.user_image_id, level, exp, \
+                    users.twitter_key,users.privacy_status, users_image.main_image, users_image.user_image_id,users_session.email, level, exp, \
                     (SELECT EXISTS (SELECT * FROM friends \
                             WHERE friends.user_one_id = %d AND friends.user_two_id = users.user_id AND friends.operation_id = 1)::bool) AS is_friend \
-                    FROM users INNER JOIN users_image ON users.user_id = users_image.user_id \
+                    FROM users INNER JOIN users_image ON users.user_id = users_image.user_id
+                    INNER JOIN users_session ON users.user_id = users_session.user_id \
                     WHERE users.user_id = %d" % (main_user_id, userId)
 
     #total_friends = get_friends_by_id(userId)
@@ -119,7 +120,7 @@ def upload_logo():
             user.gender = gender
         
         db.session.commit()
-        
+
         userImage = UserImage.query.filter_by(user_id = payload['id']).first()
         if 'photo' in request.files:
             image = request.files['photo']
