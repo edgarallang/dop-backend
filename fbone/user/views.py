@@ -105,12 +105,12 @@ def upload_logo():
 
         if 'email' in request.form:
             email = request.form['email']
-            emailUser = UserSession.query.filter_by(email = request.json['email']).first()
-            if emailUser:
-                return jsonify({'data': 'email_exist'})
-            else:
+            emailUser = UserSession.query.filter_by(email = email).first()
+            if not emailUser:
                 userSession = UserSession.query.filter_by(user_id = payload['id']).first()
                 userSession.email = email
+            else:
+                return jsonify({'data': 'email_exist'})
 
 
         if 'names' in request.form:
