@@ -103,17 +103,22 @@ def upload_logo():
 
         user = User.query.filter_by(user_id = payload['id']).first()
 
+        if 'email' in request.form:
+            email = request.form['email']
+            emailUser = UserSession.query.filter_by(email = request.json['email']).first()
+            if emailUser:
+                return jsonify({'data': 'email_exist'})
+            else:
+                userSession = UserSession.query.filter_by(user_id = payload['id']).first()
+                userSession.email = email
+
+
         if 'names' in request.form:
             names = request.form['names']
             user.names = names
         if 'surnames' in request.form:
             surnames = request.form['surnames']
             user.surnames = surnames
-        
-        if 'email' in request.form:
-            email = request.form['email']
-            userSession = UserSession.query.filter_by(user_id = payload['id']).first()
-            userSession.email = email
 
         if 'birthday' in request.form:
             birth_date = request.form['birthday']
@@ -135,7 +140,7 @@ def upload_logo():
             userImage.main_image = app.config['DOMAIN'] + db_directory + name
             db.session.commit()
 
-        return jsonify({'data':'image'})
+        return jsonify({'data':'success'})
     return jsonify({'message': 'Oops! algo salió mal :('})
 
 @user.route('/<int:user_id>/avatar/<path:filename>')
