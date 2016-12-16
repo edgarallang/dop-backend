@@ -109,6 +109,12 @@ def upload_logo():
         if 'surnames' in request.form:
             surnames = request.form['surnames']
             user.surnames = surnames
+        
+        if 'email' in request.form:
+            email = request.form['email']
+            userSession = UserSession.query.filter_by(user_id = payload['id']).first()
+            userSession.email = email
+
         if 'birthday' in request.form:
             birth_date = request.form['birthday']
             user.birth_date = birth_date
