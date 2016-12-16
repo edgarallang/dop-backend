@@ -110,7 +110,7 @@ def upload_logo():
                 userSession = UserSession.query.filter_by(user_id = payload['id']).first()
                 userSession.email = email
             else:
-                return jsonify({'data': 'email_exist'})
+                return jsonify({'message': 'email_exist'})
 
 
         if 'names' in request.form:
@@ -140,7 +140,7 @@ def upload_logo():
             userImage.main_image = app.config['DOMAIN'] + db_directory + name
             db.session.commit()
 
-        return jsonify({'data':'success'})
+        return jsonify({'message':'success'})
     return jsonify({'message': 'Oops! algo salió mal :('})
 
 @user.route('/<int:user_id>/avatar/<path:filename>')
