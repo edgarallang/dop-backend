@@ -542,7 +542,7 @@ def search_people():
     if request.headers.get('Authorization'):
         token_index = True
         text = request.args.get('text')
-        text.replace (" ", "%")
+        text.replace(" ", "%")
         payload = parse_token(request, token_index)
         #list_coupon = db.engine.execute(query)
         people = db.engine.execute("SELECT DISTINCT *, \
