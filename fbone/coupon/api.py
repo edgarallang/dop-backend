@@ -96,7 +96,7 @@ def set_experience(user_id, exp):
     else:
         badges = badge_schema.dump(badge)
         return {'message': 'experiencia asignada %d' % exp,
-                        'badges': badges.data }
+                           'badges': badges.data }
 
 @coupon.route('/generate/pdf', methods=['GET'])
 def generate_pdf():
@@ -205,10 +205,17 @@ def use_coupon():
                     if not request.json['first_using']:
                         user_first_exp = UserFirstEXP.query.filter_by(user_id = payload['id']).first()
                         user_first_exp.first_using = True
+                        first_badge = UsersBadges(user_id = payload['id'],
+                                                  badge_id = 1,
+                                                  reward_date = datetime.now())
 
+                        db.session.add(first_badge)
                         db.session.commit()
 
-                    return jsonify({'data': branch_data.data, 'reward': reward, 'level': user_level, 'folio': folio })
+                    return jsonify({'data': branch_data.data,
+                                    'reward': reward,
+                                    'level': user_level,
+                                    'folio': folio })
                 else:
                     return jsonify({'message': 'agotado'})
             else:
