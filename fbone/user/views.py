@@ -542,7 +542,7 @@ def search_people():
     if request.headers.get('Authorization'):
         token_index = True
         text = request.args.get('text')
-        text = text.replace(" ", "%")
+        text = text.replace(" ", "%%")
         payload = parse_token(request, token_index)
         #list_coupon = db.engine.execute(query)
         people = db.engine.execute("SELECT DISTINCT *, \
@@ -553,7 +553,7 @@ def search_people():
                                     LEFT JOIN friends ON user_one_id = %d AND user_two_id = users.user_id \
                                     WHERE (users.names||' '||users.surnames) ILIKE '%s' " % (payload['id'], payload['id'], '%%' + text + '%%'))
 
-        selected_list_people = people_schema.dump(people, many=True)
+        selected_list_people = people_schema.dump(people)
         # pprint(selected_list_people, indent = 2)
         return jsonify({'data': selected_list_people.data})
     return jsonify({'message': 'Oops! algo salió mal :('})
