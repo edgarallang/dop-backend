@@ -12,6 +12,7 @@ class BaseConfig(object):
 
     PROJECT = "fbone"
 
+    DOMAIN = "http://45.55.7.118/"
     # Get app root path, also can use flask.root_path.
     # ../../config.py
     PROJECT_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))

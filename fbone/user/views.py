@@ -4,6 +4,8 @@ import os
 import jwt
 import json
 import requests
+import base64
+from binascii import a2b_base64
 from flask import Blueprint, request, jsonify, session
 from flask import current_app as app
 from flask.ext.login import login_required, current_user
@@ -74,10 +76,11 @@ def profile(userId):
 
     main_user_id = payload['id']
     query = "SELECT users.user_id, users.names, users.surnames, users.birth_date, users.facebook_key, users.google_key, \
-                    users.twitter_key,users.privacy_status, users_image.main_image, users_image.user_image_id, level, exp, \
+                    users.twitter_key,users.privacy_status, users_image.main_image, users_image.user_image_id,users_session.email, level, exp, \
                     (SELECT EXISTS (SELECT * FROM friends \
                             WHERE friends.user_one_id = %d AND friends.user_two_id = users.user_id AND friends.operation_id = 1)::bool) AS is_friend \
                     FROM users INNER JOIN users_image ON users.user_id = users_image.user_id \
+                    INNER JOIN users_session ON users.user_id = users_session.user_id \
                     WHERE users.user_id = %d" % (main_user_id, userId)
 
     #total_friends = get_friends_by_id(userId)
@@ -86,6 +89,59 @@ def profile(userId):
     user_with_image = user_joined_schema.dump(result).data
 
     return jsonify({'data': user_with_image})
+
+@user.route('/profile/photo', methods=['POST'])
+def upload_logo():
+    if request.headers.get('Authorization'):
+        payload = parse_token(request, True)
+
+        directory = "../users/images/%d" % payload['id']
+        db_directory = "users/images/%d/" % payload['id']
+
+        if not os.path.isdir(directory):
+            os.makedirs(directory)
+
+        user = User.query.filter_by(user_id = payload['id']).first()
+
+        if 'email' in request.form:
+            email = request.form['email']
+            emailUser = UserSession.query.filter_by(email = email).first()
+            if not emailUser:
+                userSession = UserSession.query.filter_by(user_id = payload['id']).first()
+                userSession.email = email
+            else:
+                return jsonify({'message': 'email_exist'})
+
+
+        if 'names' in request.form:
+            names = request.form['names']
+            user.names = names
+        if 'surnames' in request.form:
+            surnames = request.form['surnames']
+            user.surnames = surnames
+
+        if 'birthday' in request.form:
+            birth_date = request.form['birthday']
+            user.birth_date = birth_date
+            date = datetime.now()
+            is_adult = calculate_age(datetime.strptime(birth_date, "%m/%d/%Y"))
+            user.adult = is_adult
+        if 'gender' in request.form:
+            gender = request.form['gender']
+            user.gender = gender
+        
+        db.session.commit()
+
+        userImage = UserImage.query.filter_by(user_id = payload['id']).first()
+        if 'photo' in request.files:
+            image = request.files['photo']
+            name = '%s%s' % ("{:%d%m%Y%s}".format(date),'.png')
+            image.save(os.path.join(directory, name))
+            userImage.main_image = app.config['DOMAIN'] + db_directory + name
+            db.session.commit()
+
+        return jsonify({'message':'success'})
+    return jsonify({'message': 'Oops! algo salió mal :('})
 
 @user.route('/<int:user_id>/avatar/<path:filename>')
 @login_required
@@ -104,8 +160,11 @@ def email_verification():
 
         emailUser = UserSession(user_id = newUser.user_id, email = request.json['email'],
                                 password = request.json['password'])
+        userImage = UserImage(user_id=newUser.user_id,
+                              main_image="")
 
         db.session.add(emailUser)
+        db.session.add(userImage)
         db.session.commit()
 
         token = create_token(newUser)
@@ -120,7 +179,7 @@ def signup_email():
         return jsonify({'data': 'email_exist'})
 
     birth_date = request.json['birth_date']
-    is_adult = calculate_age(birth_date)
+    is_adult = calculate_age(datetime.strptime(birth_date, "%m/%d/%Y"))
     emailUser = User(names = request.json['names'],
                      surnames = request.json['surnames'],
                      birth_date = birth_date,
@@ -162,7 +221,7 @@ def forgot_password():
 def facebook_login():
     facebookUser = User.query.filter_by(facebook_key = request.json['facebook_key']).first()
 
-    is_adult = False
+    birth_date = request.json['birth_date']
 
     if not facebookUser:
         facebookUser = User(names = request.json['names'],
@@ -175,7 +234,7 @@ def facebook_login():
                             privacy_status = 0,
                             device_os = request.json['device_os'],
                             device_token = request.json['device_token'],
-                            adult = is_adult)
+                            adult = calculate_age(datetime.strptime(birth_date, "%m/%d/%Y")))
 
         db.session.add(facebookUser)
         db.session.commit()
@@ -200,12 +259,13 @@ def facebook_login():
         db.session.add(userFirstEXP)
         db.session.commit()
     else:
+        is_adult = calculate_age(datetime.strptime(birth_date, "%m/%d/%Y"))
+        facebookUser.adult = is_adult
+        db.session.commit()
         if not facebookUser.device_token == request.json['device_token']:
             facebookUser.device_token = request.json['device_token']
             facebookUser.device_os = request.json['device_os']
-            facebookUser.adult = calculate_age(facebookUser.birth_date)
             db.session.commit()
-
     token = create_token(facebookUser)
 
     return jsonify(token=token)
