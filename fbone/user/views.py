@@ -542,7 +542,7 @@ def search_people():
     if request.headers.get('Authorization'):
         token_index = True
         text = request.args.get('text')
-
+        text.replace (" ", "%")
         payload = parse_token(request, token_index)
         #list_coupon = db.engine.execute(query)
         people = db.engine.execute("SELECT DISTINCT *, \
@@ -551,7 +551,7 @@ def search_people():
                                     FROM users \
                                     INNER JOIN users_image on users.user_id = users_image.user_id \
                                     LEFT JOIN friends ON user_one_id = %d AND user_two_id = users.user_id \
-                                    WHERE users.names ILIKE '%s' OR users.surnames ILIKE '%s' " % (payload['id'], payload['id'], '%%' + text + '%%', '%%' + text + '%%'))
+                                    WHERE (users.names||' '||users.surnames) ILIKE '%s' " % (payload['id'], payload['id'], '%%' + text + '%%'))
 
         selected_list_people = people_schema.dump(people, many=True)
         # pprint(selected_list_people, indent = 2)
