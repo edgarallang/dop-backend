@@ -551,7 +551,7 @@ def search_people():
                                     FROM users \
                                     INNER JOIN users_image on users.user_id = users_image.user_id \
                                     LEFT JOIN friends ON user_one_id = %d AND user_two_id = users.user_id \
-                                    WHERE (users.names||' '||users.surnames) ILIKE '%s' " % (payload['id'], payload['id'], '%%' + text + '%%'))
+                                    WHERE (unaccent(users.names)||' '||unaccent(users.surnames)) ILIKE '%s' " % (payload['id'], payload['id'], '%%' + text + '%%'))
 
         selected_list_people = people_schema.dump(people)
         # pprint(selected_list_people, indent = 2)
