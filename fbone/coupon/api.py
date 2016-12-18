@@ -165,74 +165,79 @@ def use_coupon():
                                                        (ClientsCoupon.user_id==payload['id']),
                                                        (ClientsCoupon.used==False)).first()
 
-        recently_used = ClientsCoupon.query.filter(and_(ClientsCoupon.coupon_id==coupon_id),
-                                                       (ClientsCoupon.user_id==payload['id']),
-                                                       (ClientsCoupon.used==True)) \
-                                                        .order_by(desc(ClientsCoupon.used_date)) \
-                                                        .first()
+        
 
         coupon = Coupon.query.get(request.json['coupon_id'])
-        if recently_used:
-            minutes = (actual_date-recently_used.used_date).total_seconds() / 60
 
-        if not recently_used or minutes > 20:
-            if not client_coupon:
-                if coupon.available > 0:
-                    client_coupon = ClientsCoupon(user_id = payload['id'],
-                                      coupon_id = request.json['coupon_id'],
-                                      folio = '',
-                                      taken_date = actual_date,
-                                      latitude= request.json['latitude'],
-                                      longitude = request.json['longitude'],
-                                      used = True,
-                                      used_date = actual_date,
-                                      private = True)
-                    db.session.add(client_coupon)
+        if coupon.end_date < now():
+            recently_used = ClientsCoupon.query.filter(and_(ClientsCoupon.coupon_id==coupon_id),
+                                                           (ClientsCoupon.user_id==payload['id']),
+                                                           (ClientsCoupon.used==True)) \
+                                                            .order_by(desc(ClientsCoupon.used_date)) \
+                                                            .first()
+            if recently_used:
+                minutes = (actual_date-recently_used.used_date).total_seconds() / 60
+
+            if not recently_used or minutes > 20:
+                if not client_coupon:
+                    if coupon.available > 0:
+                        client_coupon = ClientsCoupon(user_id = payload['id'],
+                                          coupon_id = request.json['coupon_id'],
+                                          folio = '',
+                                          taken_date = actual_date,
+                                          latitude= request.json['latitude'],
+                                          longitude = request.json['longitude'],
+                                          used = True,
+                                          used_date = actual_date,
+                                          private = True)
+                        db.session.add(client_coupon)
+                        db.session.commit()
+                        folio = '%d%s%d' % (request.json['branch_id'], "{:%d%m%Y}".format(actual_date), client_coupon.clients_coupon_id)
+                        client_coupon.folio = folio
+                        coupon.available = coupon.available - 1
+
+                        db.session.commit()
+
+                        branch = Branch.query.filter_by(branch_id = branch_id).first()
+                        branch_data = branch_schema.dump(branch)
+
+                        reward = set_experience(payload['id'], USING)
+                        user_level = level_up(payload['id'])
+                        db.session.commit()
+
+                        if not request.json['first_using']:
+                            user_first_exp = UserFirstEXP.query.filter_by(user_id = payload['id']).first()
+                            user_first_exp.first_using = True
+                            first_badge = UsersBadges(user_id = payload['id'],
+                                                      badge_id = 1,
+                                                      reward_date = datetime.now())
+
+                            db.session.add(first_badge)
+                            db.session.commit()
+
+                        return jsonify({'data': branch_data.data,
+                                        'reward': reward,
+                                        'level': user_level,
+                                        'folio': folio })
+                    else:
+                        return jsonify({'message': 'agotado'})
+                else:
+                    client_coupon.used = True
+                    client_coupon.used_date = actual_date
+
                     db.session.commit()
-                    folio = '%d%s%d' % (request.json['branch_id'], "{:%d%m%Y}".format(actual_date), client_coupon.clients_coupon_id)
-                    client_coupon.folio = folio
-                    coupon.available = coupon.available - 1
 
-                    db.session.commit()
-
-                    branch = Branch.query.filter_by(branch_id = branch_id).first()
+                    branch = Branch.query.get(branch_id)
                     branch_data = branch_schema.dump(branch)
 
                     reward = set_experience(payload['id'], USING)
                     user_level = level_up(payload['id'])
-                    db.session.commit()
-
-                    if not request.json['first_using']:
-                        user_first_exp = UserFirstEXP.query.filter_by(user_id = payload['id']).first()
-                        user_first_exp.first_using = True
-                        first_badge = UsersBadges(user_id = payload['id'],
-                                                  badge_id = 1,
-                                                  reward_date = datetime.now())
-
-                        db.session.add(first_badge)
-                        db.session.commit()
-
-                    return jsonify({'data': branch_data.data,
-                                    'reward': reward,
-                                    'level': user_level,
-                                    'folio': folio })
-                else:
-                    return jsonify({'message': 'agotado'})
+                    return jsonify({'data': branch_data.data, 'reward': reward, 'level': user_level, 'folio': client_coupon.folio })
             else:
-                client_coupon.used = True
-                client_coupon.used_date = actual_date
-
-                db.session.commit()
-
-                branch = Branch.query.get(branch_id)
-                branch_data = branch_schema.dump(branch)
-
-                reward = set_experience(payload['id'], USING)
-                user_level = level_up(payload['id'])
-                return jsonify({'data': branch_data.data, 'reward': reward, 'level': user_level, 'folio': client_coupon.folio })
+                minutes_left = 20 - minutes
+                return jsonify({'message': 'error',"minutes": str(minutes_left)})
         else:
-            minutes_left = 20 - minutes
-            return jsonify({'message': 'error',"minutes": str(minutes_left)})
+            return jsonify({'message': 'expired'})
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
 @coupon.route('/report',methods=['POST'])
@@ -319,7 +324,7 @@ def get_all_coupon_by_branch(branch_id):
 
     #list_coupon = Coupon.query.filter_by(branch_id = branch_id).all()
     list_coupon = db.engine.execute('SELECT coupons.*, branches.company_id, \
-                                    ((coupons.available = 0) OR (coupons.end_date > now()) )::bool AS completed, \
+                                    ((coupons.available = 0) OR (coupons.end_date < now()) )::bool AS completed, \
                                     (SELECT end_date::DATE - now()::DATE FROM coupons AS c WHERE coupons.coupon_id = c.coupon_id) AS remaining \
                                     FROM coupons \
                                         INNER JOIN branches ON branches.branch_id = coupons.branch_id \
