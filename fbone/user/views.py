@@ -164,9 +164,18 @@ def email_verification():
         userImage = UserImage(user_id=newUser.user_id,
                               main_image="")
 
+        userFirstEXP = UserFirstEXP(user_id = newUser.user_id,
+                                    first_following = False,
+                                    first_follower = False,
+                                    first_company_fav = False,
+                                    first_using = False)
+
         db.session.add(emailUser)
         db.session.add(userImage)
+        db.session.add(userFirstEXP)
         db.session.commit()
+
+
 
         token = create_token(newUser)
         return jsonify(token=token)
