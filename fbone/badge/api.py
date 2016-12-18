@@ -77,7 +77,7 @@ def badge_trophy_grid():
                                         (SELECT exists(SELECT * FROM users_badges WHERE user_id = %d \
                                          AND badges.badge_id = badge_id)::bool) AS earned \
                                     FROM badges LEFT JOIN users_badges ON badges.badge_id = users_badges.badge_id \
-                                    WHERE badges.type = 'trophy' " % (payload['id'], payload['id']))
+                                    WHERE badges.type = 'trophy'" % (payload['id'], payload['id']))
 
         badges_list = badges_type_schema.dump(badges)
         return jsonify({'data': badges_list.data})
