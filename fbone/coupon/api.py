@@ -169,7 +169,7 @@ def use_coupon():
 
         coupon = Coupon.query.get(request.json['coupon_id'])
 
-        if coupon.end_date < now():
+        if coupon.end_date < actual_date:
             recently_used = ClientsCoupon.query.filter(and_(ClientsCoupon.coupon_id==coupon_id),
                                                            (ClientsCoupon.user_id==payload['id']),
                                                            (ClientsCoupon.used==True)) \
