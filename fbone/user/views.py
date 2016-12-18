@@ -5,6 +5,7 @@ import jwt
 import json
 import requests
 import base64
+import unicodedata
 from binascii import a2b_base64
 from flask import Blueprint, request, jsonify, session
 from flask import current_app as app
@@ -542,7 +543,8 @@ def search_people():
     if request.headers.get('Authorization'):
         token_index = True
         text = request.args.get('text')
-
+        text = text.replace(" ", "%%")
+        text = unicodedata.normalize('NFD', text).encode('ascii', 'ignore')
         payload = parse_token(request, token_index)
         #list_coupon = db.engine.execute(query)
         people = db.engine.execute("SELECT DISTINCT *, \
@@ -551,9 +553,9 @@ def search_people():
                                     FROM users \
                                     INNER JOIN users_image on users.user_id = users_image.user_id \
                                     LEFT JOIN friends ON user_one_id = %d AND user_two_id = users.user_id \
-                                    WHERE users.names ILIKE '%s' OR users.surnames ILIKE '%s' " % (payload['id'], payload['id'], '%%' + text + '%%', '%%' + text + '%%'))
+                                    WHERE (unaccent(users.names)||' '||unaccent(users.surnames)) ILIKE '%s' " % (payload['id'], payload['id'], '%%' + text + '%%'))
 
-        selected_list_people = people_schema.dump(people, many=True)
+        selected_list_people = people_schema.dump(people)
         # pprint(selected_list_people, indent = 2)
         return jsonify({'data': selected_list_people.data})
     return jsonify({'message': 'Oops! algo salió mal :('})
