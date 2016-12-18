@@ -130,7 +130,7 @@ def upload_logo():
         if 'gender' in request.form:
             gender = request.form['gender']
             user.gender = gender
-        
+
         db.session.commit()
 
         userImage = UserImage.query.filter_by(user_id = payload['id']).first()
