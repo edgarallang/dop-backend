@@ -127,6 +127,7 @@ def upload_logo():
             date = datetime.now()
             is_adult = calculate_age(datetime.strptime(birth_date, "%m/%d/%Y"))
             user.adult = is_adult
+
         if 'gender' in request.form:
             gender = request.form['gender']
             user.gender = gender
@@ -154,7 +155,7 @@ def avatar(user_id, filename):
 def email_verification():
     emailUser = UserSession.query.filter_by(email = request.json['email']).first()
     if not emailUser:
-        newUser = User(adult = False)
+        newUser = User(privacy_status = 0, exp = 0, device_is = request.json['device_os'], adult = False)
 
         db.session.add(newUser)
         db.session.commit()
