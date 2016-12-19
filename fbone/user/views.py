@@ -155,7 +155,7 @@ def avatar(user_id, filename):
 def email_verification():
     emailUser = UserSession.query.filter_by(email = request.json['email']).first()
     if not emailUser:
-        newUser = User(privacy_status = 0, exp = 0, device_is = request.json['device_os'], adult = False)
+        newUser = User(privacy_status = 0, exp = 0, device_os = request.json['device_os'], adult = False)
 
         db.session.add(newUser)
         db.session.commit()
