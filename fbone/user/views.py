@@ -186,11 +186,13 @@ def email_verification():
 @user.route('/signup/email', methods=['POST'])
 def signup_email():
     emailUser = User.query.filter_by(email = request.json['email']).first()
+    is_adult = False
     if emailUser:
         return jsonify({'data': 'email_exist'})
+    if 'birth_date' in request.json:
+        birth_date = request.json['birth_date']
+        is_adult = calculate_age(datetime.strptime(birth_date, "%m/%d/%Y"))
 
-    birth_date = request.json['birth_date']
-    is_adult = calculate_age(datetime.strptime(birth_date, "%m/%d/%Y"))
     emailUser = User(names = request.json['names'],
                      surnames = request.json['surnames'],
                      birth_date = birth_date,
@@ -232,7 +234,11 @@ def forgot_password():
 def facebook_login():
     facebookUser = User.query.filter_by(facebook_key = request.json['facebook_key']).first()
 
-    birth_date = request.json['birth_date']
+    is_adult = False
+
+    if 'birth_date' in request.json:
+        birth_date = request.json['birth_date']
+        is_adult = calculate_age(datetime.strptime(birth_date, "%m/%d/%Y"))
 
     if not facebookUser:
         facebookUser = User(names = request.json['names'],
@@ -245,7 +251,7 @@ def facebook_login():
                             privacy_status = 0,
                             device_os = request.json['device_os'],
                             device_token = request.json['device_token'],
-                            adult = calculate_age(datetime.strptime(birth_date, "%m/%d/%Y")))
+                            adult = is_adult)
 
         db.session.add(facebookUser)
         db.session.commit()
@@ -270,7 +276,7 @@ def facebook_login():
         db.session.add(userFirstEXP)
         db.session.commit()
     else:
-        is_adult = calculate_age(datetime.strptime(birth_date, "%m/%d/%Y"))
+        #is_adult = calculate_age(datetime.strptime(birth_date, "%m/%d/%Y"))
         facebookUser.adult = is_adult
         db.session.commit()
         if not facebookUser.device_token == request.json['device_token']:
