@@ -155,7 +155,7 @@ def avatar(user_id, filename):
 def email_verification():
     emailUser = UserSession.query.filter_by(email = request.json['email']).first()
     if not emailUser:
-        newUser = User(privacy_status = 0, exp = 0, device_os = request.json['device_os'], adult = False)
+        newUser = User(privacy_status = 0, exp = 0, level = 0, device_os = request.json['device_os'], adult = False)
 
         db.session.add(newUser)
         db.session.commit()
@@ -381,7 +381,7 @@ def add_friend():
         if not friendshipExist:
             #user_two = User.query.get(user_to_add)
             notification_type = ''
-            if user_two.privacy_status == 0:
+            if user_two.privacy_status == 0 or user_two.privacy_status == None:
                 operation_id = 1
                 notification_type = 'now_friends'
             elif user_two.privacy_status == 1:
