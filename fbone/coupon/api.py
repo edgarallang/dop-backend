@@ -210,7 +210,8 @@ def use_coupon():
                             user_first_exp.first_using = True
                             first_badge = UsersBadges(user_id = payload['id'],
                                                       badge_id = 1,
-                                                      reward_date = datetime.now())
+                                                      reward_date = datetime.now(),
+                                                      type = 'trophy')
 
                             db.session.add(first_badge)
                             db.session.commit()
