@@ -20,3 +20,4 @@ class UsersBadges(db.Model):
     user_id = Column(db.Integer)
     badge_id = Column(db.Integer)
     reward_date = Column(db.DateTime)
+    type = Column(db.String(STRING_LEN), nullable=False)
