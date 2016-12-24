@@ -18,7 +18,7 @@ class BaseConfig(object):
     PROJECT_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
     APNS_CERTIFICATE = PROJECT_ROOT+'/certs/push.pem'
-    APNS_SANDBOX = True
+    APNS_SANDBOX = False
 
     GCM_API_KEY = "AIzaSyAMR7PtdU1BNEgXQvzZKSv8nZsJKR5Hr94"
 
