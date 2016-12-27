@@ -13,7 +13,7 @@ from ..extensions import db, mail, login_manager, oid
 from .forms import SignupForm, LoginForm, RecoverPasswordForm, ReauthForm, ChangePasswordForm, OpenIDForm, CreateProfileForm
 
 
-frontend = Blueprint('frontend', __name__)
+frontend = Blueprint('frontend', __name__, url_prefix='/api/frontend')
 
 
 @frontend.route('/login/openid', methods=['GET', 'POST'])
