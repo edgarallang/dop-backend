@@ -3,7 +3,7 @@
 from flask.ext.sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
-from flask.ext.mail import Mail
+from flask_mail import Mail
 mail = Mail()
 
 from flask.ext.cache import Cache
