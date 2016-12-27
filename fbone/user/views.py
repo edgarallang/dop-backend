@@ -238,6 +238,30 @@ def forgot_password():
     #msg.html = '<b>HTML</b> body'
     return jsonify({'data': chain})
 
+@user.route('/test/mail', methods=['GET'])
+def test_mail():
+    import smtplib
+    gmail_user = 'eduardo@halleydevs.com'
+    gmail_pwd = 'Doprocks1'
+    FROM = 'DOP'
+    TO = 'eduardo.quintero52@gmail.com'
+    SUBJECT = 'Eduardo'
+    TEXT = 'Hola'
+
+    # Prepare actual message
+    message = """From: %s\nTo: %s\nSubject: %s\n\n%s
+    """ % (FROM, ", ".join(TO), SUBJECT, TEXT)
+    try:
+        server = smtplib.SMTP("smtp.gmail.com", 587)
+        server.ehlo()
+        server.starttls()
+        server.login(gmail_user, gmail_pwd)
+        server.sendmail(FROM, TO, message)
+        server.close()
+        print 'successfully sent the mail'
+    except:
+        print "failed to send mail"
+
 @user.route('/login/facebook', methods=['POST'])
 def facebook_login():
     facebookUser = User.query.filter_by(facebook_key = request.json['facebook_key']).first()
