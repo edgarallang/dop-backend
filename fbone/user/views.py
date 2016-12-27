@@ -263,11 +263,11 @@ def set_new_password():
             db.session.commit()
             return render_template('frontend/message.html', user_found = True)
         else:
-            return render_template('frontend/reset_password.html', user_found = False)
+            return render_template('frontend/message.html', user_found = False)
     else:
-        return render_template('frontend/reset_password.html', user_found = False)
+        return render_template('frontend/message.html', user_found = False)
   
-    return render_template('frontend/reset_password.html', user_found = False)
+    return render_template('frontend/message.html', user_found = False)
 
 @user.route('/login/facebook', methods=['POST'])
 def facebook_login():
