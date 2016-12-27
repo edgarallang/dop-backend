@@ -250,8 +250,8 @@ def forgot_password():
 
 @user.route('/set/new/password', methods=['POST'])
 def set_new_password():
-    token = request.POST['token']
-    return jsonify({'data':token})
+    #token = request.post['token']
+    return jsonify({'data':request.post})
 
 @user.route('/login/facebook', methods=['POST'])
 def facebook_login():
