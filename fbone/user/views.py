@@ -250,7 +250,20 @@ def forgot_password():
 
 @user.route('/set/new/password', methods=['POST'])
 def set_new_password():
-    #token = request.post['token']
+    token = request.form['token']
+    forgotPasswordUser = ForgotPassword.query.filter_by(token = token).first()
+
+    if forgotPasswordUser:
+        userSession = UserSession.query.filter_by(user_id = forgotPasswordUser.user_id).first()
+        if userSession:
+            userSession.password = 'hola'
+            db.session.delete(forgotPasswordUser)
+            db.session.commit()
+        else:
+            return jsonify({'error': 'user not found'})
+    else:
+        return jsonify({'error': 'token not found'})
+
     return jsonify({'data':request.form['token']})
 
 @user.route('/login/facebook', methods=['POST'])
