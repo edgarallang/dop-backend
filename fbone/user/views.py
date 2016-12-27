@@ -227,7 +227,7 @@ def email_login():
 
 @user.route('/forgot/password', methods=['GET'])
 def forgot_password():
-    msg = Message('test subject', sender= MAIL_USERNAME, recipients= 'eduardo.quintero52@gmail.com')
+    msg = Message('test subject', sender= 'eduardo@halleydevs.com', recipients= 'eduardo.quintero52@gmail.com')
     msg.body = 'text body'
     msg.html = '<b>HTML</b> body'
     with app.app_context():
