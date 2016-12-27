@@ -191,6 +191,6 @@ def help():
     return render_template('frontend/footers/help.html', active="help")
 
 @frontend.route('/reset/password/<string:token>', methods=['GET'])
-def reset_password():
+def reset_password(token):
     return render_template('frontend/reset_password.html')
 
