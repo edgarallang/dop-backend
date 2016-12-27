@@ -190,8 +190,7 @@ def change_password():
 def help():
     return render_template('frontend/footers/help.html', active="help")
 
-@frontend.route('/reset/password', methods=['GET'])
+@frontend.route('/reset/password/<string:token>', methods=['GET'])
 def reset_password():
-    print "SHI"
     return render_template('frontend/reset_password.html')
 
