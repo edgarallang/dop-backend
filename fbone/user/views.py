@@ -231,7 +231,7 @@ def forgot_password():
     msg.body = 'text body'
     msg.html = '<b>HTML</b> body'
     with app.app_context():
-     mail.send(msg)
+        mail.send(msg)
     
     chain = (''.join(choice(string.printable) for i in range(50)))
 
