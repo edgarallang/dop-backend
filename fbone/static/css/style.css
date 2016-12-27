@@ -69,7 +69,7 @@ h2{
     transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
     transform-origin: 50% 50% 0px;
 }
-input[type="text"]{
+input[type="password"]{
   margin: 0px;
   white-space: normal;
   font-size: 18px;
