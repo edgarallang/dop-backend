@@ -22,7 +22,6 @@ from .admin import admin
 from .report import report
 from .extensions import db, mail, cache, login_manager, oid, CORS, socketio, apns_client, gcm_client
 from .utils import INSTANCE_FOLDER_PATH
-from flask_mail import Mail
 
 
 # For import *
