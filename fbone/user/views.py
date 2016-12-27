@@ -236,7 +236,7 @@ def forgot_password():
         forgotPasswordUser = ForgotPassword(user_id = 5, token = chain)
         db.session.add(forgotPasswordUser)
         db.session.commit()
-        
+
         msg = Message('test subject', sender= 'halleydevs@gmail.com', recipients= ['eduardo.quintero52@gmail.com'])
         msg.body = 'text body'
         msg.html = '<a href="'+chain+'">Click</a>'
@@ -245,7 +245,7 @@ def forgot_password():
 
         #msg.html = '<b>HTML</b> body'
         return jsonify({'data': chain})
-
+    return jsonify({'data':'error'})
 
 @user.route('/login/facebook', methods=['POST'])
 def facebook_login():
