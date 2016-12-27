@@ -252,7 +252,7 @@ def test_mail():
     message = """From: %s\nTo: %s\nSubject: %s\n\n%s
     """ % (FROM, ", ".join(TO), SUBJECT, TEXT)
     try:
-        server = smtplib.SMTP("smtp.gmail.com", 587)
+        server = smtplib.SMTP("smtp.googlemail.com", 465)
         server.ehlo()
         server.starttls()
         server.login(gmail_user, gmail_pwd)
