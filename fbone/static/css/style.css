@@ -46,7 +46,6 @@ h2{
     max-width: 185px;
     white-space: normal;
     font-size: 18px;
-    line-height: 32px;
     font-weight: 300;
     color: rgb(255, 255, 255);
     font-family: Montserrat;
@@ -73,7 +72,6 @@ input[type="password"]{
   margin: 0px;
   white-space: normal;
   font-size: 18px;
-  line-height: 32px;
   outline: none;
   box-sizing: border-box;
   padding: 12px 35px;
@@ -105,9 +103,7 @@ footer span{
   font-size: 12px;
     font-family: Montserrat;
 }
-input{
-  line-height: 0;
-}
+
 @media only screen and (min-width: 500px) {
   input{
     vertical-align: middle;
