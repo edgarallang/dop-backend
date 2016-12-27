@@ -20,6 +20,8 @@ from ..badge import *
 from sqlalchemy import or_, and_
 from flask.ext.socketio import SocketIO, send, emit, join_room, leave_room
 from ..utils import *
+from random import choice
+from string import *
 
 user = Blueprint('user', __name__, url_prefix='/api/user')
 
@@ -224,11 +226,13 @@ def email_login():
 
 @user.route('/forgot/password', methods=['GET'])
 def forgot_password():
-    msg = MailMessage('Hi', sender = 'eduardo@halleydevs.com', recipients = ['eduardo.quintero52@gmail.com'])
-    msg.body = "This is the email body sending with flask!"
-    mail.send(msg)
+    #msg = MailMessage('Hi', sender = 'eduardo@halleydevs.com', recipients = ['eduardo.quintero52@gmail.com'])
+    #msg.body = "This is the email body sending with flask!"
+    #mail.send(msg)
+    chain = (''.join(choice(string.printable) for i in range(12)))
+
     #msg.html = '<b>HTML</b> body'
-    return jsonify({'data': 'success'})
+    return jsonify({'data': chain})
 
 @user.route('/login/facebook', methods=['POST'])
 def facebook_login():
@@ -728,3 +732,4 @@ def get_following():
 
         return jsonify({'data': people_list.data})
     return jsonify({'message': 'Oops! algo salió mal'})
+
