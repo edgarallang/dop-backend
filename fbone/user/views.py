@@ -258,9 +258,9 @@ def test_mail():
         server.login(gmail_user, gmail_pwd)
         server.sendmail(FROM, TO, message)
         server.close()
-        print 'successfully sent the mail'
+        return 'successfully sent the mail'
     except:
-        print "failed to send mail"
+        return "failed to send mail"
 
 @user.route('/login/facebook', methods=['POST'])
 def facebook_login():
