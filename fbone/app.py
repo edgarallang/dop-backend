@@ -22,7 +22,7 @@ from .admin import admin
 from .report import report
 from .extensions import db, mail, cache, login_manager, oid, CORS, socketio, apns_client, gcm_client
 from .utils import INSTANCE_FOLDER_PATH
-from flask_mail import Mail
+
 
 # For import *
 __all__ = ['create_app']
@@ -84,8 +84,8 @@ def configure_extensions(app):
     db.init_app(app)
 
     # flask-mail
-    #mail.init_app(app)
-    mail = Mail(app)
+    mail.init_app(app)
+    #mail = Mail(app)
 
     # flask-cache
     cache.init_app(app)
