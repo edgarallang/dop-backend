@@ -76,12 +76,21 @@ class DefaultConfig(BaseConfig):
     #MAIL_DEFAULT_SENDER = MAIL_USERNAME
 
     # email server
-    MAIL_SERVER = 'smtp.googlemail.com'
-    MAIL_PORT = 465
-    MAIL_USE_TLS = True
-    MAIL_USE_SSL = True
-    MAIL_USERNAME = 'eduardo@halleydevs.com'
-    MAIL_PASSWORD = 'Doprocks1'
+    #MAIL_SERVER = 'smtp.googlemail.com'
+    #MAIL_PORT = 465
+    #MAIL_USE_TLS = True
+    #MAIL_USE_SSL = True
+    #MAIL_USERNAME = 'eduardo@halleydevs.com'
+    #MAIL_PASSWORD = 'Doprocks1'
+
+    MAIL_SERVER = 'localhost'
+    MAIL_PORT = 25
+    MAIL_USE_TLS = False
+    MAIL_USE_SSL = False
+    MAIL_USERNAME = None
+    MAIL_PASSWORD = None
+    DEFAULT_MAIL_SENDER = None
+
 
     # Flask-openid: http://pythonhosted.org/Flask-OpenID/
     OPENID_FS_STORE_PATH = os.path.join(INSTANCE_FOLDER_PATH, 'openid')
