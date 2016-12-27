@@ -7,7 +7,7 @@ import requests
 import base64
 import unicodedata
 from binascii import a2b_base64
-from flask import Blueprint, request, jsonify, session
+from flask import Blueprint, request, jsonify, session, render_template
 from flask import current_app as app
 from flask.ext.login import login_required, current_user
 #from flask.ext.mail import Mail, Message as MailMessage
@@ -256,15 +256,14 @@ def set_new_password():
     if forgotPasswordUser:
         userSession = UserSession.query.filter_by(user_id = forgotPasswordUser.user_id).first()
         if userSession:
-            userSession.password = 'hola'
+            userSession.password = request.form['new_password']
             db.session.delete(forgotPasswordUser)
             db.session.commit()
         else:
-            return jsonify({'error': 'user not found'})
+            return render_template('frontend/reset_password.html')
     else:
-        return jsonify({'error': 'token not found'})
-
-    return jsonify({'data':request.form['token']})
+        return render_template('frontend/reset_password.html')
+    return render_template('frontend/reset_password.html')
 
 @user.route('/login/facebook', methods=['POST'])
 def facebook_login():
