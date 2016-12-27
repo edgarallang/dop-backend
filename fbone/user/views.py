@@ -253,17 +253,21 @@ def set_new_password():
     token = request.form['token']
     forgotPasswordUser = ForgotPassword.query.filter_by(token = token).first()
 
+
     if forgotPasswordUser:
         userSession = UserSession.query.filter_by(user_id = forgotPasswordUser.user_id).first()
         if userSession:
+            user_found = True
             userSession.password = request.form['new_password']
             db.session.delete(forgotPasswordUser)
             db.session.commit()
+            return render_template('frontend/message.html', user_found = True)
         else:
-            return render_template('frontend/reset_password.html')
+            return render_template('frontend/reset_password.html', user_found = False)
     else:
-        return render_template('frontend/reset_password.html')
-    return render_template('frontend/reset_password.html')
+        return render_template('frontend/reset_password.html', user_found = False)
+  
+    return render_template('frontend/reset_password.html', user_found = False)
 
 @user.route('/login/facebook', methods=['POST'])
 def facebook_login():
