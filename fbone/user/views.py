@@ -244,6 +244,8 @@ def forgot_password():
 
         #msg.html = '<b>HTML</b> body'
         return jsonify({'data': chain})
+    else:
+        return jsonify({'data':'token_exist'})
     return jsonify({'data':'error'})
 
 @user.route('/login/facebook', methods=['POST'])
