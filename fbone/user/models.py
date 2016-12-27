@@ -138,6 +138,13 @@ class InvitedFriends(db.Model,UserMixin):
     facebook_key = Column(db.String(STRING_LEN))
     email = Column(db.String(STRING_LEN))
 
+#Forgot password
+class ForgotPassword(db.Model, UserMixin):
+  __tablename__ = 'forgot_password'
+  forgot_password_id = Column(db.Integer, primary_key=True)
+  user_id = Column(db.Integer)
+  token = Column(db.String(100))
+
 # Serializer Schemas
 
 class UserSchema(Schema):
@@ -262,6 +269,7 @@ class UserActivityNewsfeed(Schema):
                   'user_like',
                   'used_date',
                   'private')
+
 
 class UserDeviceTokens(Schema):
         device_token = fields.Str()

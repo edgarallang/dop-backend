@@ -227,40 +227,25 @@ def email_login():
 
 @user.route('/forgot/password', methods=['GET'])
 def forgot_password():
-    msg = Message('test subject', sender= 'halleydevs@gmail.com', recipients= ['eduardo.quintero52@gmail.com'])
-    msg.body = 'text body'
-    msg.html = '<b>HTML</b> body'
-    with app.app_context():
-        mail.send(msg)
-    
-    chain = (''.join(choice(string.hexdigits) for i in range(50)))
 
-    #msg.html = '<b>HTML</b> body'
-    return jsonify({'data': chain})
+    forgotPasswordUser = ForgotPassword.query.filter_by(user_id = 5)
 
-@user.route('/test/mail', methods=['GET'])
-def test_mail():
-    import smtplib
-    gmail_user = 'eduardo@halleydevs.com'
-    gmail_pwd = 'Doprocks1'
-    FROM = 'DOP'
-    TO = 'eduardo.quintero52@gmail.com'
-    SUBJECT = 'Eduardo'
-    TEXT = 'Hola'
+    if not forgotPasswordUser:
+        chain = (''.join(choice(string.hexdigits) for i in range(90)))
+        
+        forgotPasswordUser = ForgotPassword(user_id = 5, token = chain)
+        db.session.add(forgotPasswordUser)
+        db.session.commit()
+        
+        msg = Message('test subject', sender= 'halleydevs@gmail.com', recipients= ['eduardo.quintero52@gmail.com'])
+        msg.body = 'text body'
+        msg.html = '<a href="'+chain+'">Click</a>'
+        with app.app_context():
+            mail.send(msg)
 
-    # Prepare actual message
-    message = """From: %s\nTo: %s\nSubject: %s\n\n%s
-    """ % (FROM, ", ".join(TO), SUBJECT, TEXT)
-    try:
-        server = smtplib.SMTP("smtp.googlemail.com", 465)
-        server.ehlo()
-        server.starttls()
-        server.login(gmail_user, gmail_pwd)
-        server.sendmail(FROM, TO, message)
-        server.close()
-        return 'successfully sent the mail'
-    except:
-        return "failed to send mail"
+        #msg.html = '<b>HTML</b> body'
+        return jsonify({'data': chain})
+
 
 @user.route('/login/facebook', methods=['POST'])
 def facebook_login():
