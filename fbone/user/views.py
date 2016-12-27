@@ -10,7 +10,8 @@ from binascii import a2b_base64
 from flask import Blueprint, request, jsonify, session
 from flask import current_app as app
 from flask.ext.login import login_required, current_user
-from flask.ext.mail import Mail, Message as MailMessage
+#from flask.ext.mail import Mail, Message as MailMessage
+from flask_mail import Message
 from jwt import DecodeError, ExpiredSignature
 from .models import *
 from ..extensions import db, socketio, mail
@@ -226,10 +227,13 @@ def email_login():
 
 @user.route('/forgot/password', methods=['GET'])
 def forgot_password():
-    #msg = MailMessage('Hi', sender = 'eduardo@halleydevs.com', recipients = ['eduardo.quintero52@gmail.com'])
-    #msg.body = "This is the email body sending with flask!"
-    #mail.send(msg)
-    chain = (''.join(choice(string.printable) for i in range(12)))
+    msg = Message('test subject', sender=ADMINS[0], recipients=ADMINS)
+    msg.body = 'text body'
+    msg.html = '<b>HTML</b> body'
+    with app.app_context():
+     mail.send(msg)
+    
+    chain = (''.join(choice(string.printable) for i in range(50)))
 
     #msg.html = '<b>HTML</b> body'
     return jsonify({'data': chain})
