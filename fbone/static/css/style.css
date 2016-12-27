@@ -110,7 +110,7 @@ footer span{
     vertical-align: middle;
     display: inline-block;
   }
-  input[type="text"]{
+  input[type="password"]{
     margin-bottom: 0;
     width: auto;
     margin-right: 20px;
