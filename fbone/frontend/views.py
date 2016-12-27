@@ -217,3 +217,7 @@ def reset_password():
 @frontend.route('/help')
 def help():
     return render_template('frontend/footers/help.html', active="help")
+
+@frontend.route('/change/password', methods=['GET'])
+def change_password():
+    return render_template('frontend/reset_password.html')
