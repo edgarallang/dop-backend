@@ -227,9 +227,8 @@ def email_login():
 
 @user.route('/forgot/password', methods=['GET'])
 def forgot_password():
-
     forgotPasswordUser = ForgotPassword.query.filter_by(user_id = 5)
-
+    print "WTF"
     if not forgotPasswordUser:
         chain = (''.join(choice(string.hexdigits) for i in range(90)))
         
