@@ -85,7 +85,7 @@ def configure_extensions(app):
     db.init_app(app)
 
     # flask-mail
-    Mail.init_app(app)
+    mail = Mail(app)
 
     # flask-cache
     cache.init_app(app)
