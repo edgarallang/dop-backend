@@ -228,7 +228,7 @@ def email_login():
 @user.route('/forgot/password', methods=['GET'])
 def forgot_password():
     forgotPasswordUser = ForgotPassword.query.filter_by(user_id = 5).first()
-    print "WTF"
+
     if not forgotPasswordUser:
         chain = (''.join(choice(string.hexdigits) for i in range(90)))
         
@@ -238,7 +238,7 @@ def forgot_password():
 
         msg = Message('test subject', sender= 'halleydevs@gmail.com', recipients= ['eduardo.quintero52@gmail.com'])
         msg.body = 'text body'
-        msg.html = '<a href="'+chain+'">Click</a>'
+        msg.html = '<a href="http://45.55.7.118:5000/api/frontend/reset/password/'+chain+'">Click</a>'
         with app.app_context():
             mail.send(msg)
 
