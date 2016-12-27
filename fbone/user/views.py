@@ -233,7 +233,7 @@ def forgot_password():
     with app.app_context():
         mail.send(msg)
     
-    chain = (''.join(choice(string.printable) for i in range(50)))
+    chain = (''.join(choice(string.hexdigits) for i in range(50)))
 
     #msg.html = '<b>HTML</b> body'
     return jsonify({'data': chain})
