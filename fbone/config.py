@@ -76,8 +76,8 @@ class DefaultConfig(BaseConfig):
     #MAIL_DEFAULT_SENDER = MAIL_USERNAME
 
     # email server
-    MAIL_SERVER = 'smtp.googlemail.com'
-    MAIL_PORT = 465
+    MAIL_SERVER = 'smtp.gmail.com'
+    MAIL_PORT = 587
     MAIL_USE_TLS = False
     MAIL_USE_SSL = True
     MAIL_USERNAME = 'eduardo@halleydevs.com'
