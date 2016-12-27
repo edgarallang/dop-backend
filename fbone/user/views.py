@@ -248,6 +248,12 @@ def forgot_password():
         return jsonify({'data':'token_exist'})
     return jsonify({'data':'error'})
 
+@user.route('/set/new/password', methods=['POST'])
+def set_new_password():
+    print request
+    token = request.json['token']
+    return jsonify({'data':'error'})
+
 @user.route('/login/facebook', methods=['POST'])
 def facebook_login():
     facebookUser = User.query.filter_by(facebook_key = request.json['facebook_key']).first()

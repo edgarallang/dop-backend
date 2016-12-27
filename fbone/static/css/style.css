@@ -69,24 +69,24 @@ h2{
     transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
     transform-origin: 50% 50% 0px;
 }
-input{
+input[type="text"]{
   margin: 0px;
   white-space: normal;
-    font-size: 18px;
-    line-height: 32px;
+  font-size: 18px;
+  line-height: 32px;
   outline: none;
   box-sizing: border-box;
   padding: 12px 35px;
   border-color: rgb(127, 127, 127);
-    border-style: solid;
-    border-width: 2px;
-    border-radius: 3px;
-    height: 47px;
-    transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
-    transform-origin: 50% 50% 0px;
-    margin-bottom: 40px;
-    margin-right: 0;
-    width: 90%;
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 3px;
+  height: 47px;
+  transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+  transform-origin: 50% 50% 0px;
+  margin-bottom: 40px;
+  margin-right: 0;
+  width: 90%;
 }
 div.content{
   margin-top: 40px;
@@ -106,7 +106,7 @@ footer span{
     font-family: Montserrat;
 }
 @media only screen and (min-width: 500px) {
-  input{
+  input[type="text"]{
     margin-bottom: 0;
     width: auto;
     margin-right: 20px;
