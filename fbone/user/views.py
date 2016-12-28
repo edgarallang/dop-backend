@@ -116,7 +116,7 @@ def upload_logo():
             else:
                 return jsonify({'message': 'email_exist'})
 
-
+        names = ''
         if 'names' in request.form:
             names = request.form['names']
             user.names = names
@@ -144,6 +144,16 @@ def upload_logo():
             image.save(os.path.join(directory, name))
             userImage.main_image = app.config['DOMAIN'] + db_directory + name
             db.session.commit()
+
+        userSession = UserSession.query.filter_by(user_id = payload['id']).first()
+
+        if names == '':
+            names = userSession.email
+        msg = Message('Bienvenido!', sender = app.config['MAIL_USERNAME'], recipients= [userSession.email])
+        msg.body = ''
+        msg.html = render_template('frontend/mail.html', name = names) 
+        with app.app_context():
+            mail.send(msg)
 
         return jsonify({'message':'success'})
     return jsonify({'message': 'Oops! algo salió mal :('})
@@ -178,7 +188,6 @@ def email_verification():
         db.session.add(userImage)
         db.session.add(userFirstEXP)
         db.session.commit()
-
 
 
         token = create_token(newUser)
@@ -237,7 +246,7 @@ def forgot_password():
         db.session.commit()
 
         msg = Message('Restablecer Contraseña', sender = app.config['MAIL_USERNAME'], recipients= ['eduardo.quintero52@gmail.com'])
-        msg.body = 'text body'
+        msg.body = ''
         msg.html = render_template('frontend/mail.html', name = chain) 
         #msg.html = '<a href="http://45.55.7.118:5000/api/frontend/reset/password/'+chain+'">Click</a>'
         with app.app_context():
