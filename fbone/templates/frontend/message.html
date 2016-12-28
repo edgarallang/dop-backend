@@ -4,11 +4,8 @@
 <a href="http://www.halleydevs.com"> <img src="http://halleydevs.com/wp-content/uploads/2016/10/icon-app-dop.png" /> </a>
 <h1>DOP</h1>
 <div class="content">
-	<h2> {% if user_found %}
-  			La contraseña se ha cambiado correctamente
-  		{% else %}
-			El enlace ya caducó
-		{% endif %} 
+	<h2> 
+		{{message}}
 	</h2>
 </div>
 {% endblock %}

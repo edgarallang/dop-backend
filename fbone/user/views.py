@@ -277,12 +277,31 @@ def set_new_password():
             userSession.password = request.form['new_password']
             db.session.delete(forgotPasswordUser)
             db.session.commit()
-            return render_template('frontend/message.html', user_found = True)
+            return render_template('frontend/message.html', user_found = True, message = 'La contraseña se ha cambiado correctamente')
         else:
-            return render_template('frontend/message.html', user_found = False)
+            return render_template('frontend/message.html', user_found = False, message = 'El enlace ha caducado')
     else:
-        return render_template('frontend/message.html', user_found = False)
-    return render_template('frontend/message.html', user_found = False)
+        return render_template('frontend/message.html', user_found = False, message = 'El enlace ha caducado')
+    return render_template('frontend/message.html', user_found = False, message = 'El enlace ha caducado')
+
+@user.route('/verify/email/<string:token>', methods=['POST'])
+def verify_email(token):
+
+    verifyEmailUser = VerifyEmail.query.filter_by(token = token).first()
+
+    if verifyEmailUser:
+        userSession = UserSession.query.filter_by(user_id = verifyEmailUser.user_id).first()
+        if userSession:
+            user_found = True
+            userSession.verified = True
+            db.session.delete(verifyEmailUser)
+            db.session.commit()
+            return render_template('frontend/message.html', user_found = True, message = 'Tu correo ha sido verificado!')
+        else:
+            return render_template('frontend/message.html', user_found = False, message = 'El enlace ha caducado')
+    else:
+        return render_template('frontend/message.html', user_found = False, message = 'El enlace ha caducado')
+    return render_template('frontend/message.html', user_found = False, message = 'El enlace ha caducado')
 
 @user.route('/login/facebook', methods=['POST'])
 def facebook_login():
