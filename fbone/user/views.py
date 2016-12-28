@@ -236,7 +236,7 @@ def forgot_password():
         db.session.add(forgotPasswordUser)
         db.session.commit()
 
-        msg = Message('test subject', sender= 'halleydevs@gmail.com', recipients= ['eduardo.quintero52@gmail.com'])
+        msg = Message('Restablecer Contraseña', sender = app.config['MAIL_USERNAME'], recipients= ['eduardo.quintero52@gmail.com'])
         msg.body = 'text body'
         msg.html = render_template('frontend/mail.html', name = chain) 
         #msg.html = '<a href="http://45.55.7.118:5000/api/frontend/reset/password/'+chain+'">Click</a>'
