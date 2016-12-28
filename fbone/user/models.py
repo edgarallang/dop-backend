@@ -145,6 +145,13 @@ class ForgotPassword(db.Model, UserMixin):
   user_id = Column(db.Integer)
   token = Column(db.String(100))
 
+#Verify email
+class VerifyEmail(db.Model, UserMixin):
+  __tablename__ = 'verify_email'
+  verify_email_id = Column(db.Integer, primary_key=True)
+  user_id = Column(db.Integer)
+  token = Column(db.String(100))
+
 # Serializer Schemas
 
 class UserSchema(Schema):

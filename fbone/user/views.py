@@ -149,9 +149,16 @@ def upload_logo():
 
         if names == '':
             names = userSession.email
+
+        chain = (''.join(choice(string.hexdigits) for i in range(90)))
+        chain = chain + payload['id']
+        verifyEmailUser = VerifyEmail(user_id = payload['id'], token = chain)
+        db.session.add(verifyEmailUser)
+        db.session.commit()
+
         msg = Message('Bienvenido!', sender = app.config['MAIL_USERNAME'], recipients= [userSession.email])
         msg.body = ''
-        msg.html = render_template('frontend/mail.html', name = names) 
+        msg.html = render_template('frontend/mail.html', name = names, token = chain) 
         with app.app_context():
             mail.send(msg)
 
