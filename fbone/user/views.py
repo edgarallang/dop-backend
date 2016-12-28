@@ -299,10 +299,10 @@ def set_new_password():
             db.session.commit()
             return render_template('frontend/message.html', user_found = True, message = 'El password se ha cambiado correctamente')
         else:
-            return render_template('frontend/message.html', user_found = False, message = 'El enlace ha caducado')
+            return render_template('frontend/message.html', user_found = False, message = 'El enlace ha expirado')
     else:
-        return render_template('frontend/message.html', user_found = False, message = 'El enlace ha caducado')
-    return render_template('frontend/message.html', user_found = False, message = 'El enlace ha caducado')
+        return render_template('frontend/message.html', user_found = False, message = 'El enlace ha expirado')
+    return render_template('frontend/message.html', user_found = False, message = 'El enlace ha expirado')
 
 @user.route('/verify/email/<string:token>', methods=['GET'])
 def verify_email(token):
@@ -318,10 +318,10 @@ def verify_email(token):
             db.session.commit()
             return render_template('frontend/message.html', user_found = True, message = 'Tu correo ha sido verificado!')
         else:
-            return render_template('frontend/message.html', user_found = False, message = 'El enlace ha caducado')
+            return render_template('frontend/message.html', user_found = False, message = 'El enlace ha expirado')
     else:
-        return render_template('frontend/message.html', user_found = False, message = 'El enlace ha caducado')
-    return render_template('frontend/message.html', user_found = False, message = 'El enlace ha caducado')
+        return render_template('frontend/message.html', user_found = False, message = 'El enlace ha expirado')
+    return render_template('frontend/message.html', user_found = False, message = 'El enlace ha expirado')
 
 @user.route('/login/facebook', methods=['POST'])
 def facebook_login():

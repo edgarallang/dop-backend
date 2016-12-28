@@ -8,7 +8,7 @@ from flask.ext.mail import Message
 from flask.ext.babel import gettext as _
 from flask.ext.login import login_required, login_user, current_user, logout_user, confirm_login, login_fresh
 
-from ..user import User, UserImage, UserLevel
+from ..user import User, UserImage, UserLevel, ForgotPassword
 from ..extensions import db, mail, login_manager, oid
 from .forms import SignupForm, LoginForm, RecoverPasswordForm, ReauthForm, ChangePasswordForm, OpenIDForm, CreateProfileForm
 
@@ -192,6 +192,10 @@ def help():
 
 @frontend.route('/reset/password/<string:token>', methods=['GET'])
 def reset_password(token):
+    forgotPasswordUser = ForgotPassword.query.filter_by(token = token).first()
 
-    return render_template('frontend/reset_password.html', token = token)
+    if forgotPasswordUser:
+        return render_template('frontend/reset_password.html', token = token)
+    else:
+        return render_template('frontend/message.html', user_found = False, message = 'El enlace ha expirado')
 
