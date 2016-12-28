@@ -258,7 +258,7 @@ def forgot_password():
 
             msg = Message('Restablecer Contraseña', sender = app.config['MAIL_USERNAME'], recipients= [userSession.email])
             msg.body = ''
-            msg.html = render_template('frontend/reset_password_mail.html', name = chain) 
+            msg.html = render_template('frontend/reset_password_mail.html', token = chain) 
             #msg.html = '<a href="http://45.55.7.118:5000/api/frontend/reset/password/'+chain+'">Click</a>'
             with app.app_context():
                 mail.send(msg)
@@ -274,7 +274,7 @@ def forgot_password():
 
             msg = Message('Restablecer Contraseña', sender = app.config['MAIL_USERNAME'], recipients= [userSession.email])
             msg.body = ''
-            msg.html = render_template('frontend/reset_password_mail.html', name = chain) 
+            msg.html = render_template('frontend/reset_password_mail.html', token = chain) 
             #msg.html = '<a href="http://45.55.7.118:5000/api/frontend/reset/password/'+chain+'">Click</a>'
             with app.app_context():
                 mail.send(msg)
