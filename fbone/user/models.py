@@ -110,6 +110,7 @@ class UserSession(db.Model,UserMixin):
     user_id = Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
     email = Column(db.String(STRING_LEN))
     password = Column(db.String(STRING_LEN))
+    verified = Column(db.Boolean, default=False)
 
 # ================================================================
 # Friends
