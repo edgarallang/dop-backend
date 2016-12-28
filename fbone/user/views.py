@@ -297,7 +297,7 @@ def set_new_password():
             userSession.password = request.form['new_password']
             db.session.delete(forgotPasswordUser)
             db.session.commit()
-            return render_template('frontend/message.html', user_found = True, message = 'La contraseña se ha cambiado correctamente')
+            return render_template('frontend/message.html', user_found = True, message = 'El password se ha cambiado correctamente')
         else:
             return render_template('frontend/message.html', user_found = False, message = 'El enlace ha caducado')
     else:
