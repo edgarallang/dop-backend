@@ -284,7 +284,7 @@ def set_new_password():
         return render_template('frontend/message.html', user_found = False, message = 'El enlace ha caducado')
     return render_template('frontend/message.html', user_found = False, message = 'El enlace ha caducado')
 
-@user.route('/verify/email/<string:token>', methods=['POST'])
+@user.route('/verify/email/<string:token>', methods=['GET'])
 def verify_email(token):
 
     verifyEmailUser = VerifyEmail.query.filter_by(token = token).first()
