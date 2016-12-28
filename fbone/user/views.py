@@ -241,18 +241,19 @@ def email_login():
     else:
         return jsonify({'data': 'wrong_password'})
 
-@user.route('/forgot/password', methods=['GET'])
+@user.route('/forgot/password', methods=['POST'])
 def forgot_password():
-    forgotPasswordUser = ForgotPassword.query.filter_by(user_id = 5).first()
+    forgotPasswordUser = ForgotPassword.query.filter_by(user_id = payload['id']).first()
 
     if not forgotPasswordUser:
         chain = (''.join(choice(string.hexdigits) for i in range(90)))
-        
-        forgotPasswordUser = ForgotPassword(user_id = 5, token = chain)
+        chain = '%s%s' % (chain, payload['id'])
+
+        forgotPasswordUser = ForgotPassword(user_id = payload['id'], token = chain)
         db.session.add(forgotPasswordUser)
         db.session.commit()
 
-        msg = Message('Restablecer Contraseña', sender = app.config['MAIL_USERNAME'], recipients= ['eduardo.quintero52@gmail.com'])
+        msg = Message('Restablecer Contraseña', sender = app.config['MAIL_USERNAME'], recipients= [request.json['email']])
         msg.body = ''
         msg.html = render_template('frontend/mail.html', name = chain) 
         #msg.html = '<a href="http://45.55.7.118:5000/api/frontend/reset/password/'+chain+'">Click</a>'
