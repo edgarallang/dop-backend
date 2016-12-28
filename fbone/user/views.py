@@ -58,8 +58,7 @@ def create_token(user):
 def index():
     if not current_user.is_authenticated():
         abort(403)
-    return render_template('user/index.html', user=current_user)
-
+    return render_template('user/index.html', user=current_user)    
 
 def get_friends_by_id(userId):
     friends_query = 'SELECT COUNT(*) as total FROM friends \
@@ -263,7 +262,21 @@ def forgot_password():
         #msg.html = '<b>HTML</b> body'
         return jsonify({'data': chain})
     else:
-        return jsonify({'data':'token_exist'})
+        chain = (''.join(choice(string.hexdigits) for i in range(90)))
+        chain = '%s%s' % (chain, payload['id'])
+
+        forgotPasswordUser.token = chain
+        db.session.commit()
+
+        msg = Message('Restablecer Contraseña', sender = app.config['MAIL_USERNAME'], recipients= [request.json['email']])
+        msg.body = ''
+        msg.html = render_template('frontend/mail.html', name = chain) 
+        #msg.html = '<a href="http://45.55.7.118:5000/api/frontend/reset/password/'+chain+'">Click</a>'
+        with app.app_context():
+            mail.send(msg)
+
+        #msg.html = '<b>HTML</b> body'
+        return jsonify({'data':chain})
     return jsonify({'data':'error'})
 
 @user.route('/set/new/password', methods=['POST'])
