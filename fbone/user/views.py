@@ -151,7 +151,7 @@ def upload_logo():
             names = userSession.email
 
         chain = (''.join(choice(string.hexdigits) for i in range(90)))
-        chain = chain + payload['id']
+        chain = '%s%s' % (chain, payload['id'])
         verifyEmailUser = VerifyEmail(user_id = payload['id'], token = chain)
         db.session.add(verifyEmailUser)
         db.session.commit()
