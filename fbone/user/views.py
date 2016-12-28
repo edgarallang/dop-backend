@@ -242,41 +242,47 @@ def email_login():
 
 @user.route('/forgot/password', methods=['POST'])
 def forgot_password():
-    forgotPasswordUser = ForgotPassword.query.filter_by(user_id = payload['id']).first()
+    userSession = UserSession.query.filter_by(email = request.json['email']).first()
 
-    if not forgotPasswordUser:
-        chain = (''.join(choice(string.hexdigits) for i in range(90)))
-        chain = '%s%s' % (chain, payload['id'])
+    if userSession:
+        user_id = userSession.user_id
+        forgotPasswordUser = ForgotPassword.query.filter_by(user_id = user_id).first()
 
-        forgotPasswordUser = ForgotPassword(user_id = payload['id'], token = chain)
-        db.session.add(forgotPasswordUser)
-        db.session.commit()
+        if not forgotPasswordUser:
+            chain = (''.join(choice(string.hexdigits) for i in range(90)))
+            chain = '%s%s' % (chain, user_id)
 
-        msg = Message('Restablecer Contraseña', sender = app.config['MAIL_USERNAME'], recipients= [request.json['email']])
-        msg.body = ''
-        msg.html = render_template('frontend/mail.html', name = chain) 
-        #msg.html = '<a href="http://45.55.7.118:5000/api/frontend/reset/password/'+chain+'">Click</a>'
-        with app.app_context():
-            mail.send(msg)
+            forgotPasswordUser = ForgotPassword(user_id = user_id, token = chain)
+            db.session.add(forgotPasswordUser)
+            db.session.commit()
 
-        #msg.html = '<b>HTML</b> body'
-        return jsonify({'data': chain})
+            msg = Message('Restablecer Contraseña', sender = app.config['MAIL_USERNAME'], recipients= userSession.email])
+            msg.body = ''
+            msg.html = render_template('frontend/mail.html', name = chain) 
+            #msg.html = '<a href="http://45.55.7.118:5000/api/frontend/reset/password/'+chain+'">Click</a>'
+            with app.app_context():
+                mail.send(msg)
+
+            #msg.html = '<b>HTML</b> body'
+            return jsonify({'data': 'success'})
+        else:
+            chain = (''.join(choice(string.hexdigits) for i in range(90)))
+            chain = '%s%s' % (chain, user_id)
+
+            forgotPasswordUser.token = chain
+            db.session.commit()
+
+            msg = Message('Restablecer Contraseña', sender = app.config['MAIL_USERNAME'], recipients= userSession.email])
+            msg.body = ''
+            msg.html = render_template('frontend/mail.html', name = chain) 
+            #msg.html = '<a href="http://45.55.7.118:5000/api/frontend/reset/password/'+chain+'">Click</a>'
+            with app.app_context():
+                mail.send(msg)
+
+            #msg.html = '<b>HTML</b> body'
+            return jsonify({'data': 'success'})
     else:
-        chain = (''.join(choice(string.hexdigits) for i in range(90)))
-        chain = '%s%s' % (chain, payload['id'])
-
-        forgotPasswordUser.token = chain
-        db.session.commit()
-
-        msg = Message('Restablecer Contraseña', sender = app.config['MAIL_USERNAME'], recipients= [request.json['email']])
-        msg.body = ''
-        msg.html = render_template('frontend/mail.html', name = chain) 
-        #msg.html = '<a href="http://45.55.7.118:5000/api/frontend/reset/password/'+chain+'">Click</a>'
-        with app.app_context():
-            mail.send(msg)
-
-        #msg.html = '<b>HTML</b> body'
-        return jsonify({'data':chain})
+        return jsonify({'data':'user_not_found'})
     return jsonify({'data':'error'})
 
 @user.route('/set/new/password', methods=['POST'])
