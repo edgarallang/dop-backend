@@ -238,7 +238,8 @@ def forgot_password():
 
         msg = Message('test subject', sender= 'halleydevs@gmail.com', recipients= ['eduardo.quintero52@gmail.com'])
         msg.body = 'text body'
-        msg.html = '<a href="http://45.55.7.118:5000/api/frontend/reset/password/'+chain+'">Click</a>'
+        msg.html = render_template('frontend/mail.html', name = chain) 
+        #msg.html = '<a href="http://45.55.7.118:5000/api/frontend/reset/password/'+chain+'">Click</a>'
         with app.app_context():
             mail.send(msg)
 
@@ -253,7 +254,6 @@ def set_new_password():
     token = request.form['token']
     forgotPasswordUser = ForgotPassword.query.filter_by(token = token).first()
 
-
     if forgotPasswordUser:
         userSession = UserSession.query.filter_by(user_id = forgotPasswordUser.user_id).first()
         if userSession:
@@ -266,7 +266,6 @@ def set_new_password():
             return render_template('frontend/message.html', user_found = False)
     else:
         return render_template('frontend/message.html', user_found = False)
-  
     return render_template('frontend/message.html', user_found = False)
 
 @user.route('/login/facebook', methods=['POST'])
