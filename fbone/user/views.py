@@ -344,7 +344,8 @@ def facebook_login():
         db.session.commit()
 
         userSession = UserSession(user_id=facebookUser.user_id,
-                                  email=request.json['email'])
+                                  email=request.json['email'],
+                                  verified = True)
 
         db.session.add(userSession)
         db.session.commit()
