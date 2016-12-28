@@ -256,7 +256,7 @@ def forgot_password():
             db.session.add(forgotPasswordUser)
             db.session.commit()
 
-            msg = Message('Restablecer Contraseña', sender = app.config['MAIL_USERNAME'], recipients= userSession.email])
+            msg = Message('Restablecer Contraseña', sender = app.config['MAIL_USERNAME'], recipients= [userSession.email])
             msg.body = ''
             msg.html = render_template('frontend/mail.html', name = chain) 
             #msg.html = '<a href="http://45.55.7.118:5000/api/frontend/reset/password/'+chain+'">Click</a>'
@@ -272,7 +272,7 @@ def forgot_password():
             forgotPasswordUser.token = chain
             db.session.commit()
 
-            msg = Message('Restablecer Contraseña', sender = app.config['MAIL_USERNAME'], recipients= userSession.email])
+            msg = Message('Restablecer Contraseña', sender = app.config['MAIL_USERNAME'], recipients= [userSession.email])
             msg.body = ''
             msg.html = render_template('frontend/mail.html', name = chain) 
             #msg.html = '<a href="http://45.55.7.118:5000/api/frontend/reset/password/'+chain+'">Click</a>'
