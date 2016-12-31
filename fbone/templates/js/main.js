@@ -9,4 +9,6 @@ $(document).ready(function() {
       autoHeight: true,
       autoplay: true
     });
+
+    alert("JO");
 })
