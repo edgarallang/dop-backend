@@ -10,7 +10,7 @@ $(document).ready(function() {
 	$('#reset_password_form').on('submit', function(e){
 		e.preventDefault();
 		var count = $("#reset_password_form").text().length;
-
+		alert(count);
 		if(count >= 6){
 			alert("Simon");
 		}else{
