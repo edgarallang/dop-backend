@@ -11,7 +11,7 @@ $(document).ready(function() {
 		e.preventDefault();
 		var count = $("#password_input").val().length;
 		if(count >= 6){
-			e.submit();
+			this.submit();
 		}else{
 			$("#error_message").fadeIn();
 		}
