@@ -1028,6 +1028,7 @@ def add_view_location():
             coupon_view.latitude = request.json['latitude']
             coupon_view.longitude = request.json['longitude']
 
+        db.session.add(coupon_view)
         db.session.commit()
  
         return jsonify({'message': 'vistas actualizada'})
