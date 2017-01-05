@@ -1012,7 +1012,7 @@ def like_coupon():
 #    return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
 @coupon.route('/view', methods=['POST'])
-def add_view_location():
+def add_view():
     if request.headers.get('Authorization'):
         token_index = True
         payload = parse_token(request, token_index)

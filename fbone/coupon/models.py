@@ -117,8 +117,8 @@ class CouponReport(db.Model):
 class CouponsViews(db.Model):
     __tablename__ = 'coupons_views'
     id = Column(db.Integer, primary_key=True)
-    user_id = Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
-    coupon_id = Column(db.Integer, db.ForeignKey('coupons.coupon_id'), nullable=False)
+    user_id = Column(db.Integer, nullable=False)
+    coupon_id = Column(db.Integer, nullable=False)
     latitude = Column(db.Numeric)
     longitude = Column(db.Numeric)
 
