@@ -1034,6 +1034,10 @@ def add_view():
         return jsonify({'message': 'vistas actualizada'})
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
+@coupon.route('/get/views', methods=['GET'])
+def get_views():
+    return jsonify({'message': 'vistas actualizada'})
+
 @coupon.route('/customize', methods=['POST'])
 def custom_coupon():
     if request.headers.get('Authorization'):
