@@ -73,8 +73,8 @@ class ClientsCoupon(db.Model):
     coupon_id = Column(db.Integer, db.ForeignKey('coupons.coupon_id'), nullable=False)
     folio = Column(db.String(STRING_LEN))
     taken_date = Column(db.DateTime, nullable=False)
-    latitude = Column(db.Numeric, nullable=False)
-    longitude = Column(db.Numeric, nullable=False)
+    latitude = Column(db.Numeric)
+    longitude = Column(db.Numeric)
     used = Column(db.Boolean, nullable = False)
     used_date = Column(db.DateTime, nullable=False)
     private = Column(db.Boolean, nullable = False)
@@ -113,6 +113,15 @@ class CouponReport(db.Model):
     camera_broken = Column(db.Boolean)
     app_broken = Column(db.Boolean)
     qr_lost = Column(db.Boolean)
+
+class CouponsViews(db.Model):
+    __tablename__ = 'coupons_views'
+    id = Column(db.Integer, primary_key=True)
+    user_id = Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
+    coupon_id = Column(db.Integer, db.ForeignKey('coupons.coupon_id'), nullable=False)
+    latitude = Column(db.Numeric)
+    longitude = Column(db.Numeric)
+
 # Serializer Schemas
 
 class CouponReportSchema(Schema):

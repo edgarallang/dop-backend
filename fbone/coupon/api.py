@@ -996,22 +996,43 @@ def like_coupon():
             return jsonify({'message': 'El like se elimino con éxito'})
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
+#@coupon.route('/view', methods=['POST'])
+#def add_view():
+#    if request.headers.get('Authorization'):
+#        token_index = True
+#        payload = parse_token(request, token_index)
+#
+#        coupon_id = request.json['coupon_id']
+#        coupon = Coupon.query.get(coupon_id)
+#        coupon.views = coupon.views + 1
+#
+#        db.session.commit()
+#
+#        return jsonify({'message': 'vistas actualizada'})
+#    return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
+
 @coupon.route('/view', methods=['POST'])
-def add_view():
-    if request.headers.get('Authorization'):
+def add_view_location():
+if request.headers.get('Authorization'):
         token_index = True
         payload = parse_token(request, token_index)
 
         coupon_id = request.json['coupon_id']
         coupon = Coupon.query.get(coupon_id)
         coupon.views = coupon.views + 1
-
         db.session.commit()
 
+        coupon_view = CouponsViews(coupon_id = coupon_id, 
+                                    user_id = payload['id'])
+
+        if 'latitude' in request.json and 'longitude' in request.json:
+            coupon_view.latitude = request.json['latitude']
+            coupon_view.longitude = request.json['longitude']
+
+        db.session.commit()
+ 
         return jsonify({'message': 'vistas actualizada'})
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
-
-
 
 @coupon.route('/customize', methods=['POST'])
 def custom_coupon():
