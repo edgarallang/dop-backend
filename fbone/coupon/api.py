@@ -1036,7 +1036,12 @@ def add_view():
 
 @coupon.route('/get/views', methods=['GET'])
 def get_views():
-    return jsonify({'message': 'vistas actualizada'})
+    if request.headers.get('Authorization'):
+        token_index = False
+        payload = parse_token(request, token_index)
+        return jsonify({'message': 'vistas actualizada'})
+    else:
+        return jsonify({'message': 'error'})
 
 @coupon.route('/customize', methods=['POST'])
 def custom_coupon():
