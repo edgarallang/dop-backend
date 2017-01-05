@@ -1022,7 +1022,7 @@ def add_view():
         coupon.views = coupon.views + 1
         db.session.commit()
 
-        coupon_view = CouponsViews( user_id = 1, coupon_id = coupon_id)
+        coupon_view = CouponsViews(coupon_id = coupon_id)
 
 
         if 'latitude' in request.json and 'longitude' in request.json:
