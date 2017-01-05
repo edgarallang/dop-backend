@@ -1022,8 +1022,7 @@ def add_view_location():
         coupon.views = coupon.views + 1
         db.session.commit()
 
-        coupon_view = CouponsViews(coupon_id = coupon_id, 
-                                    user_id = payload['id'])
+        coupon_view = CouponsViews(coupon_id = coupon_id, user_id = payload['id'])
 
         if 'latitude' in request.json and 'longitude' in request.json:
             coupon_view.latitude = request.json['latitude']
