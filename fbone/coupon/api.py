@@ -1013,7 +1013,7 @@ def like_coupon():
 
 @coupon.route('/view', methods=['POST'])
 def add_view_location():
-if request.headers.get('Authorization'):
+    if request.headers.get('Authorization'):
         token_index = True
         payload = parse_token(request, token_index)
 
