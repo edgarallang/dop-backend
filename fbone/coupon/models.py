@@ -114,7 +114,7 @@ class CouponReport(db.Model):
     app_broken = Column(db.Boolean)
     qr_lost = Column(db.Boolean)
 
-class CouponsViews(db.Model):
+class CouponViews(db.Model):
     __tablename__ = 'coupons_views'
     id = Column(db.Integer, primary_key=True)
     user_id = Column(db.Integer, nullable=False)

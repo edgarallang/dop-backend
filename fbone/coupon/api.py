@@ -1024,7 +1024,6 @@ def add_view():
 
         coupon_view = CouponsViews(coupon_id = coupon_id)
 
-
         if 'latitude' in request.json and 'longitude' in request.json:
             coupon_view.latitude = request.json['latitude']
             coupon_view.longitude = request.json['longitude']
