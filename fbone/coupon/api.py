@@ -1052,7 +1052,7 @@ def get_views(branchId):
 
     views = views_location_schema.dump(coupons_list)
 
-    return jsonify({'message': views.data})
+    return jsonify({'data': views.data})
     #else:
     #    return jsonify({'message': 'error'})
 
