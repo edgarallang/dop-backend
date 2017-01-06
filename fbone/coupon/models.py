@@ -437,8 +437,7 @@ class ViewsLocationSchema(Schema):
                   'name',
                   'description',
                   'latitude',
-                  'longitude',
-                  'available')
+                  'longitude')
 
 class UsedCouponsByAge(Schema):
     class Meta:
