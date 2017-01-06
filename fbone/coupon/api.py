@@ -1046,7 +1046,9 @@ def get_views(branchId):
                 INNER JOIN coupons ON coupons_views.coupon_id = coupons.coupon_id \
                 WHERE branch_id = %d' % branchId
 
-    views = views_location_schema.dump(locations)
+    coupons_list = db.engine.execute(locations)
+
+    views = views_location_schema.dump(coupons_list)
 
     return jsonify({'message': views.data})
     #else:
