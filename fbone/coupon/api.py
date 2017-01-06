@@ -1037,8 +1037,8 @@ def add_view():
 @coupon.route('/get/views/<int:branchId>', methods=['GET'])
 def get_views(branchId):
     #if request.headers.get('Authorization'):
-    token_index = False
-    payload = parse_token(request, token_index)
+    #token_index = False
+    #payload = parse_token(request, token_index)
 
     locations = 'SELECT * FROM coupons_views \
                 INNER JOIN coupons ON coupons_views.coupon_id = coupons.coupon_id \
