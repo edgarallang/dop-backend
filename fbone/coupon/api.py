@@ -1040,9 +1040,11 @@ def get_views(branchId):
     #token_index = False
     #payload = parse_token(request, token_index)
 
-    locations = 'SELECT * FROM coupons_views \
+    locations = 'SELECT coupons_views.coupon_id, coupons.name, coupons.description, \
+                coupons_views.latitude, coupons_views.longitude, coupons.available, \
+                coupons_views.view_date FROM coupons_views \
                 INNER JOIN coupons ON coupons_views.coupon_id = coupons.coupon_id \
-                WHERE branch_id = %d' % companyId
+                WHERE branch_id = %d' % branchId
 
     views = views_location_schema.dump(locations)
 
