@@ -437,7 +437,8 @@ class ViewsLocationSchema(Schema):
                   'name',
                   'description',
                   'latitude',
-                  'longitude')
+                  'longitude',
+                  'available')
 
 class UsedCouponsByAge(Schema):
     class Meta:
@@ -477,7 +478,7 @@ coupons_taken_schema = CouponsTakenSchema(many=True)
 coupons_location_schema = CouponsLocation(many=True)
 coupons_views_schema = CouponsViews(many=True)
 
-views_location_schema = ViewsLocationSchema(many=True)
+views_location_schema = ViewsLocationSchema()
 
 taken_coupons_location_schema = TakenCouponsLocationSchema(many=True)
 
