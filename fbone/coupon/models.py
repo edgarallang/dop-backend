@@ -121,6 +121,7 @@ class CouponViews(db.Model):
     coupon_id = Column(db.Integer, nullable=False)
     latitude = Column(db.Numeric)
     longitude = Column(db.Numeric)
+    view_date = Column(db.DateTime)
 
 # Serializer Schemas
 
@@ -430,6 +431,15 @@ class TakenCouponsLocationSchema(Schema):
                   'available',
                   'taken_date')
 
+class ViewsLocationSchema(Schema):
+    class Meta:
+        fields = ('coupon_id',
+                  'name',
+                  'description',
+                  'latitude',
+                  'longitude',
+                  'available')
+
 class UsedCouponsByAge(Schema):
     class Meta:
         fields = ('age',
@@ -467,6 +477,8 @@ coupons_taken_schema = CouponsTakenSchema(many=True)
 
 coupons_location_schema = CouponsLocation(many=True)
 coupons_views_schema = CouponsViews(many=True)
+
+views_location_schema = ViewsLocationSchema(many=True)
 
 taken_coupons_location_schema = TakenCouponsLocationSchema(many=True)
 
