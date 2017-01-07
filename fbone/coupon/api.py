@@ -1027,8 +1027,9 @@ def add_view():
                                   view_date = datetime.now())
 
         if 'latitude' in request.json and 'longitude' in request.json:
-            coupon_view.latitude = request.json['latitude']
-            coupon_view.longitude = request.json['longitude']
+            if request.json['latitude'] not 0 and request.json['longitude'] not 0:
+                coupon_view.latitude = request.json['latitude']
+                coupon_view.longitude = request.json['longitude']
 
         db.session.add(coupon_view)
         db.session.commit()
