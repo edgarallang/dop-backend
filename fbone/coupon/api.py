@@ -1027,7 +1027,7 @@ def add_view():
                                   view_date = datetime.now())
 
         if 'latitude' in request.json and 'longitude' in request.json:
-            if request.json['latitude'] not 0 and request.json['longitude'] not 0:
+            if request.json['latitude'] != 0 and request.json['longitude'] != 0:
                 coupon_view.latitude = request.json['latitude']
                 coupon_view.longitude = request.json['longitude']
 
