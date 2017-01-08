@@ -346,12 +346,12 @@ def active_coupon(coupon_id):
 
     coupon = Coupon.query.get(coupon_id)
 
-    end_date = datetime.now() + timedelta(days=1)
-    
+    end_date = datetime.now() + timedelta(days=coupon.duration)
     coupon.active = True
     coupon.start_date = datetime.now()
-
     coupon.end_date = end_date
+    db.session.commit()
+
     return jsonify({'message': 'success'})
     #return jsonify({'message': 'Oops! algo salió mal'})
 
