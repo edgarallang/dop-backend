@@ -338,6 +338,23 @@ def get_all_coupon_by_branch(branch_id):
     branches_coupons = coupons_schema.dump(list_coupon)
     return jsonify({ 'data': branches_coupons.data })
 
+@coupon.route('/active/<int:coupon_id>', methods = ['GET'])
+def active_coupon(coupon_id):
+    #if request.headers.get('Authorization'):
+    #token_index = False
+    #payload = parse_token(request, token_index)
+
+    coupon = Coupon.query.get(coupon_id)
+    coupon.active = True
+    coupon.start_date = datetime.now()
+    
+    date_1 = datetime.datetime.strptime(datetime.now(), "%m/%d/%y")
+    end_date = date_1 + datetime.timedelta(days=coupon.duration)
+
+    coupon.end_date = end_date
+    return jsonify({'message': 'success'})
+    #return jsonify({'message': 'Oops! algo salió mal'})
+
 @coupon.route('/available/<int:coupon_id>', methods = ['GET'])
 def get_availables(coupon_id):
     coupon = Coupon.query.get(coupon_id)
