@@ -346,7 +346,7 @@ def active_coupon(coupon_id):
 
     coupon = Coupon.query.get(coupon_id)
 
-    end_date = datetime.datetime.now() + datetime.timedelta(days=1)
+    end_date = datetime.now() + timedelta(days=1)
     
     coupon.active = True
     coupon.start_date = datetime.now()
