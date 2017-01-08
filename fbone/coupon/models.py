@@ -420,7 +420,8 @@ class CouponsViews(Schema):
                   'views',
                   'total_likes',
                   'total_uses',
-                  'active')
+                  'active',
+                  'completed')
 
 class TakenCouponsLocationSchema(Schema):
     class Meta:
