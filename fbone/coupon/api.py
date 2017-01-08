@@ -345,11 +345,11 @@ def active_coupon(coupon_id):
     #payload = parse_token(request, token_index)
 
     coupon = Coupon.query.get(coupon_id)
+    
+    date_1 = datetime.now().strftime("%m/%d/%y")
+    end_date = date_1 + datetime.timedelta(days=coupon.duration)
     coupon.active = True
     coupon.start_date = datetime.now()
-    
-    date_1 = datetime.strptime(datetime.now(), "%m/%d/%y")
-    end_date = date_1 + datetime.timedelta(days=coupon.duration)
 
     coupon.end_date = end_date
     return jsonify({'message': 'success'})
