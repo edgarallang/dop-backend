@@ -152,7 +152,10 @@ class CouponSchema(Schema):
                 'completed',
                 'remaining',
                 'available',
-                'duration')
+                'duration',
+                'views',
+                'total_uses',
+                'total_likes')
 
 class CouponLogoSchema(Schema):
     dateformat = ('iso')

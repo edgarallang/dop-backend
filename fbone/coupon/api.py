@@ -326,6 +326,10 @@ def get_all_coupon_by_branch(branch_id):
     #list_coupon = Coupon.query.filter_by(branch_id = branch_id).all()
     list_coupon = db.engine.execute('SELECT coupons.*, branches.company_id, \
                                     ((coupons.available = 0) OR (coupons.end_date < now()) )::bool AS completed, \
+                                    (SELECT COUNT(*)  FROM coupons_likes   \
+                                        WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes,   \
+                                    (SELECT COUNT(*)  FROM clients_coupon   \
+                                        WHERE coupons.coupon_id = clients_coupon.coupon_id AND clients_coupon.used = true) AS total_uses, \
                                     (SELECT end_date::DATE - now()::DATE FROM coupons AS c WHERE coupons.coupon_id = c.coupon_id) AS remaining \
                                     FROM coupons \
                                         INNER JOIN branches ON branches.branch_id = coupons.branch_id \
