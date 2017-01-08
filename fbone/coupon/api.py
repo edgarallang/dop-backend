@@ -346,9 +346,12 @@ def active_coupon(coupon_id):
 
         coupon = Coupon.query.get(coupon_id)
 
+
         end_date = datetime.now() + timedelta(days=coupon.duration)
+        end_date = end_date.strftime("%Y-%m-%d %H:%M:%S")
+
         coupon.active = True
-        coupon.start_date = datetime.now()
+        coupon.start_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         coupon.end_date = end_date
         db.session.commit()
 
