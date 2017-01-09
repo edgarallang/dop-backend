@@ -674,7 +674,7 @@ def get_almost_expired_coupons():
 @coupon.route('/latest/stats/<int:branch_id>', methods=['GET'])
 def coupon_stats(branch_id):
     list_coupon = db.engine.execute('SELECT ((coupons.available = 0) OR (coupons.end_date < now()) )::bool AS completed, coupon_id, coupon_folio,coupons.name, description, start_date, \
-                                            end_date, coupons.limit, min_spent, coupon_category_id, logo, banner, category_id, available,views, active, duration,
+                                            end_date, coupons.limit, min_spent, coupon_category_id, logo, banner, category_id, available,views, active, duration, \
                                             nxn_coupon.n1, nxn_coupon.n2 ,bond_coupon.bond_size, discount_coupon.percent,  \
                                     (SELECT COUNT(*)  FROM coupons_likes   \
                                         WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes,   \
