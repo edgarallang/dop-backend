@@ -433,7 +433,7 @@ class CouponsViews(Schema):
                   'duration',
                   'coupon_category_id')
 
-class TakenLocationSchema(Schema):
+class TakenCouponsLocationSchema(Schema):
     class Meta:
         fields = ('coupon_id',
                   'name',
