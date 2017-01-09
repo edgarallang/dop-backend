@@ -426,7 +426,8 @@ class CouponsViews(Schema):
                   'total_uses',
                   'active',
                   'completed',
-                  'duration')
+                  'duration',
+                  'coupon_category_id')
 
 class TakenCouponsLocationSchema(Schema):
     class Meta:
