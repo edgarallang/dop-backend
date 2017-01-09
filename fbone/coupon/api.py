@@ -324,7 +324,7 @@ def get_all_coupon_by_branch(branch_id):
     # nxnlist = nxn_join_coupon_schema.dump(nxn_coupons)
 
     #list_coupon = Coupon.query.filter_by(branch_id = branch_id).all()
-    list_coupon = db.engine.execute('SELECT coupons.*, branches.company_id, \
+    list_coupon = db.engine.execute('SELECT coupons.*, branches.company_id, nxn_coupon.*,bond_coupon.*, discount_coupon.*, \
                                     ((coupons.available = 0) OR (coupons.end_date < now()) )::bool AS completed, \
                                     (SELECT COUNT(*)  FROM coupons_likes   \
                                         WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes,   \
@@ -333,6 +333,9 @@ def get_all_coupon_by_branch(branch_id):
                                     (SELECT end_date::DATE - now()::DATE FROM coupons AS c WHERE coupons.coupon_id = c.coupon_id) AS remaining \
                                     FROM coupons \
                                         INNER JOIN branches ON branches.branch_id = coupons.branch_id \
+                                        LEFT JOIN nxn_coupon ON coupons.coupon_id = nxn_coupon.coupon_id \
+                                        LEFT JOIN discount_coupon ON coupons.coupon_id = discount_coupon.coupon_id \
+                                        LEFT JOIN bond_coupon ON coupons.coupon_id = bond_coupon.coupon_id \
                                     WHERE coupons.branch_id = %d' % branch_id)
 
     branches_coupons = coupons_schema.dump(list_coupon)

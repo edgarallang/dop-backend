@@ -155,7 +155,11 @@ class CouponSchema(Schema):
                 'duration',
                 'views',
                 'total_uses',
-                'total_likes')
+                'total_likes',
+                'n1',
+                'n2',
+                'bond_size',
+                'percent')
 
 class CouponLogoSchema(Schema):
     dateformat = ('iso')
@@ -429,7 +433,7 @@ class CouponsViews(Schema):
                   'duration',
                   'coupon_category_id')
 
-class TakenCouponsLocationSchema(Schema):
+class TakenLocationSchema(Schema):
     class Meta:
         fields = ('coupon_id',
                   'name',
