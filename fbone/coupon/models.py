@@ -431,7 +431,11 @@ class CouponsViews(Schema):
                   'active',
                   'completed',
                   'duration',
-                  'coupon_category_id')
+                  'coupon_category_id',
+                  'n1',
+                  'n2',
+                  'bond_size',
+                  'percent')
 
 class TakenCouponsLocationSchema(Schema):
     class Meta:
