@@ -373,9 +373,10 @@ def deactivate_coupon(coupon_id):
         #end_date = datetime.now() + timedelta(days=coupon.duration)
         #end_date = end_date.strftime("%Y-%m-%d %H:%M:%S")
         if coupon.active:
+            coupon.duration = request.json['duration']
             coupon.active = False
             db.session.commit()
-            
+
         return jsonify({'message': 'success'})
     return jsonify({'message': 'Oops! algo salió mal'})
 
