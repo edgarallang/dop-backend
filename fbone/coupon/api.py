@@ -365,15 +365,18 @@ def active_coupon(coupon_id):
 def deactivate_coupon(coupon_id):
     if request.headers.get('Authorization'):
         token_index = False
+
         payload = parse_token(request, token_index)
 
         coupon = Coupon.query.get(coupon_id)
 
-
-        #end_date = datetime.now() + timedelta(days=coupon.duration)
-        #end_date = end_date.strftime("%Y-%m-%d %H:%M:%S")
         if coupon.active:
-            coupon.duration = request.json['duration']
+            d1 = datetime.strptime(coupon.end_date, "%Y-%m-%d %H:%M:%S")
+            d2 = datetime.strptime(datetime.now(), "%Y-%m-%d %H:%M:%S")
+
+            duration = abs((d2 - d1).days)
+
+            coupon.duration = duration
             coupon.active = False
             db.session.commit()
 
