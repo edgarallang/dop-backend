@@ -362,7 +362,7 @@ def active_coupon(coupon_id):
     return jsonify({'message': 'Oops! algo salió mal'})
 
 @coupon.route('/deactivate/<int:coupon_id>', methods = ['PUT'])
-def active_coupon(coupon_id):
+def deactivate_coupon(coupon_id):
     if request.headers.get('Authorization'):
         token_index = False
         payload = parse_token(request, token_index)
