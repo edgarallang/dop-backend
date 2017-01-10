@@ -372,8 +372,8 @@ def deactivate_coupon(coupon_id):
 
         if coupon.active:
 
-            d1 = coupon.end_date.strptime("%Y-%m-%d %H:%M:%S")
-            d2 = datetime.now().strptime("%Y-%m-%d %H:%M:%S")
+            d1 = coupon.end_date.strftime("%Y-%m-%d %H:%M:%S")
+            d2 = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
             duration = abs((d2 - d1).days)
 
