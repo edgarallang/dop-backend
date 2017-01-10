@@ -336,7 +336,7 @@ def get_all_coupon_by_branch(branch_id):
                                         LEFT JOIN nxn_coupon ON coupons.coupon_id = nxn_coupon.coupon_id \
                                         LEFT JOIN discount_coupon ON coupons.coupon_id = discount_coupon.coupon_id \
                                         LEFT JOIN bond_coupon ON coupons.coupon_id = bond_coupon.coupon_id \
-                                    WHERE coupons.branch_id = %d' % branch_id)
+                                    WHERE coupons.branch_id = %d ORDER BY active DESC, completed' % branch_id)
 
     branches_coupons = coupons_schema.dump(list_coupon)
     return jsonify({ 'data': branches_coupons.data })
