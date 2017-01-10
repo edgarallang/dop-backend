@@ -361,6 +361,24 @@ def active_coupon(coupon_id):
         return jsonify({'message': 'success'})
     return jsonify({'message': 'Oops! algo salió mal'})
 
+@coupon.route('/deactivate/<int:coupon_id>', methods = ['PUT'])
+def active_coupon(coupon_id):
+    if request.headers.get('Authorization'):
+        token_index = False
+        payload = parse_token(request, token_index)
+
+        coupon = Coupon.query.get(coupon_id)
+
+
+        #end_date = datetime.now() + timedelta(days=coupon.duration)
+        #end_date = end_date.strftime("%Y-%m-%d %H:%M:%S")
+        if coupon.active:
+            coupon.active = False
+            db.session.commit()
+            
+        return jsonify({'message': 'success'})
+    return jsonify({'message': 'Oops! algo salió mal'})
+
 @coupon.route('/available/<int:coupon_id>', methods = ['GET'])
 def get_availables(coupon_id):
     coupon = Coupon.query.get(coupon_id)
