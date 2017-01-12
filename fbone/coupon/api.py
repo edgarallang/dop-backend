@@ -710,7 +710,7 @@ def coupon_stats(branch_id):
                                     LEFT JOIN nxn_coupon ON coupons.coupon_id = nxn_coupon.coupon_id \
                                     LEFT JOIN discount_coupon ON coupons.coupon_id = discount_coupon.coupon_id \
                                     LEFT JOIN bond_coupon ON coupons.coupon_id = bond_coupon.coupon_id \
-                                    WHERE coupons.branch_id = %d AND deleted = false AND coupons.end_date>now() ORDER BY start_date DESC LIMIT 4' % branch_id)
+                                    WHERE coupons.branch_id = %d AND deleted = false ORDER BY active DESC, completed DESC' % branch_id)
     stats_list_coupon = coupons_views_schema.dump(list_coupon)
     return jsonify({'data': stats_list_coupon.data})
 
