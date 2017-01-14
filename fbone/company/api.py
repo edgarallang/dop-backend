@@ -568,10 +568,20 @@ def signup_branch():
     db.session.add(branch_user)
     db.session.commit()
 
-    branches_subcategory = BranchSubcategory(subcategory_id = 0,
-                                             branch_id = branch.branch_id)
+    branches_subcategory = BranchSubcategory( subcategory_id = 0,
+                                              branch_id = branch.branch_id )
 
     db.session.add(branches_subcategory)
+    db.session.commit()
+
+    branches_design = BranchDesign( branch_id = branch.branch_id,
+                                    logo = 'logo.png',
+                                    color_a = None,
+                                    color_b = None,
+                                    color_c = None,
+                                    banner = 'banner.png' )
+
+    db.session.add(branches_design)
     db.session.commit()
 
     token = create_token(branch_user)

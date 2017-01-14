@@ -48,12 +48,11 @@ class BranchDesign(db.Model):
     __tablename__ = 'branches_design'
     design_id = Column(db.Integer, primary_key=True)
     branch_id = Column(db.Integer, db.ForeignKey('branches.branch_id'),nullable=False)
-    logo = Column(db.String(STRING_LEN), nullable=False)
-    name = Column(db.String(STRING_LEN), nullable=False)
-    color_a = Column(db.String(STRING_LEN), nullable=False)
-    color_b = Column(db.String(STRING_LEN), nullable=False)
-    color_c = Column(db.String(STRING_LEN), nullable=False)
-    banner = Column(db.String(STRING_LEN), nullable=False)
+    logo = Column(db.String(STRING_LEN))
+    color_a = Column(db.String(STRING_LEN))
+    color_b = Column(db.String(STRING_LEN))
+    color_c = Column(db.String(STRING_LEN))
+    banner = Column(db.String(STRING_LEN))
 
 # =====================================================================
 
