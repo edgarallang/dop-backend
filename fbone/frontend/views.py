@@ -8,12 +8,12 @@ from flask.ext.mail import Message
 from flask.ext.babel import gettext as _
 from flask.ext.login import login_required, login_user, current_user, logout_user, confirm_login, login_fresh
 
-from ..user import User, UserImage, UserLevel
+from ..user import User, UserImage, UserLevel, ForgotPassword
 from ..extensions import db, mail, login_manager, oid
 from .forms import SignupForm, LoginForm, RecoverPasswordForm, ReauthForm, ChangePasswordForm, OpenIDForm, CreateProfileForm
 
 
-frontend = Blueprint('frontend', __name__)
+frontend = Blueprint('frontend', __name__, url_prefix='/api/frontend')
 
 
 @frontend.route('/login/openid', methods=['GET', 'POST'])
@@ -186,34 +186,16 @@ def change_password():
 
     return render_template("frontend/change_password.html", form=form)
 
-
-@frontend.route('/reset_password', methods=['GET', 'POST'])
-def reset_password():
-    form = RecoverPasswordForm()
-
-    if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
-
-        if user:
-            flash('Please see your email for instructions on '
-                  'how to access your account', 'success')
-
-            user.activation_key = str(uuid4())
-            db.session.add(user)
-            db.session.commit()
-
-            url = url_for('frontend.change_password', email=user.email, activation_key=user.activation_key, _external=True)
-            html = render_template('macros/_reset_password.html', project=current_app.config['PROJECT'], username=user.name, url=url)
-            message = Message(subject='Reset your password in ' + current_app.config['PROJECT'], html=html, recipients=[user.email])
-            mail.send(message)
-
-            return render_template('frontend/reset_password.html', form=form)
-        else:
-            flash(_('Sorry, no user found for that email address'), 'error')
-
-    return render_template('frontend/reset_password.html', form=form)
-
-
 @frontend.route('/help')
 def help():
     return render_template('frontend/footers/help.html', active="help")
+
+@frontend.route('/reset/password/<string:token>', methods=['GET'])
+def reset_password(token):
+    forgotPasswordUser = ForgotPassword.query.filter_by(token = token).first()
+
+    if forgotPasswordUser:
+        return render_template('frontend/reset_password.html', token = token)
+    else:
+        return render_template('frontend/message.html', user_found = False, message = 'El enlace ha expirado')
+

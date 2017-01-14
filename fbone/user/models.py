@@ -110,6 +110,7 @@ class UserSession(db.Model,UserMixin):
     user_id = Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
     email = Column(db.String(STRING_LEN))
     password = Column(db.String(STRING_LEN))
+    verified = Column(db.Boolean, default=False)
 
 # ================================================================
 # Friends
@@ -137,6 +138,20 @@ class InvitedFriends(db.Model,UserMixin):
     user_id = Column(db.Integer, primary_key=True)
     facebook_key = Column(db.String(STRING_LEN))
     email = Column(db.String(STRING_LEN))
+
+#Forgot password
+class ForgotPassword(db.Model, UserMixin):
+  __tablename__ = 'forgot_password'
+  forgot_password_id = Column(db.Integer, primary_key=True)
+  user_id = Column(db.Integer)
+  token = Column(db.String(100))
+
+#Verify email
+class VerifyEmail(db.Model, UserMixin):
+  __tablename__ = 'verify_email'
+  verify_email_id = Column(db.Integer, primary_key=True)
+  user_id = Column(db.Integer)
+  token = Column(db.String(100))
 
 # Serializer Schemas
 
@@ -262,6 +277,7 @@ class UserActivityNewsfeed(Schema):
                   'user_like',
                   'used_date',
                   'private')
+
 
 class UserDeviceTokens(Schema):
         device_token = fields.Str()

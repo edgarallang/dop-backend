@@ -7,10 +7,11 @@ import requests
 import base64
 import unicodedata
 from binascii import a2b_base64
-from flask import Blueprint, request, jsonify, session
+from flask import Blueprint, request, jsonify, session, render_template
 from flask import current_app as app
 from flask.ext.login import login_required, current_user
-from flask.ext.mail import Mail, Message as MailMessage
+#from flask.ext.mail import Mail, Message as MailMessage
+from flask_mail import Message
 from jwt import DecodeError, ExpiredSignature
 from .models import *
 from ..extensions import db, socketio, mail
@@ -20,6 +21,8 @@ from ..badge import *
 from sqlalchemy import or_, and_
 from flask.ext.socketio import SocketIO, send, emit, join_room, leave_room
 from ..utils import *
+from random import choice
+from string import *
 
 user = Blueprint('user', __name__, url_prefix='/api/user')
 
@@ -55,8 +58,7 @@ def create_token(user):
 def index():
     if not current_user.is_authenticated():
         abort(403)
-    return render_template('user/index.html', user=current_user)
-
+    return render_template('user/index.html', user=current_user)    
 
 def get_friends_by_id(userId):
     friends_query = 'SELECT COUNT(*) as total FROM friends \
@@ -113,7 +115,7 @@ def upload_logo():
             else:
                 return jsonify({'message': 'email_exist'})
 
-
+        names = ''
         if 'names' in request.form:
             names = request.form['names']
             user.names = names
@@ -127,6 +129,7 @@ def upload_logo():
             date = datetime.now()
             is_adult = calculate_age(datetime.strptime(birth_date, "%m/%d/%Y"))
             user.adult = is_adult
+
         if 'gender' in request.form:
             gender = request.form['gender']
             user.gender = gender
@@ -141,6 +144,23 @@ def upload_logo():
             userImage.main_image = app.config['DOMAIN'] + db_directory + name
             db.session.commit()
 
+        userSession = UserSession.query.filter_by(user_id = payload['id']).first()
+
+        if names == '':
+            names = userSession.email
+
+        chain = (''.join(choice(string.hexdigits) for i in range(90)))
+        chain = '%s%s' % (chain, payload['id'])
+        verifyEmailUser = VerifyEmail(user_id = payload['id'], token = chain)
+        db.session.add(verifyEmailUser)
+        db.session.commit()
+
+        msg = Message('Bienvenido!', sender = app.config['MAIL_USERNAME'], recipients= [userSession.email])
+        msg.body = ''
+        msg.html = render_template('frontend/mail.html', name = names, token = chain) 
+        with app.app_context():
+            mail.send(msg)
+
         return jsonify({'message':'success'})
     return jsonify({'message': 'Oops! algo salió mal :('})
 
@@ -154,7 +174,7 @@ def avatar(user_id, filename):
 def email_verification():
     emailUser = UserSession.query.filter_by(email = request.json['email']).first()
     if not emailUser:
-        newUser = User(adult = False)
+        newUser = User(privacy_status = 0, exp = 0, level = 0, device_os = request.json['device_os'], adult = False)
 
         db.session.add(newUser)
         db.session.commit()
@@ -164,9 +184,17 @@ def email_verification():
         userImage = UserImage(user_id=newUser.user_id,
                               main_image="")
 
+        userFirstEXP = UserFirstEXP(user_id = newUser.user_id,
+                                    first_following = False,
+                                    first_follower = False,
+                                    first_company_fav = False,
+                                    first_using = False)
+
         db.session.add(emailUser)
         db.session.add(userImage)
+        db.session.add(userFirstEXP)
         db.session.commit()
+
 
         token = create_token(newUser)
         return jsonify(token=token)
@@ -176,11 +204,13 @@ def email_verification():
 @user.route('/signup/email', methods=['POST'])
 def signup_email():
     emailUser = User.query.filter_by(email = request.json['email']).first()
+    is_adult = False
     if emailUser:
         return jsonify({'data': 'email_exist'})
+    if 'birth_date' in request.json:
+        birth_date = request.json['birth_date']
+        is_adult = calculate_age(datetime.strptime(birth_date, "%m/%d/%Y"))
 
-    birth_date = request.json['birth_date']
-    is_adult = calculate_age(datetime.strptime(birth_date, "%m/%d/%Y"))
     emailUser = User(names = request.json['names'],
                      surnames = request.json['surnames'],
                      birth_date = birth_date,
@@ -210,19 +240,98 @@ def email_login():
     else:
         return jsonify({'data': 'wrong_password'})
 
-@user.route('/forgot/password', methods=['GET'])
+@user.route('/forgot/password', methods=['POST'])
 def forgot_password():
-    msg = MailMessage('Hi', sender = 'eduardo@halleydevs.com', recipients = ['eduardo.quintero52@gmail.com'])
-    msg.body = "This is the email body sending with flask!"
-    mail.send(msg)
-    #msg.html = '<b>HTML</b> body'
-    return jsonify({'data': 'success'})
+    userSession = UserSession.query.filter_by(email = request.json['email']).first()
+
+    if userSession:
+        user_id = userSession.user_id
+        forgotPasswordUser = ForgotPassword.query.filter_by(user_id = user_id).first()
+
+        if not forgotPasswordUser:
+            chain = (''.join(choice(string.hexdigits) for i in range(90)))
+            chain = '%s%s' % (chain, user_id)
+
+            forgotPasswordUser = ForgotPassword(user_id = user_id, token = chain)
+            db.session.add(forgotPasswordUser)
+            db.session.commit()
+
+            msg = Message('Restablecer Contraseña', sender = app.config['MAIL_USERNAME'], recipients= [userSession.email])
+            msg.body = ''
+            msg.html = render_template('frontend/reset_password_mail.html', token = chain) 
+            #msg.html = '<a href="http://45.55.7.118:5000/api/frontend/reset/password/'+chain+'">Click</a>'
+            with app.app_context():
+                mail.send(msg)
+
+            #msg.html = '<b>HTML</b> body'
+            return jsonify({'data': 'success'})
+        else:
+            chain = (''.join(choice(string.hexdigits) for i in range(90)))
+            chain = '%s%s' % (chain, user_id)
+
+            forgotPasswordUser.token = chain
+            db.session.commit()
+
+            msg = Message('Restablecer Contraseña', sender = app.config['MAIL_USERNAME'], recipients= [userSession.email])
+            msg.body = ''
+            msg.html = render_template('frontend/reset_password_mail.html', token = chain) 
+            #msg.html = '<a href="http://45.55.7.118:5000/api/frontend/reset/password/'+chain+'">Click</a>'
+            with app.app_context():
+                mail.send(msg)
+
+            #msg.html = '<b>HTML</b> body'
+            return jsonify({'data': 'success'})
+    else:
+        return jsonify({'data':'user_not_found'})
+    return jsonify({'data':'error'})
+
+@user.route('/set/new/password', methods=['POST'])
+def set_new_password():
+    token = request.form['token']
+    forgotPasswordUser = ForgotPassword.query.filter_by(token = token).first()
+
+    if forgotPasswordUser:
+        userSession = UserSession.query.filter_by(user_id = forgotPasswordUser.user_id).first()
+        if userSession:
+            user_found = True
+            userSession.password = request.form['new_password']
+            db.session.delete(forgotPasswordUser)
+            db.session.commit()
+            return render_template('frontend/message.html', user_found = True, message = 'El password se ha cambiado correctamente')
+        else:
+            return render_template('frontend/message.html', user_found = False, message = 'El enlace ha expirado')
+    else:
+        return render_template('frontend/message.html', user_found = False, message = 'El enlace ha expirado')
+    return render_template('frontend/message.html', user_found = False, message = 'El enlace ha expirado')
+
+@user.route('/verify/email/<string:token>', methods=['GET'])
+def verify_email(token):
+
+    verifyEmailUser = VerifyEmail.query.filter_by(token = token).first()
+
+    if verifyEmailUser:
+        userSession = UserSession.query.filter_by(user_id = verifyEmailUser.user_id).first()
+        if userSession:
+            user_found = True
+            userSession.verified = True
+            db.session.delete(verifyEmailUser)
+            db.session.commit()
+            return render_template('frontend/message.html', user_found = True, message = 'Tu correo ha sido verificado!')
+        else:
+            return render_template('frontend/message.html', user_found = False, message = 'El enlace ha expirado')
+    else:
+        return render_template('frontend/message.html', user_found = False, message = 'El enlace ha expirado')
+    return render_template('frontend/message.html', user_found = False, message = 'El enlace ha expirado')
 
 @user.route('/login/facebook', methods=['POST'])
 def facebook_login():
     facebookUser = User.query.filter_by(facebook_key = request.json['facebook_key']).first()
 
-    birth_date = request.json['birth_date']
+    is_adult = False
+
+    if 'birth_date' in request.json:
+        birth_date = request.json['birth_date']
+        is_adult = calculate_age(datetime.strptime(birth_date, "%m/%d/%Y"))
 
     if not facebookUser:
         facebookUser = User(names = request.json['names'],
@@ -235,13 +344,14 @@ def facebook_login():
                             privacy_status = 0,
                             device_os = request.json['device_os'],
                             device_token = request.json['device_token'],
-                            adult = calculate_age(datetime.strptime(birth_date, "%m/%d/%Y")))
+                            adult = is_adult)
 
         db.session.add(facebookUser)
         db.session.commit()
 
         userSession = UserSession(user_id=facebookUser.user_id,
-                                  email=request.json['email'])
+                                  email=request.json['email'],
+                                  verified = True)
 
         db.session.add(userSession)
         db.session.commit()
@@ -260,7 +370,7 @@ def facebook_login():
         db.session.add(userFirstEXP)
         db.session.commit()
     else:
-        is_adult = calculate_age(datetime.strptime(birth_date, "%m/%d/%Y"))
+        #is_adult = calculate_age(datetime.strptime(birth_date, "%m/%d/%Y"))
         facebookUser.adult = is_adult
         db.session.commit()
         if not facebookUser.device_token == request.json['device_token']:
@@ -365,7 +475,7 @@ def add_friend():
         if not friendshipExist:
             #user_two = User.query.get(user_to_add)
             notification_type = ''
-            if user_two.privacy_status == 0:
+            if user_two.privacy_status == 0 or user_two.privacy_status == None:
                 operation_id = 1
                 notification_type = 'now_friends'
             elif user_two.privacy_status == 1:
@@ -712,3 +822,4 @@ def get_following():
 
         return jsonify({'data': people_list.data})
     return jsonify({'message': 'Oops! algo salió mal'})
+

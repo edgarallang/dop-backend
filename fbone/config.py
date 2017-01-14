@@ -18,7 +18,7 @@ class BaseConfig(object):
     PROJECT_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
     APNS_CERTIFICATE = PROJECT_ROOT+'/certs/push.pem'
-    APNS_SANDBOX = True
+    APNS_SANDBOX = False
 
     GCM_API_KEY = "AIzaSyAMR7PtdU1BNEgXQvzZKSv8nZsJKR5Hr94"
 
@@ -65,15 +65,25 @@ class DefaultConfig(BaseConfig):
 
     # Flask-mail: http://pythonhosted.org/flask-mail/
     # https://bitbucket.org/danjac/flask-mail/issue/3/problem-with-gmails-smtp-server
-    MAIL_DEBUG = DEBUG
+    #MAIL_DEBUG = DEBUG
+    #MAIL_SERVER = 'smtp.gmail.com'
+    #MAIL_PORT = 587
+    #MAIL_USE_TLS = True
+    #MAIL_USE_SSL = False
+    # Should put MAIL_USERNAME and MAIL_PASSWORD in production under instance folder.
+    #MAIL_USERNAME = 'yourmail@gmail.com'
+    #MAIL_PASSWORD = 'yourpass'
+    #MAIL_DEFAULT_SENDER = MAIL_USERNAME
+
+    # email server
     MAIL_SERVER = 'smtp.gmail.com'
     MAIL_PORT = 587
     MAIL_USE_TLS = True
     MAIL_USE_SSL = False
-    # Should put MAIL_USERNAME and MAIL_PASSWORD in production under instance folder.
-    MAIL_USERNAME = 'yourmail@gmail.com'
-    MAIL_PASSWORD = 'yourpass'
-    MAIL_DEFAULT_SENDER = MAIL_USERNAME
+    MAIL_USERNAME = 'halleydevs@gmail.com'
+    MAIL_PASSWORD = 'doprocks'
+
+
 
     # Flask-openid: http://pythonhosted.org/Flask-OpenID/
     OPENID_FS_STORE_PATH = os.path.join(INSTANCE_FOLDER_PATH, 'openid')

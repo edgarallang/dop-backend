@@ -1,5 +1,5 @@
 body{
-  background: url('http://halleydevs.com/wp-content/uploads/2016/10/bg-home-wb-dop.jpg');
+  background: url('http://www.dop.life/wp-content/uploads/2016/10/bg-home-wb-dop.jpg');
   background-size: cover;
   font-family: "Montserrat", Helvetica, Arial, sans-serif;
     font-size: 16px;
@@ -46,7 +46,6 @@ h2{
     max-width: 185px;
     white-space: normal;
     font-size: 18px;
-    line-height: 32px;
     font-weight: 300;
     color: rgb(255, 255, 255);
     font-family: Montserrat;
@@ -69,24 +68,23 @@ h2{
     transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
     transform-origin: 50% 50% 0px;
 }
-input{
+input[type="password"]{
   margin: 0px;
   white-space: normal;
-    font-size: 18px;
-    line-height: 32px;
+  font-size: 18px;
   outline: none;
   box-sizing: border-box;
   padding: 12px 35px;
   border-color: rgb(127, 127, 127);
-    border-style: solid;
-    border-width: 2px;
-    border-radius: 3px;
-    height: 47px;
-    transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
-    transform-origin: 50% 50% 0px;
-    margin-bottom: 40px;
-    margin-right: 0;
-    width: 90%;
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 3px;
+  height: 47px;
+  transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+  transform-origin: 50% 50% 0px;
+  margin-bottom: 40px;
+  margin-right: 0;
+  width: 90%;
 }
 div.content{
   margin-top: 40px;
@@ -105,8 +103,15 @@ footer span{
   font-size: 12px;
     font-family: Montserrat;
 }
+#error_message{
+  display: none;
+}
 @media only screen and (min-width: 500px) {
   input{
+    vertical-align: middle;
+    display: inline-block;
+  }
+  input[type="password"]{
     margin-bottom: 0;
     width: auto;
     margin-right: 20px;

@@ -73,8 +73,8 @@ class ClientsCoupon(db.Model):
     coupon_id = Column(db.Integer, db.ForeignKey('coupons.coupon_id'), nullable=False)
     folio = Column(db.String(STRING_LEN))
     taken_date = Column(db.DateTime, nullable=False)
-    latitude = Column(db.Numeric, nullable=False)
-    longitude = Column(db.Numeric, nullable=False)
+    latitude = Column(db.Numeric)
+    longitude = Column(db.Numeric)
     used = Column(db.Boolean, nullable = False)
     used_date = Column(db.DateTime, nullable=False)
     private = Column(db.Boolean, nullable = False)
@@ -113,6 +113,16 @@ class CouponReport(db.Model):
     camera_broken = Column(db.Boolean)
     app_broken = Column(db.Boolean)
     qr_lost = Column(db.Boolean)
+
+class CouponViews(db.Model):
+    __tablename__ = 'coupons_views'
+    id = Column(db.Integer, primary_key=True)
+    user_id = Column(db.Integer, nullable=False)
+    coupon_id = Column(db.Integer, nullable=False)
+    latitude = Column(db.Numeric)
+    longitude = Column(db.Numeric)
+    view_date = Column(db.DateTime)
+
 # Serializer Schemas
 
 class CouponReportSchema(Schema):
@@ -141,7 +151,15 @@ class CouponSchema(Schema):
                 'active',
                 'completed',
                 'remaining',
-                'available')
+                'available',
+                'duration',
+                'views',
+                'total_uses',
+                'total_likes',
+                'n1',
+                'n2',
+                'bond_size',
+                'percent')
 
 class CouponLogoSchema(Schema):
     dateformat = ('iso')
@@ -409,7 +427,15 @@ class CouponsViews(Schema):
                   'available',
                   'views',
                   'total_likes',
-                  'total_uses')
+                  'total_uses',
+                  'active',
+                  'completed',
+                  'duration',
+                  'coupon_category_id',
+                  'n1',
+                  'n2',
+                  'bond_size',
+                  'percent')
 
 class TakenCouponsLocationSchema(Schema):
     class Meta:
@@ -420,6 +446,16 @@ class TakenCouponsLocationSchema(Schema):
                   'longitude',
                   'available',
                   'taken_date')
+
+class ViewsLocationSchema(Schema):
+    class Meta:
+        fields = ('coupon_id',
+                  'name',
+                  'description',
+                  'latitude',
+                  'longitude',
+                  'available',
+                  'view_date')
 
 class UsedCouponsByAge(Schema):
     class Meta:
@@ -458,6 +494,8 @@ coupons_taken_schema = CouponsTakenSchema(many=True)
 
 coupons_location_schema = CouponsLocation(many=True)
 coupons_views_schema = CouponsViews(many=True)
+
+views_location_schema = ViewsLocationSchema(many=True)
 
 taken_coupons_location_schema = TakenCouponsLocationSchema(many=True)
 

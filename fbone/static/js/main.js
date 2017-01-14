@@ -5,8 +5,15 @@ function hide_flask_message_container() {
 }
 
 $(document).ready(function() {
-    /* Show and hide flash message. */
-    //$('#flash_message_container').slideDown(function() {
-        //setTimeout(hide_flask_message_container, 3000);
-    //});
+    
+
+	$('#reset_password_form').on('submit', function(e){
+		e.preventDefault();
+		var count = $("#password_input").val().length;
+		if(count >= 6){
+			this.submit();
+		}else{
+			$("#error_message").fadeIn();
+		}
+	});
 })
