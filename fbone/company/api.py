@@ -319,7 +319,7 @@ def search_branch():
         #payload = parse_token(request, token_index)
         #list_coupon = db.engine.execute(query)
         if not latitude or not longitude or latitude == '0':
-            branches = db.engine.execute("SELECT * FROM branches WHERE name ILIKE '%s' " % ('%%' + text + '%%' ))
+            branches = db.engine.execute("SELECT * FROM branches WHERE name ILIKE unaccent('%s') " % ('%%' + text + '%%' ))
             selected_list_branch = branch_profile_search_schema.dump(branches)
             return jsonify({'data': selected_list_branch.data})
         else:
@@ -342,7 +342,7 @@ def search_branch():
                             SELECT  "+latitude+"  AS latpoint,  "+longitude+" AS longpoint, \
                                          111.045 AS distance_unit \
                         ) AS p ON 1=1 \
-                        WHERE branches.name ILIKE '%s' \
+                        WHERE branches.name ILIKE unaccent('%s') \
                         ) AS d \
                         ORDER BY distance" % ('%%'+ text +'%%' )
             #branches = db.engine.execute("SELECT * FROM branches WHERE name ILIKE '%s' " % ('%%' + text + '%%' ))
@@ -560,10 +560,10 @@ def signup_branch():
     db.session.add(branch)
     db.session.commit()
 
-    branch_user = BranchUser(branch_id = branch.branch_id,
-                             name = 'Admin',
-                             email = company.email,
-                             password = request.json['password'])
+    branch_user = BranchUser( branch_id = branch.branch_id,
+                              name = 'Admin',
+                              email = company.email,
+                              password = request.json['password'] )
 
     db.session.add(branch_user)
     db.session.commit()
