@@ -347,7 +347,7 @@ def active_coupon(coupon_id):
         token_index = False
         payload = parse_token(request, token_index)
 
-        coupon = Coupon.query.get(coupon_id)
+        coupon = Coupon.qupery.get(coupon_id)
 
 
         end_date = datetime.now() + timedelta(days=coupon.duration)
@@ -695,22 +695,20 @@ def get_almost_expired_coupons():
 
 @coupon.route('/latest/stats/<int:branch_id>', methods=['GET'])
 def coupon_stats(branch_id):
-    list_coupon = db.engine.execute('SELECT ((coupons.available = 0) OR (coupons.end_date < now()) )::bool AS completed, coupons.coupon_id, coupons.coupon_folio,coupons.name, \
-                                    coupons.description, coupons.start_date, coupons.coupon_category_id, \
-                                            coupons.end_date, coupons.limit, coupons.min_spent, coupons.coupon_category_id, branches_design.logo, branches_design.banner,\
-                                             coupons.available, coupons.views, coupons.active, coupons.duration, nxn_coupon.n1, nxn_coupon.n2, bond_coupon.bond_size, discount_coupon.percent,\
-                                    (SELECT COUNT(*)  FROM coupons_likes   \
-                                        WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes,   \
-                                    (SELECT COUNT(*)  FROM clients_coupon   \
-                                        WHERE coupons.coupon_id = clients_coupon.coupon_id AND clients_coupon.used = true) AS total_uses \
-                                    FROM coupons INNER JOIN branches_design ON   \
-                                    coupons.branch_id = branches_design.branch_id   \
-                                    JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.branch_id   \
-                                    JOIN subcategory ON subcategory.subcategory_id = branches_subcategory.subcategory_id   \
-                                    LEFT JOIN nxn_coupon ON coupons.coupon_id = nxn_coupon.coupon_id \
-                                    LEFT JOIN discount_coupon ON coupons.coupon_id = discount_coupon.coupon_id \
-                                    LEFT JOIN bond_coupon ON coupons.coupon_id = bond_coupon.coupon_id \
-                                    WHERE coupons.branch_id = %d AND deleted = false ORDER BY active DESC, completed LIMIT 4' % branch_id)
+    list_coupon = db.engine.execute('SELECT ((coupons.available = 0) OR (coupons.end_date < now()) )::bool AS completed, coupons.coupon_id, coupons.coupon_folio,coupons.name, 
+                                    coupons.description, coupons.start_date, coupons.coupon_category_id, 
+                                            coupons.end_date, coupons.limit, coupons.min_spent, coupons.coupon_category_id, branches_design.logo, branches_design.banner,
+                                             coupons.available, coupons.views, coupons.active, coupons.duration, nxn_coupon.n1, nxn_coupon.n2, bond_coupon.bond_size, discount_coupon.percent,
+                                    (SELECT COUNT(*)  FROM coupons_likes   
+                                        WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes,   
+                                    (SELECT COUNT(*)  FROM clients_coupon   
+                                        WHERE coupons.coupon_id = clients_coupon.coupon_id AND clients_coupon.used = true) AS total_uses 
+                                    FROM coupons INNER JOIN branches_design ON   
+                                    coupons.branch_id = branches_design.branch_id   
+                                    LEFT JOIN nxn_coupon ON coupons.coupon_id = nxn_coupon.coupon_id 
+                                    LEFT JOIN discount_coupon ON coupons.coupon_id = discount_coupon.coupon_id 
+                                    LEFT JOIN bond_coupon ON coupons.coupon_id = bond_coupon.coupon_id 
+                                    WHERE coupons.branch_id = %d AND deleted = FALSE ORDER BY active DESC, completed LIMIT 4' % branch_id)
     stats_list_coupon = coupons_views_schema.dump(list_coupon)
     return jsonify({'data': stats_list_coupon.data})
 
