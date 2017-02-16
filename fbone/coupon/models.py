@@ -159,7 +159,8 @@ class CouponSchema(Schema):
                 'n1',
                 'n2',
                 'bond_size',
-                'percent')
+                'percent',
+                'folio')
 
 class CouponLogoSchema(Schema):
     dateformat = ('iso')
