@@ -184,7 +184,7 @@ class CouponLogoSchema(Schema):
                   'category_id',
                   'available',
                   'taken',
-                  'branch_folio')
+                  'folio')
 
 class CouponsTakenSchema(Schema):
     class Meta:
@@ -231,7 +231,8 @@ class TrendingCouponSchema(Schema):
                   'banner',
                   'available',
                   'taken',
-                  'subcategory_id')
+                  'subcategory_id',
+                  'folio')
 
 class NearestCouponSchema(Schema):
     class Meta:
@@ -251,7 +252,8 @@ class NearestCouponSchema(Schema):
                   'user_like',
                   'subcategory_id',
                   'distance',
-                  'logo')
+                  'logo',
+                  'folio')
 
 class ToExpireCouponSchema(Schema):
     class Meta:
@@ -274,7 +276,8 @@ class ToExpireCouponSchema(Schema):
                   'banner',
                   'available',
                   'taken',
-                  'subcategory_id')
+                  'subcategory_id',
+                  'folio')
 
 class BondJoinCouponSchema(Schema):
     class Meta:
