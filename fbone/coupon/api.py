@@ -751,7 +751,7 @@ def nearest_coupons():
     if not user.adult:
         adult_validation = 'AND branches_subcategory.subcategory_id != 25'
 
-    query = "SELECT branch_location_id, branch_id, company_id, state, city, latitude, longitude, distance, address, \
+    query = "SELECT branch_location_id, branch_id, folio, company_id, state, city, latitude, longitude, distance, address, \
                     name, category_id, subcategory_id, available, \
                     coupon_name, coupon_id, description, start_date, end_date, min_spent, logo, \
                 (SELECT COUNT(*)  FROM coupons_likes \
