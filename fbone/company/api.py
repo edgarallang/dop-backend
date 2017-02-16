@@ -82,7 +82,7 @@ def select_branch_profile(branch_id):
         #     token_index = request.json['token_index']
 
         payload = parse_token(request, token_index)
-        query = 'SELECT branches_location.branch_location_id, branches.branch_id, state, category_id, longitude, latitude, logo,  \
+        query = 'SELECT branches_location.branch_location_id, branches.folio, branches.branch_id, state, category_id, longitude, latitude, logo,  \
                         city, address, branches.name, branches.company_id, banner, logo, phone, about,  \
                         (SELECT EXISTS (SELECT * FROM branches_follower \
                                 WHERE branch_id = %d AND user_id = %d)::bool) AS following, \
