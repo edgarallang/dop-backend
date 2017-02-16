@@ -190,7 +190,8 @@ class BranchesLocation(Schema):
                   'name',
                   'category_id',
                   'logo',
-                  'company_id')
+                  'company_id',
+                  'folio')
 
 class BranchSchema(Schema):
     branches_location = fields.Nested(BranchesLocation, validate=must_not_be_blank)
@@ -232,7 +233,8 @@ class BranchesProfile(Schema):
                   'following',
                   'about',
                   'phone',
-                  'adults_only')
+                  'adults_only',
+                  'folio')
 
 class BranchesToolProfile(Schema):
     class Meta:
@@ -250,7 +252,8 @@ class BranchesToolProfile(Schema):
                   'logo',
                   'about',
                   'phone',
-                  'adults_only')
+                  'adults_only',
+                  'folio')
 
 class BranchesProfileSearch(Schema):
     class Meta:
@@ -266,7 +269,8 @@ class BranchesProfileSearch(Schema):
                   'name',
                   'company_id',
                   'banner',
-                  'logo')
+                  'logo',
+                  'folio')
 
 class BranchesAd(Schema):
     class Meta:
