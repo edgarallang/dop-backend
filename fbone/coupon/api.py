@@ -161,11 +161,11 @@ def use_coupon():
 
         actual_date = datetime.now()
         #WHEN USER HAS TAKEN A COUPON
-        client_coupon = ClientsCoupon.query.filter(and_(ClientsCoupon.coupon_id==coupon_id),
-                                                       (ClientsCoupon.user_id==payload['id']),
-                                                       (ClientsCoupon.used==False)).first()
+        client_coupon = ClientsCoupon.query.filter(and_(ClientsCoupon.coupon_id == coupon_id),
+                                                       (ClientsCoupon.user_id == payload['id']),
+                                                       (ClientsCoupon.used ==False )).first()
 
-        
+
 
         coupon = Coupon.query.get(request.json['coupon_id'])
 
@@ -1076,7 +1076,7 @@ def add_view():
         coupon.views = coupon.views + 1
         db.session.commit()
 
-        coupon_view = CouponViews(user_id = payload['id'], 
+        coupon_view = CouponViews(user_id = payload['id'],
                                   coupon_id = coupon_id,
                                   view_date = datetime.now())
 
@@ -1087,7 +1087,7 @@ def add_view():
 
         db.session.add(coupon_view)
         db.session.commit()
- 
+
         return jsonify({'message': 'vistas actualizada'})
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
