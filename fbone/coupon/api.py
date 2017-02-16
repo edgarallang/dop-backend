@@ -324,7 +324,7 @@ def get_all_coupon_by_branch(branch_id):
     # nxnlist = nxn_join_coupon_schema.dump(nxn_coupons)
 
     #list_coupon = Coupon.query.filter_by(branch_id = branch_id).all()
-    list_coupon = db.engine.execute('SELECT coupons.*, branches.company_id, nxn_coupon.n1, nxn_coupon.n2 ,bond_coupon.bond_size, discount_coupon.percent, \
+    list_coupon = db.engine.execute('SELECT coupons.*, branches.company_id, branches.folio, nxn_coupon.n1, nxn_coupon.n2 ,bond_coupon.bond_size, discount_coupon.percent, \
                                     ((coupons.available = 0) OR (coupons.end_date < now()) )::bool AS completed, \
                                     (SELECT COUNT(*)  FROM coupons_likes   \
                                         WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes,   \
@@ -761,7 +761,7 @@ def nearest_coupons():
                     WHERE user_id = "+ user_id +" AND clients_coupon.coupon_id = d.coupon_id AND used = false)::bool) AS taken \
                 FROM (SELECT coupons.name as coupon_name, coupons.coupon_id,coupons.start_date,coupons.end_date, coupons.limit ,coupons.min_spent, \
                              coupons.description, z.branch_location_id, z.branch_id, z.state, z.city, z.address, coupons.available, \
-                    z.latitude, z.longitude, branches.name, branches.company_id, branches_design.logo, subcategory.category_id, subcategory.subcategory_id, \
+                    z.latitude, z.longitude, branches.name, branches.company_id, branches.folio ,branches_design.logo, subcategory.category_id, subcategory.subcategory_id, \
                     p.radius,\
                     p.distance_unit \
                              * DEGREES(ACOS(COS(RADIANS(p.latpoint)) \
