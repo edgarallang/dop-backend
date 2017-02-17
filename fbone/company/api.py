@@ -323,10 +323,10 @@ def search_branch():
             selected_list_branch = branch_profile_search_schema.dump(branches)
             return jsonify({'data': selected_list_branch.data})
         else:
-            query = "SELECT branch_location_id, branch_id, state, city, latitude, longitude, distance, address, \
+            query = "SELECT branch_location_id, branch_id, folio,  state, city, latitude, longitude, distance, address, \
                             name, company_id, logo, category_id, banner \
                         FROM (SELECT z.branch_location_id, z.branch_id, z.state, z.city, z.address, \
-                            z.latitude, z.longitude, branches.name, branches.company_id, branches_design.logo,branches_design.banner, subcategory.category_id, \
+                            z.latitude, z.longitude, branches.name, branches.folio, branches.company_id, branches_design.logo,branches_design.banner, subcategory.category_id, \
                             p.distance_unit \
                                      * DEGREES(ACOS(COS(RADIANS(p.latpoint)) \
                                      * COS(RADIANS(z.latitude)) \
