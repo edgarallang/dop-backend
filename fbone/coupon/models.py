@@ -258,7 +258,8 @@ class NearestCouponSchema(Schema):
                   'distance',
                   'logo',
                   'folio',
-                  'logo')
+                  'logo',
+                  'global')
 
 class ToExpireCouponSchema(Schema):
     class Meta:
