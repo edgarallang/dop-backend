@@ -82,7 +82,7 @@ def select_branch_profile(branch_id):
         #     token_index = request.json['token_index']
 
         payload = parse_token(request, token_index)
-        query = 'SELECT branches_location.branch_location_id, branches.branch_id, state, category_id, longitude, latitude, logo,  \
+        query = 'SELECT branches_location.branch_location_id, branches.folio, branches.branch_id, state, category_id, longitude, latitude, logo,  \
                         city, address, branches.name, branches.company_id, banner, logo, phone, about,  \
                         (SELECT EXISTS (SELECT * FROM branches_follower \
                                 WHERE branch_id = %d AND user_id = %d)::bool) AS following, \
@@ -213,9 +213,9 @@ def nearest_branches():
     if filterArray:
         filterQuery = prefixFilterQuery + `filterArray` + ')'
 
-    query = 'SELECT DISTINCT ON (branch_id) branch_location_id, branch_id, state, city, latitude, longitude, distance, address, name, category_id, logo, company_id \
+    query = 'SELECT DISTINCT ON (branch_id) branch_location_id, branch_id, folio,  state, city, latitude, longitude, distance, address, name, category_id, logo, company_id \
                 FROM (SELECT z.branch_location_id, z.branch_id, z.state, z.city, z.address, branches_design.logo, branches.company_id, \
-                    z.latitude, z.longitude, branches.name, subcategory.category_id, \
+                    z.latitude, z.longitude, branches.name, branches.folio, subcategory.category_id, \
                     p.radius, \
                     p.distance_unit \
                              * DEGREES(ACOS(COS(RADIANS(p.latpoint)) \
@@ -323,10 +323,10 @@ def search_branch():
             selected_list_branch = branch_profile_search_schema.dump(branches)
             return jsonify({'data': selected_list_branch.data})
         else:
-            query = "SELECT branch_location_id, branch_id, state, city, latitude, longitude, distance, address, \
+            query = "SELECT branch_location_id, branch_id, folio,  state, city, latitude, longitude, distance, address, \
                             name, company_id, logo, category_id, banner \
                         FROM (SELECT z.branch_location_id, z.branch_id, z.state, z.city, z.address, \
-                            z.latitude, z.longitude, branches.name, branches.company_id, branches_design.logo,branches_design.banner, subcategory.category_id, \
+                            z.latitude, z.longitude, branches.name, branches.folio, branches.company_id, branches_design.logo,branches_design.banner, subcategory.category_id, \
                             p.distance_unit \
                                      * DEGREES(ACOS(COS(RADIANS(p.latpoint)) \
                                      * COS(RADIANS(z.latitude)) \
