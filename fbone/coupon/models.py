@@ -12,7 +12,7 @@ from ..company import Branch, BranchUser
 class Coupon(db.Model):
     __tablename__ = 'coupons'
     coupon_id = Column(db.Integer, primary_key=True)
-    branch_id = Column(db.Integer, db.ForeignKey('branches.branch_id'),nullable=False)
+    owner_id = Column(db.Integer, nullable=False)
     name = Column(db.String(STRING_LEN))
     coupon_folio = Column(db.String(STRING_LEN), nullable=False)
     description = Column(db.String(STRING_LEN))
@@ -26,6 +26,7 @@ class Coupon(db.Model):
     active = Column(db.Boolean)
     views = Column(db.Integer)
     duration = Column(db.Integer)
+    global = Column(db.Boolean)
 
     coupons_category = db.relationship('CouponCategory', uselist=False, backref="coupons")
     branches_coupons = db.relationship('Branch', uselist=False, backref="coupons")
