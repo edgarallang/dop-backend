@@ -139,7 +139,7 @@ class CouponReportSchema(Schema):
 class CouponSchema(Schema):
   class Meta:
       fields = ('coupon_id',
-                'branch_id',
+                'owner_id',
                 'name',
                 'coupon_folio',
                 'description',
@@ -160,13 +160,14 @@ class CouponSchema(Schema):
                 'n2',
                 'bond_size',
                 'percent',
-                'folio')
+                'folio',
+                'global')
 
 class CouponLogoSchema(Schema):
     dateformat = ('iso')
     class Meta:
         fields = ('coupon_id',
-                  'branch_id',
+                  'owner_id',
                   'company_id',
                   'name',
                   'coupon_folio',
@@ -185,7 +186,8 @@ class CouponLogoSchema(Schema):
                   'category_id',
                   'available',
                   'taken',
-                  'folio')
+                  'folio',
+                  'global')
 
 class CouponsTakenSchema(Schema):
     class Meta:
@@ -214,7 +216,7 @@ class CouponsTakenSchema(Schema):
 class TrendingCouponSchema(Schema):
     class Meta:
         fields = ('coupon_id',
-                  'branch_id',
+                  'owner_id',
                   'company_id',
                   'name',
                   'coupon_folio',
@@ -233,12 +235,13 @@ class TrendingCouponSchema(Schema):
                   'available',
                   'taken',
                   'subcategory_id',
-                  'folio')
+                  'folio',
+                  'global')
 
 class NearestCouponSchema(Schema):
     class Meta:
         fields = ('coupon_id',
-                  'branch_id',
+                  'owner_id',
                   'company_id',
                   'name',
                   'description',
@@ -254,12 +257,13 @@ class NearestCouponSchema(Schema):
                   'subcategory_id',
                   'distance',
                   'logo',
-                  'folio')
+                  'folio',
+                  'logo')
 
 class ToExpireCouponSchema(Schema):
     class Meta:
         fields = ('coupon_id',
-                  'branch_id',
+                  'owner_id',
                   'company_id',
                   'name',
                   'coupon_folio',
@@ -278,7 +282,8 @@ class ToExpireCouponSchema(Schema):
                   'available',
                   'taken',
                   'subcategory_id',
-                  'folio')
+                  'folio',
+                  'global')
 
 class BondJoinCouponSchema(Schema):
     class Meta:
