@@ -442,7 +442,7 @@ def get_all_coupon_for_user_offset():
                                     (SELECT EXISTS (SELECT * FROM coupons_likes \
                                         WHERE coupons_likes.user_id = %d AND coupons.coupon_id = coupons_likes.coupon_id)::bool) AS user_like \
                                     FROM coupons INNER JOIN branches_design ON \
-                                    coupons.branch_id = branches_design.branch_id \
+                                    coupons.owner_id = branches_design.branch_id \
                                     INNER JOIN branches ON coupons.owner_id = branches.branch_id \
                                     INNER JOIN branches_location on coupons.owner_id = branches_location.branch_id \
                                     JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.owner_id \
