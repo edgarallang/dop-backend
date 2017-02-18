@@ -279,7 +279,8 @@ class BranchesAd(Schema):
                   'company_id',
                   'banner',
                   'logo',
-                  'subcategory_id')
+                  'subcategory_id',
+                  'folio')
 
 class BranchesFollowedSchema(Schema):
     class Meta:
