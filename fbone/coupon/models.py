@@ -26,7 +26,7 @@ class Coupon(db.Model):
     active = Column(db.Boolean)
     views = Column(db.Integer)
     duration = Column(db.Integer)
-    global = Column(db.Boolean)
+    is_global = Column(db.Boolean)
 
     coupons_category = db.relationship('CouponCategory', uselist=False, backref="coupons")
     branches_coupons = db.relationship('Branch', uselist=False, backref="coupons")
@@ -162,7 +162,7 @@ class CouponSchema(Schema):
                 'bond_size',
                 'percent',
                 'folio',
-                'global')
+                'is_global')
 
 class CouponLogoSchema(Schema):
     dateformat = ('iso')
@@ -188,7 +188,7 @@ class CouponLogoSchema(Schema):
                   'available',
                   'taken',
                   'folio',
-                  'global')
+                  'is_global')
 
 class CouponsTakenSchema(Schema):
     class Meta:
@@ -237,7 +237,7 @@ class TrendingCouponSchema(Schema):
                   'taken',
                   'subcategory_id',
                   'folio',
-                  'global')
+                  'is_global')
 
 class NearestCouponSchema(Schema):
     class Meta:
@@ -260,7 +260,7 @@ class NearestCouponSchema(Schema):
                   'logo',
                   'folio',
                   'logo',
-                  'global')
+                  'is_global')
 
 class ToExpireCouponSchema(Schema):
     class Meta:
@@ -285,7 +285,7 @@ class ToExpireCouponSchema(Schema):
                   'taken',
                   'subcategory_id',
                   'folio',
-                  'global')
+                  'is_global')
 
 class BondJoinCouponSchema(Schema):
     class Meta:
