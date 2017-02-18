@@ -332,11 +332,11 @@ def get_all_coupon_by_branch(branch_id):
                                         WHERE coupons.coupon_id = clients_coupon.coupon_id AND clients_coupon.used = true) AS total_uses, \
                                     (SELECT end_date::DATE - now()::DATE FROM coupons AS c WHERE coupons.coupon_id = c.coupon_id) AS remaining \
                                     FROM coupons \
-                                        INNER JOIN branches ON branches.branch_id = coupons.branch_id \
+                                        INNER JOIN branches ON branches.branch_id = coupons.owner_id \
                                         LEFT JOIN nxn_coupon ON coupons.coupon_id = nxn_coupon.coupon_id \
                                         LEFT JOIN discount_coupon ON coupons.coupon_id = discount_coupon.coupon_id \
                                         LEFT JOIN bond_coupon ON coupons.coupon_id = bond_coupon.coupon_id \
-                                    WHERE coupons.branch_id = %d ORDER BY active DESC, completed' % branch_id)
+                                    WHERE coupons.owner_id = %d ORDER BY active DESC, completed' % branch_id)
 
     branches_coupons = coupons_schema.dump(list_coupon)
     return jsonify({ 'data': branches_coupons.data })
@@ -468,12 +468,12 @@ def get_all_taken_coupon_for_user():
                                     (SELECT EXISTS (SELECT * FROM coupons_likes \
                                         WHERE coupons_likes.user_id = %d AND coupons.coupon_id = coupons_likes.coupon_id)::bool) AS user_like \
                                     FROM coupons INNER JOIN branches_design ON \
-                                    coupons.branch_id = branches_design.branch_id \
-                                    INNER JOIN branches ON coupons.branch_id = branches.branch_id \
-                                    INNER JOIN branches_location on coupons.branch_id = branches_location.branch_id \
+                                    coupons.owner_id = branches_design.branch_id \
+                                    INNER JOIN branches ON coupons.owner_id = branches.branch_id \
+                                    INNER JOIN branches_location on coupons.owner_id = branches_location.branch_id \
                                     INNER JOIN clients_coupon on coupons.coupon_id = clients_coupon.coupon_id \
                                     INNER JOIN users on clients_coupon.user_id = users.user_id \
-                                    JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.branch_id \
+                                    JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.owner_id \
                                     JOIN subcategory ON subcategory.subcategory_id = branches_subcategory.subcategory_id WHERE used = false \
                                     AND users.user_id = %d \
                                     AND deleted = false  AND active=true ORDER BY clients_coupon.taken_date DESC LIMIT %s OFFSET 0' % (payload['id'], payload['id'], limit))
@@ -501,12 +501,12 @@ def get_all_taken_coupon_for_user_offset():
                                         (SELECT EXISTS (SELECT * FROM coupons_likes \
                                             WHERE coupons_likes.user_id = %d AND coupons.coupon_id = coupons_likes.coupon_id)::bool) AS user_like \
                                         FROM coupons INNER JOIN branches_design ON \
-                                        coupons.branch_id = branches_design.branch_id \
-                                        INNER JOIN branches ON coupons.branch_id = branches.branch_id \
-                                        INNER JOIN branches_location on coupons.branch_id = branches_location.branch_id \
+                                        coupons.owner_id = branches_design.branch_id \
+                                        INNER JOIN branches ON coupons.owner_id = branches.branch_id \
+                                        INNER JOIN branches_location on coupons.owner_id = branches_location.branch_id \
                                         INNER JOIN clients_coupon on coupons.coupon_id = clients_coupon.coupon_id \
                                         INNER JOIN users on clients_coupon.user_id = users.user_id \
-                                        JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.branch_id \
+                                        JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.owner_id \
                                         JOIN subcategory ON subcategory.subcategory_id = branches_subcategory.subcategory_id WHERE used = false \
                                         AND users.user_id = %d \
                                         AND deleted = false  AND active=true AND clients_coupon.taken_date <= %s ORDER BY clients_coupon.taken_date DESC LIMIT 6 OFFSET %s' % (user_id, user_id, "'"+taken_date+"'",offset)
@@ -533,11 +533,11 @@ def get_all_used_coupon_for_user():
                                     (SELECT EXISTS (SELECT * FROM coupons_likes \
                                         WHERE coupons_likes.user_id = %d AND coupons.coupon_id = coupons_likes.coupon_id)::bool) AS user_like \
                                     FROM coupons INNER JOIN branches_design ON \
-                                    coupons.branch_id = branches_design.branch_id \
-                                    INNER JOIN branches ON coupons.branch_id = branches.branch_id \
-                                    INNER JOIN branches_location on coupons.branch_id = branches_location.branch_id \
+                                    coupons.owner_id = branches_design.branch_id \
+                                    INNER JOIN branches ON coupons.owner_id = branches.branch_id \
+                                    INNER JOIN branches_location on coupons.owner_id = branches_location.branch_id \
                                     INNER JOIN clients_coupon on coupons.coupon_id = clients_coupon.coupon_id \
-                                    JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.branch_id \
+                                    JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.owner_id \
                                     JOIN subcategory ON subcategory.subcategory_id = branches_subcategory.subcategory_id WHERE used = true \
                                     AND deleted = false  AND active=true ORDER BY clients_coupon.used_date DESC LIMIT %s OFFSET 0' % (payload['id'], limit))
 
@@ -561,11 +561,11 @@ def get_all_used_coupon_for_user_offset():
                                     (SELECT EXISTS (SELECT * FROM coupons_likes \
                                         WHERE coupons_likes.user_id = %d AND coupons.coupon_id = coupons_likes.coupon_id)::bool) AS user_like \
                                     FROM coupons INNER JOIN branches_design ON \
-                                    coupons.branch_id = branches_design.branch_id \
-                                    INNER JOIN branches ON coupons.branch_id = branches.branch_id \
-                                    INNER JOIN branches_location on coupons.branch_id = branches_location.branch_id \
+                                    coupons.owner_id = branches_design.branch_id \
+                                    INNER JOIN branches ON coupons.owner_id = branches.branch_id \
+                                    INNER JOIN branches_location on coupons.owner_id = branches_location.branch_id \
                                     INNER JOIN clients_coupon on coupons.coupon_id = clients_coupon.coupon_id \
-                                    JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.branch_id \
+                                    JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.owner_id \
                                     JOIN subcategory ON subcategory.subcategory_id = branches_subcategory.subcategory_id WHERE used = true \
                                     AND deleted = false  AND active=true AND clients_coupon.used_date <= %s ORDER BY used_date DESC LIMIT 6 OFFSET %s' % (payload['id'],used_date,offset))
 
@@ -589,12 +589,12 @@ def get_all_coupon_for_user_by_branch(branch_id):
                                     (SELECT EXISTS (SELECT * FROM clients_coupon \
                                         WHERE user_id = %d AND clients_coupon.coupon_id = coupons.coupon_id AND used = false)::bool) AS taken \
                                     FROM coupons INNER JOIN branches_design ON \
-                                    coupons.branch_id = branches_design.branch_id \
-                                    INNER JOIN branches ON coupons.branch_id = branches.branch_id \
-                                    INNER JOIN branches_location on coupons.branch_id = branches_location.branch_id \
-                                    JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.branch_id \
+                                    coupons.owner_id = branches_design.branch_id \
+                                    INNER JOIN branches ON coupons.owner_id = branches.branch_id \
+                                    INNER JOIN branches_location on coupons.owner_id = branches_location.branch_id \
+                                    JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.owner_id \
                                     JOIN subcategory ON subcategory.subcategory_id = branches_subcategory.subcategory_id \
-                                    WHERE coupons.branch_id = %s AND deleted = false  AND active=true ORDER BY start_date DESC LIMIT 6 OFFSET 0' % (payload['id'], payload['id'], branch_id))
+                                    WHERE coupons.owner_id = %s AND deleted = false  AND active=true ORDER BY start_date DESC LIMIT 6 OFFSET 0' % (payload['id'], payload['id'], branch_id))
 
 
     selected_list_coupon = coupons_logo_schema.dump(list_coupon)
@@ -618,12 +618,12 @@ def get_all_coupon_for_user_by_branch_offset():
                                     (SELECT EXISTS (SELECT * FROM clients_coupon \
                                         WHERE user_id = %d AND clients_coupon.coupon_id = coupons.coupon_id AND used = false)::bool) AS taken \
                                     FROM coupons INNER JOIN branches_design ON \
-                                    coupons.branch_id = branches_design.branch_id \
-                                    INNER JOIN branches ON coupons.branch_id = branches.branch_id \
-                                    INNER JOIN branches_location on coupons.branch_id = branches_location.branch_id \
-                                    JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.branch_id \
+                                    coupons.owner_id = branches_design.branch_id \
+                                    INNER JOIN branches ON coupons.owner_id = branches.branch_id \
+                                    INNER JOIN branches_location on coupons.owner_id = branches_location.branch_id \
+                                    JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.owner_id \
                                     JOIN subcategory ON subcategory.subcategory_id = branches_subcategory.subcategory_id \
-                                    WHERE coupons.branch_id = %s AND deleted = false  AND active=true AND coupons.coupon_id < %s ORDER BY start_date DESC LIMIT 6 OFFSET %s' % (payload['id'], payload['id'], branch_id, coupon_id,offset))
+                                    WHERE coupons.owner_id = %s AND deleted = false  AND active=true AND coupons.coupon_id < %s ORDER BY start_date DESC LIMIT 6 OFFSET %s' % (payload['id'], payload['id'], branch_id, coupon_id,offset))
 
 
 
@@ -653,10 +653,10 @@ def get_trending_coupons():
                                         (SELECT EXISTS (SELECT * FROM clients_coupon \
                                         WHERE user_id = %d AND clients_coupon.coupon_id = coupons.coupon_id AND used = false)::bool) AS taken \
                                         FROM coupons INNER JOIN branches_design ON \
-                                        coupons.branch_id = branches_design.branch_id \
-                                        INNER JOIN branches ON coupons.branch_id = branches.branch_id \
-                                        INNER JOIN branches_location on coupons.branch_id = branches_location.branch_id \
-                                        JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.branch_id   \
+                                        coupons.owner_id = branches_design.branch_id \
+                                        INNER JOIN branches ON coupons.owner_id = branches.branch_id \
+                                        INNER JOIN branches_location on coupons.owner_id = branches_location.branch_id \
+                                        JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.owner_id   \
                                         WHERE deleted = false %s  AND active=true AND coupons.end_date>now() ORDER BY total_value DESC LIMIT 8' % (user_id, user_id, adult_validation))
 
 
@@ -683,10 +683,10 @@ def get_almost_expired_coupons():
                                         (SELECT EXISTS (SELECT * FROM clients_coupon \
                                             WHERE user_id = %d AND clients_coupon.coupon_id = coupons.coupon_id AND used = false)::bool) AS taken \
                                         FROM coupons INNER JOIN branches_design ON \
-                                        coupons.branch_id = branches_design.branch_id \
-                                        INNER JOIN branches ON coupons.branch_id = branches.branch_id \
-                                        INNER JOIN branches_location on coupons.branch_id = branches_location.branch_id \
-                                        JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.branch_id   \
+                                        coupons.owner_id = branches_design.branch_id \
+                                        INNER JOIN branches ON coupons.owner_id = branches.branch_id \
+                                        INNER JOIN branches_location on coupons.owner_id = branches_location.branch_id \
+                                        JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.owner_id   \
                                         WHERE deleted = false %s AND active=true AND coupons.end_date>now() AND coupons.available>0 ORDER BY coupons.end_date ASC LIMIT 8' % (user_id, user_id, adult_validation))
 
         selected_list_coupon = toexpire_coupon_schema.dump(list_coupon)
@@ -704,11 +704,11 @@ def coupon_stats(branch_id):
                                     (SELECT COUNT(*)  FROM clients_coupon \
                                         WHERE coupons.coupon_id = clients_coupon.coupon_id AND clients_coupon.used = true) AS total_uses \
                                     FROM coupons INNER JOIN branches_design ON \
-                                    coupons.branch_id = branches_design.branch_id \
+                                    coupons.owner_id = branches_design.branch_id \
                                     LEFT JOIN nxn_coupon ON coupons.coupon_id = nxn_coupon.coupon_id \
                                     LEFT JOIN discount_coupon ON coupons.coupon_id = discount_coupon.coupon_id \
                                     LEFT JOIN bond_coupon ON coupons.coupon_id = bond_coupon.coupon_id \
-                                    WHERE coupons.branch_id = %d AND deleted = FALSE ORDER BY active DESC, completed LIMIT 4' % branch_id)
+                                    WHERE coupons.owner_id = %d AND deleted = FALSE ORDER BY active DESC, completed LIMIT 4' % branch_id)
     stats_list_coupon = coupons_views_schema.dump(list_coupon)
     return jsonify({'data': stats_list_coupon.data})
 
@@ -717,7 +717,7 @@ def used_by_ages(branch_id):
     used_coupons_query =  db.engine.execute("SELECT date_part('year',age(users.birth_date)) AS age, COUNT(*) FROM clients_coupon \
                                             INNER JOIN users ON clients_coupon.user_id = users.user_id \
                                             INNER JOIN coupons ON clients_coupon.coupon_id = coupons.coupon_id \
-                                            WHERE used = TRUE AND coupons.branch_id = %d \
+                                            WHERE used = TRUE AND coupons.owner_id = %d \
                                             GROUP BY age" % branch_id)
 
     used_coupons_stats = used_coupons_by_age_schema.dump(used_coupons_query)
@@ -729,7 +729,7 @@ def used_by_gender(branch_id):
     used_coupons_query =  db.engine.execute("SELECT users.gender, COUNT(*) FROM clients_coupon \
                                             INNER JOIN users ON clients_coupon.user_id = users.user_id \
                                             INNER JOIN coupons ON clients_coupon.coupon_id = coupons.coupon_id \
-                                            WHERE used = TRUE AND coupons.branch_id = %d \
+                                            WHERE used = TRUE AND coupons.owner_id = %d \
                                             GROUP BY users.gender" % branch_id)
 
     used_coupons_stats = used_coupons_by_gender_schema.dump(used_coupons_query)
@@ -774,7 +774,7 @@ def nearest_coupons():
                 JOIN branches_subcategory on z.branch_id = branches_subcategory.branch_id \
                 JOIN branches_design ON branches.branch_id = branches_design.branch_id \
                 JOIN subcategory on subcategory.subcategory_id = branches_subcategory.subcategory_id \
-                JOIN coupons on branches.branch_id = coupons.branch_id AND deleted = false AND active = true AND coupons.end_date>now() AND available>0 \
+                JOIN coupons on branches.branch_id = coupons.owner_id AND deleted = false AND active = true AND coupons.end_date>now() AND available>0 \
                 JOIN (   /* these are the query parameters */ \
                     SELECT "+ latitude +"  AS latpoint, "+ longitude +" AS longpoint, \
                            "+ radio +" AS radius,      111.045 AS distance_unit \
@@ -802,9 +802,9 @@ def get_all_coupon():
                                     (SELECT COUNT(*)  FROM coupons_likes \
                                         WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes \
                                     FROM coupons INNER JOIN branches_design ON \
-                                    coupons.branch_id = branches_design.branch_id \
-                                    INNER JOIN branches ON coupons.branch_id = branches.branch_id \
-                                    INNER JOIN branches_location on coupons.branch_id = branches_location.branch_id \
+                                    coupons.owner_id = branches_design.branch_id \
+                                    INNER JOIN branches ON coupons.owner_id = branches.branch_id \
+                                    INNER JOIN branches_location on coupons.owner_id = branches_location.branch_id \
                                     WHERE deleted = false')
 
 
@@ -877,13 +877,13 @@ def get_coupons_activity_by_user():
         payload = parse_token(request, token_index)
         user_id = User.query.get(payload['id']).user_id
 
-        users = db.engine.execute("SELECT coupons.branch_id,coupons.coupon_id,branches_design.logo,coupons.name,clients_coupon.latitude,clients_coupon.longitude \
+        users = db.engine.execute("SELECT coupons.owner_id,coupons.coupon_id,branches_design.logo,coupons.name,clients_coupon.latitude,clients_coupon.longitude \
                                     , users.names, users.surnames, users.user_id, users_image.main_image, branches.name AS branch_name FROM clients_coupon \
                                     INNER JOIN users ON clients_coupon.user_id=users.user_id  \
                                     INNER JOIN users_image ON users.user_id = users_image.user_id \
                                     INNER JOIN coupons ON clients_coupon.coupon_id = coupons.coupon_id \
-                                    INNER JOIN branches ON coupons.branch_id = branches.branch_id \
-                                    INNER JOIN branches_design ON coupons.branch_id = branches_design.branch_id \
+                                    INNER JOIN branches ON coupons.owner_id = branches.branch_id \
+                                    INNER JOIN branches_design ON coupons.owner_id = branches_design.branch_id \
                                     ORDER BY taken_date DESC")
 
         users_list = user_join_exchanges_coupon_schema.dump(users)
@@ -899,7 +899,7 @@ def get_coupons_activity_by_user_likes():
         payload = parse_token(request, token_index)
         user_id = payload['id']
 
-        users = db.engine.execute('SELECT coupons.branch_id,coupons.coupon_id,branches_design.logo,coupons.name,clients_coupon.clients_coupon_id,clients_coupon.latitude,clients_coupon.longitude, \
+        users = db.engine.execute('SELECT coupons.owner_id,coupons.coupon_id,branches_design.logo,coupons.name,clients_coupon.clients_coupon_id,clients_coupon.latitude,clients_coupon.longitude, \
                                           users.names, users.surnames, users.user_id, users.exp, users.level, users_image.main_image, branches.name AS branch_name, \
                                           branches.company_id, clients_coupon.used_date, friends.operation_id, users.privacy_status, \
                                     (SELECT COUNT(*)  FROM clients_coupon_likes WHERE clients_coupon.clients_coupon_id = clients_coupon_likes.clients_coupon_id) AS total_likes, \
@@ -910,8 +910,8 @@ def get_coupons_activity_by_user_likes():
                                     INNER JOIN users ON clients_coupon.user_id=users.user_id  \
                                     INNER JOIN users_image ON users.user_id = users_image.user_id \
                                     INNER JOIN coupons ON clients_coupon.coupon_id = coupons.coupon_id \
-                                    INNER JOIN branches ON coupons.branch_id = branches.branch_id \
-                                    INNER JOIN branches_design ON coupons.branch_id = branches_design.branch_id \
+                                    INNER JOIN branches ON coupons.owner_id = branches.branch_id \
+                                    INNER JOIN branches_design ON coupons.owner_id = branches_design.branch_id \
                                     LEFT JOIN friends ON friends.user_one_id = %d AND friends.user_two_id = users.user_id \
                                     WHERE clients_coupon.used = true AND clients_coupon.private = false AND friends.operation_id = 1 ORDER BY used_date DESC LIMIT 6 OFFSET 0' % (payload['id'], payload['id'], payload['id']))
 
@@ -930,7 +930,7 @@ def get_used_coupons_by_user_likes_offset():
         offset = request.json['offset']
         used_date = request.json['used_date']
 
-        query = 'SELECT coupons.branch_id,coupons.coupon_id,branches_design.logo,coupons.name,clients_coupon.clients_coupon_id,clients_coupon.latitude,clients_coupon.longitude, \
+        query = 'SELECT coupons.owner_id,coupons.coupon_id,branches_design.logo,coupons.name,clients_coupon.clients_coupon_id,clients_coupon.latitude,clients_coupon.longitude, \
                                           users.names, users.surnames, users.user_id, users.exp, users.level, users_image.main_image, branches.name AS branch_name, \
                                           branches.company_id, clients_coupon.used_date, friends.operation_id, users.privacy_status, \
                                     (SELECT COUNT(*)  FROM clients_coupon_likes WHERE clients_coupon.clients_coupon_id = clients_coupon_likes.clients_coupon_id) AS total_likes, \
@@ -941,8 +941,8 @@ def get_used_coupons_by_user_likes_offset():
                                     INNER JOIN users ON clients_coupon.user_id=users.user_id  \
                                     INNER JOIN users_image ON users.user_id = users_image.user_id \
                                     INNER JOIN coupons ON clients_coupon.coupon_id = coupons.coupon_id \
-                                    INNER JOIN branches ON coupons.branch_id = branches.branch_id \
-                                    INNER JOIN branches_design ON coupons.branch_id = branches_design.branch_id \
+                                    INNER JOIN branches ON coupons.owner_id = branches.branch_id \
+                                    INNER JOIN branches_design ON coupons.owner_id = branches_design.branch_id \
                                     LEFT JOIN friends ON friends.user_one_id = %d AND friends.user_two_id = users.user_id \
                                     WHERE clients_coupon.used = true AND clients_coupon.used_date <= %s AND clients_coupon.private = false AND friends.operation_id = 1 ORDER BY used_date DESC LIMIT 6 OFFSET %s' % (user_id, user_id, user_id, "'" + used_date + "'" , offset)
 
@@ -961,7 +961,7 @@ def get_used_coupons_by_coupon():
         token_index = True
         payload = parse_token(request, token_index)
         coupon_id = request.json['coupon_id']
-        query = 'SELECT coupons.branch_id,coupons.coupon_id,branches_design.logo,coupons.name,clients_coupon.clients_coupon_id,clients_coupon.latitude,clients_coupon.longitude \
+        query = 'SELECT coupons.owner_id,coupons.coupon_id,branches_design.logo,coupons.name,clients_coupon.clients_coupon_id,clients_coupon.latitude,clients_coupon.longitude \
                                     , users.names, users.surnames, users.user_id, users_image.main_image, branches.name AS branch_name, \
                                     (SELECT COUNT(*)  FROM clients_coupon_likes WHERE clients_coupon.clients_coupon_id = clients_coupon_likes.clients_coupon_id) AS total_likes, \
                                     (SELECT EXISTS (SELECT * FROM clients_coupon_likes WHERE clients_coupon_likes.user_id = %d AND clients_coupon_likes.clients_coupon_id = clients_coupon.clients_coupon_id)::bool) AS user_like \
@@ -969,8 +969,8 @@ def get_used_coupons_by_coupon():
                                     INNER JOIN users ON clients_coupon.user_id=users.user_id  \
                                     INNER JOIN users_image ON users.user_id = users_image.user_id \
                                     INNER JOIN coupons ON clients_coupon.coupon_id = coupons.coupon_id AND coupons.coupon_id = %s \
-                                    INNER JOIN branches ON coupons.branch_id = branches.branch_id  \
-                                    INNER JOIN branches_design ON coupons.branch_id = branches_design.branch_id \
+                                    INNER JOIN branches ON coupons.owner_id = branches.branch_id  \
+                                    INNER JOIN branches_design ON coupons.owner_id = branches_design.branch_id \
                                     ORDER BY taken_date DESC' % (payload['id'], coupon_id)
         users = db.engine.execute(query)
         users_list = user_join_exchanges_coupon_schema.dump(users)
@@ -1219,7 +1219,7 @@ def taken_by_location(branch_id):
     coupons_query = "SELECT coupons.coupon_id,coupons.name, coupons.description, clients_coupon.latitude, \
                    clients_coupon.longitude, coupons.available, clients_coupon.taken_date FROM coupons \
                    INNER JOIN clients_coupon ON coupons.coupon_id = clients_coupon.coupon_id AND \
-                   coupons.branch_id = %d WHERE clients_coupon.used = false" % branch_id
+                   coupons.owner_id = %d WHERE clients_coupon.used = false" % branch_id
     coupons_list = db.engine.execute(coupons_query)
 
     taken_coupons = taken_coupons_location_schema.dump(coupons_list)
@@ -1243,9 +1243,9 @@ def search_all_coupon_user_offset():
             (SELECT EXISTS (SELECT * FROM coupons_likes \
             WHERE coupons_likes.user_id = %d AND coupons.coupon_id = coupons_likes.coupon_id)::bool) AS user_like \
             FROM coupons INNER JOIN branches_design ON \
-            coupons.branch_id = branches_design.branch_id \
-            INNER JOIN branches ON coupons.branch_id = branches.branch_id \
-            INNER JOIN branches_location on coupons.branch_id = branches_location.branch_id \
+            coupons.owner_id = branches_design.branch_id \
+            INNER JOIN branches ON coupons.owner_id = branches.branch_id \
+            INNER JOIN branches_location on coupons.owner_id = branches_location.branch_id \
             WHERE deleted = false AND coupons.name ILIKE %s" % (payload['id'],"%" + "sta" + "%",)
 
     #list_coupon = db.engine.execute(query)
