@@ -168,7 +168,7 @@ class CouponLogoSchema(Schema):
     dateformat = ('iso')
     class Meta:
         fields = ('coupon_id',
-                  'owner_id',
+                  'branch_id',
                   'company_id',
                   'name',
                   'coupon_folio',
@@ -217,7 +217,7 @@ class CouponsTakenSchema(Schema):
 class TrendingCouponSchema(Schema):
     class Meta:
         fields = ('coupon_id',
-                  'owner_id',
+                  'branch_id'
                   'company_id',
                   'name',
                   'coupon_folio',
