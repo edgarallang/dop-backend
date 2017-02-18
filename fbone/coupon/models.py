@@ -26,10 +26,10 @@ class Coupon(db.Model):
     active = Column(db.Boolean)
     views = Column(db.Integer)
     duration = Column(db.Integer)
-    global = Column(db.Boolean)
+    is_global = Column(db.Boolean)
 
     coupons_category = db.relationship('CouponCategory', uselist=False, backref="coupons")
-    branches_coupons = db.relationship('Branch', uselist=False, backref="coupons")
+    #branches_coupons = db.relationship('Branch', uselist=False, backref="coupons")
 
 class CouponCategory(db.Model):
     __tablename__ = 'coupons_category'
@@ -162,13 +162,13 @@ class CouponSchema(Schema):
                 'bond_size',
                 'percent',
                 'folio',
-                'global')
+                'is_global')
 
 class CouponLogoSchema(Schema):
     dateformat = ('iso')
     class Meta:
         fields = ('coupon_id',
-                  'owner_id',
+                  'branch_id',
                   'company_id',
                   'name',
                   'coupon_folio',
@@ -188,7 +188,7 @@ class CouponLogoSchema(Schema):
                   'available',
                   'taken',
                   'folio',
-                  'global')
+                  'is_global')
 
 class CouponsTakenSchema(Schema):
     class Meta:
@@ -217,7 +217,7 @@ class CouponsTakenSchema(Schema):
 class TrendingCouponSchema(Schema):
     class Meta:
         fields = ('coupon_id',
-                  'owner_id',
+                  'branch_id'
                   'company_id',
                   'name',
                   'coupon_folio',
@@ -237,7 +237,7 @@ class TrendingCouponSchema(Schema):
                   'taken',
                   'subcategory_id',
                   'folio',
-                  'global')
+                  'is_global')
 
 class NearestCouponSchema(Schema):
     class Meta:
@@ -259,7 +259,8 @@ class NearestCouponSchema(Schema):
                   'distance',
                   'logo',
                   'folio',
-                  'logo')
+                  'logo',
+                  'is_global')
 
 class ToExpireCouponSchema(Schema):
     class Meta:
@@ -284,7 +285,7 @@ class ToExpireCouponSchema(Schema):
                   'taken',
                   'subcategory_id',
                   'folio',
-                  'global')
+                  'is_global')
 
 class BondJoinCouponSchema(Schema):
     class Meta:

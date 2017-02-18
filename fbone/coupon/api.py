@@ -400,7 +400,7 @@ def get_all_coupon_for_user():
     if not user.adult:
         adult_validation = 'AND branches_subcategory.subcategory_id != 25'
 
-    list_coupon = db.engine.execute('SELECT coupon_id, branches.branch_id, branches.folio, company_id, branches.name, coupon_folio, description, start_date, \
+    list_coupon = db.engine.execute('SELECT coupon_id, is_global, branches.branch_id, branches.folio, branches,company_id, branches.name, coupon_folio, description, start_date, \
                                             end_date, coupons.limit, min_spent, coupon_category_id, logo, latitude, longitude, banner, category_id, coupons.available, subcategory.subcategory_id, \
                                     (SELECT EXISTS (SELECT * FROM clients_coupon \
                                         WHERE USER_id = %d AND clients_coupon.coupon_id = coupons.coupon_id AND used = false)::bool) AS taken, \
@@ -409,10 +409,10 @@ def get_all_coupon_for_user():
                                     (SELECT EXISTS (SELECT * FROM coupons_likes \
                                         WHERE coupons_likes.user_id = %d AND coupons.coupon_id = coupons_likes.coupon_id)::bool) AS user_like \
                                     FROM coupons INNER JOIN branches_design ON \
-                                    coupons.branch_id = branches_design.branch_id \
-                                    INNER JOIN branches ON coupons.branch_id = branches.branch_id \
-                                    INNER JOIN branches_location on coupons.branch_id = branches_location.branch_id \
-                                    JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.branch_id \
+                                    coupons.owner_id = branches_design.branch_id \
+                                    INNER JOIN branches ON coupons.owner_id = branches.branch_id \
+                                    INNER JOIN branches_location on coupons.owner_id = branches_location.branch_id \
+                                    JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.owner_id \
                                     JOIN subcategory ON subcategory.subcategory_id = branches_subcategory.subcategory_id \
                                     WHERE deleted = false AND coupons.available > 0 %s AND active=true AND coupons.end_date > now() ORDER BY coupons.start_date DESC LIMIT %s OFFSET 0' % (payload['id'], payload['id'], adult_validation, limit))
 
@@ -433,7 +433,7 @@ def get_all_coupon_for_user_offset():
     if not user.adult:
         adult_validation = 'AND branches_subcategory.subcategory_id!=25'
 
-    list_coupon = db.engine.execute('SELECT coupon_id, branches.branch_id, branches.folio, company_id, branches.name, coupon_folio, description, start_date, \
+    list_coupon = db.engine.execute('SELECT coupon_id, is_global,branches.branch_id, branches.folio, company_id, branches.name, coupon_folio, description, start_date, \
                                             end_date, coupons.limit, min_spent, coupon_category_id, logo, latitude, longitude, banner, category_id, coupons.available, subcategory.subcategory_id, \
                                     (SELECT EXISTS (SELECT * FROM clients_coupon \
                                         WHERE USER_id = %d AND clients_coupon.coupon_id = coupons.coupon_id AND used = false)::bool) AS taken, \
@@ -442,10 +442,10 @@ def get_all_coupon_for_user_offset():
                                     (SELECT EXISTS (SELECT * FROM coupons_likes \
                                         WHERE coupons_likes.user_id = %d AND coupons.coupon_id = coupons_likes.coupon_id)::bool) AS user_like \
                                     FROM coupons INNER JOIN branches_design ON \
-                                    coupons.branch_id = branches_design.branch_id \
-                                    INNER JOIN branches ON coupons.branch_id = branches.branch_id \
-                                    INNER JOIN branches_location on coupons.branch_id = branches_location.branch_id \
-                                    JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.branch_id \
+                                    coupons.owner_id = branches_design.branch_id \
+                                    INNER JOIN branches ON coupons.owner_id = branches.branch_id \
+                                    INNER JOIN branches_location on coupons.owner_id = branches_location.branch_id \
+                                    JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.owner_id \
                                     JOIN subcategory ON subcategory.subcategory_id = branches_subcategory.subcategory_id \
                                     WHERE deleted = false AND active=true AND coupons.end_date > now() AND coupons.start_date <= %s AND coupons.available>0 %s ORDER BY coupons.start_date DESC LIMIT 6 OFFSET %s' % (payload['id'], payload['id'],"'"+start_date+"'", adult_validation,offset))
 
