@@ -29,7 +29,7 @@ class Coupon(db.Model):
     is_global = Column(db.Boolean)
 
     coupons_category = db.relationship('CouponCategory', uselist=False, backref="coupons")
-    branches_coupons = db.relationship('Branch', uselist=False, backref="coupons")
+    #branches_coupons = db.relationship('Branch', uselist=False, backref="coupons")
 
 class CouponCategory(db.Model):
     __tablename__ = 'coupons_category'
