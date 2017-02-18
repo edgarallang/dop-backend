@@ -410,9 +410,9 @@ def get_all_coupon_for_user():
                                         WHERE coupons_likes.user_id = %d AND coupons.coupon_id = coupons_likes.coupon_id)::bool) AS user_like \
                                     FROM coupons INNER JOIN branches_design ON \
                                     coupons.owner_id = branches_design.branch_id \
-                                    INNER JOIN branches ON coupons.branch_id = branches.branch_id \
-                                    INNER JOIN branches_location on coupons.branch_id = branches_location.branch_id \
-                                    JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.branch_id \
+                                    INNER JOIN branches ON coupons.owner_id = branches.branch_id \
+                                    INNER JOIN branches_location on coupons.owner_id = branches_location.branch_id \
+                                    JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.owner_id \
                                     JOIN subcategory ON subcategory.subcategory_id = branches_subcategory.subcategory_id \
                                     WHERE deleted = false AND coupons.available > 0 %s AND active=true AND coupons.end_date > now() ORDER BY coupons.start_date DESC LIMIT %s OFFSET 0' % (payload['id'], payload['id'], adult_validation, limit))
 
