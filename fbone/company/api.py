@@ -240,7 +240,7 @@ def nearest_branches():
                      AND p.longpoint + (p.radius / (p.distance_unit * COS(RADIANS(p.latpoint)))) \
                 ' + filterQuery + ' \
                 ) AS d \
-                WHERE distance <= radius \
+                WHERE distance <= radius AND branches.silent = false \
                 ORDER BY branch_id, distance'
 
     nearestBranches = db.engine.execute(query)
