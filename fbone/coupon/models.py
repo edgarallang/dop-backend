@@ -217,7 +217,7 @@ class CouponsTakenSchema(Schema):
 class TrendingCouponSchema(Schema):
     class Meta:
         fields = ('coupon_id',
-                  'branch_id'
+                  'branch_id',
                   'company_id',
                   'name',
                   'coupon_folio',
