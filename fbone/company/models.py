@@ -30,7 +30,8 @@ class Branch(db.Model):
     phone = Column(db.String(STRING_LEN))
     about = Column(db.String(STRING_LEN))
     folio = Column(db.String(STRING_LEN))
-
+    silent = Column(db.Boolean)
+    
     # branches_user_id = Column(db.Integer, db.ForeignKey("branches_user.branches_user_id"))
     branches_design = db.relationship("BranchDesign", uselist=False, backref="branches")
     branch = db.relationship('BranchAd', uselist=False, backref = 'branches')

@@ -342,7 +342,7 @@ def search_branch():
                             SELECT  "+latitude+"  AS latpoint,  "+longitude+" AS longpoint, \
                                          111.045 AS distance_unit \
                         ) AS p ON 1=1 \
-                        WHERE branches.name ILIKE '%s' \
+                        WHERE branches.name ILIKE '%s' AND branches.silent = false\
                         ) AS d \
                         ORDER BY distance" % ('%%'+ text +'%%' )
             #branches = db.engine.execute("SELECT * FROM branches WHERE name ILIKE '%s' " % ('%%' + text + '%%' ))
