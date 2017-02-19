@@ -39,8 +39,8 @@ def create_coupon(request):
     if request.headers.get('Authorization'):
         payment_data = request.json['paymentData']
         payload = parse_token(request, False)
-        branch_id = BranchUser.query.get(payload['id']).branch_id
-        new_coupon = Coupon(branch_id = branch_id,
+        owner_id = BranchUser.query.get(payload['id']).branch_id
+        new_coupon = Coupon(owner_id = owner_id,
                             # name = request.json['name'],
                             # start_date = request.json['start_date'],
                             # end_date = request.json['end_date'],
