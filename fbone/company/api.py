@@ -106,7 +106,7 @@ def select_branch_tool_profile(branch_id):
     if request.headers.get('Authorization'):
         token_index = False
         payload = parse_token(request, token_index)
-        query = 'SELECT branches_location.branch_location_id, branches.branch_id, state, category_id, longitude, latitude, logo,  \
+        query = 'SELECT branches_location.branch_location_id, branches.branch_id, branches.folio, state, category_id, longitude, latitude, logo,  \
                         city, address, branches.name, branches.company_id, banner, logo, phone, about,  \
                         (SELECT EXISTS (SELECT * FROM branches_subcategory \
                                 WHERE branch_id = %d AND subcategory_id = 25)::bool) AS adults_only \
@@ -428,7 +428,7 @@ def branch_ranking(branch_id):
         query = 'SELECT DISTINCT users.*, client.clients_coupon_id, users_image.main_image, friends.operation_id, \
                     (SELECT COUNT(*) FROM clients_coupon \
                        INNER JOIN coupons ON clients_coupon.coupon_id = coupons.coupon_id \
-                       WHERE users.user_id = clients_coupon.user_id AND used = TRUE AND coupons.branch_id = %d) AS total_used, \
+                       WHERE users.user_id = clients_coupon.user_id AND used = TRUE AND coupons.owner_id = %d) AS total_used, \
                        (SELECT EXISTS (SELECT * FROM friends \
                                         WHERE friends.user_one_id = %d and friends.user_two_id = users.user_id AND friends.operation_id = 1)::bool) AS is_friend \
                     FROM users JOIN (SELECT DISTINCT ON (user_id) * FROM clients_coupon ORDER BY user_id) AS client ON users.user_id = client.user_id \
