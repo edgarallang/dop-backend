@@ -753,14 +753,14 @@ def nearest_coupons():
 
     query = "SELECT branch_location_id, branch_id, folio, company_id, state, city, latitude, longitude, distance, address, \
                     name, category_id, subcategory_id, available, \
-                    coupon_name, coupon_id, description, start_date, end_date, min_spent, logo, \
+                    coupon_name, coupon_id, description, start_date, end_date, min_spent, logo, is_global \
                 (SELECT COUNT(*)  FROM coupons_likes \
                         WHERE d.coupon_id = coupons_likes.coupon_id) AS total_likes, \
                 (SELECT EXISTS (SELECT * FROM coupons_likes  WHERE coupons_likes.user_id = "+ user_id +" AND d.coupon_id = coupons_likes.coupon_id)::bool) AS user_like, \
                 (SELECT EXISTS (SELECT * FROM clients_coupon \
                     WHERE user_id = "+ user_id +" AND clients_coupon.coupon_id = d.coupon_id AND used = false)::bool) AS taken \
                 FROM (SELECT coupons.name as coupon_name, coupons.coupon_id,coupons.start_date,coupons.end_date, coupons.limit ,coupons.min_spent, \
-                             coupons.description, z.branch_location_id, z.branch_id, z.state, z.city, z.address, coupons.available, \
+                             coupons.description, z.branch_location_id, z.branch_id, z.state, z.city, z.address, coupons.available, coupons.is_global, \
                     z.latitude, z.longitude, branches.name, branches.company_id, branches.folio ,branches_design.logo, subcategory.category_id, subcategory.subcategory_id, \
                     p.radius,\
                     p.distance_unit \
