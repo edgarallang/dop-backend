@@ -753,7 +753,7 @@ def nearest_coupons():
 
     query = "SELECT branch_location_id, branch_id, folio, company_id, state, city, latitude, longitude, distance, address, \
                     name, category_id, subcategory_id, available, \
-                    coupon_name, coupon_id, description, start_date, end_date, min_spent, logo, is_global \
+                    coupon_name, coupon_id, description, start_date, end_date, min_spent, logo, is_global, \
                 (SELECT COUNT(*)  FROM coupons_likes \
                         WHERE d.coupon_id = coupons_likes.coupon_id) AS total_likes, \
                 (SELECT EXISTS (SELECT * FROM coupons_likes  WHERE coupons_likes.user_id = "+ user_id +" AND d.coupon_id = coupons_likes.coupon_id)::bool) AS user_like, \
