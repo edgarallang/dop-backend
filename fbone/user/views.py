@@ -58,7 +58,7 @@ def create_token(user):
 def index():
     if not current_user.is_authenticated():
         abort(403)
-    return render_template('user/index.html', user=current_user)    
+    return render_template('user/index.html', user=current_user)
 
 def get_friends_by_id(userId):
     friends_query = 'SELECT COUNT(*) as total FROM friends \
@@ -157,7 +157,7 @@ def upload_logo():
 
         msg = Message('Bienvenido!', sender = app.config['MAIL_USERNAME'], recipients= [userSession.email])
         msg.body = ''
-        msg.html = render_template('frontend/mail.html', name = names, token = chain) 
+        msg.html = render_template('frontend/mail.html', name = names, token = chain)
         with app.app_context():
             mail.send(msg)
 
@@ -258,7 +258,7 @@ def forgot_password():
 
             msg = Message('Restablecer Contraseña', sender = app.config['MAIL_USERNAME'], recipients= [userSession.email])
             msg.body = ''
-            msg.html = render_template('frontend/reset_password_mail.html', token = chain) 
+            msg.html = render_template('frontend/reset_password_mail.html', token = chain)
             #msg.html = '<a href="http://45.55.7.118:5000/api/frontend/reset/password/'+chain+'">Click</a>'
             with app.app_context():
                 mail.send(msg)
@@ -274,7 +274,7 @@ def forgot_password():
 
             msg = Message('Restablecer Contraseña', sender = app.config['MAIL_USERNAME'], recipients= [userSession.email])
             msg.body = ''
-            msg.html = render_template('frontend/reset_password_mail.html', token = chain) 
+            msg.html = render_template('frontend/reset_password_mail.html', token = chain)
             #msg.html = '<a href="http://45.55.7.118:5000/api/frontend/reset/password/'+chain+'">Click</a>'
             with app.app_context():
                 mail.send(msg)
@@ -683,16 +683,16 @@ def get_coupons_activity_by_user_likes():
         if int(user_profile_id) is int(payload['id']):
             private = ''
 
-        users = db.engine.execute('SELECT coupons.branch_id,coupons.coupon_id,branches_design.logo,coupons.name,clients_coupon.clients_coupon_id,clients_coupon.latitude,clients_coupon.longitude \
-                                    , users.names, users.surnames, users.user_id, users_image.main_image, branches.name AS branch_name, branches.company_id, clients_coupon.used_date, clients_coupon.private, \
+        users = db.engine.execute('SELECT coupons.owner_id,coupons.coupon_id,branches_design.logo,coupons.name,clients_coupon.clients_coupon_id,clients_coupon.latitude,clients_coupon.longitude \
+                                    , users.names, users.surnames, users.user_id, users_image.main_image, branches.branch_id, branches.name AS branch_name, branches.company_id, clients_coupon.used_date, clients_coupon.private, \
                                     (SELECT COUNT(*)  FROM clients_coupon_likes WHERE clients_coupon.clients_coupon_id = clients_coupon_likes.clients_coupon_id) AS total_likes, \
                                     (SELECT EXISTS (SELECT * FROM clients_coupon_likes WHERE clients_coupon_likes.user_id = %s AND clients_coupon_likes.clients_coupon_id = clients_coupon.clients_coupon_id)::bool) AS user_like \
                                     FROM clients_coupon \
                                     INNER JOIN users ON clients_coupon.user_id=users.user_id  \
                                     INNER JOIN users_image ON users.user_id = users_image.user_id \
                                     INNER JOIN coupons ON clients_coupon.coupon_id = coupons.coupon_id \
-                                    INNER JOIN branches ON coupons.branch_id = branches.branch_id \
-                                    INNER JOIN branches_design ON coupons.branch_id = branches_design.branch_id \
+                                    INNER JOIN branches ON coupons.owner_id = branches.branch_id \
+                                    INNER JOIN branches_design ON coupons.owner_id = branches_design.branch_id \
                                     WHERE users.user_id = %s AND clients_coupon.used = true %s \
                                     ORDER BY used_date DESC LIMIT %s OFFSET 0' % (payload['id'], user_profile_id, private ,limit))
 
@@ -715,17 +715,17 @@ def get_used_coupons_by_user_likes_offset():
         if int(user_profile_id) is int(payload['id']):
             private = ''
 
-        users = db.engine.execute('SELECT coupons.branch_id, coupons.coupon_id, branches_design.logo, coupons.name, \
-                                            clients_coupon.clients_coupon_id, clients_coupon.latitude,clients_coupon.longitude, \
-                                            users.names, users.surnames, users.user_id, users_image.main_image, branches.name AS branch_name, branches.company_id,clients_coupon.used_date, clients_coupon.private, \
+        users = db.engine.execute('SELECT coupons.owner_id, coupons.coupon_id, branches_design.logo, coupons.name, \
+                                            clients_coupon.clients_coupon_id, clients_coupon.latitude,clients_coupon.longitude, branches.branch_id, \
+                                            users.names, users.surnames, users.user_id, users_image.main_image, branches.name AS branch_name, branches.company_id, clients_coupon.used_date, clients_coupon.private, \
                                     (SELECT COUNT(*)  FROM clients_coupon_likes WHERE clients_coupon.clients_coupon_id = clients_coupon_likes.clients_coupon_id) AS total_likes, \
                                     (SELECT EXISTS (SELECT * FROM clients_coupon_likes WHERE clients_coupon_likes.user_id = %d AND clients_coupon_likes.clients_coupon_id = clients_coupon.clients_coupon_id)::bool) AS user_like \
                                     FROM clients_coupon \
                                     INNER JOIN users ON clients_coupon.user_id = users.user_id  \
                                     INNER JOIN users_image ON users.user_id = users_image.user_id \
                                     INNER JOIN coupons ON clients_coupon.coupon_id = coupons.coupon_id \
-                                    INNER JOIN branches ON coupons.branch_id = branches.branch_id \
-                                    INNER JOIN branches_design ON coupons.branch_id = branches_design.branch_id \
+                                    INNER JOIN branches ON coupons.owner_id = branches.branch_id \
+                                    INNER JOIN branches_design ON coupons.owner_id = branches_design.branch_id \
                                     WHERE users.user_id = %s AND clients_coupon.used = true %s \
                                     AND clients_coupon.used_date <= %s ORDER BY used_date DESC LIMIT 6 OFFSET %s' % (payload['id'], user_profile_id, private, "'"+used_date+"'" , offset))
 
@@ -822,4 +822,3 @@ def get_following():
 
         return jsonify({'data': people_list.data})
     return jsonify({'message': 'Oops! algo salió mal'})
-
