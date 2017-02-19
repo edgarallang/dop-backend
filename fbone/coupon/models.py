@@ -141,6 +141,7 @@ class CouponSchema(Schema):
   class Meta:
       fields = ('coupon_id',
                 'owner_id',
+                'branch_id',
                 'name',
                 'coupon_folio',
                 'description',
@@ -243,6 +244,7 @@ class NearestCouponSchema(Schema):
     class Meta:
         fields = ('coupon_id',
                   'owner_id',
+                  'branch_id',
                   'company_id',
                   'name',
                   'description',
@@ -266,6 +268,7 @@ class ToExpireCouponSchema(Schema):
     class Meta:
         fields = ('coupon_id',
                   'owner_id',
+                  'branch_id',
                   'company_id',
                   'name',
                   'coupon_folio',
