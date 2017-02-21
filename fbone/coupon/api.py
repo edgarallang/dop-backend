@@ -168,8 +168,9 @@ def use_coupon():
 
 
         coupon = Coupon.query.get(request.json['coupon_id'])
+        
         if coupon.is_global:
-            branch = Branch.query.filter_by(folio = qr_code)
+            branch = Branch.query.filter_by(folio = qr_code).first()
             if not branch:
                 return jsonify({'message': 'error_qr'})
 
