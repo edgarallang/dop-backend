@@ -232,7 +232,7 @@ def get_notifications():
                                          LEFT JOIN clients_coupon ON notifications.object_id = clients_coupon.clients_coupon_id \
                                             AND notifications.type = 'newsfeed' \
                                          LEFT JOIN coupons ON clients_coupon.coupon_id = coupons.coupon_id \
-                                         LEFT JOIN branches ON coupons.branch_id = branches.branch_id \
+                                         LEFT JOIN branches ON coupons.owner_id = branches.branch_id \
                                          LEFT JOIN friends ON notifications.object_id = friends.friends_id \
                                             AND notifications.type = 'friend' \
                                          LEFT JOIN users_image AS launcher_image ON notifications.launcher_id = launcher_image.user_id \
@@ -270,7 +270,7 @@ def get_notifications_offset():
                                          LEFT JOIN clients_coupon ON notifications.object_id = clients_coupon.clients_coupon_id \
                                             AND notifications.type = 'newsfeed' \
                                          LEFT JOIN coupons ON clients_coupon.coupon_id = coupons.coupon_id \
-                                         LEFT JOIN branches ON coupons.branch_id = branches.branch_id \
+                                         LEFT JOIN branches ON coupons.owner_id = branches.branch_id \
                                          LEFT JOIN friends ON notifications.object_id = friends.friends_id \
                                             AND notifications.type = 'friend' \
                                          LEFT JOIN users_image AS launcher_image ON notifications.launcher_id = launcher_image.user_id \

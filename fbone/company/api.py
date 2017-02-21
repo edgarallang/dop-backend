@@ -213,9 +213,9 @@ def nearest_branches():
     if filterArray:
         filterQuery = prefixFilterQuery + `filterArray` + ')'
 
-    query = 'SELECT DISTINCT ON (branch_id) branch_location_id, branch_id, folio,  state, city, latitude, longitude, distance, address, name, category_id, logo, company_id \
+    query = 'SELECT DISTINCT ON (branch_id) branch_location_id, branch_id, silent, folio,  state, city, latitude, longitude, distance, address, name, category_id, logo, company_id \
                 FROM (SELECT z.branch_location_id, z.branch_id, z.state, z.city, z.address, branches_design.logo, branches.company_id, \
-                    z.latitude, z.longitude, branches.name, branches.folio, subcategory.category_id, \
+                    z.latitude, z.longitude, branches.name, branches.folio, branches.silent, subcategory.category_id, \
                     p.radius, \
                     p.distance_unit \
                              * DEGREES(ACOS(COS(RADIANS(p.latpoint)) \
@@ -240,7 +240,7 @@ def nearest_branches():
                      AND p.longpoint + (p.radius / (p.distance_unit * COS(RADIANS(p.latpoint)))) \
                 ' + filterQuery + ' \
                 ) AS d \
-                WHERE distance <= radius \
+                WHERE distance <= radius AND silent = false \
                 ORDER BY branch_id, distance'
 
     nearestBranches = db.engine.execute(query)
@@ -342,7 +342,7 @@ def search_branch():
                             SELECT  "+latitude+"  AS latpoint,  "+longitude+" AS longpoint, \
                                          111.045 AS distance_unit \
                         ) AS p ON 1=1 \
-                        WHERE branches.name ILIKE '%s' \
+                        WHERE branches.name ILIKE '%s' AND branches.silent = false\
                         ) AS d \
                         ORDER BY distance" % ('%%'+ text +'%%' )
             #branches = db.engine.execute("SELECT * FROM branches WHERE name ILIKE '%s' " % ('%%' + text + '%%' ))
@@ -376,13 +376,13 @@ def dashboard_branches():
                 INNER JOIN branches_design ON branches.branch_id = branches_design.branch_id \
                 INNER JOIN branch_ad ON branches.branch_id = branch_ad.branch_id \
                 INNER JOIN branches_subcategory ON branches.branch_id = branches_subcategory.branch_id \
-                WHERE branch_ad.duration>0 ORDER BY branch_ad.start_date LIMIT 8'
+                WHERE branch_ad.duration>0 AND branches.silent = false ORDER BY branch_ad.start_date LIMIT 8'
     else:
         adBranches = 'SELECT * FROM branches \
                  INNER JOIN branches_design ON branches.branch_id = branches_design.branch_id \
                  INNER JOIN branch_ad ON branches.branch_id = branch_ad.branch_id \
                  INNER JOIN branches_subcategory ON branches.branch_id = branches_subcategory.branch_id \
-                 WHERE branch_ad.duration>0 AND branches_subcategory.subcategory_id != 25 ORDER BY branch_ad.start_date LIMIT 8'
+                 WHERE branch_ad.duration>0 AND branches_subcategory.subcategory_id != 25 AND branches.silent = false ORDER BY branch_ad.start_date LIMIT 8'
 
     branches = db.engine.execute(adBranches)
 
@@ -400,7 +400,7 @@ def dashboard_branches():
             filterArray.append(branch["branch_id"])
 
         filterQuery = ''
-        prefixFilterQuery = 'WHERE branches.branch_id != ALL(ARRAY'
+        prefixFilterQuery = 'AND branches.branch_id != ALL(ARRAY'
 
         if filterArray:
             filterQuery = prefixFilterQuery + `filterArray` + ')'
@@ -408,7 +408,7 @@ def dashboard_branches():
         remainingBranches = 'SELECT * FROM branches \
                               JOIN branches_design ON branches.branch_id = branches_design.branch_id \
                               INNER JOIN branches_subcategory ON branches.branch_id = branches_subcategory.branch_id \
-                              ' + filterQuery + ' ORDER BY RANDOM() LIMIT %d' % (remaining)
+                              WHERE branches.silent = false' + filterQuery + ' ORDER BY RANDOM() LIMIT %d' % (remaining)
 
         extra_branches = db.engine.execute(remainingBranches)
         selected_list_extra = branch_ad_schema.dump(extra_branches)

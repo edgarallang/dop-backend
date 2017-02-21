@@ -39,8 +39,8 @@ def create_coupon(request):
     if request.headers.get('Authorization'):
         payment_data = request.json['paymentData']
         payload = parse_token(request, False)
-        branch_id = BranchUser.query.get(payload['id']).branch_id
-        new_coupon = Coupon(branch_id = branch_id,
+        owner_id = BranchUser.query.get(payload['id']).branch_id
+        new_coupon = Coupon(owner_id = owner_id,
                             # name = request.json['name'],
                             # start_date = request.json['start_date'],
                             # end_date = request.json['end_date'],
@@ -168,6 +168,11 @@ def use_coupon():
 
 
         coupon = Coupon.query.get(request.json['coupon_id'])
+        
+        if coupon.is_global:
+            branch = Branch.query.filter_by(folio = qr_code,silent = True).first()
+            if not branch:
+                return jsonify({'message': 'error_qr'})
 
         if coupon.end_date > actual_date:
             recently_used = ClientsCoupon.query.filter(and_(ClientsCoupon.coupon_id==coupon_id),
@@ -189,7 +194,8 @@ def use_coupon():
                                           longitude = request.json['longitude'],
                                           used = True,
                                           used_date = actual_date,
-                                          private = True)
+                                          private = True,
+                                          branch_folio = qr_code)
                         db.session.add(client_coupon)
                         db.session.commit()
                         folio = '%d%s%d' % (request.json['branch_id'], "{:%d%m%Y}".format(actual_date), client_coupon.clients_coupon_id)
@@ -324,7 +330,7 @@ def get_all_coupon_by_branch(branch_id):
     # nxnlist = nxn_join_coupon_schema.dump(nxn_coupons)
 
     #list_coupon = Coupon.query.filter_by(branch_id = branch_id).all()
-    list_coupon = db.engine.execute('SELECT coupons.*, branches.company_id, branches.folio, nxn_coupon.n1, nxn_coupon.n2 ,bond_coupon.bond_size, discount_coupon.percent, \
+    list_coupon = db.engine.execute('SELECT coupons.*,branches.branch_id, branches.company_id, branches.folio, nxn_coupon.n1, nxn_coupon.n2 ,bond_coupon.bond_size, discount_coupon.percent, \
                                     ((coupons.available = 0) OR (coupons.end_date < now()) )::bool AS completed, \
                                     (SELECT COUNT(*)  FROM coupons_likes   \
                                         WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes,   \
@@ -347,7 +353,7 @@ def active_coupon(coupon_id):
         token_index = False
         payload = parse_token(request, token_index)
 
-        coupon = Coupon.qupery.get(coupon_id)
+        coupon = Coupon.query.get(coupon_id)
 
 
         end_date = datetime.now() + timedelta(days=coupon.duration)
@@ -599,7 +605,6 @@ def get_all_coupon_for_user_by_branch(branch_id):
 
     selected_list_coupon = coupons_logo_schema.dump(list_coupon)
     return jsonify({'data': selected_list_coupon.data})
-
 
 @coupon.route('/all/for/user/by/branch/offset/get/', methods = ['GET'])
 def get_all_coupon_for_user_by_branch_offset():

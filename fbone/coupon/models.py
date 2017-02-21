@@ -26,7 +26,7 @@ class Coupon(db.Model):
     active = Column(db.Boolean)
     views = Column(db.Integer)
     duration = Column(db.Integer)
-    is_global = Column(db.Boolean)
+    is_global = Column(db.Boolean, default=False)
 
     coupons_category = db.relationship('CouponCategory', uselist=False, backref="coupons")
     #branches_coupons = db.relationship('Branch', uselist=False, backref="coupons")
@@ -79,6 +79,7 @@ class ClientsCoupon(db.Model):
     used = Column(db.Boolean, nullable = False)
     used_date = Column(db.DateTime, nullable=False)
     private = Column(db.Boolean, nullable = False)
+    branch_folio = Column(db.String(STRING_LEN), default='')
 
     coupons_user = db.relationship('User', uselist=False, backref='clients_coupon')
     clients_coupons = db.relationship('Coupon', uselist=False, backref='clients_coupon')
