@@ -592,7 +592,7 @@ def get_all_coupon_for_user_by_branch(branch_id):
                                     coupons.owner_id = branches_design.branch_id \
                                     INNER JOIN branches ON coupons.owner_id = branches.branch_id \
                                     INNER JOIN branches_location on coupons.owner_id = branches_location.branch_id \
-                                    JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.owner_id \
+                                    JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.owner_id AND coupons.is_global=false \
                                     JOIN subcategory ON subcategory.subcategory_id = branches_subcategory.subcategory_id \
                                     WHERE coupons.owner_id = %s AND deleted = false  AND active=true ORDER BY start_date DESC LIMIT 6 OFFSET 0' % (payload['id'], payload['id'], branch_id))
 
