@@ -347,7 +347,7 @@ def active_coupon(coupon_id):
         token_index = False
         payload = parse_token(request, token_index)
 
-        coupon = Coupon.qupery.get(coupon_id)
+        coupon = Coupon.query.get(coupon_id)
 
 
         end_date = datetime.now() + timedelta(days=coupon.duration)
