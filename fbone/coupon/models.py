@@ -26,7 +26,7 @@ class Coupon(db.Model):
     active = Column(db.Boolean)
     views = Column(db.Integer)
     duration = Column(db.Integer)
-    is_global = Column(db.Boolean)
+    is_global = Column(db.Boolean, default=False)
 
     coupons_category = db.relationship('CouponCategory', uselist=False, backref="coupons")
     #branches_coupons = db.relationship('Branch', uselist=False, backref="coupons")
