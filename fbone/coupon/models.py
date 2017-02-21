@@ -79,6 +79,7 @@ class ClientsCoupon(db.Model):
     used = Column(db.Boolean, nullable = False)
     used_date = Column(db.DateTime, nullable=False)
     private = Column(db.Boolean, nullable = False)
+    branch_folio = Column(db.String(STRING_LEN), default='')
 
     coupons_user = db.relationship('User', uselist=False, backref='clients_coupon')
     clients_coupons = db.relationship('Coupon', uselist=False, backref='clients_coupon')

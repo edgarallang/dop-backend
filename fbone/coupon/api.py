@@ -189,7 +189,8 @@ def use_coupon():
                                           longitude = request.json['longitude'],
                                           used = True,
                                           used_date = actual_date,
-                                          private = True)
+                                          private = True,
+                                          branch_folio = qr_code)
                         db.session.add(client_coupon)
                         db.session.commit()
                         folio = '%d%s%d' % (request.json['branch_id'], "{:%d%m%Y}".format(actual_date), client_coupon.clients_coupon_id)
@@ -595,27 +596,6 @@ def get_all_coupon_for_user_by_branch(branch_id):
                                     JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.owner_id \
                                     JOIN subcategory ON subcategory.subcategory_id = branches_subcategory.subcategory_id \
                                     WHERE coupons.owner_id = %s AND deleted = false  AND active=true ORDER BY start_date DESC LIMIT 6 OFFSET 0' % (payload['id'], payload['id'], branch_id))
-
-
-    selected_list_coupon = coupons_logo_schema.dump(list_coupon)
-    return jsonify({'data': selected_list_coupon.data})
-
-@coupon.route('/all/for/user/by/company/<int:company_id>/get', methods = ['GET'])
-def get_all_coupon_for_user_by_company(company_id):
-    token_index = True
-    payload = parse_token(request, token_index)
-
-    list_coupon = db.engine.execute('SELECT coupon_id, companies.name ,is_global,company_id, coupon_folio, description, start_date, \
-                                            end_date, coupons.limit, min_spent, available, \
-                                    (SELECT COUNT(*)  FROM coupons_likes \
-                                        WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes, \
-                                    (SELECT EXISTS (SELECT * FROM coupons_likes \
-                                        WHERE coupons_likes.user_id = %d AND coupons.coupon_id = coupons_likes.coupon_id)::bool) AS user_like, \
-                                    (SELECT EXISTS (SELECT * FROM clients_coupon \
-                                        WHERE user_id = %d AND clients_coupon.coupon_id = coupons.coupon_id AND used = false)::bool) AS taken \
-                                    FROM coupons \
-                                    INNER JOIN companies ON coupons.owner_id = companies.company_id \
-                                    WHERE coupons.owner_id = %d AND deleted = false  AND active=true ORDER BY start_date DESC LIMIT 6 OFFSET 0' % (payload['id'], payload['id'], company_id))
 
 
     selected_list_coupon = coupons_logo_schema.dump(list_coupon)
