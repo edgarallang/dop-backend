@@ -155,7 +155,7 @@ def use_coupon():
         token_index = True
         payload = parse_token(request, token_index) #5
         coupon_id = request.json['coupon_id'] #5
-        qr_code = request.json['qr_code']
+        qr_code = request.json['qr_code'] 
         branch_id = request.json['branch_id']
 
 
@@ -211,7 +211,7 @@ def use_coupon():
                         user_level = level_up(payload['id'])
                         db.session.commit()
 
-                        if not request.json['first_using']:
+                        if not 'first_using' in request.json:
                             user_first_exp = UserFirstEXP.query.filter_by(user_id = payload['id']).first()
                             user_first_exp.first_using = True
                             first_badge = UsersBadges(user_id = payload['id'],
@@ -259,7 +259,7 @@ def user_report():
                                branch_indiference = request.json['branch_indiference'],
                                camera_broken = request.json['camera_broken'],
                                app_broken = request.json['app_broken'],
-                               qr_lost = request.json['qr_lost'] )
+                               qr_lost = request.json['qr_lost'])
 
         db.session.add(report)
         db.session.commit()
