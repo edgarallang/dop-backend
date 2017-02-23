@@ -410,6 +410,7 @@ class UserActivityNewsfeed(Schema):
     class Meta:
         fields = ('clients_coupon_id',
                   'branch_id',
+                  'owner_id',
                   'company_id',
                   'coupon_id',
                   'logo',

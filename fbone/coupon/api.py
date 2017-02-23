@@ -905,7 +905,7 @@ def get_coupons_activity_by_user_likes():
         user_id = payload['id']
 
         users = db.engine.execute('SELECT coupons.owner_id,coupons.coupon_id,branches_design.logo,coupons.name,clients_coupon.clients_coupon_id,clients_coupon.latitude,clients_coupon.longitude, \
-                                          users.names, users.surnames, users.user_id, users.exp, users.level, users_image.main_image, branches.name AS branch_name, \
+                                          users.names, users.surnames, users.user_id, users.exp, users.level, users_image.main_image, branches.branch_id, branches.name AS branch_name, \
                                           branches.company_id, clients_coupon.used_date, friends.operation_id, users.privacy_status, \
                                     (SELECT COUNT(*)  FROM clients_coupon_likes WHERE clients_coupon.clients_coupon_id = clients_coupon_likes.clients_coupon_id) AS total_likes, \
                                     (SELECT EXISTS (SELECT * FROM clients_coupon_likes WHERE clients_coupon_likes.user_id = %d AND clients_coupon_likes.clients_coupon_id = clients_coupon.clients_coupon_id)::bool) AS user_like, \
@@ -936,7 +936,7 @@ def get_used_coupons_by_user_likes_offset():
         used_date = request.json['used_date']
 
         query = 'SELECT coupons.owner_id,coupons.coupon_id,branches_design.logo,coupons.name,clients_coupon.clients_coupon_id,clients_coupon.latitude,clients_coupon.longitude, \
-                                          users.names, users.surnames, users.user_id, users.exp, users.level, users_image.main_image, branches.name AS branch_name, \
+                                          users.names, users.surnames, users.user_id, users.exp, users.level, users_image.main_image, branches.branch_id, branches.name AS branch_name, \
                                           branches.company_id, clients_coupon.used_date, friends.operation_id, users.privacy_status, \
                                     (SELECT COUNT(*)  FROM clients_coupon_likes WHERE clients_coupon.clients_coupon_id = clients_coupon_likes.clients_coupon_id) AS total_likes, \
                                     (SELECT EXISTS (SELECT * FROM clients_coupon_likes WHERE clients_coupon_likes.user_id = %d AND clients_coupon_likes.clients_coupon_id = clients_coupon.clients_coupon_id)::bool) AS user_like, \
