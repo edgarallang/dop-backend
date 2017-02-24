@@ -211,7 +211,7 @@ def use_coupon():
                         user_level = level_up(payload['id'])
                         db.session.commit()
 
-                        if not 'first_using' in request.json:
+                        if request.json['first_using'] == False:
                             user_first_exp = UserFirstEXP.query.filter_by(user_id = payload['id']).first()
                             user_first_exp.first_using = True
                             first_badge = UsersBadges(user_id = payload['id'],
