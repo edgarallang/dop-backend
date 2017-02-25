@@ -224,11 +224,11 @@ def nearest_branches():
                              + SIN(RADIANS(p.latpoint)) \
                              * SIN(RADIANS(z.latitude)))) AS distance \
                 FROM branches_location AS z \
-                JOIN branches on z.branch_id = branches.branch_id \
-                JOIN branches_design on branches.branch_id = branches_design.branch_id \
-                JOIN branches_subcategory on z.branch_id = branches_subcategory.branch_id \
-                JOIN subcategory on subcategory.subcategory_id = branches_subcategory.subcategory_id\
-                JOIN (   /* these are the query parameters */ \
+                INNER JOIN branches on z.branch_id = branches.branch_id \
+                INNER JOIN branches_design on branches.branch_id = branches_design.branch_id \
+                INNER JOIN branches_subcategory on z.branch_id = branches_subcategory.branch_id \
+                INNER JOIN subcategory on subcategory.subcategory_id = branches_subcategory.subcategory_id\
+                INNER JOIN (   /* these are the query parameters */ \
                     SELECT  '+ latitude +'  AS latpoint,  '+ longitude +' AS longpoint, \
                             '+ radio +' AS radius,      111.045 AS distance_unit \
                 ) AS p ON 1=1 \
