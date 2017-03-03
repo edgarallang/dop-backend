@@ -323,7 +323,7 @@ def search_branch():
             selected_list_branch = branch_profile_search_schema.dump(branches)
             return jsonify({'data': selected_list_branch.data})
         else:
-            query = "SELECT branch_location_id, branch_id, folio,  state, city, latitude, longitude, distance, address, \
+            query = "SELECT distinct on (branch_id) branch_location_id, branch_id, folio,  state, city, latitude, longitude, distance, address, \
                             name, company_id, logo, category_id, banner \
                         FROM (SELECT z.branch_location_id, z.branch_id, z.state, z.city, z.address, \
                             z.latitude, z.longitude, branches.name, branches.folio, branches.company_id, branches_design.logo,branches_design.banner, subcategory.category_id, \
@@ -344,7 +344,7 @@ def search_branch():
                         ) AS p ON 1=1 \
                         WHERE branches.name ILIKE '%s' AND branches.silent = false\
                         ) AS d \
-                        ORDER BY distance" % ('%%'+ text +'%%' )
+                        ORDER BY branch_id, distance" % ('%%'+ text +'%%' )
             #branches = db.engine.execute("SELECT * FROM branches WHERE name ILIKE '%s' " % ('%%' + text + '%%' ))
             branches = db.engine.execute(query)
 
