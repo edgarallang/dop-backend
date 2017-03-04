@@ -202,7 +202,8 @@ def reset_password(token):
 
 @frontend.route('/store/get', methods=['GET'])
 def return_store():
-    user_agent = parse(user_agent_string)
+    ua_string = 'Mozilla/5.0 (iPhone; CPU iPhone OS 5_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Version/5.1 Mobile/9B179 Safari/7534.48.3'
+    user_agent = parse(ua_string)
     os = user_agent.os.family
 
     print os
