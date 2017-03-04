@@ -211,4 +211,4 @@ def return_store():
     elif os == 'Android':
         store = 'https://play.google.com/store/apps/details?id=com.halleydevs.dop&hl=en'
 
-    return redirect(url_for(store))
+    return redirect(store)
