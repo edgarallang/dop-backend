@@ -156,7 +156,7 @@ def use_coupon():
         token_index = True
         payload = parse_token(request, token_index) #5
         coupon_id = request.json['coupon_id'] #5
-        qr_code = request.json['qr_code'] 
+        qr_code = request.json['qr_code']
         branch_id = request.json['branch_id']
 
 
@@ -169,7 +169,7 @@ def use_coupon():
 
 
         coupon = Coupon.query.get(request.json['coupon_id'])
-        
+
         if coupon.is_global:
             branch = Branch.query.filter_by(folio = qr_code,silent = True).first()
             if not branch:
@@ -255,7 +255,7 @@ def use_coupon_by_location():
         token_index = True
         payload = parse_token(request, token_index) #5
         coupon_id = request.json['coupon_id'] #5
-        qr_code = request.json['qr_code'] 
+        qr_code = request.json['qr_code']
         branch_id = request.json['branch_id']
         latitude = request.json['latitude']
         longitude = request.json['longitude']
@@ -270,7 +270,7 @@ def use_coupon_by_location():
 
 
         coupon = Coupon.query.get(request.json['coupon_id'])
-        
+
         if coupon.is_global:
                 return jsonify({'message': 'error_qr'})
 
@@ -530,7 +530,7 @@ def get_all_coupon_for_user():
     if not user.adult:
         adult_validation = 'AND branches_subcategory.subcategory_id != 25'
 
-    list_coupon = db.engine.execute('SELECT coupon_id, is_global, branches.branch_id, branches.folio, branches,company_id, branches.name, coupon_folio, description, start_date, \
+    list_coupon = db.engine.execute('SELECT DISTINCT ON (coupon_id) coupon_id, is_global, branches.branch_id, branches.folio, branches,company_id, branches.name, coupon_folio, description, start_date, \
                                             end_date, coupons.limit, min_spent, coupon_category_id, logo, latitude, longitude, banner, category_id, coupons.available, subcategory.subcategory_id, \
                                     (SELECT EXISTS (SELECT * FROM clients_coupon \
                                         WHERE USER_id = %d AND clients_coupon.coupon_id = coupons.coupon_id AND used = false)::bool) AS taken, \
@@ -544,7 +544,7 @@ def get_all_coupon_for_user():
                                     INNER JOIN branches_location on coupons.owner_id = branches_location.branch_id \
                                     JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.owner_id \
                                     JOIN subcategory ON subcategory.subcategory_id = branches_subcategory.subcategory_id \
-                                    WHERE deleted = false AND coupons.available > 0 %s AND active=true AND coupons.end_date > now() ORDER BY coupons.start_date DESC LIMIT %s OFFSET 0' % (payload['id'], payload['id'], adult_validation, limit))
+                                    WHERE deleted = false AND coupons.available > 0 %s AND active=true AND coupons.end_date > now() ORDER BY coupon_id DESC LIMIT %s OFFSET 0' % (payload['id'], payload['id'], adult_validation, limit))
 
 
     selected_list_coupon = coupons_logo_schema.dump(list_coupon)
@@ -563,7 +563,7 @@ def get_all_coupon_for_user_offset():
     if not user.adult:
         adult_validation = 'AND branches_subcategory.subcategory_id!=25'
 
-    list_coupon = db.engine.execute('SELECT coupon_id, is_global,branches.branch_id, branches.folio, company_id, branches.name, coupon_folio, description, start_date, \
+    list_coupon = db.engine.execute('SELECT DISTINCT ON (coupon_id) coupon_id, is_global,branches.branch_id, branches.folio, company_id, branches.name, coupon_folio, description, start_date, \
                                             end_date, coupons.limit, min_spent, coupon_category_id, logo, latitude, longitude, banner, category_id, coupons.available, subcategory.subcategory_id, \
                                     (SELECT EXISTS (SELECT * FROM clients_coupon \
                                         WHERE USER_id = %d AND clients_coupon.coupon_id = coupons.coupon_id AND used = false)::bool) AS taken, \
@@ -577,7 +577,7 @@ def get_all_coupon_for_user_offset():
                                     INNER JOIN branches_location on coupons.owner_id = branches_location.branch_id \
                                     JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.owner_id \
                                     JOIN subcategory ON subcategory.subcategory_id = branches_subcategory.subcategory_id \
-                                    WHERE deleted = false AND active=true AND coupons.end_date > now() AND coupons.start_date <= %s AND coupons.available>0 %s ORDER BY coupons.start_date DESC LIMIT 6 OFFSET %s' % (payload['id'], payload['id'],"'"+start_date+"'", adult_validation,offset))
+                                    WHERE deleted = false AND active=true AND coupons.end_date > now() AND coupons.start_date <= %s AND coupons.available>0 %s ORDER BY coupon_id DESC LIMIT 6 OFFSET %s' % (payload['id'], payload['id'],"'"+start_date+"'", adult_validation,offset))
 
 
     selected_list_coupon = coupons_logo_schema.dump(list_coupon)
