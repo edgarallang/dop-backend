@@ -13,7 +13,7 @@ from ..utils import get_current_time, SEX_TYPE, STRING_LEN
 class Company(db.Model):
     __tablename__ = 'companies'
     company_id = Column(db.Integer, primary_key = True)
-    name = Column(db.String(STRING_LEN), nullable = False, unique = True)
+    name = Column(db.String(STRING_LEN), nullable = False, unique = False)
     email = Column(db.String(STRING_LEN), nullable = False, unique = True)
     credits = Column(db.Integer)
 
@@ -31,7 +31,7 @@ class Branch(db.Model):
     about = Column(db.String(STRING_LEN))
     folio = Column(db.String(STRING_LEN))
     silent = Column(db.Boolean)
-    
+
     # branches_user_id = Column(db.Integer, db.ForeignKey("branches_user.branches_user_id"))
     branches_design = db.relationship("BranchDesign", uselist=False, backref="branches")
     branch = db.relationship('BranchAd', uselist=False, backref = 'branches')
