@@ -205,6 +205,10 @@ def return_store():
     ua_string = request.headers.get('User-Agent')
     user_agent = parse(ua_string)
     os = user_agent.os.family
+    store = 'https://itunes.apple.com/mx/app/dop/id1155231176?l=en&mt=8'
+    if os == 'iOS':
+        store = 'https://itunes.apple.com/mx/app/dop/id1155231176?l=en&mt=8'
+    elif os == 'Android':
+        store = 'https://play.google.com/store/apps/details?id=com.halleydevs.dop&hl=en'
 
-    print os
-    return os
+    return redirect(url_for(store))
