@@ -17,7 +17,7 @@ class BaseConfig(object):
     # ../../config.py
     PROJECT_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
-    APNS_CERTIFICATE = PROJECT_ROOT+'/certs/push.pem'
+    APNS_CERTIFICATE = PROJECT_ROOT+'/certs/aps_prod_cert.pem'
     APNS_SANDBOX = False
 
     GCM_API_KEY = "AIzaSyAMR7PtdU1BNEgXQvzZKSv8nZsJKR5Hr94"
@@ -26,7 +26,7 @@ class BaseConfig(object):
     TESTING = False
     use_reloader = False
 
-    ADMINS = ['edgarallan182@gmail.com']
+    ADMINS = ['edgarallanglez@gmail.com']
 
     # http://flask.pocoo.org/docs/quickstart/#sessions
     SECRET_KEY = 'secretbitch'
