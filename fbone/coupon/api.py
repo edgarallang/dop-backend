@@ -1228,7 +1228,7 @@ def get_views(branchId):
                 coupons_views.latitude, coupons_views.longitude, coupons.available, \
                 coupons_views.view_date FROM coupons_views \
                 INNER JOIN coupons ON coupons_views.coupon_id = coupons.coupon_id \
-                WHERE branch_id = %d AND coupons_views.latitude IS NOT NULL AND coupons_views.longitude IS NOT NULL' % branchId
+                WHERE owner_id = %d AND coupons_views.latitude IS NOT NULL AND coupons_views.longitude IS NOT NULL' % branchId
 
     coupons_list = db.engine.execute(locations)
 
