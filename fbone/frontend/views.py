@@ -7,6 +7,7 @@ from flask import (Blueprint, render_template, current_app, request,
 from flask.ext.mail import Message
 from flask.ext.babel import gettext as _
 from flask.ext.login import login_required, login_user, current_user, logout_user, confirm_login, login_fresh
+from user_agents import parse
 
 from ..user import User, UserImage, UserLevel, ForgotPassword
 from ..extensions import db, mail, login_manager, oid
@@ -199,3 +200,15 @@ def reset_password(token):
     else:
         return render_template('frontend/message.html', user_found = False, message = 'El enlace ha expirado')
 
+@frontend.route('/store/get', methods=['GET'])
+def return_store():
+    ua_string = request.headers.get('User-Agent')
+    user_agent = parse(ua_string)
+    os = user_agent.os.family
+    store = 'https://itunes.apple.com/mx/app/dop/id1155231176?l=en&mt=8'
+    if os == 'iOS':
+        store = 'https://itunes.apple.com/mx/app/dop/id1155231176?l=en&mt=8'
+    elif os == 'Android':
+        store = 'https://play.google.com/store/apps/details?id=com.halleydevs.dop&hl=en'
+
+    return redirect(store)
