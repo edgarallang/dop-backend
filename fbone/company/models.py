@@ -128,7 +128,7 @@ class BranchesFollower(db.Model):
     branches_user = db.relationship('User', uselist=False, backref='branches_follower')
 # =====================================================================
 #Login stats
-class CompanyStats(db.Model, UserMixin):
+class CompanyStats(db.Model):
     __tablename__ = "company_stats"
     id = Column(db.Integer, primary_key=True)
     owner_id = Column(db.Integer)
