@@ -131,6 +131,7 @@ class BranchesFollower(db.Model):
 class CompanyStats(db.Model):
     __tablename__ = "company_stats"
     id = Column(db.Integer, primary_key=True)
+    user_id = Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
     owner_id = Column(db.Integer)
     view_date = Column(db.DateTime)
     latitude = Column(db.Numeric)

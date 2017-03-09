@@ -98,7 +98,7 @@ def select_branch_profile(branch_id):
         selectedBranch = db.engine.execute(query)
         branch = branch_profile_schema.dump(selectedBranch)
 
-        company_stat = CompanyStats(id = payload['id'],
+        company_stat = CompanyStats(user_id = payload['id'],
                                   owner_id = branch_id,
                                   view_date = datetime.now())
 
