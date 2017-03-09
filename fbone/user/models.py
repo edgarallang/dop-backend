@@ -153,6 +153,15 @@ class VerifyEmail(db.Model, UserMixin):
   user_id = Column(db.Integer)
   token = Column(db.String(100))
 
+#Login stats
+class LoginStats(db.Model, UserMixin):
+  __tablename__ = "login_stats"
+  id_login_stat = Column(db.Integer, primary_key=True)
+  user_id = Column(db.Integer)
+  date = Column(db.DateTime)
+  latitude = Column(db.Numeric)
+  longitude = Column(db.Numeric)
+
 # Serializer Schemas
 
 class UserSchema(Schema):

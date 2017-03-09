@@ -377,6 +377,12 @@ def facebook_login():
             facebookUser.device_token = request.json['device_token']
             facebookUser.device_os = request.json['device_os']
             db.session.commit()
+    today = datetime.now()
+
+    login_stat = LoginStats(user_id=facebookUser.user_id, date=today)
+    db.session.add(login_stat)
+    db.session.commit()
+    
     token = create_token(facebookUser)
 
     return jsonify(token=token)
