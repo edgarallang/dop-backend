@@ -197,6 +197,12 @@ def email_verification():
 
 
         token = create_token(newUser)
+
+        today = datetime.now()
+        login_stat = LoginStats(user_id=newUser.user_id, date=today)
+        db.session.add(login_stat)
+        db.session.commit()
+        
         return jsonify(token=token)
 
     return jsonify({'data': 'email_exist'})
