@@ -127,7 +127,14 @@ class BranchesFollower(db.Model):
     branches_follower = db.relationship("Branch", uselist=False, backref="branches_follower")
     branches_user = db.relationship('User', uselist=False, backref='branches_follower')
 # =====================================================================
-
+#Login stats
+class CompanyStats(db.Model, UserMixin):
+    __tablename__ = "company_stats"
+    id = Column(db.Integer, primary_key=True)
+    owner_id = Column(db.Integer)
+    view_date = Column(db.DateTime)
+    latitude = Column(db.Numeric)
+    longitude = Column(db.Numeric)
 # Branches user is the person geting into the system from that specific branch
 
 class BranchUser(db.Model):
@@ -309,6 +316,8 @@ class RankingUsersSchema(Schema):
                   'level',
                   'is_friend',
                   'operation_id')
+
+
 
 company_schema = CompanySchema()
 companies_schema = CompanySchema(many=True)

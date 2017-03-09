@@ -98,6 +98,18 @@ def select_branch_profile(branch_id):
         selectedBranch = db.engine.execute(query)
         branch = branch_profile_schema.dump(selectedBranch)
 
+        company_stat = CompanyStats(user_id = payload['id'],
+                                  owner_id = branch_id,
+                                  view_date = datetime.now())
+
+        if 'latitude' in request.json and 'longitude' in request.json:
+            if request.json['latitude'] != 0 and request.json['longitude'] != 0:
+                company_stat.latitude = request.json['latitude']
+                company_stat.longitude = request.json['longitude']
+
+        db.session.add(company_stat)
+        db.session.commit()
+
         return jsonify({'data': branch.data})
     return jsonify({'message': 'Oops! algo salió mal'})
 
