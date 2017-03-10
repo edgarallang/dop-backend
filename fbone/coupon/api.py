@@ -1041,8 +1041,9 @@ def get_coupons_activity_by_user_likes():
                                     INNER JOIN coupons ON clients_coupon.coupon_id = coupons.coupon_id \
                                     INNER JOIN branches ON coupons.owner_id = branches.branch_id \
                                     INNER JOIN branches_design ON coupons.owner_id = branches_design.branch_id \
-                                    WHERE clients_coupon.used = true AND clients_coupon.private = false AND user.privacy_status = 0 AND friends.operation_id = 1 ORDER BY used_date DESC LIMIT 6 OFFSET 0' % (payload['id'], payload['id'], payload['id']))
-        #LEFT JOIN friends ON friends.user_one_id = %d AND friends.user_two_id = users.user_id \
+                                    LEFT JOIN friends ON friends.user_one_id = %d AND friends.user_two_id = users.user_id \
+                                    WHERE clients_coupon.used = true AND clients_coupon.private = false AND user.privacy_status = 0 ORDER BY used_date DESC LIMIT 6 OFFSET 0' % (payload['id'], payload['id'], payload['id']))
+                                    # AND friends.operation_id = 1 
         users_list = user_join_activity_newsfeed.dump(users)
         print users_list.data
         return jsonify({'data': users_list.data})
