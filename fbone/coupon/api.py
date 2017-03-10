@@ -1073,7 +1073,7 @@ def get_used_coupons_by_user_likes_offset():
                                     INNER JOIN branches ON coupons.owner_id = branches.branch_id \
                                     INNER JOIN branches_design ON coupons.owner_id = branches_design.branch_id \
                                     LEFT JOIN friends ON friends.user_one_id = %d AND friends.user_two_id = users.user_id \
-                                    WHERE clients_coupon.used = true AND clients_coupon.used_date <= %s AND clients_coupon.private = false AND friends.operation_id = 1 ORDER BY used_date DESC LIMIT 6 OFFSET %s' % (user_id, user_id, user_id, "'" + used_date + "'" , offset)
+                                    WHERE clients_coupon.used = true AND clients_coupon.used_date <= %s AND clients_coupon.private = false AND users.privacy_status = 0 ORDER BY used_date DESC LIMIT 6 OFFSET %s' % (user_id, user_id, user_id, "'" + used_date + "'" , offset)
 
 
         users = db.engine.execute(query)
