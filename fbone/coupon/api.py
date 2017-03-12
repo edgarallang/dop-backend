@@ -584,6 +584,41 @@ def get_all_coupon_for_user_offset():
     pprint(selected_list_coupon)
     return jsonify({'data': selected_list_coupon.data})
 
+@coupon.route('/favorites/for/user/get', methods = ['POST'])
+def get_favorites_coupon_for_user():
+    if request.headers.get('Authorization'):
+        token_index = True
+        limit = request.args.get('limit')
+        payload = parse_token(request, token_index)
+
+        user = User.query.get(payload['id'])
+
+
+        list_coupon = db.engine.execute('SELECT coupon_id, is_global, branches.branch_id, branches.folio, branches,company_id, branches.name, coupon_folio, description, start_date, \
+                                                end_date, coupons.limit, min_spent, coupon_category_id, logo, latitude, longitude, banner, category_id, coupons.available, subcategory.subcategory_id, \
+                                        (SELECT EXISTS (SELECT * FROM clients_coupon \
+                                            WHERE USER_id = %d AND clients_coupon.coupon_id = coupons.coupon_id AND used = false)::bool) AS taken, \
+                                        (SELECT COUNT(*)  FROM coupons_likes \
+                                            WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes, \
+                                        (SELECT EXISTS (SELECT * FROM coupons_likes \
+                                            WHERE coupons_likes.user_id = %d AND coupons.coupon_id = coupons_likes.coupon_id)::bool) AS user_like \
+                                        FROM coupons INNER JOIN branches_design ON \
+                                        coupons.owner_id = branches_design.branch_id \
+                                        INNER JOIN branches ON coupons.owner_id = branches.branch_id \
+                                        INNER JOIN branches_location on coupons.owner_id = branches_location.branch_id \
+                                        JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.owner_id \
+                                        JOIN subcategory ON subcategory.subcategory_id = branches_subcategory.subcategory_id \
+                                        INNER JOIN coupons_likes ON coupons.coupon_id = coupons_likes.coupon_id \
+                                        AND coupons_likes.user_id = %d \
+                                        WHERE deleted = false AND coupons.available > 0 AND active=true AND coupons.end_date > now() ORDER BY coupons.start_date' % (payload['id'], payload['id'], payload['id']))
+
+
+        selected_list_coupon = coupons_logo_schema.dump(list_coupon)
+        pprint(selected_list_coupon)
+        return jsonify({'data': selected_list_coupon.data})
+    return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
+
+
 @coupon.route('/all/taken/for/user/get/', methods = ['GET'])
 def get_all_taken_coupon_for_user():
     token_index = True
