@@ -610,7 +610,7 @@ def get_favorites_coupon_for_user():
                                         JOIN subcategory ON subcategory.subcategory_id = branches_subcategory.subcategory_id \
                                         INNER JOIN coupons_likes ON coupons.coupon_id = coupons_likes.coupon_id \
                                         AND coupons_likes.user_id = %d \
-                                        WHERE deleted = false AND coupons.available > 0 AND active=true AND coupons.end_date > now() ORDER BY coupons_likes.date' % (payload['id'], payload['id'], payload['id']))
+                                        WHERE deleted = false AND coupons.available > 0 AND active=true AND coupons.end_date > now() ORDER BY coupons_likes.date DESC' % (payload['id'], payload['id'], payload['id']))
 
 
         selected_list_coupon = coupons_logo_schema.dump(list_coupon)
