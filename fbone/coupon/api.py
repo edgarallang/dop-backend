@@ -584,7 +584,7 @@ def get_all_coupon_for_user_offset():
     pprint(selected_list_coupon)
     return jsonify({'data': selected_list_coupon.data})
 
-@coupon.route('/favorites/for/user/get', methods = ['POST'])
+@coupon.route('/favorites/for/user/get', methods = ['GET'])
 def get_favorites_coupon_for_user():
     if request.headers.get('Authorization'):
         token_index = True
