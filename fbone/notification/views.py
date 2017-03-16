@@ -73,7 +73,7 @@ def send_notification(device_token, notification_data, device_os):
     return jsonify({'message': 'error'})
 
 @notification.route('/push/to', methods=['POST'])
-def push_to:
+def push_to():
     users = request.json['users']
 
     return jsonify({'message': users})
