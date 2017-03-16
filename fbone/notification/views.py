@@ -74,7 +74,7 @@ def send_notification(device_token, notification_data, device_os):
 
 @notification.route('/push/to', methods=['POST'])
 def push_to():
-    users = request.json['users']
+    users = request.json['users']    
 
     return jsonify({'message': users})
 @notification.route('/push/like', methods=['POST'])
