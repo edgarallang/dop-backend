@@ -72,6 +72,11 @@ def send_notification(device_token, notification_data, device_os):
 
     return jsonify({'message': 'error'})
 
+@notification.route('/push/to', methods=['POST'])
+def push_to:
+    users = request.json['users']
+
+    return jsonify({'message': users})
 @notification.route('/push/like', methods=['POST'])
 def like_push_notification():
     if request.headers.get('Authorization'):
