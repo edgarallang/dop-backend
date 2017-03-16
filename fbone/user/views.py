@@ -753,7 +753,7 @@ def get_used_coupons_by_user_likes_offset():
 
 #WEB SEARCH API
 @user.route('/admin/people/search/', methods = ['GET'])
-def search_people():
+def admin_search_people():
     if request.headers.get('Authorization'):
         token_index = False
         text = request.args.get('text')
