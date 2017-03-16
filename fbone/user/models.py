@@ -294,7 +294,8 @@ class SimpleUser(Schema):
                   'names',
                   'surnames',
                   'device_os',
-                  'device_token')
+                  'device_token',
+                  'main_image')
 
 class UserDeviceTokens(Schema):
         device_token = fields.Str()
