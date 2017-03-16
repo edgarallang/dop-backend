@@ -752,11 +752,10 @@ def get_used_coupons_by_user_likes_offset():
     return jsonify({'message': 'Oops! algo salió mal'})
 
 #WEB SEARCH API
-@user.route('/admin/people/search/', methods = ['GET'])
-def admin_search_people():
+@user.route('/admin/people/search/<string:text>', methods = ['GET'])
+def admin_search_people(text):
     if request.headers.get('Authorization'):
         token_index = False
-        text = request.args.get('text')
         text = text.replace(" ", "%%")
         text = unicodedata.normalize('NFD', text).encode('ascii', 'ignore')
         payload = parse_token(request, token_index)
