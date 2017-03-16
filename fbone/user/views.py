@@ -685,6 +685,7 @@ def search_people():
         return jsonify({'data': selected_list_people.data})
     return jsonify({'message': 'Oops! algo salió mal :('})
 
+
 @user.route('/activity/get/user/', methods=['GET'])
 def get_coupons_activity_by_user_likes():
     if request.headers.get('Authorization'):
@@ -749,6 +750,26 @@ def get_used_coupons_by_user_likes_offset():
         return jsonify({'data': users_list.data})
 
     return jsonify({'message': 'Oops! algo salió mal'})
+
+#WEB SEARCH API
+@user.route('/admin/people/search/', methods = ['GET'])
+def search_people():
+    if request.headers.get('Authorization'):
+        token_index = False
+        text = request.args.get('text')
+        text = text.replace(" ", "%%")
+        text = unicodedata.normalize('NFD', text).encode('ascii', 'ignore')
+        payload = parse_token(request, token_index)
+        #list_coupon = db.engine.execute(query)
+        people = db.engine.execute("SELECT DISTINCT * FROM users \
+                                    INNER JOIN users_image on users.user_id = users_image.user_id \
+                                    WHERE (unaccent(users.names)||' '||unaccent(users.surnames)) ILIKE '%s' " % ('%%' + text + '%%'))
+
+        selected_list_people = simple_user_schema.dump(people)
+        # pprint(selected_list_people, indent = 2)
+        return jsonify({'data': selected_list_people.data})
+    return jsonify({'message': 'Oops! algo salió mal :('})
+
 
 @user.route('/<int:user_id>/<int:exp>/set', methods=['GET','PUT'])
 def set_experience(user_id, exp):

@@ -288,6 +288,13 @@ class UserActivityNewsfeed(Schema):
                   'used_date',
                   'private')
 
+class SimpleUser(Schema):
+    class Meta:
+        fields = ('user_id',
+                  'names',
+                  'surnames',
+                  'device_os',
+                  'device_token')
 
 class UserDeviceTokens(Schema):
         device_token = fields.Str()
@@ -302,6 +309,7 @@ friends_count_schema = FriendsCountSchema(many=True)
 people_schema = PeopleSchema(many=True)
 user_flags_schema = UserFlags(many=True)
 device_tokens_schema = UserDeviceTokens(many=True)
+simple_user_schema = SimpleUser(many=True)
 
     # ================================================================
     # Class methods
