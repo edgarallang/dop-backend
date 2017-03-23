@@ -84,7 +84,7 @@ def push_to():
     options = { "sound": "default", "badge": 0, "extra": notification_data }
 
     if 'ios_tokens' in request.json:
-        ios_res = apns_client.send(request.json['ios_tokens'], messa, **options)
+        ios_res = apns_client.send(request.json['ios_tokens'], message, **options)
     
     if 'android_tokens' in request.json:
         android_res = gcm_client.send(request.json['android_tokens'], message)
