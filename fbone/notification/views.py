@@ -90,7 +90,7 @@ def push_to_all():
     message = request.json['message']   
 
     ios = "SELECT * FROM users \
-             WHERE device_token!='' AND device_os='ios' AND user_id=70" 
+             WHERE device_token!='' AND device_os='ios'" 
     ios_users = db.engine.execute(ios)
     ios_token_list = device_tokens_schema.dump(ios_users)
     ios_token_list_data = ios_token_list.data
@@ -100,7 +100,7 @@ def push_to_all():
 
 
     android = "SELECT * FROM users \
-             WHERE device_token!='' AND device_os='android' AND user_id=70" 
+             WHERE device_token!='' AND device_os='android'" 
     android_users = db.engine.execute(android)
     android_token_list = device_tokens_schema.dump(android_users)
     android_token_list_data = android_token_list.data
