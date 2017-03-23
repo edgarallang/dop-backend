@@ -77,6 +77,37 @@ def push_to():
     users = request.json['users']    
 
     return jsonify({'message': users})
+
+@notification.route('/push/to/all', methods=['POST'])
+def push_to_all():
+    device = request.json['device']   
+
+    query = "SELECT * FROM users \
+             WHERE device_token!='' AND device_os='ios' AND user_id=1" 
+
+    users = db.engine.execute(notifications_query)
+
+    token_list = device_tokens_schema.dump(users)
+    token_list_data = token_list.data
+    tokens = []
+    for key in token_list_data:
+        tokens.append(key['device_token'])
+
+    notification_data = { "data": {
+                                "object_id": 5,
+                                "type": "branch"
+                            }
+                         }
+
+    options = { "sound": "default" ,"badge": 1}
+
+    # Send to single device.
+    res = apns_client.send(tokens, message, **options)
+    
+
+    #users_list = notifications_schema.dump(notifications)
+
+    return jsonify({'message': 'success'})
 @notification.route('/push/like', methods=['POST'])
 def like_push_notification():
     if request.headers.get('Authorization'):
