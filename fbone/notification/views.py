@@ -97,7 +97,7 @@ def push_to_all():
     android = "SELECT * FROM users \
              WHERE device_token!='' AND device_os='android' AND user_id=93" 
     android_users = db.engine.execute(android)
-    android_token_list = device_tokens_schema.dump(ios_users)
+    android_token_list = device_tokens_schema.dump(android_users)
     android_token_list_data = android_token_list.data
     android_tokens = []
     for key in android_token_list_data:
