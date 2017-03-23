@@ -77,7 +77,7 @@ def push_to():
     message = request.json['message']
 
     if 'ios_tokens' in request.json:
-        ios_res = apns_client.send(ios_tokens, message, **options)
+        ios_res = apns_client.send(request.json['ios_tokens'], message, **options)
     
     if 'android_tokens' in request.json:
         android_res = gcm_client.send(request.json['android_tokens'], message)
