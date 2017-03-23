@@ -85,7 +85,7 @@ def push_to_all():
     message = request.json['message']   
 
     query = "SELECT * FROM users \
-             WHERE device_token!='' AND device_os='ios' AND user_id=1" 
+             WHERE device_token!='' AND device_os='ios' AND (user_id=1 OR user_id=8)" 
 
     users = db.engine.execute(query)
 
