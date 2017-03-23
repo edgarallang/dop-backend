@@ -79,7 +79,7 @@ def push_to():
     if 'ios_tokens' in request.json:
         ios_res = apns_client.send(ios_tokens, message, **options)
     
-    if 'android_tokens' in request.json
+    if 'android_tokens' in request.json:
         android_res = gcm_client.send(request.json['android_tokens'], message)
 
     return jsonify({'ios': ios_res.tokens, 'ios_failure': ios_res.errors, 'android': android_res.successes, 'android_failure':android_res.failures})
