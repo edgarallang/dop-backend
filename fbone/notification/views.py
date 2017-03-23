@@ -84,28 +84,33 @@ def push_to_all():
     title = request.json['title']   
     message = request.json['message']   
 
-    query = "SELECT * FROM users \
+    ios = "SELECT * FROM users \
              WHERE device_token!='' AND device_os='ios' AND (user_id=1 OR user_id=8)" 
+    ios_users = db.engine.execute(ios)
+    ios_token_list = device_tokens_schema.dump(ios_users)
+    ios_token_list_data = ios_token_list.data
+    ios_tokens = []
+    for key in ios_token_list_data:
+        ios_tokens.append(key['device_token'])
 
-    users = db.engine.execute(query)
 
-    token_list = device_tokens_schema.dump(users)
-    token_list_data = token_list.data
-    tokens = []
-    for key in token_list_data:
-        tokens.append(key['device_token'])
+    android = "SELECT * FROM users \
+             WHERE device_token!='' AND device_os='android' AND user_id=93" 
+    android_users = db.engine.execute(android)
+    android_token_list = device_tokens_schema.dump(ios_users)
+    android_token_list_data = android_token_list.data
+    android_tokens = []
+    for key in android_token_list_data:
+        android_tokens.append(key['device_token'])
 
-    notification_data = { "data": {
-                                "object_id": 5,
-                                "type": "branch"
-                            }
-                         }
 
-    options = { "sound": "default" ,"badge": 1}
+
+    options = { "sound": "default"}
 
     # Send to single device.
-    res = apns_client.send(tokens, message, **options)
-    
+    res = apns_client.send(ios_tokens, message, **options)
+    res = gcm_client.send(android_tokens, message, **options)
+
 
     #users_list = notifications_schema.dump(notifications)
 
