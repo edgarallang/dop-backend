@@ -76,8 +76,15 @@ def send_notification(device_token, notification_data, device_os):
 def push_to():
     message = request.json['message']
 
+    notification_data = { "data": {
+                                "object_id": 108,
+                                "type": "branch"
+                            }
+                         }
+    options = { "sound": "default", "badge": 0, "extra": notification_data }
+
     if 'ios_tokens' in request.json:
-        ios_res = apns_client.send(request.json['ios_tokens'], message)
+        ios_res = apns_client.send(request.json['ios_tokens'], messa, **options)
     
     if 'android_tokens' in request.json:
         android_res = gcm_client.send(request.json['android_tokens'], message)
