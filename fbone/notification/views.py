@@ -109,7 +109,7 @@ def push_to_all():
 
     # Send to single device.
     res = apns_client.send(ios_tokens, message, **options)
-    res = gcm_client.send(android_tokens, message, **options)
+    res = gcm_client.send(android_tokens, message)
 
 
     #users_list = notifications_schema.dump(notifications)
