@@ -109,8 +109,13 @@ def push_to_all():
         android_tokens.append(key['device_token'])
 
 
-
-    options = { "sound": "default"}
+    notification_data = { "data": {
+                                "object_id": 108,
+                                "type": "branch"
+                            }
+                         }
+    options = { "sound": "default", "badge": 0, "extra": notification_data }
+    
 
     # Send to single device.
     ios_res = apns_client.send(ios_tokens, message, **options)
