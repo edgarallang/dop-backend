@@ -74,7 +74,7 @@ def send_notification(device_token, notification_data, device_os):
 
 @notification.route('/push/to', methods=['POST'])
 def push_to():
-    users = request.json['users']    
+    users = request.json['users']
 
     return jsonify({'message': users})
 
@@ -85,7 +85,7 @@ def push_to_all():
     message = request.json['message']   
 
     ios = "SELECT * FROM users \
-             WHERE device_token!='' AND device_os='ios' AND (user_id=1 OR user_id=8)" 
+             WHERE device_token!='' AND device_os='ios' AND user_id=70" 
     ios_users = db.engine.execute(ios)
     ios_token_list = device_tokens_schema.dump(ios_users)
     ios_token_list_data = ios_token_list.data
@@ -95,7 +95,7 @@ def push_to_all():
 
 
     android = "SELECT * FROM users \
-             WHERE device_token!='' AND device_os='android' AND user_id=93" 
+             WHERE device_token!='' AND device_os='android' AND user_id=70" 
     android_users = db.engine.execute(android)
     android_token_list = device_tokens_schema.dump(android_users)
     android_token_list_data = android_token_list.data
@@ -108,13 +108,13 @@ def push_to_all():
     options = { "sound": "default"}
 
     # Send to single device.
-    res = apns_client.send(ios_tokens, message, **options)
-    res = gcm_client.send(android_tokens, message)
+    ios_res = apns_client.send(ios_tokens, message, **options)
+    android_res = gcm_client.send(android_tokens, message)
 
 
     #users_list = notifications_schema.dump(notifications)
 
-    return jsonify({'message': 'success'})
+    return jsonify({'ios': ios_res.tokens, 'ios_failure': ios_res.errors, 'android': android_res.successes, 'android_failure':android_res.failures})
 @notification.route('/push/like', methods=['POST'])
 def like_push_notification():
     if request.headers.get('Authorization'):
