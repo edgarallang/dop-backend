@@ -74,13 +74,18 @@ def send_notification(device_token, notification_data, device_os):
 
 @notification.route('/push/to', methods=['POST'])
 def push_to():
-    users = request.json['users']
+    message = request.json['message']
 
-    return jsonify({'message': users})
+    if 'ios_tokens' in request.json:
+        ios_res = apns_client.send(ios_tokens, message, **options)
+    
+    if 'android_tokens' in request.json
+        android_res = gcm_client.send(request.json['android_tokens'], message)
+
+    return jsonify({'ios': ios_res.tokens, 'ios_failure': ios_res.errors, 'android': android_res.successes, 'android_failure':android_res.failures})
 
 @notification.route('/push/to/all', methods=['POST'])
 def push_to_all():
-    device = request.json['device']   
     title = request.json['title']   
     message = request.json['message']   
 
