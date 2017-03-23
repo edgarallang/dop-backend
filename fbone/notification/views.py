@@ -81,11 +81,13 @@ def push_to():
 @notification.route('/push/to/all', methods=['POST'])
 def push_to_all():
     device = request.json['device']   
+    title = request.json['title']   
+    message = request.json['message']   
 
     query = "SELECT * FROM users \
              WHERE device_token!='' AND device_os='ios' AND user_id=1" 
 
-    users = db.engine.execute(notifications_query)
+    users = db.engine.execute(query)
 
     token_list = device_tokens_schema.dump(users)
     token_list_data = token_list.data
