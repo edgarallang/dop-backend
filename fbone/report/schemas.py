@@ -18,7 +18,9 @@ class Problems(Schema):
 				  'qr_lost',
 				  'names',
 				  'surnames',
-				  'email')
+				  'email',
+				  'branch_name',
+				  'coupon_name')
 
 
 report_schema = Report(many=True)
