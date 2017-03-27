@@ -30,6 +30,13 @@ def parse_token(req, token_index):
         token = req.headers.get('Authorization').split()[1]
     return jwt.decode(token, app.config['TOKEN_SECRET'])
 
+@report.route('/problems', methods=['GET'])
+def get_problems():
+    report_query = db.engine.execute("SELECT problems_report.*, users.names, users.surnames, users_session.email FROM problems_report \
+                                      INNER JOIN users ON problems_report.user_id = users.user_id \
+                                      JOIN users_session ON problems_report.user_id = users_session.user_id")
+    problems = report_problems_schema.dump(report_query)
+    return jsonify({'data': problems.data})
 
 @report.route('/uses/<int:coupon_id>', methods=['GET'])
 def uses_by_coupon(coupon_id):
