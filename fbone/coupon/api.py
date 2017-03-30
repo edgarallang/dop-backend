@@ -584,6 +584,41 @@ def get_all_coupon_for_user_offset():
     pprint(selected_list_coupon)
     return jsonify({'data': selected_list_coupon.data})
 
+@coupon.route('/favorites/for/user/get', methods = ['GET'])
+def get_favorites_coupon_for_user():
+    if request.headers.get('Authorization'):
+        token_index = True
+        limit = request.args.get('limit')
+        payload = parse_token(request, token_index)
+
+        user = User.query.get(payload['id'])
+
+
+        list_coupon = db.engine.execute('SELECT coupons.coupon_id, coupons.is_global, branches.branch_id, branches.folio, branches,company_id, branches.name, coupon_folio, description, start_date, \
+                                                end_date, coupons.limit, min_spent, coupon_category_id, logo, latitude, longitude, banner, category_id, coupons.available, subcategory.subcategory_id, \
+                                        (SELECT EXISTS (SELECT * FROM clients_coupon \
+                                            WHERE USER_id = %d AND clients_coupon.coupon_id = coupons.coupon_id AND used = false)::bool) AS taken, \
+                                        (SELECT COUNT(*)  FROM coupons_likes \
+                                            WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes, \
+                                        (SELECT EXISTS (SELECT * FROM coupons_likes \
+                                            WHERE coupons_likes.user_id = %d AND coupons.coupon_id = coupons_likes.coupon_id)::bool) AS user_like \
+                                        FROM coupons INNER JOIN branches_design ON \
+                                        coupons.owner_id = branches_design.branch_id \
+                                        INNER JOIN branches ON coupons.owner_id = branches.branch_id \
+                                        INNER JOIN branches_location on coupons.owner_id = branches_location.branch_id \
+                                        JOIN branches_subcategory ON branches_subcategory.branch_id = coupons.owner_id \
+                                        JOIN subcategory ON subcategory.subcategory_id = branches_subcategory.subcategory_id \
+                                        INNER JOIN coupons_likes ON coupons.coupon_id = coupons_likes.coupon_id \
+                                        AND coupons_likes.user_id = %d \
+                                        WHERE deleted = false AND coupons.available > 0 AND active=true AND coupons.end_date > now() ORDER BY coupons_likes.date DESC' % (payload['id'], payload['id'], payload['id']))
+
+
+        selected_list_coupon = coupons_logo_schema.dump(list_coupon)
+        pprint(selected_list_coupon)
+        return jsonify({'data': selected_list_coupon.data})
+    return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
+
+
 @coupon.route('/all/taken/for/user/get/', methods = ['GET'])
 def get_all_taken_coupon_for_user():
     token_index = True
@@ -1030,7 +1065,7 @@ def get_coupons_activity_by_user_likes():
 
         users = db.engine.execute('SELECT coupons.owner_id,coupons.coupon_id,branches_design.logo,coupons.name,clients_coupon.clients_coupon_id,clients_coupon.latitude,clients_coupon.longitude, \
                                           users.names, users.surnames, users.user_id, users.exp, users.level, users_image.main_image, branches.branch_id, branches.name AS branch_name, \
-                                          branches.company_id, clients_coupon.used_date, friends.operation_id, users.privacy_status, \
+                                          branches.company_id, clients_coupon.used_date, coalesce(friends.operation_id,5) as operation_id, users.privacy_status, \
                                     (SELECT COUNT(*)  FROM clients_coupon_likes WHERE clients_coupon.clients_coupon_id = clients_coupon_likes.clients_coupon_id) AS total_likes, \
                                     (SELECT EXISTS (SELECT * FROM clients_coupon_likes WHERE clients_coupon_likes.user_id = %d AND clients_coupon_likes.clients_coupon_id = clients_coupon.clients_coupon_id)::bool) AS user_like, \
                                     (SELECT EXISTS (SELECT * FROM friends \
@@ -1042,8 +1077,8 @@ def get_coupons_activity_by_user_likes():
                                     INNER JOIN branches ON coupons.owner_id = branches.branch_id \
                                     INNER JOIN branches_design ON coupons.owner_id = branches_design.branch_id \
                                     LEFT JOIN friends ON friends.user_one_id = %d AND friends.user_two_id = users.user_id \
-                                    WHERE clients_coupon.used = true AND clients_coupon.private = false AND friends.operation_id = 1 ORDER BY used_date DESC LIMIT 6 OFFSET 0' % (payload['id'], payload['id'], payload['id']))
-
+                                    WHERE clients_coupon.used = true AND clients_coupon.private = false AND users.privacy_status = 0 ORDER BY used_date DESC LIMIT 6 OFFSET 0' % (payload['id'], payload['id'], payload['id']))
+                                    # AND friends.operation_id = 1 
         users_list = user_join_activity_newsfeed.dump(users)
         print users_list.data
         return jsonify({'data': users_list.data})
@@ -1061,7 +1096,7 @@ def get_used_coupons_by_user_likes_offset():
 
         query = 'SELECT coupons.owner_id,coupons.coupon_id,branches_design.logo,coupons.name,clients_coupon.clients_coupon_id,clients_coupon.latitude,clients_coupon.longitude, \
                                           users.names, users.surnames, users.user_id, users.exp, users.level, users_image.main_image, branches.branch_id, branches.name AS branch_name, \
-                                          branches.company_id, clients_coupon.used_date, friends.operation_id, users.privacy_status, \
+                                          branches.company_id, clients_coupon.used_date, coalesce(friends.operation_id,5) as operation_id, users.privacy_status, \
                                     (SELECT COUNT(*)  FROM clients_coupon_likes WHERE clients_coupon.clients_coupon_id = clients_coupon_likes.clients_coupon_id) AS total_likes, \
                                     (SELECT EXISTS (SELECT * FROM clients_coupon_likes WHERE clients_coupon_likes.user_id = %d AND clients_coupon_likes.clients_coupon_id = clients_coupon.clients_coupon_id)::bool) AS user_like, \
                                     (SELECT EXISTS (SELECT * FROM friends \
@@ -1073,7 +1108,7 @@ def get_used_coupons_by_user_likes_offset():
                                     INNER JOIN branches ON coupons.owner_id = branches.branch_id \
                                     INNER JOIN branches_design ON coupons.owner_id = branches_design.branch_id \
                                     LEFT JOIN friends ON friends.user_one_id = %d AND friends.user_two_id = users.user_id \
-                                    WHERE clients_coupon.used = true AND clients_coupon.used_date <= %s AND clients_coupon.private = false AND friends.operation_id = 1 ORDER BY used_date DESC LIMIT 6 OFFSET %s' % (user_id, user_id, user_id, "'" + used_date + "'" , offset)
+                                    WHERE clients_coupon.used = true AND clients_coupon.used_date <= %s AND clients_coupon.private = false AND users.privacy_status = 0 ORDER BY used_date DESC LIMIT 6 OFFSET %s' % (user_id, user_id, user_id, "'" + used_date + "'" , offset)
 
 
         users = db.engine.execute(query)

@@ -72,6 +72,66 @@ def send_notification(device_token, notification_data, device_os):
 
     return jsonify({'message': 'error'})
 
+@notification.route('/push/to', methods=['POST'])
+def push_to():
+    message = request.json['message']
+
+    notification_data = { "data": {
+                                "object_id": 108,
+                                "type": "branch"
+                            }
+                         }
+    options = { "sound": "default", "badge": 0, "extra": notification_data }
+
+    if 'ios_tokens' in request.json:
+        ios_res = apns_client.send(request.json['ios_tokens'], message, **options)
+    
+    if 'android_tokens' in request.json:
+        android_res = gcm_client.send(request.json['android_tokens'], message)
+
+    return jsonify({'ios': ios_res.tokens, 'ios_failure': ios_res.errors, 'android': android_res.successes, 'android_failure':android_res.failures})
+
+@notification.route('/push/to/all', methods=['POST'])
+def push_to_all():
+    title = request.json['title']   
+    message = request.json['message']   
+
+    ios = "SELECT * FROM users \
+             WHERE device_token!='' AND device_os='ios'" 
+    ios_users = db.engine.execute(ios)
+    ios_token_list = device_tokens_schema.dump(ios_users)
+    ios_token_list_data = ios_token_list.data
+    ios_tokens = []
+    for key in ios_token_list_data:
+        ios_tokens.append(key['device_token'])
+
+
+    android = "SELECT * FROM users \
+             WHERE device_token!='' AND device_os='android'" 
+    android_users = db.engine.execute(android)
+    android_token_list = device_tokens_schema.dump(android_users)
+    android_token_list_data = android_token_list.data
+    android_tokens = []
+    for key in android_token_list_data:
+        android_tokens.append(key['device_token'])
+
+
+    notification_data = { "data": {
+                                "object_id": 108,
+                                "type": "branch"
+                            }
+                         }
+    options = { "sound": "default", "badge": 0, "extra": notification_data }
+    
+
+    # Send to single device.
+    ios_res = apns_client.send(ios_tokens, message, **options)
+    android_res = gcm_client.send(android_tokens, message)
+
+
+    #users_list = notifications_schema.dump(notifications)
+
+    return jsonify({'ios': ios_res.tokens, 'ios_failure': ios_res.errors, 'android': android_res.successes, 'android_failure':android_res.failures})
 @notification.route('/push/like', methods=['POST'])
 def like_push_notification():
     if request.headers.get('Authorization'):
