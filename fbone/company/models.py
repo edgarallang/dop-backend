@@ -243,7 +243,8 @@ class BranchesProfile(Schema):
                   'about',
                   'phone',
                   'adults_only',
-                  'folio')
+                  'folio',
+                  'subcategory_id')
 
 class BranchesToolProfile(Schema):
     class Meta:

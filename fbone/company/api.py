@@ -83,7 +83,7 @@ def select_branch_profile(branch_id):
 
         payload = parse_token(request, token_index)
         query = 'SELECT branches_location.branch_location_id, branches.folio, branches.branch_id, state, category_id, longitude, latitude, logo,  \
-                        city, address, branches.name, branches.company_id, banner, logo, phone, about,  \
+                        city, address, branches.name, branches.company_id, banner, logo, phone, about, branches_subcategory.subcategory_id,  \
                         (SELECT EXISTS (SELECT * FROM branches_follower \
                                 WHERE branch_id = %d AND user_id = %d)::bool) AS following, \
                         (SELECT EXISTS (SELECT * FROM branches_subcategory \

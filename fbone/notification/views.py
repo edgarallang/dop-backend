@@ -164,7 +164,7 @@ def push_test_global(message):
                             }
                          }
 
-    options = { "sound": "default" ,"badge": 0,"extra": notification_data }
+    options = { "sound": "default" , "badge": 0," extra": notification_data }
 
     # Send to single device.
     res = apns_client.send(tokens, message, **options)
