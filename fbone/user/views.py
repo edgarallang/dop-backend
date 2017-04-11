@@ -856,8 +856,8 @@ def get_following():
         return jsonify({'data': people_list.data})
     return jsonify({'message': 'Oops! algo salió mal'})
 
-@user.route('/similar/people', methods=['GET'])
-def get_similar_people():
+@user.route('/<int:user_id>/similar/people', methods=['GET'])
+def get_similar_people(user_id):
     if request.headers.get('Authorization'):
         token_index = True
         payload = parse_token(request, token_index)
@@ -870,7 +870,7 @@ def get_similar_people():
                                     WHERE a.user_id = %d AND b.user_id != %d \
                                     AND NOT EXISTS (SELECT user_one_id FROM friends WHERE friends.user_one_id=%d and friends.user_two_id = b.user_id and friends.operation_id = 1) \
                                     GROUP BY users.user_id, users_image.main_image \
-                                    ORDER BY count DESC' % (payload['id'], payload['id'], payload['id']))
+                                    ORDER BY count DESC' % user_id, user_id, user_id))
         people_list = similar_people_schema.dump(people)
 
         return jsonify({'data': people_list.data})
