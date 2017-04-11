@@ -297,6 +297,12 @@ class SimpleUser(Schema):
                   'device_token',
                   'main_image')
 
+class SimilarPeople(Schema):
+    class Meta:
+        fields = ('user_id',
+                  'names',
+                  'main_image')
+
 class UserDeviceTokens(Schema):
         device_token = fields.Str()
 
@@ -311,6 +317,7 @@ people_schema = PeopleSchema(many=True)
 user_flags_schema = UserFlags(many=True)
 device_tokens_schema = UserDeviceTokens(many=True)
 simple_user_schema = SimpleUser(many=True)
+similar_people_schema = SimilarPeople(many=True)
 
     # ================================================================
     # Class methods
