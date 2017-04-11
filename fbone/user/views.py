@@ -856,7 +856,7 @@ def get_following():
         return jsonify({'data': people_list.data})
     return jsonify({'message': 'Oops! algo salió mal'})
 
-@user.route('/similar/people', methods['GET'])
+@user.route('/similar/people', methods=['GET'])
 def get_similar_people():
     if request.headers.get('Authorization'):
         token_index = True
