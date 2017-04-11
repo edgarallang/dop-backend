@@ -43,7 +43,7 @@ def badge_grid(user_id):
                                          AND badges.badge_id = badge_id)::bool) AS earned \
                                     FROM badges LEFT JOIN users_badges ON badges.badge_id = users_badges.badge_id \
                                     WHERE user_id = %d \
-                                    ORDER BY users_badges_id DESC LIMIT 6 OFFSET 0' % (user_id, user_id))
+                                    ORDER BY users_badges_id ASC OFFSET 0' % (user_id, user_id))
 
         badges_list = badges_schema.dump(badges)
         return jsonify({'data': badges_list.data})
