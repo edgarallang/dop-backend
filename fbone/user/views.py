@@ -343,11 +343,13 @@ def facebook_login():
     if 'birth_date' in request.json and request.json['birth_date'] != '':
         birth_date = request.json['birth_date']
         is_adult = calculate_age(datetime.strptime(birth_date, "%m/%d/%Y"))
+    else:
+        birth_date = None
 
     if not facebookUser:
         facebookUser = User(names = request.json['names'],
                             surnames = request.json['surnames'],
-                            birth_date = request.json['birth_date'],
+                            birth_date = birth_date,
                             facebook_key = request.json['facebook_key'],
                             gender = request.json['gender'],
                             level = 0,
