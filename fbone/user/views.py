@@ -340,7 +340,7 @@ def facebook_login():
 
     is_adult = False
 
-    if 'birth_date' in request.json or request.json['birthday'] not '':
+    if 'birth_date' in request.json or request.json['birthday'] != '':
         birth_date = request.json['birth_date']
         is_adult = calculate_age(datetime.strptime(birth_date, "%m/%d/%Y"))
 
