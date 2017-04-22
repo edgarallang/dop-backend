@@ -93,7 +93,6 @@ def push_to():
 
 @notification.route('/push/to/all', methods=['POST'])
 def push_to_all():
-    title = request.json['title']   
     message = request.json['message']
 
     extra_query = ''
