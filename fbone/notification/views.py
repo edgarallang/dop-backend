@@ -97,7 +97,7 @@ def push_to_all():
     message = request.json['message']
 
     extra_query = ''
-    if request.json['adults_only'] = True:
+    if request.json['adults_only'] is True:
         extra_query = 'AND adult=true'
 
     ios = "SELECT * FROM users \
