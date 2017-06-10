@@ -38,7 +38,8 @@ DEFAULT_BLUEPRINTS = (
     admin,
     notification,
     badge,
-    report
+    report,
+    loyalty
 )
 
 

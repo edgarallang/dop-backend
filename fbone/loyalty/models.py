@@ -9,7 +9,7 @@ from ..company import Branch, BranchUser
 
 
 # =====================================================================
-# Coupon
+# Loyalty
 
 class Loyalty(db.Model):
     __tablename__ = 'loyalty'
