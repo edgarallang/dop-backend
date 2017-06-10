@@ -11,13 +11,6 @@ from jwt import DecodeError, ExpiredSignature
 from .models import *
 from ..user import *
 from ..extensions import db, socketio
-from juggernaut import Juggernaut
-
-
-# config = {
-#     'APNS_CERTIFICATE': '../../certs/push.pem>'
-# }
-
 
 
 loyalty = Blueprint('loyalty', __name__, url_prefix='/api/loyalty')
@@ -46,22 +39,9 @@ def create_token(user):
     return token.decode('unicode_escape')
 
 
-@loyalty.route('/', methods=['POST'])
-def push_to():
-    message = request.json['message']
-
-    notification_data = { "data": {
-                                "object_id": 108,
-                                "type": "branch"
-                            }
-                         }
-    options = { "sound": "default", "badge": 0, "extra": notification_data }
-
-    if 'ios_tokens' in request.json:
-        ios_res = apns_client.send(request.json['ios_tokens'], message, **options)
-    
-    if 'android_tokens' in request.json:
-        android_res = gcm_client.send(request.json['android_tokens'], message)
-
-    return jsonify({'ios': ios_res.tokens, 'ios_failure': ios_res.errors, 'android': android_res.successes, 'android_failure':android_res.failures})
+@loyalty.route('/<int:branch_id>/get', methods=['GET'])
+def loyalty_get(branch_id):
+    loyalty = Loyalty.query.filter_by(branch_id = branch_id).first()
+    loyalty_list = loyalties_schema.dump(loyalty)
+    return jsonify({'data': loyalty_list.data})
 

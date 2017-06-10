@@ -581,7 +581,7 @@ def get_all_coupon_for_user_offset():
 
 
     selected_list_coupon = coupons_logo_schema.dump(list_coupon)
-    pprint(selected_list_coupon)
+
     return jsonify({'data': selected_list_coupon.data})
 
 @coupon.route('/favorites/for/user/get', methods = ['GET'])
@@ -614,7 +614,7 @@ def get_favorites_coupon_for_user():
 
 
         selected_list_coupon = coupons_logo_schema.dump(list_coupon)
-        pprint(selected_list_coupon)
+
         return jsonify({'data': selected_list_coupon.data})
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
