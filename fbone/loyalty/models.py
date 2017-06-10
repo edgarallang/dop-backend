@@ -57,4 +57,4 @@ class Loyalties(Schema):
                   'end_date')
 
 
-loyalties_schema = Loyalties(many=True)
+loyalties_schema = Loyalties(many=False)
