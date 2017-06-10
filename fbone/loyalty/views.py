@@ -39,9 +39,9 @@ def create_token(user):
     return token.decode('unicode_escape')
 
 
-@loyalty.route('/<int:branch_id>/get', methods=['GET'])
-def loyalty_get(branch_id):
-    loyalty = Loyalty.query.filter_by(branch_id = branch_id).first()
+@loyalty.route('/<int:owner_id>/get', methods=['GET'])
+def loyalty_get(owner_id):
+    loyalty = Loyalty.query.filter_by(owner_id = owner_id).first()
     loyalty_list = loyalties_schema.dump(loyalty)
     return jsonify({'data': loyalty_list.data})
 
