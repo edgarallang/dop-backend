@@ -184,7 +184,10 @@ def use_coupon():
             if recently_used:
                 minutes = (actual_date-recently_used.used_date).total_seconds() / 60
 
-            if not recently_used or minutes > 25 and coupon.unique == False:
+            if recently_used and coupon.unique == True:
+                return jsonify({'message': 'error',"minutes": str(minutes)})
+
+            if not recently_used or minutes > 25:
                 if not client_coupon:
                     if coupon.available > 0:
                         client_coupon = ClientsCoupon(user_id = payload['id'],
