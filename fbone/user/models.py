@@ -194,6 +194,24 @@ class UserJoinImage(Schema):
                   'is_friend',
                   'email')
 
+class UserJoinImageFriendshipStatus(Schema):
+    class Meta:
+        fields = ('user_id',
+                  'names',
+                  'surnames',
+                  'birth_date',
+                  'facebook_key',
+                  'google_key',
+                  'twitter_key',
+                  'main_image',
+                  'user_image_id',
+                  'privacy_status',
+                  'level',
+                  'exp',
+                  'is_friend',
+                  'email',
+                  'operation_id')
+
 class FriendsSchema(Schema):
     class Meta:
         fields = ('user_one_id',
@@ -297,6 +315,12 @@ class SimpleUser(Schema):
                   'device_token',
                   'main_image')
 
+class SimilarPeople(Schema):
+    class Meta:
+        fields = ('user_id',
+                  'names',
+                  'main_image')
+
 class UserDeviceTokens(Schema):
         device_token = fields.Str()
 
@@ -311,6 +335,8 @@ people_schema = PeopleSchema(many=True)
 user_flags_schema = UserFlags(many=True)
 device_tokens_schema = UserDeviceTokens(many=True)
 simple_user_schema = SimpleUser(many=True)
+similar_people_schema = SimilarPeople(many=True)
+user_friendship_status_schema = UserJoinImageFriendshipStatus(many=True)
 
     # ================================================================
     # Class methods

@@ -20,6 +20,7 @@ from .api import api
 from .badge import badge
 from .admin import admin
 from .report import report
+from .loyalty import loyalty
 from .extensions import db, mail, cache, login_manager, oid, CORS, socketio, apns_client, gcm_client
 from .utils import INSTANCE_FOLDER_PATH
 
@@ -38,7 +39,8 @@ DEFAULT_BLUEPRINTS = (
     admin,
     notification,
     badge,
-    report
+    report,
+    loyalty
 )
 
 

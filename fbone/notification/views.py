@@ -93,11 +93,14 @@ def push_to():
 
 @notification.route('/push/to/all', methods=['POST'])
 def push_to_all():
-    title = request.json['title']   
-    message = request.json['message']   
+    message = request.json['message']
+
+    extra_query = ''
+    if request.json['adults_only']==True:
+        extra_query = 'AND adult=true'
 
     ios = "SELECT * FROM users \
-             WHERE device_token!='' AND device_os='ios'" 
+             WHERE device_token!='' AND device_os='ios' %s" % (extra_query) 
     ios_users = db.engine.execute(ios)
     ios_token_list = device_tokens_schema.dump(ios_users)
     ios_token_list_data = ios_token_list.data
@@ -107,7 +110,7 @@ def push_to_all():
 
 
     android = "SELECT * FROM users \
-             WHERE device_token!='' AND device_os='android'" 
+             WHERE device_token!='' AND device_os='android' %s" % (extra_query) 
     android_users = db.engine.execute(android)
     android_token_list = device_tokens_schema.dump(android_users)
     android_token_list_data = android_token_list.data

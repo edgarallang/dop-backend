@@ -79,17 +79,18 @@ def profile(userId):
 
     main_user_id = payload['id']
     query = "SELECT users.user_id, users.names, users.surnames, users.birth_date, users.facebook_key, users.google_key, \
-                    users.twitter_key,users.privacy_status, users_image.main_image, users_image.user_image_id,users_session.email, level, exp, \
+                    users.twitter_key,users.privacy_status, users_image.main_image, users_image.user_image_id,users_session.email, level, exp, operation_id, \
                     (SELECT EXISTS (SELECT * FROM friends \
                             WHERE friends.user_one_id = %d AND friends.user_two_id = users.user_id AND friends.operation_id = 1)::bool) AS is_friend \
                     FROM users INNER JOIN users_image ON users.user_id = users_image.user_id \
                     INNER JOIN users_session ON users.user_id = users_session.user_id \
-                    WHERE users.user_id = %d" % (main_user_id, userId)
+                    LEFT JOIN friends ON user_one_id = %d AND user_two_id = %d \
+                    WHERE users.user_id = %d" % (main_user_id, main_user_id, userId ,userId)
 
     #total_friends = get_friends_by_id(userId)
 
     result = db.engine.execute(query)
-    user_with_image = user_joined_schema.dump(result).data
+    user_with_image = user_friendship_status_schema.dump(result).data
 
     return jsonify({'data': user_with_image})
 
@@ -339,14 +340,16 @@ def facebook_login():
 
     is_adult = False
 
-    if 'birth_date' in request.json:
+    if 'birth_date' in request.json and request.json['birth_date'] != '':
         birth_date = request.json['birth_date']
         is_adult = calculate_age(datetime.strptime(birth_date, "%m/%d/%Y"))
+    else:
+        birth_date = None
 
     if not facebookUser:
         facebookUser = User(names = request.json['names'],
                             surnames = request.json['surnames'],
-                            birth_date = request.json['birth_date'],
+                            birth_date = birth_date,
                             facebook_key = request.json['facebook_key'],
                             gender = request.json['gender'],
                             level = 0,
@@ -654,13 +657,17 @@ def delete_friend():
 
 @user.route('/<int:user_id>/profile/get', methods=['GET'])
 def get_profile(user_id):
-    query = 'SELECT users.names,users.surnames,users.twitter_key, users.facebook_key, users.google_key, users.user_id,\
-                    users.birth_date, users_image.main_image FROM users, level, exp \
-             INNER JOIN users_image ON users.user_id = users_image.user_id WHERE users.user_id = %d' % user_id
+    if request.headers.get('Authorization'):
+        token_index = True
+        query = 'SELECT users.names,users.surnames,users.twitter_key, users.facebook_key, users.google_key, users.user_id,\
+                        users.birth_date, users_image.main_image, level, exp FROM users \
+                 LEFT JOIN friends ON user_one_id = %d AND user_two_id = %d \
+                 INNER JOIN users_image ON users.user_id = users_image.user_id WHERE users.user_id = %d' % (user_id, user_id)
 
-    friends = db.engine.execute(query)
-    friends_list = user_joined_schema.dump(friends)
-    return jsonify({'data': friends_list.data})
+        friends = db.engine.execute(query)
+        friends_list = user_joined_schema.dump(friends)
+        return jsonify({'data': friends_list.data})
+    return jsonify({'message': 'Oops! algo salió mal :('})
 
 #SEARCH API
 @user.route('/people/search/', methods = ['GET'])
@@ -855,3 +862,24 @@ def get_following():
 
         return jsonify({'data': people_list.data})
     return jsonify({'message': 'Oops! algo salió mal'})
+
+@user.route('/<int:user_id>/similar/people', methods=['GET'])
+def get_similar_people(user_id):
+    if request.headers.get('Authorization'):
+        token_index = True
+        payload = parse_token(request, token_index)
+
+        people = db.engine.execute('SELECT users.user_id, users.names, users_image.main_image, count(b.coupon_id) \
+                                    FROM coupons_likes a \
+                                    JOIN coupons_likes b ON (a.coupon_id = b.coupon_id) \
+                                    INNER JOIN users ON b.user_id = users.user_id \
+                                    INNER JOIN users_image ON users.user_id = users_image.user_id \
+                                    WHERE a.user_id = %d AND b.user_id != %d \
+                                    AND NOT EXISTS (SELECT user_one_id FROM friends WHERE friends.user_one_id=%d and friends.user_two_id = b.user_id and friends.operation_id = 1) \
+                                    GROUP BY users.user_id, users_image.main_image \
+                                    ORDER BY count DESC LIMIT 15' % (user_id, user_id, user_id))
+        people_list = similar_people_schema.dump(people)
+
+        return jsonify({'data': people_list.data})
+    return jsonify({'message': 'error'})
+

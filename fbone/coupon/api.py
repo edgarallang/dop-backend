@@ -184,6 +184,9 @@ def use_coupon():
             if recently_used:
                 minutes = (actual_date-recently_used.used_date).total_seconds() / 60
 
+            if recently_used and coupon.unique == True:
+                return jsonify({'message': 'error',"minutes": str(minutes)})
+
             if not recently_used or minutes > 25:
                 if not client_coupon:
                     if coupon.available > 0:
@@ -581,7 +584,7 @@ def get_all_coupon_for_user_offset():
 
 
     selected_list_coupon = coupons_logo_schema.dump(list_coupon)
-    pprint(selected_list_coupon)
+
     return jsonify({'data': selected_list_coupon.data})
 
 @coupon.route('/favorites/for/user/get', methods = ['GET'])
@@ -614,7 +617,7 @@ def get_favorites_coupon_for_user():
 
 
         selected_list_coupon = coupons_logo_schema.dump(list_coupon)
-        pprint(selected_list_coupon)
+
         return jsonify({'data': selected_list_coupon.data})
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
