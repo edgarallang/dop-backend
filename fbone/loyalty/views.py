@@ -41,7 +41,8 @@ def create_token(user):
 
 @loyalty.route('/<int:owner_id>/get', methods=['GET'])
 def loyalty_get(owner_id):
-    loyalty = Loyalty.query.filter_by(owner_id = owner_id).first()
+    query = "SELECT * FROM loyalty INNER JOIN loyalty_design ON \
+                loyalty_design.loyalty_id = loyalty.loyalty_id"
+    loyalty = db.engie.execute(query)
     loyalty_list = loyalties_schema.dump(loyalty)
     return jsonify({'data': loyalty_list.data})
-
