@@ -41,8 +41,12 @@ def create_token(user):
 
 @loyalty.route('/<int:owner_id>/get', methods=['GET'])
 def loyalty_get(owner_id):
-    query = "SELECT * FROM loyalty INNER JOIN loyalty_design ON \
-                loyalty_design.loyalty_id = loyalty.loyalty_id"
+    payload = parse_token(request, token_index)
+    query = "SELECT *, \
+                (SELECT visit FROM loyalty_user WHERE user_id = %d) \
+                FROM loyalty as L\
+                INNER JOIN loyalty_design as LD ON LD.loyalty_id = L.loyalty_id \
+                WHERE L.owner_id = %d" % (payload['id'], owner_id)
     loyalty = db.engine.execute(query)
     loyalty_list = loyalties_schema.dump(loyalty)
     return jsonify({'data': loyalty_list.data})
