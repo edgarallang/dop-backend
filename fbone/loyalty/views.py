@@ -43,6 +43,6 @@ def create_token(user):
 def loyalty_get(owner_id):
     query = "SELECT * FROM loyalty INNER JOIN loyalty_design ON \
                 loyalty_design.loyalty_id = loyalty.loyalty_id"
-    loyalty = db.engie.execute(query)
+    loyalty = db.engine.execute(query)
     loyalty_list = loyalties_schema.dump(loyalty)
     return jsonify({'data': loyalty_list.data})

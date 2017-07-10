@@ -30,7 +30,7 @@ class LoyaltyRedeem(db.Model):
     date = Column(db.DateTime)
     private = Column(db.Boolean, nullable = False)
     branch_folio = Column(db.String(STRING_LEN), default='')
-    
+
     loyalty_user = db.relationship('User', uselist=False, backref='loyalty_redeem')
     loyalty = db.relationship('Loyalty', uselist=False, backref='loyalty_redeem')
 
@@ -57,4 +57,4 @@ class Loyalties(Schema):
                   'end_date')
 
 
-loyalties_schema = Loyalties(many=False)
+loyalties_schema = Loyalties(many=True)
