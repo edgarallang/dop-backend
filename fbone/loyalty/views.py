@@ -41,6 +41,7 @@ def create_token(user):
 
 @loyalty.route('/<int:owner_id>/get', methods=['GET'])
 def loyalty_get(owner_id):
+    token_index = True
     payload = parse_token(request, token_index)
     query = "SELECT *, \
                 (SELECT visit FROM loyalty_user WHERE user_id = %d) \
