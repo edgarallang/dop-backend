@@ -54,7 +54,8 @@ class Loyalties(Schema):
                   'type',
                   'goal',
                   'is_global',
-                  'end_date')
+                  'end_date',
+                  'logo')
 
 
 loyalties_schema = Loyalties(many=True)
