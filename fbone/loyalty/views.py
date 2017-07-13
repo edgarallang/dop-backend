@@ -43,10 +43,11 @@ def create_token(user):
 def loyalty_get(owner_id):
     token_index = True
     payload = parse_token(request, token_index)
-    query = "SELECT *, \
-                (SELECT visit FROM loyalty_user WHERE user_id = %d) \
+    query = "SELECT L.loyalty_id, L.owner_id, L.name, L.description, L.type, \
+                        L.goal, L.is_global, L.end_date, LD.logo, LU.visit \
                 FROM loyalty as L\
                 INNER JOIN loyalty_design as LD ON LD.loyalty_id = L.loyalty_id \
+                LEFT JOIN loyalty_user as LU ON LU.loyatly_id = L.loyalty_id AND LU.user_id = %d \
                 WHERE L.owner_id = %d" % (payload['id'], owner_id)
     loyalty = db.engine.execute(query)
     loyalty_list = loyalties_schema.dump(loyalty)
