@@ -119,7 +119,6 @@ def loyalty_redeem():
         if not recently_used or minutes > 25:
             loyalty_redeem = LoyaltyRedeem(user_id = payload['id'],
                                            loyalty_id = loyalty_id,
-                                           folio = '',
                                            date = today,
                                            private = True,
                                            branch_folio = qr_code)
