@@ -131,7 +131,7 @@ def loyalty_redeem():
                                     loyalty_redeem.loyalty_redeem_id)
 
 
-            loyalty_user = LoyaltyUser.query.get(payload['id'])
+            loyalty_user = LoyaltyUser.query.filter_by(user_id = payload['id']).first()
 
             if not loyalty_user:
                 loyalty_user = LoyaltyUser(user_id = payload['id'],
