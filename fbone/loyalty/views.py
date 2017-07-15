@@ -124,7 +124,7 @@ def loyalty_redeem():
                                            branch_folio = qr_code)
             db.session.add(loyalty_redeem)
             db.session.commit()
-            folio = '%d%s%d' % (request.json['branch_id'], "{:%d%m%Y}".format(actual_date),
+            folio = '%d%s%d' % (request.json['branch_id'], "{:%d%m%Y}".format(today),
                                     loyalty_redeem.loyalty_redeem_id)
 
 
