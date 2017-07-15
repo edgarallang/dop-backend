@@ -115,7 +115,7 @@ def loyalty_redeem():
 
         if recently_used:
             minutes = (today - recently_used.date).total_seconds() / 60
-            print recently_used
+            print recently_used.date
             print minutes
 
         if not recently_used or minutes > 25:
