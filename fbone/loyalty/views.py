@@ -11,6 +11,7 @@ from jwt import DecodeError, ExpiredSignature
 from sqlalchemy import and_, desc
 from .models import *
 from ..user import *
+from ..company import *
 from ..badge import *
 from ..utils import *
 from ..extensions import db, socketio
@@ -167,5 +168,5 @@ def loyalty_redeem():
                             'folio': folio })
         else:
             minutes_left = 25 - minutes
-            return jsonify({ 'message': 'error',"minutes": str(minutes_left) })
+            return jsonify({ 'message': 'error', "minutes": str(minutes_left) })
     return jsonify({ 'message': 'Oops! algo salió mal, intentalo de nuevo, échale ganas' })
