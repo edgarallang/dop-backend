@@ -115,6 +115,8 @@ def loyalty_redeem():
 
         if recently_used:
             minutes = (today - recently_used.date).total_seconds() / 60
+            print recently_used
+            print minutes
 
         if not recently_used or minutes > 25:
             loyalty_redeem = LoyaltyRedeem(user_id = payload['id'],
@@ -164,6 +166,6 @@ def loyalty_redeem():
                             'level': user_level,
                             'folio': folio })
         else:
-            minutes_left = 20 - minutes
+            minutes_left = 25 - minutes
             return jsonify({ 'message': 'error',"minutes": str(minutes_left) })
     return jsonify({ 'message': 'Oops! algo salió mal, intentalo de nuevo, échale ganas' })
