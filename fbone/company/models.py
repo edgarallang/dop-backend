@@ -55,7 +55,9 @@ class BranchDesign(db.Model):
     color_b = Column(db.String(STRING_LEN))
     color_c = Column(db.String(STRING_LEN))
     banner = Column(db.String(STRING_LEN))
-
+    facebook_url = Column(db.String(STRING_LEN))
+    instagram_url = Column(db.String(STRING_LEN))
+    
 # =====================================================================
 
 # Branches subcategory
@@ -244,7 +246,9 @@ class BranchesProfile(Schema):
                   'phone',
                   'adults_only',
                   'folio',
-                  'subcategory_id')
+                  'subcategory_id',
+                  'facebook_url',
+                  'instagram_url')
 
 class BranchesToolProfile(Schema):
     class Meta:
