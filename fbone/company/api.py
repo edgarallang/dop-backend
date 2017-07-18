@@ -32,7 +32,7 @@ def create_token(user):
 
     token = jwt.encode(payload, app.config['TOKEN_SECRET'])
     return token.decode('unicode_escape')
-character varying(264)
+
 def parse_token(req, token_index):
     if token_index:
         token = req.headers.get('Authorization').split()[0]
