@@ -592,8 +592,8 @@ def signup_branch():
                                     color_a = None,
                                     color_b = None,
                                     color_c = None,
-                                    banner = 'banner.png'
-                                    facebook_url = ''
+                                    banner = 'banner.png',
+                                    facebook_url = '',
                                     instagram_url = '' )
 
     db.session.add(branches_design)
