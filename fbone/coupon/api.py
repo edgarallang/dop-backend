@@ -1433,7 +1433,7 @@ def coupons_with_loyalty(branch_id):
                             coupon_id,name,description, 'campaign' as type \
                             from coupons where owner_id = %d and deleted = false AND coupons.available > 0 AND \ active=true AND coupons.end_date > now() ORDER BY coupons.start_date DESC)" % (branch_id, branch_id)
     
-    campaigns = db.engine_execute(coupons_with_loyalty)
+    campaigns = db.engine.execute(coupons_with_loyalty)
     campaigns_list = coupons_with_loyalty_schema.dump(campaigns)
     
     return jsonify({'data': campaigns_list.data})
