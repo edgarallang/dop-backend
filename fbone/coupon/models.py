@@ -490,7 +490,8 @@ class CouponsWithLoyalty(Schema):
         fields = ('object_id',
                   'name',
                   'description',
-                  'type')
+                  'type',
+                  'logo')
 
 coupon_schema = CouponSchema()
 coupons_schema = CouponSchema(many=True)
