@@ -21,6 +21,7 @@ class Loyalty(db.Model):
     goal = Column(db.Integer)
     is_global = Column(db.Boolean)
     end_date = Column(db.DateTime)
+    is_active = Column(db.Boolean)
 
 class LoyaltyRedeem(db.Model):
     __tablename__ = 'loyalty_redeem'
@@ -30,7 +31,7 @@ class LoyaltyRedeem(db.Model):
     date = Column(db.DateTime)
     private = Column(db.Boolean, nullable = False)
     branch_folio = Column(db.String(STRING_LEN), default='')
-    
+
     loyalty_user = db.relationship('User', uselist=False, backref='loyalty_redeem')
     loyalty = db.relationship('Loyalty', uselist=False, backref='loyalty_redeem')
 
@@ -54,7 +55,9 @@ class Loyalties(Schema):
                   'type',
                   'goal',
                   'is_global',
-                  'end_date')
+                  'end_date',
+                  'logo',
+                  'visit')
 
 
-loyalties_schema = Loyalties(many=False)
+loyalties_schema = Loyalties(many=True)

@@ -155,9 +155,11 @@ def use_coupon():
     if request.headers.get('Authorization'):
         token_index = True
         payload = parse_token(request, token_index) #5
-        coupon_id = request.json['coupon_id'] #5
+
         qr_code = request.json['qr_code']
         branch_id = request.json['branch_id']
+        coupon_id = request.json['coupon_id'] #5
+
 
 
         actual_date = datetime.now()
@@ -245,11 +247,11 @@ def use_coupon():
                     user_level = level_up(payload['id'])
                     return jsonify({'data': branch_data.data, 'reward': reward, 'level': user_level, 'folio': client_coupon.folio })
             else:
-                minutes_left = 20 - minutes
+                minutes_left = 25 - minutes
                 return jsonify({'message': 'error',"minutes": str(minutes_left)})
         else:
             return jsonify({'message': 'expired'})
-    return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
+    return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, échale ganas'})
 
 
 @coupon.route('/user/redeem/by/location', methods=['POST'])
@@ -1081,7 +1083,7 @@ def get_coupons_activity_by_user_likes():
                                     INNER JOIN branches_design ON coupons.owner_id = branches_design.branch_id \
                                     LEFT JOIN friends ON friends.user_one_id = %d AND friends.user_two_id = users.user_id \
                                     WHERE clients_coupon.used = true AND clients_coupon.private = false AND users.privacy_status = 0 ORDER BY used_date DESC LIMIT 6 OFFSET 0' % (payload['id'], payload['id'], payload['id']))
-                                    # AND friends.operation_id = 1 
+                                    # AND friends.operation_id = 1
         users_list = user_join_activity_newsfeed.dump(users)
         print users_list.data
         return jsonify({'data': users_list.data})
@@ -1154,7 +1156,7 @@ def like_used_coupon():
         payload = parse_token(request, token_index)
 
 
-        userLike = CouponsUsedLikes.query.filter_by(clients_coupon_id = request.json['clients_coupon_id'],user_id = payload['id']).first()
+        userLike = CouponsUsedLikes.query.filter_by(clients_coupon_id = request.json['clients_coupon_id'], user_id = payload['id']).first()
         if not userLike:
             user_like = CouponsUsedLikes(clients_coupon_id = request.json['clients_coupon_id'],
                                       user_id = payload['id'],
@@ -1420,3 +1422,20 @@ def search_all_coupon_user_offset():
 
     selected_list_coupon = coupons_logo_schema.dump(list_coupon)
     return jsonify({'data': selected_list_coupon.data})
+
+@coupon.route('with/loyalty/<int:branch_id>', methods = ['GET'])
+def coupons_with_loyalty(branch_id):
+    coupons_with_loyalty = "(select \
+                            loyalty_id,name,description,  'loyalty' as type\
+                            from loyalty where owner_id = %d and is_active = true)\
+                         union \
+                         (select \
+                            coupon_id,name,description, 'campaign' as type \
+                            from coupons where owner_id = %d and deleted = false AND coupons.available > 0 AND \ active=true AND coupons.end_date > now() ORDER BY coupons.start_date DESC)" % (branch_id, branch_id)
+    
+    campaigns = db.engine_execute(coupons_with_loyalty)
+    campaigns_list = coupons_with_loyalty_schema.dump(campaigns)
+    
+    return jsonify({'data': campaigns_list.data})
+    
+    

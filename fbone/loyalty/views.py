@@ -8,14 +8,15 @@ from flask import Blueprint, request, jsonify, session
 from flask import current_app as app
 from flask.ext.login import login_required, current_user
 from jwt import DecodeError, ExpiredSignature
+from sqlalchemy import and_, desc
 from .models import *
 from ..user import *
+from ..company import *
+from ..badge import *
+from ..utils import *
 from ..extensions import db, socketio
 
-
 loyalty = Blueprint('loyalty', __name__, url_prefix='/api/loyalty')
-
-
 
 def parse_token(req, token_index):
     if token_index:
@@ -38,10 +39,134 @@ def create_token(user):
 
     return token.decode('unicode_escape')
 
+#leveling up
+def level_up(user_id):
+    user = User.query.get(user_id)
+    exp = user.exp
+    for key, val in sorted(LEVELS.iteritems(), key=lambda x: x[1]):
+        print key, val
+        print exp >= val
+        if (exp >= val):
+            user.level = key
+        else:
+            break
+    db.session.commit()
+    return user.level
+
+def set_experience(user_id, exp):
+    user = User.query.get(user_id)
+    old_exp = user.exp
+    user.exp = old_exp + exp
+    badge_name = []
+
+    for key, val in sorted(BADGES.iteritems(), key=lambda x: x[1]):
+        if (val > old_exp) and (val <= user.exp):
+          badge_name.append(key)
+
+    badges_tuple = tuple(badge_name)
+    if len(badges_tuple) == 1:
+        badge = db.engine.execute("SELECT * FROM badges WHERE LOWER(name) in(" + `badges_tuple[0]`+")")
+    elif len(badges_tuple) > 1:
+        badge = db.engine.execute("SELECT * FROM badges WHERE LOWER(name) in" + `badges_tuple`)
+
+    db.session.commit()
+    if len(badges_tuple) == 0:
+        return { 'message': 'experiencia asignada %d' % exp }
+    else:
+        badges = badge_schema.dump(badge)
+        return {'message': 'experiencia asignada %d' % exp,
+                           'badges': badges.data }
+
 
 @loyalty.route('/<int:owner_id>/get', methods=['GET'])
 def loyalty_get(owner_id):
-    loyalty = Loyalty.query.filter_by(owner_id = owner_id).first()
+    token_index = True
+    payload = parse_token(request, token_index)
+    query = "SELECT L.loyalty_id, L.owner_id, L.name, L.description, L.type, \
+                        L.goal, L.is_global, L.end_date, LD.logo, LU.visit \
+                FROM loyalty as L \
+                INNER JOIN loyalty_design as LD ON LD.loyalty_id = L.loyalty_id \
+                LEFT JOIN loyalty_user as LU ON LU.loyalty_id = L.loyalty_id AND LU.user_id = %d \
+                WHERE L.owner_id = %d" % (payload['id'], owner_id)
+    loyalty = db.engine.execute(query)
     loyalty_list = loyalties_schema.dump(loyalty)
     return jsonify({'data': loyalty_list.data})
 
+@loyalty.route('/user/redeem', methods=['POST'])
+def loyalty_redeem():
+    if request.headers.get('Authorization'):
+        token_index = True
+        payload = parse_token(request, token_index) #5
+
+        qr_code = request.json['qr_code']
+        branch_id = request.json['branch_id']
+        loyalty_id = request.json['loyalty_id']
+        today = datetime.now()
+
+        loyalty = Loyalty.query.get(loyalty_id)
+
+        if loyalty.is_global:
+            branch = Branch.query.filter_by(folio = qr_code, silent = True).first()
+            if not branch:
+                return jsonify({'message': 'error_qr'})
+
+        recently_used = LoyaltyRedeem.query.filter_by(loyalty_id = loyalty_id,
+                                                        user_id = payload['id']) \
+                                                        .order_by(desc(LoyaltyRedeem.date)).first()
+
+        if recently_used:
+            minutes = (today - recently_used.date).total_seconds() / 60
+            print recently_used.date
+            print minutes
+
+        if not recently_used or minutes > 25:
+            loyalty_redeem = LoyaltyRedeem(user_id = payload['id'],
+                                           loyalty_id = loyalty_id,
+                                           date = today,
+                                           private = True,
+                                           branch_folio = qr_code)
+            db.session.add(loyalty_redeem)
+            db.session.commit()
+            folio = '%d%s%d' % (request.json['branch_id'], "{:%d%m%Y}".format(today),
+                                    loyalty_redeem.loyalty_redeem_id)
+
+
+            loyalty_user = LoyaltyUser.query.filter_by(user_id = payload['id']).first()
+
+            if not loyalty_user:
+                loyalty_user = LoyaltyUser(user_id = payload['id'],
+                                            loyalty_id = loyalty_id,
+                                            visit = 1)
+
+                db.session.add(loyalty_user)
+                db.session.commit()
+            else:
+                loyalty_user.visit = loyalty_user.visit + 1
+                db.session.commit()
+
+            branch = Branch.query.filter_by(branch_id = branch_id).first()
+            branch_data = branch_schema.dump(branch)
+
+            reward = set_experience(payload['id'], USING)
+            user_level = level_up(payload['id'])
+            db.session.commit()
+
+            if request.json['first_using'] == False:
+                user_first_exp = UserFirstEXP.query.filter_by(user_id = payload['id']).first()
+                user_first_exp.first_using = True
+                first_badge = UsersBadges(user_id = payload['id'],
+                                          badge_id = 1,
+                                          reward_date = datetime.now(),
+                                          type = 'trophy')
+
+                db.session.add(first_badge)
+                db.session.commit()
+
+            return jsonify({'data': branch_data.data,
+                            'reward': reward,
+                            'level': user_level,
+                            'folio': folio })
+        else:
+            minutes_left = 25 - minutes
+            return jsonify({ 'message': 'error', "minutes": str(minutes_left) })
+    return jsonify({ 'message': 'Oops! algo salió mal, intentalo de nuevo, échale ganas' })

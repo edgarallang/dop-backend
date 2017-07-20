@@ -82,18 +82,19 @@ def select_branch_profile(branch_id):
         #     token_index = request.json['token_index']
 
         payload = parse_token(request, token_index)
-        query = 'SELECT branches_location.branch_location_id, branches.folio, branches.branch_id, state, category_id, longitude, latitude, logo,  \
-                        city, address, branches.name, branches.company_id, banner, logo, phone, about, branches_subcategory.subcategory_id,  \
+        query = 'SELECT BL.branch_location_id, B.folio, B.branch_id, state, category_id, longitude, latitude, logo,  \
+                        city, address, B.name, B.company_id, banner, logo, phone, about, BS.subcategory_id,  \
+                        BD.facebook_url, BD.instagram_url, \
                         (SELECT EXISTS (SELECT * FROM branches_follower \
                                 WHERE branch_id = %d AND user_id = %d)::bool) AS following, \
                         (SELECT EXISTS (SELECT * FROM branches_subcategory \
                                 WHERE branch_id = %d AND subcategory_id = 25)::bool) AS adults_only \
-                    FROM branches JOIN branches_location \
-                        ON branches.branch_id = branches_location.branch_id \
-                    JOIN branches_design ON branches_design.branch_id = branches.branch_id \
-                    JOIN branches_subcategory ON branches_subcategory.branch_id = branches.branch_id \
-                    JOIN subcategory ON subcategory.subcategory_id = branches_subcategory.subcategory_id \
-                 WHERE branches.branch_id = %d' % (branch_id, payload['id'], branch_id, branch_id)
+                    FROM branches as B JOIN branches_location as BL \
+                        ON B.branch_id = BL.branch_id \
+                    JOIN branches_design as BD ON BD.branch_id = B.branch_id \
+                    JOIN branches_subcategory as BS ON BS.branch_id = B.branch_id \
+                    JOIN subcategory as S ON S.subcategory_id = BS.subcategory_id \
+                 WHERE B.branch_id = %d' % (branch_id, payload['id'], branch_id, branch_id)
 
         selectedBranch = db.engine.execute(query)
         branch = branch_profile_schema.dump(selectedBranch)
@@ -591,7 +592,9 @@ def signup_branch():
                                     color_a = None,
                                     color_b = None,
                                     color_c = None,
-                                    banner = 'banner.png' )
+                                    banner = 'banner.png',
+                                    facebook_url = '',
+                                    instagram_url = '' )
 
     db.session.add(branches_design)
     db.session.commit()
