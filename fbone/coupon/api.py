@@ -1423,7 +1423,7 @@ def search_all_coupon_user_offset():
     selected_list_coupon = coupons_logo_schema.dump(list_coupon)
     return jsonify({'data': selected_list_coupon.data})
 
-@coupon.route('with/loyalty/<int:branch_id>', methods = ['GET'])
+@coupon.route('/with/loyalty/<int:branch_id>', methods = ['GET'])
 def coupons_with_loyalty(branch_id):
     coupons_with_loyalty = "(select \
                             loyalty_id,name,description,  'loyalty' as type\
