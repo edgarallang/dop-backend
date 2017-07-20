@@ -1426,11 +1426,11 @@ def search_all_coupon_user_offset():
 @coupon.route('/with/loyalty/<int:branch_id>', methods = ['GET'])
 def coupons_with_loyalty(branch_id):
     coupons_with_loyalty = '(select \
-                            loyalty_id as "object_id",name,description,  "loyalty" as type\
+                            loyalty_id as "object_id",name,description,  "'"loyalty"'" as type\
                             from loyalty where owner_id = %d and is_active = true)\
                          union \
                          (select \
-                            coupon_id as "object_id",name,description, "campaign" as type \
+                            coupon_id as "object_id",name,description, "'"campaign"'" as type \
                             from coupons where owner_id = %d and deleted = false AND coupons.available > 0 AND active=true AND coupons.end_date > now() ORDER BY coupons.start_date DESC)' % (branch_id, branch_id)
     
     campaigns = db.engine.execute(coupons_with_loyalty)
