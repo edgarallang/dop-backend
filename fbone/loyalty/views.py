@@ -77,7 +77,7 @@ def set_experience(user_id, exp):
         return {'message': 'experiencia asignada %d' % exp,
                            'badges': badges.data }
 
-@loyalty.route('/all/get', methods=['GET'])
+@loyalty.route('/all/get/', methods=['GET'])
 def loyalty_all_get():
     token_index = True
     payload = parse_token(request, token_index)
