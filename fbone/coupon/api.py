@@ -1420,3 +1420,23 @@ def search_all_coupon_user_offset():
 
     selected_list_coupon = coupons_logo_schema.dump(list_coupon)
     return jsonify({'data': selected_list_coupon.data})
+
+@coupon.route('/with/loyalty/<int:branch_id>', methods = ['GET'])
+def coupons_with_loyalty(branch_id):
+    coupons_with_loyalty = '(SELECT \
+                            loyalty.loyalty_id AS "object_id",loyalty.name,loyalty.description,  \'loyalty\' AS type, loyalty_design.logo \
+                            FROM loyalty \
+                            INNER JOIN loyalty_design ON loyalty.loyalty_id = loyalty_design.loyalty_id \
+                            WHERE loyalty.owner_id = %d AND loyalty.is_active = true) \
+                         UNION \
+                         (SELECT \
+                            coupon_id AS "object_id",name,description, \'campaign\' AS type, \'\' AS logo \
+                            FROM coupons WHERE owner_id = %d AND deleted = false AND coupons.available > 0 AND active=true AND coupons.end_date > now() ORDER BY coupons.start_date DESC) \
+                            ' % (branch_id, branch_id)
+    
+    campaigns = db.engine.execute(coupons_with_loyalty)
+    campaigns_list = coupons_with_loyalty_schema.dump(campaigns)
+    
+    return jsonify({'data': campaigns_list.data})
+    
+    

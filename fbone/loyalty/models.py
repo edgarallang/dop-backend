@@ -21,6 +21,7 @@ class Loyalty(db.Model):
     goal = Column(db.Integer)
     is_global = Column(db.Boolean)
     end_date = Column(db.DateTime)
+    is_active = Column(db.Boolean)
 
 class LoyaltyRedeem(db.Model):
     __tablename__ = 'loyalty_redeem'
