@@ -77,6 +77,21 @@ def set_experience(user_id, exp):
         return {'message': 'experiencia asignada %d' % exp,
                            'badges': badges.data }
 
+@loyalty.route('/all/get', methods=['GET'])
+def loyalty_all_get():
+    token_index = True
+    payload = parse_token(request, token_index)
+    limit = request.args.get('limit')
+    query = "SELECT L.loyalty_id, L.owner_id, L.name, L.description, L.type, \
+                        L.goal, L.is_global, L.end_date, LD.logo, LU.visit \
+                FROM loyalty as L \
+                LEFT JOIN loyalty_design as LD ON LD.loyalty_id = L.loyalty_id \
+                LEFT JOIN loyalty_user as LU ON LU.loyalty_id = L.loyalty_id \
+                AND LU.user_id = %d LIMIT %s" % (payload['id'], limit)
+    
+    loyalty = db.engine.execute(query)
+    loyalty_list = loyalties_schema.dump(loyalty)
+    return jsonify({'data': loyalty_list.data})
 
 @loyalty.route('/<int:owner_id>/get', methods=['GET'])
 def loyalty_get(owner_id):
