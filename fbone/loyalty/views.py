@@ -83,8 +83,9 @@ def loyalty_all_get():
     payload = parse_token(request, token_index)
     limit = request.args.get('limit')
     query = "SELECT L.loyalty_id, L.owner_id, L.name, L.description, L.type, \
-                        L.goal, L.is_global, L.end_date, LD.logo, LU.visit \
+                        L.goal, L.is_global, L.end_date, LD.logo, LU.visit, B.company_id \
                 FROM loyalty as L \
+                INNER JOIN branches as B on L.owner_id = B.branch_id \
                 LEFT JOIN loyalty_design as LD ON LD.loyalty_id = L.loyalty_id \
                 LEFT JOIN loyalty_user as LU ON LU.loyalty_id = L.loyalty_id \
                 AND LU.user_id = %d LIMIT %s" % (payload['id'], limit)
@@ -98,8 +99,9 @@ def loyalty_get(owner_id):
     token_index = True
     payload = parse_token(request, token_index)
     query = "SELECT L.loyalty_id, L.owner_id, L.name, L.description, L.type, \
-                        L.goal, L.is_global, L.end_date, LD.logo, LU.visit \
+                        L.goal, L.is_global, L.end_date, LD.logo, LU.visit, B.company_id \
                 FROM loyalty as L \
+                INNER JOIN branches as B on L.owner_id = B.branch_id \
                 INNER JOIN loyalty_design as LD ON LD.loyalty_id = L.loyalty_id \
                 LEFT JOIN loyalty_user as LU ON LU.loyalty_id = L.loyalty_id AND LU.user_id = %d \
                 WHERE L.owner_id = %d" % (payload['id'], owner_id)
