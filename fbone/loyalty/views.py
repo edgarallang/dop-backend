@@ -198,7 +198,7 @@ def add_view():
         token_index = True
         payload = parse_token(request, token_index)
 
-        loyalty_id = request.json['coupon_id']
+        loyalty_id = request.json['loyalty_id']
         loyalty = Loyalty.query.get(loyalty_id)
         loyalty.views = loyalty.views + 1
         db.session.commit()
