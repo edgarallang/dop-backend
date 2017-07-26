@@ -159,7 +159,10 @@ def loyalty_redeem():
                 db.session.add(loyalty_user)
                 db.session.commit()
             else:
-                loyalty_user.visit = loyalty_user.visit + 1
+                if loyalty_user.visit == loyalty.goal:
+                    loyalty_user.visit = 0
+                else:
+                    loyalty_user.visit = loyalty_user.visit + 1
                 db.session.commit()
 
             branch = Branch.query.filter_by(branch_id = branch_id).first()
@@ -188,3 +191,29 @@ def loyalty_redeem():
             minutes_left = 25 - minutes
             return jsonify({ 'message': 'error', "minutes": str(minutes_left) })
     return jsonify({ 'message': 'Oops! algo salió mal, intentalo de nuevo, échale ganas' })
+
+@coupon.route('/view', methods=['POST'])
+def add_view():
+    if request.headers.get('Authorization'):
+        token_index = True
+        payload = parse_token(request, token_index)
+
+        loyalty_id = request.json['coupon_id']
+        loyalty = Loyalty.query.get(loyalty_id)
+        loyalty.views = loyalty.views + 1
+        db.session.commit()
+
+        loyalty_view = loyaltyViews(user_id = payload['id'],
+                                  loyalty_id = loyalty_id,
+                                  view_date = datetime.now())
+
+        if 'latitude' in request.json and 'longitude' in request.json:
+            if request.json['latitude'] != 0 and request.json['longitude'] != 0:
+                loyalty_view.latitude = request.json['latitude']
+                loyalty_view.longitude = request.json['longitude']
+
+        db.session.add(loyalty_view)
+        db.session.commit()
+
+        return jsonify({'message': 'vistas actualizada'})
+    return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})

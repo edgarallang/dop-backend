@@ -44,6 +44,15 @@ class LoyaltyUser(db.Model):
 
     loyalty_user = db.relationship('User', uselist=False, backref='loyalty_user')
     loyalty = db.relationship('Loyalty', uselist=False, backref='loyalty_user')
+    
+class LoyaltyViews(db.Model):
+    __tablename__ = 'loyalty_views'
+    id = Column(db.Integer, primary_key=True)
+    user_id = Column(db.Integer, nullable=False)
+    loyalty_id = Column(db.Integer, nullable=False)
+    latitude = Column(db.Numeric)
+    longitude = Column(db.Numeric)
+    view_date = Column(db.DateTime)
 
 class Loyalties(Schema):
     class Meta:
