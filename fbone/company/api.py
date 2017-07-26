@@ -74,6 +74,28 @@ def select_branch(branchId):
 
     return jsonify({'data': branch.data})
 
+@company.route('/branch/social/view', methods=['GET'])
+def set_social_views():
+    if request.headers.get('Authorization'):
+        token_index = True
+        payload = parse_token(request, token_index)
+
+        social_view = SocialNetworkViews(user_id = payload['id'],
+                                         owner_id = request.json['owner_id'],
+                                         type = request.json['type'],
+                                         view_date = datetime.now())
+
+        if 'latitude' in request.json and 'longitude' in request.json:
+            if request.json['latitude'] != 0 and request.json['longitude'] != 0:
+                social_view.latitude = request.json['latitude']
+                social_view.longitude = request.json['longitude']
+
+        db.session.add(social_view)
+        db.session.commit()
+
+        return jsonify({ 'message': 'vistas actualizada' })
+    return jsonify({ 'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas' })
+
 @company.route('/branch/<int:branch_id>/profile/get', methods=['GET', 'POST'])
 def select_branch_profile(branch_id):
     if request.headers.get('Authorization'):
@@ -100,8 +122,8 @@ def select_branch_profile(branch_id):
         branch = branch_profile_schema.dump(selectedBranch)
 
         company_stat = CompanyStats(user_id = payload['id'],
-                                  owner_id = branch_id,
-                                  view_date = datetime.now())
+                                    owner_id = branch_id,
+                                    view_date = datetime.now())
 
         # if 'latitude' in request.json and 'longitude' in request.json:
         #     if request.json['latitude'] != 0 and request.json['longitude'] != 0:

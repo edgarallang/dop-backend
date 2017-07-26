@@ -138,8 +138,19 @@ class CompanyStats(db.Model):
     view_date = Column(db.DateTime)
     latitude = Column(db.Numeric)
     longitude = Column(db.Numeric)
+    
+#Social stats
+class SocialNetworkViews(db.Model):
+    __tablename__ = "social_network_views"
+    id = Column(db.Integer, primary_key=True)
+    user_id = Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
+    owner_id = Column(db.Integer)
+    view_date = Column(db.DateTime)
+    latitude = Column(db.Numeric)
+    longitude = Column(db.Numeric)
+    type = Column(db.String(STRING_LEN))
+    
 # Branches user is the person geting into the system from that specific branch
-
 class BranchUser(db.Model):
     __tablename__ = 'branches_user'
     branches_user_id = Column(db.Integer, primary_key=True)
