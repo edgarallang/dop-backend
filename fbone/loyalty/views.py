@@ -203,9 +203,9 @@ def add_view():
         loyalty.views = loyalty.views + 1
         db.session.commit()
 
-        loyalty_view = loyaltyViews(user_id = payload['id'],
-                                  loyalty_id = loyalty_id,
-                                  view_date = datetime.now())
+        loyalty_view = LoyaltyViews(user_id = payload['id'],
+                                    loyalty_id = loyalty_id,
+                                    view_date = datetime.now())
 
         if 'latitude' in request.json and 'longitude' in request.json:
             if request.json['latitude'] != 0 and request.json['longitude'] != 0:
