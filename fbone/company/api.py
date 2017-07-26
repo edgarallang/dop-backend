@@ -74,7 +74,7 @@ def select_branch(branchId):
 
     return jsonify({'data': branch.data})
 
-@company.route('/branch/social/view', methods=['GET'])
+@company.route('/branch/social/view', methods=['POST'])
 def set_social_views():
     if request.headers.get('Authorization'):
         token_index = True
