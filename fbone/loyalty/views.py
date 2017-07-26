@@ -192,7 +192,7 @@ def loyalty_redeem():
             return jsonify({ 'message': 'error', "minutes": str(minutes_left) })
     return jsonify({ 'message': 'Oops! algo salió mal, intentalo de nuevo, échale ganas' })
 
-@coupon.route('/view', methods=['POST'])
+@loyalty.route('/view', methods=['POST'])
 def add_view():
     if request.headers.get('Authorization'):
         token_index = True
