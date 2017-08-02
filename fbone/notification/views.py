@@ -363,7 +363,7 @@ def on_join_room(message):
 
 @socket.on('waitingForRedeem')
 def on_waiting_for_redeem(message):
-    emit('event',{'data':'Lol'})
+    emit('event',{'data':'Lol'}, broadcast = True)
     return jsonify({'message': 'Todo bien'})
 
 @socketio.on('leave')
