@@ -361,7 +361,7 @@ def on_join_room(message):
     emit('joined', {'data': 'Joined to room'}, room = room)
     return jsonify({'message': 'Todo bien'})
 
-@socket.on('waitingForRedeem')
+@socketio.on('waitingForRedeem')
 def on_waiting_for_redeem(message):
     emit('event',{'data':'Lol'}, broadcast = True)
     return jsonify({'message': 'Todo bien'})
