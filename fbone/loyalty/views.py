@@ -77,14 +77,31 @@ def set_experience(user_id, exp):
         return {'message': 'experiencia asignada %d' % exp,
                            'badges': badges.data }
 
+@loyalty.route('/all/get/', methods=['GET'])
+def loyalty_all_get():
+    token_index = True
+    payload = parse_token(request, token_index)
+    limit = request.args.get('limit')
+    query = "SELECT L.loyalty_id, L.owner_id, L.name, L.description, L.type, \
+                        L.goal, L.is_global, L.end_date, LD.logo, LU.visit, B.company_id \
+                FROM loyalty as L \
+                INNER JOIN branches as B on L.owner_id = B.branch_id \
+                LEFT JOIN loyalty_design as LD ON LD.loyalty_id = L.loyalty_id \
+                LEFT JOIN loyalty_user as LU ON LU.loyalty_id = L.loyalty_id \
+                AND LU.user_id = %d LIMIT %s" % (payload['id'], limit)
+    
+    loyalty = db.engine.execute(query)
+    loyalty_list = loyalties_schema.dump(loyalty)
+    return jsonify({'data': loyalty_list.data})
 
 @loyalty.route('/<int:owner_id>/get', methods=['GET'])
 def loyalty_get(owner_id):
     token_index = True
     payload = parse_token(request, token_index)
     query = "SELECT L.loyalty_id, L.owner_id, L.name, L.description, L.type, \
-                        L.goal, L.is_global, L.end_date, LD.logo, LU.visit \
+                        L.goal, L.is_global, L.end_date, LD.logo, LU.visit, B.company_id \
                 FROM loyalty as L \
+                INNER JOIN branches as B on L.owner_id = B.branch_id \
                 INNER JOIN loyalty_design as LD ON LD.loyalty_id = L.loyalty_id \
                 LEFT JOIN loyalty_user as LU ON LU.loyalty_id = L.loyalty_id AND LU.user_id = %d \
                 WHERE L.owner_id = %d" % (payload['id'], owner_id)
@@ -131,7 +148,8 @@ def loyalty_redeem():
                                     loyalty_redeem.loyalty_redeem_id)
 
 
-            loyalty_user = LoyaltyUser.query.filter_by(user_id = payload['id']).first()
+            loyalty_user = LoyaltyUser.query.filter_by(loyalty_id = loyalty_id,
+                                                         user_id = payload['id']).first()
 
             if not loyalty_user:
                 loyalty_user = LoyaltyUser(user_id = payload['id'],
@@ -141,7 +159,10 @@ def loyalty_redeem():
                 db.session.add(loyalty_user)
                 db.session.commit()
             else:
-                loyalty_user.visit = loyalty_user.visit + 1
+                if loyalty_user.visit == loyalty.goal:
+                    loyalty_user.visit = 0
+                else:
+                    loyalty_user.visit = loyalty_user.visit + 1
                 db.session.commit()
 
             branch = Branch.query.filter_by(branch_id = branch_id).first()
@@ -170,3 +191,29 @@ def loyalty_redeem():
             minutes_left = 25 - minutes
             return jsonify({ 'message': 'error', "minutes": str(minutes_left) })
     return jsonify({ 'message': 'Oops! algo salió mal, intentalo de nuevo, échale ganas' })
+
+@loyalty.route('/view', methods=['POST'])
+def add_view():
+    if request.headers.get('Authorization'):
+        token_index = True
+        payload = parse_token(request, token_index)
+
+        loyalty_id = request.json['loyalty_id']
+        loyalty = Loyalty.query.get(loyalty_id)
+        loyalty.views = loyalty.views + 1
+        db.session.commit()
+
+        loyalty_view = LoyaltyViews(user_id = payload['id'],
+                                    loyalty_id = loyalty_id,
+                                    view_date = datetime.now())
+
+        if 'latitude' in request.json and 'longitude' in request.json:
+            if request.json['latitude'] != 0 and request.json['longitude'] != 0:
+                loyalty_view.latitude = request.json['latitude']
+                loyalty_view.longitude = request.json['longitude']
+
+        db.session.add(loyalty_view)
+        db.session.commit()
+
+        return jsonify({'message': 'vistas actualizada'})
+    return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})

@@ -22,6 +22,7 @@ class Loyalty(db.Model):
     is_global = Column(db.Boolean)
     end_date = Column(db.DateTime)
     is_active = Column(db.Boolean)
+    views = Column(db.Integer)
 
 class LoyaltyRedeem(db.Model):
     __tablename__ = 'loyalty_redeem'
@@ -44,6 +45,15 @@ class LoyaltyUser(db.Model):
 
     loyalty_user = db.relationship('User', uselist=False, backref='loyalty_user')
     loyalty = db.relationship('Loyalty', uselist=False, backref='loyalty_user')
+    
+class LoyaltyViews(db.Model):
+    __tablename__ = 'loyalty_views'
+    id = Column(db.Integer, primary_key=True)
+    user_id = Column(db.Integer, nullable=False)
+    loyalty_id = Column(db.Integer, nullable=False)
+    latitude = Column(db.Numeric)
+    longitude = Column(db.Numeric)
+    view_date = Column(db.DateTime)
 
 class Loyalties(Schema):
     class Meta:
@@ -57,7 +67,8 @@ class Loyalties(Schema):
                   'is_global',
                   'end_date',
                   'logo',
-                  'visit')
+                  'visit',
+                  'company_id')
 
 
 loyalties_schema = Loyalties(many=True)
