@@ -352,6 +352,11 @@ def get_notifications_offset():
 
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
+@notification.route('/test/socket/redeem/', methods=['GET'])
+def test_socket_redeem():
+    emit('event', {'data': 'Event sent'}, broadcast = True)
+    return jsonify({'message': 'Todo bien'})
+
 @socketio.on('joinRoom')
 def on_join_room(message):
     payload = parse_token_socket(message)
@@ -361,10 +366,20 @@ def on_join_room(message):
     emit('joined', {'data': 'Joined to room'}, room = room)
     return jsonify({'message': 'Todo bien'})
 
-@socketio.on('waitingForRedeem')
+
+@socketio.on('waitingForRedeemAdmin')
 def on_waiting_for_redeem(message):
-    emit('event',{'data':'Lol'}, broadcast = True)
-    return jsonify({'message': 'Todo bien'})
+    room = message
+    join_room(room)
+    emit('event',{'data':'new_admin'}, room = room)
+    return jsonify({'message': 'admin'})
+
+@socketio.on('waitingForRedeemUser')
+def on_waiting_for_redeem(message):
+    room = message
+    join_room(room)
+    emit('event',{'data':'new_user'}, room = room)
+    return jsonify({'message': 'user'})
 
 @socketio.on('leave')
 def on_leave(data):
