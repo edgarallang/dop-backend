@@ -354,7 +354,7 @@ def get_notifications_offset():
 
 @notification.route('/test/socket/redeem/', methods=['GET'])
 def test_socket_redeem():
-    emit('event', {'data': 'Event sent'}, broadcast = True)
+    socketio.emit('event', {'data': 'data'}, broadcast = True)
     return jsonify({'message': 'Todo bien'})
 
 @socketio.on('joinRoom')
