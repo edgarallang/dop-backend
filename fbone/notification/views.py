@@ -377,7 +377,8 @@ def on_waiting_for_redeem(message):
 
 @socketio.on('waitingForRedeemUser')
 def on_waiting_for_redeem(user):
-    room = user.get('room')
+    #print 
+    #room = user.get('room')
     #join_room(room)
     #emit('event',{'data':'new_user'}, room = room)
     return jsonify({'message': 'user'})
