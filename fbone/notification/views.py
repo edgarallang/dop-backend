@@ -379,6 +379,7 @@ def on_waiting_for_redeem(message):
 def on_waiting_for_redeem(message):
     room = message
     join_room(room)
+    print room
     emit('event',{'data':'new_user'}, room = room)
     return jsonify({'message': 'user'})
 
