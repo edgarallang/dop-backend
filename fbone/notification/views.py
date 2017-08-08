@@ -380,7 +380,7 @@ def on_waiting_for_redeem(user):
     user_object = json.loads(user)
     room = user_object.get('room')
     print room
-    if user_object.join_room == True
+    if user_object.join_room == True:
         join_room(room)
     emit('newUser',{'data': user_object}, room = room)
     return jsonify({'message': 'user'})
