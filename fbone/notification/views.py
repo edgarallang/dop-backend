@@ -400,4 +400,5 @@ def test_connect():
 
 @socketio.on('disconnect')
 def test_disconnect():
+    print "Desconectado"
     return jsonify({'message': 'Todo bien'})
