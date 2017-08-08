@@ -377,7 +377,7 @@ def on_waiting_for_redeem(message):
 
 @socketio.on('waitingForRedeemUser')
 def on_waiting_for_redeem(user):
-    user_object = json(user)
+    user_object = json.loads(user)
     print user_object.get('room')
     #room = user.get('room')
     #join_room(room)
