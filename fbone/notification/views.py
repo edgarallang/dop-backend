@@ -375,14 +375,24 @@ def on_waiting_for_redeem(message):
     emit('newAdmin',{'data':'new_admin'}, room = room)
     return jsonify({'message': 'admin'})
 
+#Notify Admin
 @socketio.on('waitingForRedeemUser')
 def on_waiting_for_redeem(user):
     user_object = json.loads(user)
     room = user_object.get('room')
     if user_object.get('join_room') == True:
         join_room(room)
+        print room
     emit('newUser',{'data': user_object}, room = room)
     return jsonify({'message': 'user'})
+
+@socketio.on('notifyAdmin')
+def on_waiting_for_redeem(user):
+    user_object = json.loads(user)
+    
+    emit('newUser',{'data': user_object}, room = user_object.get('room'))
+    return jsonify({'message': 'user'})
+#-----
 
 @socketio.on('leave')
 def on_leave(data):
