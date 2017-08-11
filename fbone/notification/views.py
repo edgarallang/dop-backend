@@ -415,7 +415,6 @@ def test_connect():
 
 @socketio.on('disconnect')
 def test_disconnect():
-    session["id"] = user_object.get('user_id')
-    emit('newUser',{'data': session["id"]}, room = session["room"])
+    emit('userLeave',{'data': session["id"]}, room = session["room"])
     print "Desconectado"
     return jsonify({'message': 'Todo bien'})
