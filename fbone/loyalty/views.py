@@ -144,45 +144,45 @@ def loyalty_redeem():
         loyalty_user = LoyaltyUser.query.filter_by(loyalty_id = loyalty_id,
                                                          user_id = payload['id']).first()
 
-            if not loyalty_user:
-                loyalty_user = LoyaltyUser(user_id = payload['id'],
-                                            loyalty_id = loyalty_id,
-                                            visit = 1)
+        if not loyalty_user:
+            loyalty_user = LoyaltyUser(user_id = payload['id'],
+                                        loyalty_id = loyalty_id,
+                                        visit = 1)
 
-                db.session.add(loyalty_user)
-                db.session.commit()
+            db.session.add(loyalty_user)
+            db.session.commit()
+        else:
+            if loyalty_user.visit == loyalty.goal:
+                loyalty_user.visit = 0
             else:
-                if loyalty_user.visit == loyalty.goal:
-                    loyalty_user.visit = 0
-                else:
-                    loyalty_user.visit = loyalty_user.visit + 1
-                db.session.commit()
-
-            branch = Branch.query.filter_by(branch_id = branch_id).first()
-            branch_data = branch_schema.dump(branch)
-
-            reward = set_experience(user_id, USING)
-            user_level = level_up(user_id)
+                loyalty_user.visit = loyalty_user.visit + 1
             db.session.commit()
 
-            if 'first_using' in request.json and request.json['first_using'] == False:
-                user_first_exp = UserFirstEXP.query.filter_by(user_id =user_id).first()
-                user_first_exp.first_using = True
-                first_badge = UsersBadges(user_id = payload['id'],
-                                          badge_id = 1,
-                                          reward_date = datetime.now(),
-                                          type = 'trophy')
+        branch = Branch.query.filter_by(branch_id = branch_id).first()
+        branch_data = branch_schema.dump(branch)
 
-                db.session.add(first_badge)
-                db.session.commit()
+        reward = set_experience(user_id, USING)
+        user_level = level_up(user_id)
+        db.session.commit()
 
-            return jsonify({'data': branch_data.data,
-                            'reward': reward,
-                            'level': user_level,
-                            'folio': folio })
-        else:
-            minutes_left = 480 - minutes
-            return jsonify({ 'message': 'error', "minutes": str(minutes_left) })
+        if 'first_using' in request.json and request.json['first_using'] == False:
+            user_first_exp = UserFirstEXP.query.filter_by(user_id =user_id).first()
+            user_first_exp.first_using = True
+            first_badge = UsersBadges(user_id = payload['id'],
+                                      badge_id = 1,
+                                      reward_date = datetime.now(),
+                                      type = 'trophy')
+
+            db.session.add(first_badge)
+            db.session.commit()
+
+        return jsonify({'data': branch_data.data,
+                        'reward': reward,
+                        'level': user_level,
+                        'folio': folio })
+    else:
+        minutes_left = 480 - minutes
+        return jsonify({ 'message': 'error', "minutes": str(minutes_left) })
 
 
 @loyalty.route('/user/old/redeem', methods=['POST'])
