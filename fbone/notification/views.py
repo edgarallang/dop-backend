@@ -380,6 +380,10 @@ def on_waiting_for_redeem(message):
 def on_waiting_for_redeem(user):
     user_object = json.loads(user)
     room = user_object.get('room')
+
+    session["id"] = user_object.get('user_id')
+    session["room"] = room
+
     if user_object.get('join_room') == True:
         join_room(room)
         print room
@@ -411,5 +415,7 @@ def test_connect():
 
 @socketio.on('disconnect')
 def test_disconnect():
+    session["id"] = user_object.get('user_id')
+    emit('newUser',{'data': session["id"]}, room = session["room"])
     print "Desconectado"
     return jsonify({'message': 'Todo bien'})
