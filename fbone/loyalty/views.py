@@ -109,8 +109,84 @@ def loyalty_get(owner_id):
     loyalty_list = loyalties_schema.dump(loyalty)
     return jsonify({'data': loyalty_list.data})
 
-@loyalty.route('/user/redeem', methods=['POST'])
+@loyalty.route('/user/redeem/by/branch', methods=['POST'])
 def loyalty_redeem():
+    branch_id = request.json['branch_id']
+    loyaly_id = request.json['loyalty_id']
+    branch_folio = request.json['branch_folio']
+    user_id = request.json['user_id']
+    today = datetime.now()
+
+    loyalty = Loyalty.query.get(loyalty_id)
+
+    if loyalty.is_global:
+        branch = Branch.query.filter_by(folio = branch_folio, silent = True).first()
+        if not branch:
+            return jsonify({'message':'error'})
+
+    recently_used = LoyaltyRedeem.query.filter_by(loyalty_id = loyalty_id,
+                                                    user_id = user_id).order_by(desc(LoyaltyRedeem.date)).first()
+    if recently_used:
+        minutes = (today - recently_used.date).total_seconds() / 60
+
+    if not recently_used or minutes > 480: # 8 hours
+        loyalty_redeem = LoyaltyRedeem(user_id = user_id,
+                                        loyalty_id = loyalty_id,
+                                        date = today,
+                                        private = True,
+                                        branch_folio = branch_folio)
+        db.session.add(loyalty_redeem)
+        db.session.commit()
+
+        folio = '%d%s%d' % (request.json['branch_id'], "{:%d%m%Y}".format(today),
+                                    loyalty_redeem.loyalty_redeem_id)
+
+        loyalty_user = LoyaltyUser.query.filter_by(loyalty_id = loyalty_id,
+                                                         user_id = payload['id']).first()
+
+            if not loyalty_user:
+                loyalty_user = LoyaltyUser(user_id = payload['id'],
+                                            loyalty_id = loyalty_id,
+                                            visit = 1)
+
+                db.session.add(loyalty_user)
+                db.session.commit()
+            else:
+                if loyalty_user.visit == loyalty.goal:
+                    loyalty_user.visit = 0
+                else:
+                    loyalty_user.visit = loyalty_user.visit + 1
+                db.session.commit()
+
+            branch = Branch.query.filter_by(branch_id = branch_id).first()
+            branch_data = branch_schema.dump(branch)
+
+            reward = set_experience(user_id, USING)
+            user_level = level_up(user_id)
+            db.session.commit()
+
+            if 'first_using' in request.json and request.json['first_using'] == False:
+                user_first_exp = UserFirstEXP.query.filter_by(user_id =user_id).first()
+                user_first_exp.first_using = True
+                first_badge = UsersBadges(user_id = payload['id'],
+                                          badge_id = 1,
+                                          reward_date = datetime.now(),
+                                          type = 'trophy')
+
+                db.session.add(first_badge)
+                db.session.commit()
+
+            return jsonify({'data': branch_data.data,
+                            'reward': reward,
+                            'level': user_level,
+                            'folio': folio })
+        else:
+            minutes_left = 480 - minutes
+            return jsonify({ 'message': 'error', "minutes": str(minutes_left) })
+
+
+@loyalty.route('/user/old/redeem', methods=['POST'])
+def loyalty_old_redeem():
     if request.headers.get('Authorization'):
         token_index = True
         payload = parse_token(request, token_index) #5
