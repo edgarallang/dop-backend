@@ -381,10 +381,9 @@ def on_waiting_for_redeem(user):
     user_object = json.loads(user)
     room = user_object.get('room')
 
-    if "id" not in session:
+    if 'id' not in session:
         session["id"] = user_object.get('user_id')
         session["room"] = room
-
 
     if user_object.get('join_room') == True:
         join_room(room)
@@ -417,7 +416,7 @@ def test_connect():
 
 @socketio.on('disconnect')
 def test_disconnect():
-    if "id" in session:
+    if 'id' in session:
         emit('userLeave',{'data': session["id"]}, room = session["room"])
         print "Desconectado"
         print session['id']
