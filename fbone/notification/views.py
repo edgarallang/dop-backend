@@ -379,12 +379,12 @@ def on_waiting_for_redeem(message):
 @socketio.on('waitingForRedeemUser')
 def on_waiting_for_redeem(user):
     user_object = json.loads(user)
+    room = user_object.get('room')
 
     if "id" not in session:
         session["id"] = user_object.get('user_id')
         session["room"] = room
 
-    room = user_object.get('room')
 
     if user_object.get('join_room') == True:
         join_room(room)
