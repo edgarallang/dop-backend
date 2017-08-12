@@ -380,11 +380,9 @@ def on_waiting_for_redeem(message):
 def on_waiting_for_redeem(user):
     user_object = json.loads(user)
     room = user_object.get('room')
-
-    session["id"] = user_object.get('user_id')
-    session["room"] = room
-
     if user_object.get('join_room') == True:
+        session["id"] = user_object.get('user_id')
+        session["room"] = room
         join_room(room)
         print room
     emit('newUser',{'data': user_object}, room = room)
@@ -402,11 +400,6 @@ def on_waiting_for_redeem(user):
 def on_leave(data):
     room = session['id']
     leave_room(room)
-
-@socketio.on('notification')
-def test_message(message):
-    emit('my response', {'data': 'data'}, broadcast = True)
-    return jsonify({'message': 'Todo bien'})
 
 @socketio.on('connect')
 def test_connect():
