@@ -410,7 +410,5 @@ def test_connect():
 def test_disconnect():
     if 'id' in session:
         emit('userLeave',{'data': session["id"]}, room = session["room"])
-        print "Desconectado"
-        print session['id']
-        print session['room']
+        session.clear()
     return jsonify({'message': 'Todo bien'})
