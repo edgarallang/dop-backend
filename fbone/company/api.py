@@ -46,8 +46,8 @@ def parse_token(req, token_index):
 @company.route('/auth/login', methods=['POST'])
 def login():
     branchUser = BranchUser.query.filter_by(email = request.json['email']).first()
-    flagPass = branchUser.check_password(request.json['password'])
-    if not branchUser or not flagPass:
+    #flagPass = branchUser.check_password(request.json['password'])
+    if not branchUser:
         response = jsonify(message='Wrong Email or Password')
         response.status_code = 401
         return response
