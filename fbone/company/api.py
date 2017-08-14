@@ -29,11 +29,11 @@ def create_token(user):
     }
     payload = {
         'id': user.branches_user_id,
-        'iat': datetime.now(),
-        'exp': datetime.now() + timedelta(days=99)
+        'iat': datetime.now()#,
+        #'exp': datetime.now() + timedelta(days=99)
     }
 
-    token = jwt.encode(payload, app.config['TOKEN_SECRET'])
+    token = jwt.encode(payload, app.config['TOKEN_SECRET'], options=options)
     return token.decode('unicode_escape')
 
 def parse_token(req, token_index):
