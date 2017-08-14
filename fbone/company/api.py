@@ -24,13 +24,16 @@ from ..company import Branch, BranchUser
 company = Blueprint('company', __name__, url_prefix='/api/company')
 
 def create_token(user):
+    options = {
+        'verify_exp': False
+    }
     payload = {
         'id': user.branches_user_id,
         'iat': datetime.now()#,
         #'exp': datetime.now() + timedelta(days=99)
     }
 
-    token = jwt.encode(payload, app.config['TOKEN_SECRET'])
+    token = jwt.encode(payload, app.config['TOKEN_SECRET'], options=options)
     return token.decode('unicode_escape')
 
 def parse_token(req, token_index):
