@@ -50,6 +50,7 @@ def login():
     if not branchUser:
         response = jsonify(message='Wrong Email or Password')
         response.status_code = 401
+        print response
         return response
     print
     token = create_token(branchUser)
