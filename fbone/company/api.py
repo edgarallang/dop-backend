@@ -33,7 +33,7 @@ def create_token(user):
         #'exp': datetime.now() + timedelta(days=99)
     }
 
-    token = jwt.encode(payload, app.config['TOKEN_SECRET'], options)
+    token = jwt.encode(payload, app.config['TOKEN_SECRET'])
     return token.decode('unicode_escape')
 
 def parse_token(req, token_index):
