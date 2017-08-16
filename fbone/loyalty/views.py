@@ -165,19 +165,8 @@ def loyalty_redeem():
         user_level = level_up(user_id)
         db.session.commit()
 
-        if 'first_using' in request.json and request.json['first_using'] == False:
-            user_first_exp = UserFirstEXP.query.filter_by(user_id =user_id).first()
-            user_first_exp.first_using = True
-            first_badge = UsersBadges(user_id = user_id,
-                                      badge_id = 1,
-                                      reward_date = datetime.now(),
-                                      type = 'trophy')
-
-            db.session.add(first_badge)
-            db.session.commit()
 
         return jsonify({'data': branch_data.data,
-                        'reward': reward,
                         'level': user_level,
                         'folio': folio })
     else:
