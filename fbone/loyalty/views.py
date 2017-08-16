@@ -142,10 +142,10 @@ def loyalty_redeem():
                                     loyalty_redeem.loyalty_redeem_id)
 
         loyalty_user = LoyaltyUser.query.filter_by(loyalty_id = loyalty_id,
-                                                         user_id = payload['id']).first()
+                                                         user_id = user_id).first()
 
         if not loyalty_user:
-            loyalty_user = LoyaltyUser(user_id = payload['id'],
+            loyalty_user = LoyaltyUser(user_id = user_id,
                                         loyalty_id = loyalty_id,
                                         visit = 1)
 
@@ -168,7 +168,7 @@ def loyalty_redeem():
         if 'first_using' in request.json and request.json['first_using'] == False:
             user_first_exp = UserFirstEXP.query.filter_by(user_id =user_id).first()
             user_first_exp.first_using = True
-            first_badge = UsersBadges(user_id = payload['id'],
+            first_badge = UsersBadges(user_id = user_id,
                                       badge_id = 1,
                                       reward_date = datetime.now(),
                                       type = 'trophy')
