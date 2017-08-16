@@ -112,7 +112,7 @@ def loyalty_get(owner_id):
 @loyalty.route('/user/redeem/by/branch', methods=['POST'])
 def loyalty_redeem():
     branch_id = request.json['branch_id']
-    loyaly_id = request.json['loyalty_id']
+    loyalty = request.json['loyalty_id']
     branch_folio = request.json['branch_folio']
     user_id = request.json['user_id']
     today = datetime.now()
