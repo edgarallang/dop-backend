@@ -70,5 +70,24 @@ class Loyalties(Schema):
                   'visit',
                   'company_id')
 
+class LoyaltyPeople(Schema):
+    class Meta:
+        dateformat = ('iso')
+        fields = ('loyalty_redeem_id',
+                    'name',
+                    'description',
+                    'type',
+                    'goal',
+                    'end_date',
+                    'is_active',
+                    'views',
+                    'date',
+                    'user_id',
+                    'names',
+                    'surnames',
+                    'birth_date',
+                    'privacy_status',
+                    'main_image')
 
 loyalties_schema = Loyalties(many=True)
+loyalty_people_schema = LoyaltyPeople(many=True)

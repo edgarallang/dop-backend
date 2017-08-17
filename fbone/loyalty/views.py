@@ -77,6 +77,24 @@ def set_experience(user_id, exp):
         return {'message': 'experiencia asignada %d' % exp,
                            'badges': badges.data }
 
+    
+@loyalty.route('/<int:owner_id>/people', method=['GET'])
+def loyalty_get_people(owner_id):
+    if request.headers.get('Authorization'):
+        token_index = False
+        payload = parse_token(request, token_index)
+        query = "SELECT LR.loyalty_redeem_id, L.name, L.description, L.type, \
+                        L.goal, L.end_date, L.is_active, L.views, LR.date, U.user_id \
+                        U.names, U.surnames, U.birth_date, U.privacy_status, U.main_image \
+                 FROM loyalty_redeem as LR \
+                    INNER JOIN loyalty as L on L.loyalty_id = LR.loyalty_id \
+                    INNER JOIN users as U on U.user_id = LR.user_id \
+                    WHERE L.owner_id = %d ORDER BY LR.loyalty_id, LR.date DESC" % (owner_id)
+        
+        query_result = db.enginge.execute(query)
+        loyal_people_list = loyalty_people_schema.dump(loyalty)
+        return jsonify({ 'data': loyal_people_list.data })
+    
 @loyalty.route('/all/get/', methods=['GET'])
 def loyalty_all_get():
     token_index = True
@@ -98,6 +116,7 @@ def loyalty_all_get():
 def loyalty_get(owner_id):
     token_index = True
     payload = parse_token(request, token_index)
+    
     query = "SELECT L.loyalty_id, L.owner_id, L.name, L.description, L.type, \
                         L.goal, L.is_global, L.end_date, LD.logo, LU.visit, B.company_id \
                 FROM loyalty as L \
@@ -105,6 +124,7 @@ def loyalty_get(owner_id):
                 INNER JOIN loyalty_design as LD ON LD.loyalty_id = L.loyalty_id \
                 LEFT JOIN loyalty_user as LU ON LU.loyalty_id = L.loyalty_id AND LU.user_id = %d \
                 WHERE L.owner_id = %d" % (payload['id'], owner_id)
+    
     loyalty = db.engine.execute(query)
     loyalty_list = loyalties_schema.dump(loyalty)
     return jsonify({'data': loyalty_list.data})
@@ -217,3 +237,5 @@ def add_view():
 
         return jsonify({'message': 'vistas actualizada'})
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
+
+
