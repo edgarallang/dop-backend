@@ -78,7 +78,7 @@ def set_experience(user_id, exp):
                            'badges': badges.data }
 
     
-@loyalty.route('/<int:owner_id>/people', method=['GET'])
+@loyalty.route('/<int:owner_id>/people', methods=['GET'])
 def loyalty_get_people(owner_id):
     if request.headers.get('Authorization'):
         token_index = False
