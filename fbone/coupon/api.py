@@ -1431,8 +1431,7 @@ def coupons_with_loyalty(branch_id):
                          UNION \
                          (SELECT \
                             coupon_id AS "object_id",name,description, \'campaign\' AS type, \'\' AS logo \
-                            FROM coupons WHERE owner_id = %d AND deleted = false AND coupons.available > 0 AND active=true AND coupons.end_date > now() ORDER BY coupons.start_date DESC) \
-                            ' % (branch_id, branch_id)
+                            FROM coupons WHERE owner_id = %d AND deleted = false AND coupons.available > 0 AND active=true AND coupons.end_date > now() ORDER BY coupons.start_date DESC) ORDER BY type' % (branch_id, branch_id)
     
     campaigns = db.engine.execute(coupons_with_loyalty)
     campaigns_list = coupons_with_loyalty_schema.dump(campaigns)

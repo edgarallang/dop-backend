@@ -236,7 +236,8 @@ class BranchUserSchema(Schema):
                   'name',
                   'banner',
                   'logo',
-                  'credits')
+                  'credits',
+                  'folio')
 
 class BranchesProfile(Schema):
     class Meta:

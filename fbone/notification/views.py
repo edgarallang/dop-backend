@@ -352,6 +352,11 @@ def get_notifications_offset():
 
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
+@notification.route('/test/socket/redeem/', methods=['GET'])
+def test_socket_redeem():
+    socketio.emit('event', {'data': 'data'}, broadcast = True)
+    return jsonify({'message': 'Todo bien'})
+
 @socketio.on('joinRoom')
 def on_join_room(message):
     payload = parse_token_socket(message)
@@ -361,20 +366,49 @@ def on_join_room(message):
     emit('joined', {'data': 'Joined to room'}, room = room)
     return jsonify({'message': 'Todo bien'})
 
+
+@socketio.on('waitingForRedeemAdmin')
+def on_waiting_for_redeem(message):
+    room = message
+    join_room(room)
+    print room
+    emit('newAdmin',{'data':'new_admin'}, room = room)
+    return jsonify({'message': 'admin'})
+
+#Notify Admin
+@socketio.on('waitingForRedeemUser')
+def on_waiting_for_redeem(user):
+    user_object = json.loads(user)
+    room = user_object.get('room')
+    if user_object.get('join_room') == True:
+        #session["id"] = user_object.get('user_id')
+        #session["room"] = room
+        join_room(room)
+        print room
+    emit('newUser',{'data': user_object}, room = room)
+    return jsonify({'message': 'user'})
+
+@socketio.on('notifyAdmin')
+def on_waiting_for_redeem(user):
+    user_object = json.loads(user)
+    
+    emit('newUser',{'data': user_object}, room = user_object.get('room'))
+    return jsonify({'message': 'user'})
+#-----
+
 @socketio.on('leave')
 def on_leave(data):
     room = session['id']
     leave_room(room)
 
-@socketio.on('notification')
-def test_message(message):
-    emit('my response', {'data': 'data'}, broadcast = True)
-    return jsonify({'message': 'Todo bien'})
-
 @socketio.on('connect')
 def test_connect():
+    print "Conectado"
     return jsonify({'message': 'Todo bien'})
 
 @socketio.on('disconnect')
 def test_disconnect():
+    #if 'id' in session:
+    #    emit('userLeave',{'data': session["id"]}, room = session["room"])
+    #    session.clear()
     return jsonify({'message': 'Todo bien'})

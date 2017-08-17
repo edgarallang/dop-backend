@@ -24,10 +24,13 @@ from ..company import Branch, BranchUser
 company = Blueprint('company', __name__, url_prefix='/api/company')
 
 def create_token(user):
+    options = {
+        'verify_exp': False
+    }
     payload = {
         'id': user.branches_user_id,
-        'iat': datetime.now(),
-        'exp': datetime.now() + timedelta(days=99)
+        'iat': datetime.now()#,
+        #'exp': datetime.now() + timedelta(days=99)
     }
 
     token = jwt.encode(payload, app.config['TOKEN_SECRET'])
@@ -42,11 +45,12 @@ def parse_token(req, token_index):
 
 @company.route('/auth/login', methods=['POST'])
 def login():
-    branchUser = BranchUser.query.filter_by(email = request.json['email']).first()
-    flagPass = branchUser.check_password(request.json['password'])
-    if not branchUser or not flagPass:
+    branchUser = BranchUser.query.filter_by(email = request.json['email'], password = request.json['password']).first()
+    #flagPass = branchUser.check_password(request.json['password'])
+    if not branchUser:
         response = jsonify(message='Wrong Email or Password')
         response.status_code = 401
+        print response
         return response
     print
     token = create_token(branchUser)
