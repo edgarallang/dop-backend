@@ -93,7 +93,7 @@ def loyalty_get_people(owner_id):
                     WHERE L.owner_id = %d ORDER BY LR.loyalty_id, LR.date DESC" % (owner_id)
         
         query_result = db.engine.execute(query)
-        loyal_people_list = loyalty_people_schema.dump(loyalty)
+        loyal_people_list = loyalty_people_schema.dump(query_result)
         return jsonify({ 'data': loyal_people_list.data })
     
 @loyalty.route('/all/get/', methods=['GET'])
