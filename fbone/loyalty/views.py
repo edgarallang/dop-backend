@@ -91,7 +91,7 @@ def loyalty_get_people(owner_id):
                     INNER JOIN users as U on U.user_id = LR.user_id \
                     WHERE L.owner_id = %d ORDER BY LR.loyalty_id, LR.date DESC" % (owner_id)
         
-        query_result = db.enginge.execute(query)
+        query_result = db.engine.execute(query)
         loyal_people_list = loyalty_people_schema.dump(loyalty)
         return jsonify({ 'data': loyal_people_list.data })
     
