@@ -87,7 +87,8 @@ class LoyaltyPeople(Schema):
                     'surnames',
                     'birth_date',
                     'privacy_status',
-                    'main_image')
+                    'main_image',
+                    'logo')
 
 loyalties_schema = Loyalties(many=True)
 loyalty_people_schema = LoyaltyPeople(many=True)
