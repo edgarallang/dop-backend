@@ -84,9 +84,10 @@ def loyalty_get_person(owner_id, user_id):
         payload = parse_token(request, token_index)
         query = "SELECT LR.loyalty_redeem_id, L.name, L.description, L.type, \
                         L.goal, L.end_date, L.is_active, L.views, LR.date, U.user_id, \
-                        U.names, U.surnames, U.birth_date, U.privacy_status, UI.main_image \
+                        U.names, U.surnames, U.birth_date, U.privacy_status, UI.main_image, LD.logo \
                  FROM loyalty_redeem as LR \
                     INNER JOIN loyalty as L on L.loyalty_id = LR.loyalty_id \
+                    LEFT JOIN loyalty_design as LD ON LD.loyalty_id = L.loyalty_id \
                     INNER JOIN users as U on U.user_id = LR.user_id \
                     INNER JOIN users_image as UI on U.user_id = UI.user_id \
                     WHERE L.owner_id = %d AND LR.user_id = %d ORDER BY date DESC" % (owner_id, user_id)
