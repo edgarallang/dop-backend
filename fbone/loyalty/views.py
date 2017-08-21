@@ -155,6 +155,7 @@ def loyalty_redeem():
     loyalty_id = request.json['loyalty_id']
     branch_folio = request.json['branch_folio']
     user_id = request.json['user_id']
+    room = request.json['room']
     today = datetime.now()
 
     loyalty = Loyalty.query.get(loyalty_id)
@@ -162,6 +163,7 @@ def loyalty_redeem():
     if loyalty.is_global:
         branch = Branch.query.filter_by(folio = branch_folio, silent = True).first()
         if not branch:
+
             return jsonify({'message':'error'})
 
     recently_used = LoyaltyRedeem.query.filter_by(loyalty_id = loyalty_id,
@@ -205,12 +207,14 @@ def loyalty_redeem():
         user_level = level_up(user_id)
         db.session.commit()
 
+        socketio.emit('loyaltyRedeem',{'data': branch_data.data}, room = room)
 
         return jsonify({'data': branch_data.data,
                         'level': user_level,
                         'folio': folio })
     else:
         minutes_left = 480 - minutes
+        socketio.emit('loyaltyFail',{'message': 'error','minutes': str(minutes)}, room = room)
         return jsonify({ 'message': 'error', "minutes": str(minutes_left) })
 
 
