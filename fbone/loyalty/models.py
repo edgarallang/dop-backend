@@ -79,7 +79,8 @@ class LoyaltyPersonStats(Schema):
                   'type',
                   'goal',
                   'is_global',
-                  'visit')
+                  'visit',
+                  'logo')
 
 class LoyaltyPeople(Schema):
     class Meta:

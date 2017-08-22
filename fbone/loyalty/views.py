@@ -101,10 +101,11 @@ def loyalty_get_person_stats(owner_id, user_id):
     if request.headers.get('Authorization'):
         token_index = False
         payload = parse_token(request, token_index)
-        query = "select LU.loyalty_id, L.name, L.description, L.type, \
-                    L.goal, L.end_date, L.is_active, LU.visit \
+        query = "SELECT LU.loyalty_id, L.name, L.is_global, L.description, L.type, \
+                    L.goal, L.end_date, L.is_active, LU.visit, LD.logo \
                  FROM loyalty_user as LU \
                  INNER JOIN loyalty as L on L.loyalty_id = LU.loyalty_id \
+                 INNER JOIN loyalty_design as LD ON LD.loyalty_id = L.loyalty_id \
                  INNER JOIN users as U on U.user_id = LU.user_id \
                  WHERE L.owner_id = %d AND LU.user_id = %d" % (owner_id, user_id)
         
