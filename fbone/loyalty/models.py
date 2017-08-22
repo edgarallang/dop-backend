@@ -70,6 +70,17 @@ class Loyalties(Schema):
                   'visit',
                   'company_id')
 
+class LoyaltyPersonStats(Schema):
+    class Meta:
+        dateformat = ('iso')
+        fields = ('loyalty_id',
+                  'name',
+                  'description',
+                  'type',
+                  'goal',
+                  'is_global',
+                  'visit')
+
 class LoyaltyPeople(Schema):
     class Meta:
         dateformat = ('iso')
@@ -92,3 +103,4 @@ class LoyaltyPeople(Schema):
 
 loyalties_schema = Loyalties(many=True)
 loyalty_people_schema = LoyaltyPeople(many=True)
+loyalty_person_stats_schema = LoyaltyPersonStats(many=True)
