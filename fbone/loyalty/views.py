@@ -96,7 +96,7 @@ def loyalty_get_person(owner_id, user_id):
         loyal_people_list = loyalty_people_schema.dump(query_result)
         return jsonify({ 'data': loyal_people_list.data })
     
-@loyalty.route('<int:owner_id>/person/<int:user_id>/stats/get', methods=['GET'])
+@loyalty.route('/<int:owner_id>/person/<int:user_id>/stats/get', methods=['GET'])
 def loyalty_get_person_stats(owner_id, user_id):
     if request.headers.get('Authorization'):
         token_index = False
