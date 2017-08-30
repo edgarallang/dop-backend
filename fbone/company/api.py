@@ -545,7 +545,7 @@ def monthly_suscription(branch_id):
                 subscription = customer.subscription.update({
                     "plan": "plan-mensual-pro"
                 })
-                
+                print subscription
                 if subscription.status == 'active':
                     branch.pro = True
                     db.session.commit()
@@ -560,7 +560,7 @@ def monthly_suscription(branch_id):
             subscription = customer.subscription.update({
                 "plan": "plan-mensual-pro"
             })
-
+            print subscription
             if subscription.status == 'active':
                 branch.pro = True
                 db.session.commit()
