@@ -10,6 +10,7 @@ import base64
 from PIL import Image
 import StringIO
 conekta.api_key = 'key_ReaoWd2MyxP5QdUWKSuXBQ'
+conekta.api_version = "2.0.0"
 conekta.locale = 'es'
 
 from binascii import a2b_base64
@@ -518,6 +519,36 @@ def credit_add(branch_id):
         return jsonify({'message': 'Oops! algo salió mal, seguramente fue tu tarjeta sobregirada'})
 
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
+
+@company.route('/<int:branch_id>/pro/suscription', methods = ['GET', 'POST'])
+def monthly_suscription(branch_id):
+    if request.headers.get('Authorization'):
+        token_index = False
+        payload = parse_token(request, token_index)
+        payment_data = request.json['paymentData']
+        branch = Branch.query.get(branch_id)
+        company = Company.query.get(branch.company_id)
+        
+        if not branch.pro
+            try:
+              customer = conekta.Customer.create({
+                'name': branch.name,
+                'email': company.email,
+                'phone': branch.phone,
+                'payment_sources': [{
+                  'type': 'card',
+                  'token_id': request.json['token_id']
+                }]
+              })
+            except conekta.ConektaError as e:
+              print e.message
+            
+            subscription = customer.subscription.update({
+              "plan": "plan-mensual-pro"
+            })
+        else:
+            return jsonify({'message': 'Oops! ya eras pro'})
+        return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
 @company.route('/<int:branch_id>/config/set', methods = ['GET', 'POST'])
 def set_config(branch_id):
