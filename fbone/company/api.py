@@ -546,7 +546,7 @@ def monthly_suscription(branch_id):
                     "plan": "plan-mensual-pro"
                 })
                 
-                if suscription.status == 'active':
+                if subscription.status == 'active':
                     branch.pro = True
                     db.session.commit()
                     return jsonify({'data': 'Felicidades ya eres PRO'})
@@ -558,10 +558,10 @@ def monthly_suscription(branch_id):
         elif not branch.pro:
             customer = conekta.Customer.find(company.conekta_id)
             subscription = customer.subscription.update({
-                    "plan": "plan-mensual-pro"
-                })
+                "plan": "plan-mensual-pro"
+            })
 
-            if suscription.status == 'active':
+            if subscription.status == 'active':
                 branch.pro = True
                 db.session.commit()
                 return jsonify({'data': 'Felicidades ya eres PRO'})
