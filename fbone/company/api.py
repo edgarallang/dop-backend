@@ -547,7 +547,7 @@ def monthly_suscription(branch_id):
               "plan":"plan-mensual-pro"
             })
         
-        elif:
+        elif not branch.pro:
             customer = conekta.Customer.find(company.conekta_id)
             subscription = customer.createSubscription({
               "plan":"plan-mensual-pro"
