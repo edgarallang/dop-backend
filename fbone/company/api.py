@@ -531,29 +531,29 @@ def monthly_suscription(branch_id):
         
         if not company.conekta_id:
             try:
-              customer = conekta.Customer.create({
-                'name': branch.name,
-                'email': company.email,
-                'phone': branch.phone,
-                'payment_sources': [{
-                  'type': 'card',
-                  'token_id': request.json['token_id']
-                }]
-              })
+                customer = conekta.Customer.create({
+                    'name': branch.name,
+                    'email': company.email,
+                    'phone': branch.phone,
+                    'payment_sources': [{
+                      'type': 'card',
+                      'token_id': request.json['token_id']
+                    }]
+                })
+              
+                subscription = customer.subscription.update({
+                    "plan": "plan-mensual-pro"
+                })
+                company.conekta_id = customer.id
+                db.session.commit()
+                return jsonify({'data': subscription})
             except conekta.ConektaError as e:
               print e.message
-            
-            subscription = customer.createSubscription({
-              "plan":"plan-mensual-pro"
-            })
-            company.conekta_id = customer.id
-            db.session.commit()
-            return jsonify({'data': subscription})
         
         elif not branch.pro:
             customer = conekta.Customer.find(company.conekta_id)
-            subscription = customer.createSubscription({
-              "plan":"plan-mensual-pro"
+            subscription = customer.subscription.update({
+                "plan": "plan-mensual-pro"
             })
             
             return jsonify({'data': subscription})
