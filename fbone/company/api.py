@@ -540,23 +540,33 @@ def monthly_suscription(branch_id):
                       'token_id': request.json['token_id']
                     }]
                 })
-              
+                company.conekta_id = customer.id
+                db.session.commit()
                 subscription = customer.subscription.update({
                     "plan": "plan-mensual-pro"
                 })
-                company.conekta_id = customer.id
-                db.session.commit()
-                return jsonify({'data': subscription})
+                
+                if suscription.status == 'active':
+                    branch.pro = True
+                    db.session.commit()
+                    return jsonify({'data': 'Felicidades ya eres PRO'})
+                else:
+                    return jsonify({'data': 'algo falló, tal vez sea tu tarjeta'})
             except conekta.ConektaError as e:
               print e.message
         
         elif not branch.pro:
             customer = conekta.Customer.find(company.conekta_id)
             subscription = customer.subscription.update({
-                "plan": "plan-mensual-pro"
-            })
-            
-            return jsonify({'data': subscription})
+                    "plan": "plan-mensual-pro"
+                })
+
+            if suscription.status == 'active':
+                branch.pro = True
+                db.session.commit()
+                return jsonify({'data': 'Felicidades ya eres PRO'})
+            else:
+                return jsonify({'data': 'algo falló, tal vez sea tu tarjeta'})
         return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
 @company.route('/<int:branch_id>/config/set', methods = ['GET', 'POST'])
