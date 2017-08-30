@@ -543,11 +543,6 @@ def monthly_suscription(branch_id):
             except conekta.ConektaError as e:
               print e.message
             
-            source = customer.createPaymentSource({
-              "type": "card",
-              "token_id": request.json['token_id']
-            })
-            
             subscription = customer.createSubscription({
               "plan":"plan-mensual-pro"
             })
