@@ -529,7 +529,7 @@ def monthly_suscription(branch_id):
         branch = Branch.query.get(branch_id)
         company = Company.query.get(branch.company_id)
         
-        if not branch.pro:
+        if not company.conekta_id:
             try:
               customer = conekta.Customer.create({
                 'name': branch.name,
@@ -542,12 +542,18 @@ def monthly_suscription(branch_id):
               })
             except conekta.ConektaError as e:
               print e.message
-            
-            subscription = customer.subscription.update({
-              "plan": "plan-mensual-pro"
+    
+            subscription = customer.createSubscription({
+              "plan":"plan-mensual-pro"
             })
-        else:
-            return jsonify({'message': 'Oops! ya eras pro'})
+        
+        elif:
+            customer = conekta.Customer.find(company.conekta_id)
+            subscription = customer.createSubscription({
+              "plan":"plan-mensual-pro"
+            })
+            
+            return jsonify({'data': subscription})
         return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
 @company.route('/<int:branch_id>/config/set', methods = ['GET', 'POST'])

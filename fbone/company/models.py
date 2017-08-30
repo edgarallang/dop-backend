@@ -16,6 +16,7 @@ class Company(db.Model):
     name = Column(db.String(STRING_LEN), nullable = False, unique = False)
     email = Column(db.String(STRING_LEN), nullable = False, unique = True)
     credits = Column(db.Integer)
+    conekta_id = Column(db.String(STRING_LEN), nullable = True)
 
     branches = db.relationship("Branch", uselist = False, backref = "companies")
 
