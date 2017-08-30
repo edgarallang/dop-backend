@@ -542,10 +542,18 @@ def monthly_suscription(branch_id):
               })
             except conekta.ConektaError as e:
               print e.message
-    
+            
+            source = customer.createPaymentSource({
+              "type": "card",
+              "token_id": request.json['token_id']
+            })
+            
             subscription = customer.createSubscription({
               "plan":"plan-mensual-pro"
             })
+            company.conekta_id = customer.id
+            db.session.commit()
+            return jsonify({'data': subscription})
         
         elif not branch.pro:
             customer = conekta.Customer.find(company.conekta_id)
