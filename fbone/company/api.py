@@ -529,7 +529,7 @@ def monthly_suscription(branch_id):
         branch = Branch.query.get(branch_id)
         company = Company.query.get(branch.company_id)
         
-        if not branch.pro
+        if not branch.pro:
             try:
               customer = conekta.Customer.create({
                 'name': branch.name,
