@@ -520,13 +520,13 @@ def credit_add(branch_id):
 
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
   
-@company.route('/payment/method/add', methods = ['POST'])
-def add_payment_method():
+@company.route('/<int:branch_id>/payment/method/add', methods = ['POST'])
+def add_payment_method(branch_id):
     if request.headers.get('Authorization'):
         token_index = False
         payload = parse_token(request, token_index)
 
-        branch = Branch.query.get(payload['id'])
+        branch = Branch.query.get(branch_id)
         company = Company.query.get(branch.company_id)
         
         if not company.conekta_id:
