@@ -546,7 +546,8 @@ def add_payment_method():
                 return jsonify({'data': 'Se agregó metodo de pago'})
             except conekta.ConektaError as e:
                 print e.message
-        
+                return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, échale ganas',
+                                'error': e.message })
         else:
             try:
                 customer = conekta.Customer.find(company.conekta_id)
