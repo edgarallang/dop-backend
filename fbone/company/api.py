@@ -525,54 +525,7 @@ def add_payment_method():
     if request.headers.get('Authorization'):
         token_index = False
         payload = parse_token(request, token_index)
-        branch = Branch.query.get(payload['id'])
-        company = Company.query.get(branch.company_id)
-        
-        if not company.conekta_id:
-            try:
-                customer = conekta.Customer.create({
-                    'name': branch.name,
-                    'email': company.email,
-                    'phone': branch.phone,
-                    'payment_sources': [{
-                      'type': 'card',
-                      'token_id': request.json['token_id']
-                    }]
-                })
-                company.conekta_id = customer.id
-                db.session.commit()
-                subscription = customer.subscription.update({
-                    "plan": "plan-mensual-pro"
-                })
-                print subscription
-                if subscription.status == 'active':
-                    branch.pro = True
-                    db.session.commit()
-                    return jsonify({'data': 'Felicidades ya eres PRO'})
-                else:
-                    return jsonify({'data': 'algo falló, tal vez sea tu tarjeta'})
-            except conekta.ConektaError as e:
-              print e.message
-        
-        else:
-            customer = conekta.Customer.find(company.conekta_id)
-            subscription = customer.subscription.update({
-                "plan": "plan-mensual-pro"
-            })
-            print subscription
-            if subscription.status == 'active':
-                branch.pro = True
-                db.session.commit()
-                return jsonify({'data': 'Felicidades ya eres PRO'})
-            else:
-                return jsonify({'data': 'algo falló, tal vez sea tu tarjeta'})
-        return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
-@company.route('/<int:branch_id>/pro/suscription', methods = ['GET', 'POST'])
-def monthly_suscription(branch_id):
-    if request.headers.get('Authorization'):
-        token_index = False
-        payload = parse_token(request, token_index)
         branch = Branch.query.get(payload['id'])
         company = Company.query.get(branch.company_id)
         
@@ -607,6 +560,55 @@ def monthly_suscription(branch_id):
                 print e.message
                 return jsonify({'data': 'algo falló, intenta de nuevo'})
         return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, échale ganas'})
+
+@company.route('/<int:branch_id>/pro/suscription', methods = ['GET', 'POST'])
+def monthly_suscription(branch_id):
+    if request.headers.get('Authorization'):
+        token_index = False
+        payload = parse_token(request, token_index)
+        payment_data = request.json['paymentData']
+        branch = Branch.query.get(branch_id)
+        company = Company.query.get(branch.company_id)
+        
+        if not company.conekta_id:
+            try:
+                customer = conekta.Customer.create({
+                    'name': branch.name,
+                    'email': company.email,
+                    'phone': branch.phone,
+                    'payment_sources': [{
+                      'type': 'card',
+                      'token_id': request.json['token_id']
+                    }]
+                })
+                company.conekta_id = customer.id
+                db.session.commit()
+                subscription = customer.subscription.update({
+                    "plan": "plan-mensual-pro"
+                })
+        
+                if subscription.status == 'active':
+                    branch.pro = True
+                    db.session.commit()
+                    return jsonify({'data': 'Felicidades ya eres PRO'})
+                else:
+                    return jsonify({'data': 'algo falló, tal vez sea tu tarjeta'})
+            except conekta.ConektaError as e:
+              print e.message
+        
+        elif not branch.pro:
+            customer = conekta.Customer.find(company.conekta_id)
+            subscription = customer.subscription.update({
+                "plan": "plan-mensual-pro"
+            })
+        
+            if subscription.status == 'active':
+                branch.pro = True
+                db.session.commit()
+                return jsonify({'data': 'Felicidades ya eres PRO'})
+            else:
+                return jsonify({'data': 'algo falló, tal vez sea tu tarjeta'})
+        return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
 @company.route('/<int:branch_id>/config/set', methods = ['GET', 'POST'])
 def set_config(branch_id):
