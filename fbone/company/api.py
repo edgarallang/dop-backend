@@ -520,7 +520,7 @@ def credit_add(branch_id):
 
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
   
-@company.route('/payment/method/add>', methods = ['POST'])
+@company.route('/payment/method/add', methods = ['POST'])
 def add_payment_method():
     if request.headers.get('Authorization'):
         token_index = False
