@@ -185,7 +185,7 @@ def select_branch_user():
     if company.conekta_id:
       customer = conekta.Customer.find(company.conekta_id)
       return jsonify({ 'data': branch.data,
-                       'payment_sources': customer.payment_sources })
+                       'payment_sources': customer })
 
     return jsonify({ 'data': branch.data })
 
@@ -194,7 +194,6 @@ def update_branch_user(branchId):
     Branch.query.filter_by(branch_id=branchId).update({"name": "Bob Marley"})
 
     return jsonify({'data': ':P'})
-
 
 ALLOWED_EXTENSIONS = set(['png'])
 
@@ -567,8 +566,8 @@ def add_payment_method(branch_id):
                 return jsonify({'data': 'Se agregó metodo de pago'})
             except conekta.conektaError as e:
                 print e.message
-                return jsonify({'data': 'algo falló, intenta de nuevo'})
-        return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, échale ganas'})
+                return jsonify({ 'data': 'algo falló, intenta de nuevo' })
+        return jsonify({ 'message': 'Oops! algo salió mal, intentalo de nuevo, échale ganas' })
 
 @company.route('/<int:branch_id>/pro/suscription', methods = ['GET', 'POST'])
 def monthly_suscription(branch_id):
