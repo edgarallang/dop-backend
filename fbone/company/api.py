@@ -183,14 +183,9 @@ def select_branch_user():
                                   BranchUser.query.get(request.json['branches_user_id']).branch_id)
                                     .company_id)
     if company.conekta_id:
-      try:
-          customer = conekta.Customer.find(company.conekta_id)
-          return jsonify({ 'data': branch.data,
-                           'payment_sources': customer.payment_sources })
-      except conekta.conektaError as e:
-          print e.message
-          return jsonify({ 'data': branch.data,
-                           'error': 'Falló Conekta para datos de pago '})
+      customer = conekta.Customer.find(company.conekta_id)
+      return jsonify({ 'data': branch.data,
+                       'payment_sources': customer.payment_sources })
 
     return jsonify({ 'data': branch.data })
 
