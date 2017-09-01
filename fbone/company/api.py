@@ -175,12 +175,21 @@ def select_branch_user():
                     WHERE branches_user.branches_user_id = %d' % request.json['branches_user_id']
 
     branch_data = db.engine.execute(query)
-    print branch_data
     branch = branch_user_schema.dump(branch_data)
     # selectedBranchUser = BranchUser.query.get(request.json['branches_user_id'])
     # branchUser = branch_user_schema.dump(selectedBranchUser)
+    company = Company.query.get(branch.company_id)
+    if company.conekta_id:
+      try:
+          customer = conekta.Customer.find(company.conekta_id)
+          return jsonify({ 'data': branch.data,
+                           'payment_sources': customer.payment_sources })
+      except conekta.conektaError as e:
+          print e.message
+          return jsonify({ 'data': branch.data,
+                           'error': 'Falló Conekta para datos de pago '})
 
-    return jsonify({'data': branch.data})
+    return jsonify({ 'data': branch.data })
 
 @company.route('/branch/<int:branchId>/update ', methods=['GET'])
 def update_branch_user(branchId):
