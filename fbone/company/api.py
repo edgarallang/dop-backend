@@ -167,7 +167,8 @@ def select_branch_tool_profile(branch_id):
 def select_branch_user():
     query = 'SELECT branches.*, branches_user.branches_user_id, \
                     branches_user.name as user_name, branches_user.email, logo, banner, credits, \
-                    branches_location.latitude, branches_location.longitude FROM branches_user \
+                    branches_location.latitude, branches_location.longitude \
+                FROM branches_user \
                     LEFT JOIN branches ON branches_user.branch_id = branches.branch_id \
                     LEFT JOIN branches_location ON branches_user.branch_id = branches_location.branch_id \
                     LEFT JOIN companies ON branches.company_id = companies.company_id \
@@ -178,7 +179,7 @@ def select_branch_user():
     branch = branch_user_schema.dump(branch_data)
     # selectedBranchUser = BranchUser.query.get(request.json['branches_user_id'])
     # branchUser = branch_user_schema.dump(selectedBranchUser)
-    company = Company.query.get(branch.company_id)
+    company = Company.query.get(branch.data[0].company_id)
     if company.conekta_id:
       try:
           customer = conekta.Customer.find(company.conekta_id)
