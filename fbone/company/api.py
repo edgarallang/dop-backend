@@ -519,14 +519,14 @@ def credit_add(branch_id):
         return jsonify({'message': 'Oops! algo salió mal, seguramente fue tu tarjeta sobregirada'})
 
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
-
-@company.route('/<int:branch_id>/pro/suscription', methods = ['GET', 'POST'])
-def monthly_suscription(branch_id):
+  
+@company.route('/payment/method/add>', methods = ['POST'])
+def add_payment_method():
     if request.headers.get('Authorization'):
         token_index = False
         payload = parse_token(request, token_index)
         payment_data = request.json['paymentData']
-        branch = Branch.query.get(branch_id)
+        branch = Branch.query.get(payload)
         company = Company.query.get(branch.company_id)
         
         if not company.conekta_id:
@@ -555,7 +555,7 @@ def monthly_suscription(branch_id):
             except conekta.ConektaError as e:
               print e.message
         
-        elif not branch.pro:
+        else:
             customer = conekta.Customer.find(company.conekta_id)
             subscription = customer.subscription.update({
                 "plan": "plan-mensual-pro"
@@ -568,6 +568,46 @@ def monthly_suscription(branch_id):
             else:
                 return jsonify({'data': 'algo falló, tal vez sea tu tarjeta'})
         return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
+
+@company.route('/<int:branch_id>/pro/suscription', methods = ['GET', 'POST'])
+def monthly_suscription(branch_id):
+    if request.headers.get('Authorization'):
+        token_index = False
+        payload = parse_token(request, token_index)
+        branch = Branch.query.get(payload['id'])
+        company = Company.query.get(branch.company_id)
+        
+        if not company.conekta_id:
+            try:
+                customer = conekta.Customer.create({
+                    'name': branch.name,
+                    'email': company.email,
+                    'phone': branch.phone,
+                    'payment_sources': [{
+                      'type': 'card',
+                      'token_id': request.json['token_id']
+                    }]
+                })
+                company.conekta_id = customer.id
+                db.session.commit()
+            
+                return jsonify({'data': 'Se agregó metodo de pago'})
+            except conekta.ConektaError as e:
+                print e.message
+        
+        else:
+            try:
+                customer = conekta.Customer.find(company.conekta_id)
+                source = customer.createPaymentSource({
+                  "type": "card",
+                  "token_id": request.json['token_id']
+                })
+                
+                return jsonify({'data': 'Se agregó metodo de pago'})
+            except conekta.conektaError as e:
+                print e.message
+                return jsonify({'data': 'algo falló, intenta de nuevo'})
+        return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, échale ganas'})
 
 @company.route('/<int:branch_id>/config/set', methods = ['GET', 'POST'])
 def set_config(branch_id):
