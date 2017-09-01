@@ -192,6 +192,7 @@ def select_branch_user():
                            "brand": customer.payment_sources[0].brand,
                            "name": customer.payment_sources[0].name
                         }
+                     })
 
     return jsonify({ 'data': branch.data })
 
