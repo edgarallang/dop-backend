@@ -525,8 +525,7 @@ def add_payment_method():
     if request.headers.get('Authorization'):
         token_index = False
         payload = parse_token(request, token_index)
-        payment_data = request.json['paymentData']
-        branch = Branch.query.get(payload)
+        branch = Branch.query.get(payload['id'])
         company = Company.query.get(branch.company_id)
         
         if not company.conekta_id:
