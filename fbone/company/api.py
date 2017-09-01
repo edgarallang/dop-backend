@@ -179,7 +179,9 @@ def select_branch_user():
     branch = branch_user_schema.dump(branch_data)
     # selectedBranchUser = BranchUser.query.get(request.json['branches_user_id'])
     # branchUser = branch_user_schema.dump(selectedBranchUser)
-    company = Company.query.get(branch.data[0].company_id)
+    company = Company.query.get(Branch.query.get(
+                                  BranchUser.query.get(request.json['branches_user_id']).branch_id)
+                                    .company_id)
     if company.conekta_id:
       try:
           customer = conekta.Customer.find(company.conekta_id)
