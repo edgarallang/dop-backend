@@ -182,7 +182,7 @@ def select_branch_user():
     company = Company.query.get(Branch.query.get(
                                   BranchUser.query.get(request.json['branches_user_id']).branch_id)
                                     .company_id)
-    if company.conekta_id:
+    #if company.conekta_id:
 #      customer = conekta.Customer.find(company.conekta_id)
 #      return jsonify({ 'data': branch.data,
   #                     'payment_sources': customer })
