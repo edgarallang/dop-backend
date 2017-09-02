@@ -10,6 +10,7 @@ import base64
 from PIL import Image
 import StringIO
 conekta.api_key = 'key_ReaoWd2MyxP5QdUWKSuXBQ'
+conekta.api_version = "2.0.0"
 conekta.locale = 'es'
 
 from binascii import a2b_base64
@@ -166,7 +167,8 @@ def select_branch_tool_profile(branch_id):
 def select_branch_user():
     query = 'SELECT branches.*, branches_user.branches_user_id, \
                     branches_user.name as user_name, branches_user.email, logo, banner, credits, \
-                    branches_location.latitude, branches_location.longitude FROM branches_user \
+                    branches_location.latitude, branches_location.longitude \
+                FROM branches_user \
                     LEFT JOIN branches ON branches_user.branch_id = branches.branch_id \
                     LEFT JOIN branches_location ON branches_user.branch_id = branches_location.branch_id \
                     LEFT JOIN companies ON branches.company_id = companies.company_id \
@@ -174,19 +176,31 @@ def select_branch_user():
                     WHERE branches_user.branches_user_id = %d' % request.json['branches_user_id']
 
     branch_data = db.engine.execute(query)
-    print branch_data
     branch = branch_user_schema.dump(branch_data)
     # selectedBranchUser = BranchUser.query.get(request.json['branches_user_id'])
     # branchUser = branch_user_schema.dump(selectedBranchUser)
+    company = Company.query.get(Branch.query.get(
+                                  BranchUser.query.get(request.json['branches_user_id']).branch_id)
+                                    .company_id)
+    if company.conekta_id:
+      customer = conekta.Customer.find(company.conekta_id)
+      return jsonify({ 'data': branch.data,
+                       'payment_sources': {
+                           "last4": customer.payment_sources[0].last4,
+                           "exp_month": customer.payment_sources[0].exp_month,
+                           "exp_year": customer.payment_sources[0].exp_year,
+                           "brand": customer.payment_sources[0].brand,
+                           "name": customer.payment_sources[0].name
+                        }
+                     })
 
-    return jsonify({'data': branch.data})
+    return jsonify({ 'data': branch.data })
 
 @company.route('/branch/<int:branchId>/update ', methods=['GET'])
 def update_branch_user(branchId):
     Branch.query.filter_by(branch_id=branchId).update({"name": "Bob Marley"})
 
     return jsonify({'data': ':P'})
-
 
 ALLOWED_EXTENSIONS = set(['png'])
 
@@ -518,6 +532,98 @@ def credit_add(branch_id):
         return jsonify({'message': 'Oops! algo salió mal, seguramente fue tu tarjeta sobregirada'})
 
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
+  
+@company.route('/<int:branch_id>/payment/method/add', methods = ['POST'])
+def add_payment_method(branch_id):
+    if request.headers.get('Authorization'):
+        token_index = False
+        payload = parse_token(request, token_index)
+
+        branch = Branch.query.get(branch_id)
+        company = Company.query.get(branch.company_id)
+        
+        if not company.conekta_id:
+            try:
+                customer = conekta.Customer.create({
+                    'name': branch.name,
+                    'email': company.email,
+                    'phone': branch.phone,
+                    'payment_sources': [{
+                      'type': 'card',
+                      'token_id': request.json['token_id']
+                    }]
+                })
+                company.conekta_id = customer.id
+                db.session.commit()
+            
+                return jsonify({'data': 'Se agregó metodo de pago'})
+            except conekta.ConektaError as e:
+                print e.message
+                return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, échale ganas',
+                                'error': e.message,
+                                'phone': branch.phone })
+        else:
+            try:
+                customer = conekta.Customer.find(company.conekta_id)
+                source = customer.createPaymentSource({
+                  "type": "card",
+                  "token_id": request.json['token_id']
+                })
+                
+                return jsonify({'data': 'Se agregó metodo de pago'})
+            except conekta.conektaError as e:
+                print e.message
+                return jsonify({ 'data': 'algo falló, intenta de nuevo' })
+        return jsonify({ 'message': 'Oops! algo salió mal, intentalo de nuevo, échale ganas' })
+
+@company.route('/<int:branch_id>/pro/suscription', methods = ['GET', 'POST'])
+def monthly_suscription(branch_id):
+    if request.headers.get('Authorization'):
+        token_index = False
+        payload = parse_token(request, token_index)
+        payment_data = request.json['paymentData']
+        branch = Branch.query.get(branch_id)
+        company = Company.query.get(branch.company_id)
+        
+        if not company.conekta_id:
+            try:
+                customer = conekta.Customer.create({
+                    'name': branch.name,
+                    'email': company.email,
+                    'phone': branch.phone,
+                    'payment_sources': [{
+                      'type': 'card',
+                      'token_id': request.json['token_id']
+                    }]
+                })
+                company.conekta_id = customer.id
+                db.session.commit()
+                subscription = customer.subscription.update({
+                    "plan": "plan-mensual-pro"
+                })
+        
+                if subscription.status == 'active':
+                    branch.pro = True
+                    db.session.commit()
+                    return jsonify({'data': 'Felicidades ya eres PRO'})
+                else:
+                    return jsonify({'data': 'algo falló, tal vez sea tu tarjeta'})
+            except conekta.ConektaError as e:
+              print e.message
+        
+        elif not branch.pro:
+            customer = conekta.Customer.find(company.conekta_id)
+            subscription = customer.subscription.update({
+                "plan": "plan-mensual-pro"
+            })
+        
+            if subscription.status == 'active':
+                branch.pro = True
+                db.session.commit()
+                return jsonify({'data': 'Felicidades ya eres PRO'})
+            else:
+                return jsonify({'data': 'algo falló, tal vez sea tu tarjeta'})
+        return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
 @company.route('/<int:branch_id>/config/set', methods = ['GET', 'POST'])
 def set_config(branch_id):

@@ -16,6 +16,7 @@ class Company(db.Model):
     name = Column(db.String(STRING_LEN), nullable = False, unique = False)
     email = Column(db.String(STRING_LEN), nullable = False, unique = True)
     credits = Column(db.Integer)
+    conekta_id = Column(db.String(STRING_LEN), nullable = True)
 
     branches = db.relationship("Branch", uselist = False, backref = "companies")
 
@@ -31,6 +32,7 @@ class Branch(db.Model):
     about = Column(db.String(STRING_LEN))
     folio = Column(db.String(STRING_LEN))
     silent = Column(db.Boolean)
+    pro = Column(db.Boolean)
 
     # branches_user_id = Column(db.Integer, db.ForeignKey("branches_user.branches_user_id"))
     branches_design = db.relationship("BranchDesign", uselist=False, backref="branches")
