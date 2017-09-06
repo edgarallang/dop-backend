@@ -637,8 +637,8 @@ def monthly_subscription(branch_id):
                     branch.pro = True
                     db.session.commit()
                     return jsonify({'data': 'PRO'})
-                else:
-                    return jsonify({'data': 'algo falló, tal vez sea tu tarjeta'})
+                  else:
+                      return jsonify({'data': 'algo falló, tal vez sea tu tarjeta'})
                   
             except conekta.conektaError as e:
                 print e.message
