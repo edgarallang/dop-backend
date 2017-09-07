@@ -612,37 +612,36 @@ def monthly_subscription(branch_id):
                 print e.message
         
         elif not branch.pro:
-            try:
-                customer = conekta.Customer.find(company.conekta_id)
-                #Si el usuario no tiene tarjeta de credito agregada se crea
-                if not customer.payment_sources[0]:
-                    source = customer.createPaymentSource({
-                        "type": "card",
-                        "token_id": request.json['token_id']
-                    })
-                  #si se agrega con exito se suscribe al plan mensual
-                    if source:
-                        subscription = customer.subscription.update({ "plan": "plan-mensual-pro" })
-                        if subscription.status == 'active':
-                            branch.pro = True
-                            db.session.commit()
-                            return jsonify({'data': 'PRO'})
-                  #si source es null la tarjeta no se pudo agregar y no se suscribe
-                    else:
-                        return jsonify({'data': 'algo falló, tal vez sea tu tarjeta'})
-                #si el usuario si tiene tarjeta agregada se suscribe
-                else:
+            
+            customer = conekta.Customer.find(company.conekta_id)
+            #Si el usuario no tiene tarjeta de credito agregada se crea
+            if not customer.payment_sources[0]:
+                source = customer.createPaymentSource({
+                    "type": "card",
+                    "token_id": request.json['token_id']
+                })
+              #si se agrega con exito se suscribe al plan mensual
+                if source:
                     subscription = customer.subscription.update({ "plan": "plan-mensual-pro" })
                     if subscription.status == 'active':
                         branch.pro = True
                         db.session.commit()
                         return jsonify({'data': 'PRO'})
-                    else:
-                        return jsonify({'data': 'algo falló, tal vez sea tu tarjeta'})
-                  
-            except conekta.conektaError as e:
-                print e.message
-                return jsonify({ 'data': 'algo falló, intenta de nuevo' })
+              #si source es null la tarjeta no se pudo agregar y no se suscribe
+                else:
+                    return jsonify({'data': 'algo falló, tal vez sea tu tarjeta'})
+            #si el usuario si tiene tarjeta agregada se suscribe
+            else:
+                subscription = customer.subscription.update({ "plan": "plan-mensual-pro" })
+                if subscription.status == 'active':
+                    branch.pro = True
+                    db.session.commit()
+                    return jsonify({'data': 'PRO'})
+                else:
+                    return jsonify({'data': 'algo falló, tal vez sea tu tarjeta'})
+
+         
+            return jsonify({ 'data': 'algo falló, intenta de nuevo' })
         return jsonify({'data': 'algo falló, o ya eras PRO'})
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
