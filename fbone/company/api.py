@@ -640,9 +640,9 @@ def monthly_subscription(branch_id):
                   else:
                       return jsonify({'data': 'algo falló, tal vez sea tu tarjeta'})
                   
-            except conekta.conektaError as e:
-                print e.message
-                return jsonify({ 'data': 'algo falló, intenta de nuevo' })
+              except conekta.conektaError as e:
+                  print e.message
+                  return jsonify({ 'data': 'algo falló, intenta de nuevo' })
         
             else:
                 return jsonify({'data': 'algo falló, tal vez sea tu tarjeta'})
