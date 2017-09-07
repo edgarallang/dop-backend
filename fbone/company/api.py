@@ -631,7 +631,9 @@ def monthly_subscription(branch_id):
                     return jsonify({'data': 'algo falló, tal vez sea tu tarjeta'})
             #si el usuario si tiene tarjeta agregada se suscribe
             else:
-                subscription = customer.subscription.update({ "plan": "plan-mensual-pro" })
+                subscription = customer..createSubscription({ 
+                    "plan": "plan-mensual-pro"
+                })
                 if subscription.status == 'active':
                     branch.pro = True
                     db.session.commit()
