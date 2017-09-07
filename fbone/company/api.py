@@ -612,7 +612,6 @@ def monthly_subscription(branch_id):
                 print e.message
         
         elif not branch.pro:
-            
             customer = conekta.Customer.find(company.conekta_id)
             #Si el usuario no tiene tarjeta de credito agregada se crea
             if not customer.payment_sources[0]:
