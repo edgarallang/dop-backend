@@ -557,19 +557,20 @@ def add_payment_method(branch_id):
                 company.conekta_id = customer.id
                 db.session.commit()
             
-                return jsonify({'data': 'Se agregó metodo de pago'})
+                return jsonify({ 'message': 'Se agregó metodo de pago',
+                                 'data': 'success' })
             except conekta.ConektaError as e:
                 print e.message
                 return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, échale ganas',
                                 'error': e.message,
                                 'phone': branch.phone })
         else:
-                customer = conekta.Customer.find(company.conekta_id)
-                source = create_payment_method(customer, request.json['token_id'])
-                if source:
-                    return jsonify({'data': 'Se agregó metodo de pago'})
-                else:
-                    return jsonify({ 'data': 'algo falló, intenta de nuevo' })
+            customer = conekta.Customer.find(company.conekta_id)
+            source = create_payment_method(customer, request.json['token_id'])
+            if source:
+                return jsonify({'data': 'Se agregó metodo de pago'})
+            else:
+                return jsonify({ 'data': 'algo falló, intenta de nuevo' })
         return jsonify({ 'message': 'Oops! algo salió mal, intentalo de nuevo, échale ganas' })
 
 @company.route('/<int:branch_id>/pro/subscription', methods = ['GET', 'POST'])
@@ -617,8 +618,7 @@ def monthly_subscription(branch_id):
                 return jsonify({'data': 'PRO'})
             #si source o subscription es false la tarjeta no se pudo agregar y no se suscribe
             else:
-                return jsonify({'data': 'algo falló, tal vez sea tu tarjeta'})
-    
+                return jsonify({'data': 'algo falló, tal vez sea tu tarjeta'}) 
         return jsonify({'data': 'algo falló, o ya eras PRO'})
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
