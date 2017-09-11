@@ -102,6 +102,31 @@ def set_social_views():
         return jsonify({ 'message': 'vistas actualizada' })
     return jsonify({ 'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas' })
 
+@company.route('/branch/<int:branch_id>/full/stats/get', methods=['GET', 'POST'])
+def full_stats_get(branch_id):
+    if request.headers.get('Authorization'):
+        token_index = False
+        payload = parse_token(request, token_index)
+        query = 'SELECT ((C.available = 0) OR (C.end_date < now()))::bool AS completed, \
+                  B.name AS branches_name, C.name, C.description, C.start_date, C.end_date, C.views, \
+                       (SELECT COUNT(*) \
+                          FROM coupons_likes as CL \
+                          WHERE C.coupon_id = CL.coupon_id) AS total_likes, \
+                       (SELECT COUNT(*) \
+                          FROM clients_coupon AS CC \
+                          WHERE C.coupon_id = CC.coupon_id AND CC.used = true) AS total_uses \
+                 FROM coupons as C \
+                   INNER JOIN branches_design AS BD ON C.owner_id = BD.branch_id \
+                   INNER JOIN branches AS B on C.owner_id = B.branch_id \
+                   LEFT JOIN nxn_coupon AS NC ON C.coupon_id = NC.coupon_id \
+                   LEFT JOIN discount_coupon AS DC ON C.coupon_id = DC.coupon_id \
+                   LEFT JOIN bond_coupon AS BD ON C.coupon_id = BD.coupon_id \
+                 WHERE deleted = FALSE and B.branch_id = %d ORDER BY active DESC, completed' % (branch_id)
+        result = db.engine.execute(query)
+        full_stats = company_stats_schema.dump(result)
+        
+        return jsonify({ 'data': full_stats.data })
+
 @company.route('/branch/<int:branch_id>/profile/get', methods=['GET', 'POST'])
 def select_branch_profile(branch_id):
     if request.headers.get('Authorization'):
@@ -558,7 +583,16 @@ def add_payment_method(branch_id):
                 db.session.commit()
             
                 return jsonify({ 'message': 'Se agregó metodo de pago',
-                                 'data': 'success' })
+                                 'data': 'success',
+                                 'payment_sources': {
+                                    "last4": customer.payment_sources[0].last4,
+                                    "exp_month": customer.payment_sources[0].exp_month,
+                                    "exp_year": customer.payment_sources[0].exp_year,
+                                    "brand": customer.payment_sources[0].brand,
+                                    "name": customer.payment_sources[0].name
+                                 }
+                               })
+            
             except conekta.ConektaError as e:
                 print e.message
                 return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, échale ganas',
@@ -568,7 +602,15 @@ def add_payment_method(branch_id):
             customer = conekta.Customer.find(company.conekta_id)
             source = create_payment_method(customer, request.json['token_id'])
             if source:
-                return jsonify({'data': 'Se agregó metodo de pago'})
+                return jsonify({ 'data': 'Se agregó metodo de pago',
+                                 'payment_sources': {
+                                    "last4": customer.payment_sources[0].last4,
+                                    "exp_month": customer.payment_sources[0].exp_month,
+                                    "exp_year": customer.payment_sources[0].exp_year,
+                                    "brand": customer.payment_sources[0].brand,
+                                    "name": customer.payment_sources[0].name
+                                 }
+                               })
             else:
                 return jsonify({ 'data': 'algo falló, intenta de nuevo' })
         return jsonify({ 'message': 'Oops! algo salió mal, intentalo de nuevo, échale ganas' })
