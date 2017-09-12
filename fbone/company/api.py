@@ -126,6 +126,7 @@ def full_stats_get(branch_id):
         full_stats = company_stats_schema.dump(result)
         
         return jsonify({ 'data': full_stats.data })
+    return jsonify({ 'error': 'Se te olvidó el token mi chavo' })
 
 @company.route('/branch/<int:branch_id>/profile/get', methods=['GET', 'POST'])
 def select_branch_profile(branch_id):
