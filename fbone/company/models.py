@@ -239,7 +239,8 @@ class BranchUserSchema(Schema):
                   'banner',
                   'logo',
                   'credits',
-                  'folio')
+                  'folio',
+                  'pro')
 
 class BranchesProfile(Schema):
     class Meta:
@@ -318,6 +319,18 @@ class BranchesFollowedSchema(Schema):
                   'banner',
                   'logo',
                   'branch_follower_id')
+        
+class CompanyStatsSchema(Schema):
+    class Meta:
+        fields = ('completed',
+                  'branches_name',
+                  'name',
+                  'description',
+                  'start_date',
+                  'end_date',
+                  'views',
+                  'total_likes',
+                  'total_uses')
 
 class RankingUsersSchema(Schema):
     class Meta:
@@ -341,6 +354,7 @@ class RankingUsersSchema(Schema):
 
 company_schema = CompanySchema()
 companies_schema = CompanySchema(many=True)
+company_stats_schema = CompanyStatsSchema(many=True)
 branch_schema = BranchSchema()
 branch_user_schema = BranchUserSchema(many=True)
 branch_profile_schema = BranchesProfile(many=True)
