@@ -732,7 +732,7 @@ def set_config(branch_id):
 def signup_branch():
     company = Company(name = request.json['name'],
                       email = request.json['email'],
-                      credits = 0)
+                      credits = 400)
 
     db.session.add(company)
     db.session.commit()
@@ -740,7 +740,10 @@ def signup_branch():
     branch = Branch(company_id = company.company_id,
                     name = '',
                     about = '',
-                    phone = '')
+                    phone = '',
+                    folio = '',
+                    silent = False,
+                    pro = False)
 
     db.session.add(branch)
     db.session.commit()
