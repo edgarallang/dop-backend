@@ -383,6 +383,7 @@ def on_waiting_for_redeem(user):
     if user_object.get('join_room') == True:
         #session["id"] = user_object.get('user_id')
         #session["room"] = room
+        join_room(user_object.get('user_id'))
         join_room(room)
         print room
     emit('newUser',{'data': user_object}, room = room)
