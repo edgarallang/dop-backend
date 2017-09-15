@@ -232,7 +232,7 @@ def loyalty_redeem():
                         'folio': folio })
     else:
         minutes_left = 480 - minutes
-        socketio.emit('loyaltyFail',{'message': 'error','minutes': str(minutes_left)}, room = room)
+        socketio.emit('loyaltyFail',{'message': 'error','minutes': str(minutes_left)}, room = user_id)
         return jsonify({ 'message': 'error', "minutes": str(minutes_left) })
 
 
