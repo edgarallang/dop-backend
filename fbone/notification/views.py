@@ -389,7 +389,7 @@ def on_waiting_for_redeem(user):
 
 @socketio.on('waitingForRedeemUseriOS')
 def on_waiting_for_redeem(user):
-    print user
+    print user.get('user_id')
     #user_object = json.loads(user)
     #room = user_object.get('room')
     #if user_object.get('join_room') == True:
