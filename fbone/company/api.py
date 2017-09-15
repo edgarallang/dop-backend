@@ -54,7 +54,6 @@ def login():
         response.status_code = 401
         print response
         return response
-    print
     token = create_token(branchUser)
 
     return jsonify(token=token)
@@ -441,7 +440,6 @@ def fisrt_job():
     for ad in adArray:
         if not (ad.duration == 0):
             ad.duration = ad.duration - 1
-            print ad.branch_id
     db.session.commit()
     return jsonify({'message': 'the trigger went well'})
 
@@ -780,6 +778,5 @@ def signup_branch():
 def number_of_rows(query):
     result = 0
     for row in query:
-        print "ENTRO"
         result += 1
     return result
