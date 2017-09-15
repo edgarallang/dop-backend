@@ -54,7 +54,6 @@ def login():
         response.status_code = 401
         print response
         return response
-    print
     token = create_token(branchUser)
 
     return jsonify(token=token)
@@ -441,7 +440,6 @@ def fisrt_job():
     for ad in adArray:
         if not (ad.duration == 0):
             ad.duration = ad.duration - 1
-            print ad.branch_id
     db.session.commit()
     return jsonify({'message': 'the trigger went well'})
 
@@ -732,7 +730,7 @@ def set_config(branch_id):
 def signup_branch():
     company = Company(name = request.json['name'],
                       email = request.json['email'],
-                      credits = 0)
+                      credits = 400)
 
     db.session.add(company)
     db.session.commit()
@@ -740,7 +738,10 @@ def signup_branch():
     branch = Branch(company_id = company.company_id,
                     name = '',
                     about = '',
-                    phone = '')
+                    phone = '',
+                    folio = '',
+                    silent = False,
+                    pro = False)
 
     db.session.add(branch)
     db.session.commit()
@@ -777,6 +778,5 @@ def signup_branch():
 def number_of_rows(query):
     result = 0
     for row in query:
-        print "ENTRO"
         result += 1
     return result

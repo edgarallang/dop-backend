@@ -309,7 +309,6 @@ def get_notifications():
         notifications = db.engine.execute(notifications_query)
         notifications_list = notifications_schema.dump(notifications)
 
-        print notifications_list.data
         return jsonify({'data': notifications_list.data})
     return jsonify({'message': 'Oops! algo salio mal, intentalo de nuevo, echale ganas'})
 
@@ -347,7 +346,6 @@ def get_notifications_offset():
 
         notifications_list = notifications_schema.dump(notifications)
 
-        print notifications_list.data
         return jsonify({'data': notifications_list.data})
 
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})

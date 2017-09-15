@@ -66,8 +66,6 @@ def level_up(user_id):
     user = User.query.get(user_id)
     exp = user.exp
     for key, val in sorted(LEVELS.iteritems(), key=lambda x: x[1]):
-        print key, val
-        print exp >= val
         if (exp >= val):
             user.level = key
         else:
@@ -103,7 +101,6 @@ def set_experience(user_id, exp):
 def generate_pdf():
     x = pdfkit.from_string('Hello!', 'out.pdf')
 
-    print x
     return jsonify({'message': 'Generado'})
 # POST methods
 
@@ -298,7 +295,6 @@ def use_coupon_by_location():
 
                 distance = R * c
 
-                print("Result:", distance)
                 return jsonify({'message': distance})
             else:
                 return jsonify({'message': 'needs_user_location'})
@@ -1083,7 +1079,7 @@ def get_coupons_activity_by_user_likes():
                                     WHERE clients_coupon.used = true AND clients_coupon.private = false AND users.privacy_status = 0 ORDER BY used_date DESC LIMIT 6 OFFSET 0' % (payload['id'], payload['id'], payload['id']))
                                     # AND friends.operation_id = 1
         users_list = user_join_activity_newsfeed.dump(users)
-        print users_list.data
+
         return jsonify({'data': users_list.data})
 
     return jsonify({'message': 'Oops! algo salió mal'})

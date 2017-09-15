@@ -44,8 +44,6 @@ def level_up(user_id):
     user = User.query.get(user_id)
     exp = user.exp
     for key, val in sorted(LEVELS.iteritems(), key=lambda x: x[1]):
-        print key, val
-        print exp >= val
         if (exp >= val):
             user.level = key
         else:
@@ -260,8 +258,6 @@ def loyalty_old_redeem():
 
         if recently_used:
             minutes = (today - recently_used.date).total_seconds() / 60
-            print recently_used.date
-            print minutes
 
         if not recently_used or minutes > 25:
             loyalty_redeem = LoyaltyRedeem(user_id = payload['id'],
