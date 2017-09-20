@@ -387,6 +387,16 @@ def on_waiting_for_redeem(user):
     emit('newUser',{'data': user_object}, room = room)
     return jsonify({'message': 'user'})
 
+@socketio.on('waitingForRedeemUseriOS')
+def on_waiting_for_redeem(user):
+    room = user.get('room')
+    if user.get('join_room') == True:
+        join_room(user.get('user_id'))
+        join_room(room)
+        print room
+    emit('newUser',{'data': user}, room = room)
+    return jsonify({'message': 'user'})
+
 @socketio.on('notifyAdmin')
 def on_waiting_for_redeem(user):
     user_object = json.loads(user)
