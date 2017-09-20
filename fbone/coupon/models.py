@@ -191,7 +191,8 @@ class CouponLogoSchema(Schema):
                   'available',
                   'taken',
                   'folio',
-                  'is_global')
+                  'is_global',
+                  'unique')
 
 class CouponsTakenSchema(Schema):
     class Meta:
