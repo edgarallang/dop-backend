@@ -113,14 +113,17 @@ def full_stats_get(branch_id):
                           WHERE C.coupon_id = CL.coupon_id) AS total_likes, \
                        (SELECT COUNT(*) \
                           FROM clients_coupon AS CC \
-                          WHERE C.coupon_id = CC.coupon_id AND CC.used = true) AS total_uses \
+                          WHERE C.coupon_id = CC.coupon_id AND CC.used = true) AS total_uses, \
+                       (SELECT COUNT(*) \
+					      FROM company_stats as CS \
+					      WHERE owner_id = %d) as profile_views \
                  FROM coupons as C \
                    INNER JOIN branches_design AS BD ON C.owner_id = BD.branch_id \
                    INNER JOIN branches AS B on C.owner_id = B.branch_id \
                    LEFT JOIN nxn_coupon AS NC ON C.coupon_id = NC.coupon_id \
                    LEFT JOIN discount_coupon AS DC ON C.coupon_id = DC.coupon_id \
                    LEFT JOIN bond_coupon AS BC ON C.coupon_id = BC.coupon_id \
-                 WHERE deleted = FALSE and B.branch_id = %d ORDER BY active DESC' % (branch_id)
+                 WHERE deleted = FALSE and B.branch_id = %d ORDER BY active DESC' % (branch_id, branch_id)
         result = db.engine.execute(query)
         full_stats = company_stats_schema.dump(result)
         

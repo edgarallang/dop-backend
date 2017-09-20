@@ -330,7 +330,8 @@ class CompanyStatsSchema(Schema):
                   'end_date',
                   'views',
                   'total_likes',
-                  'total_uses')
+                  'total_uses',
+                  'profile_views')
 
 class RankingUsersSchema(Schema):
     class Meta:
