@@ -20,7 +20,7 @@ from flask import current_app as app
 from flask.ext.login import login_required, current_user
 from jwt import DecodeError, ExpiredSignature
 from .models import *
-from ..extensions import db
+from ..extensions import db, socketio
 from ..company import Branch, BranchUser
 
 company = Blueprint('company', __name__, url_prefix='/api/company')
@@ -786,3 +786,4 @@ def number_of_rows(query):
     for row in query:
         result += 1
     return result
+

@@ -531,7 +531,7 @@ def get_all_coupon_for_user():
     if not user.adult:
         adult_validation = 'AND branches_subcategory.subcategory_id != 25'
 
-    list_coupon = db.engine.execute('SELECT coupon_id, is_global, branches.branch_id, branches.folio, branches,company_id, branches.name, coupon_folio, description, start_date, \
+    list_coupon = db.engine.execute('SELECT coupon_id, is_global, "unique", branches.branch_id, branches.folio, branches,company_id, branches.name, coupon_folio, description, start_date, \
                                             end_date, coupons.limit, min_spent, coupon_category_id, logo, latitude, longitude, banner, category_id, coupons.available, subcategory.subcategory_id, \
                                     (SELECT EXISTS (SELECT * FROM clients_coupon \
                                         WHERE USER_id = %d AND clients_coupon.coupon_id = coupons.coupon_id AND used = false)::bool) AS taken, \
@@ -563,7 +563,7 @@ def get_all_coupon_for_user_offset():
     if not user.adult:
         adult_validation = 'AND branches_subcategory.subcategory_id!=25'
 
-    list_coupon = db.engine.execute('SELECT coupon_id, is_global,branches.branch_id, branches.folio, company_id, branches.name, coupon_folio, description, start_date, \
+    list_coupon = db.engine.execute('SELECT coupon_id, is_global, "unique", branches.branch_id, branches.folio, company_id, branches.name, coupon_folio, description, start_date, \
                                             end_date, coupons.limit, min_spent, coupon_category_id, logo, latitude, longitude, banner, category_id, coupons.available, subcategory.subcategory_id, \
                                     (SELECT EXISTS (SELECT * FROM clients_coupon \
                                         WHERE USER_id = %d AND clients_coupon.coupon_id = coupons.coupon_id AND used = false)::bool) AS taken, \
@@ -593,7 +593,7 @@ def get_favorites_coupon_for_user():
         user = User.query.get(payload['id'])
 
 
-        list_coupon = db.engine.execute('SELECT coupons.coupon_id, coupons.is_global, branches.branch_id, branches.folio, branches,company_id, branches.name, coupon_folio, description, start_date, \
+        list_coupon = db.engine.execute('SELECT coupons.coupon_id, coupons.is_global, "coupons.unique", branches.branch_id, branches.folio, branches,company_id, branches.name, coupon_folio, description, start_date, \
                                                 end_date, coupons.limit, min_spent, coupon_category_id, logo, latitude, longitude, banner, category_id, coupons.available, subcategory.subcategory_id, \
                                         (SELECT EXISTS (SELECT * FROM clients_coupon \
                                             WHERE USER_id = %d AND clients_coupon.coupon_id = coupons.coupon_id AND used = false)::bool) AS taken, \
@@ -744,7 +744,7 @@ def get_all_coupon_for_user_by_branch(branch_id):
     token_index = True
     payload = parse_token(request, token_index)
 
-    list_coupon = db.engine.execute('SELECT coupon_id, is_global, branches.branch_id, branches.folio,  company_id, branches.name, coupon_folio, description, start_date, \
+    list_coupon = db.engine.execute('SELECT coupon_id, is_global, "unique", branches.branch_id, branches.folio,  company_id, branches.name, coupon_folio, description, start_date, \
                                             end_date, coupons.limit, min_spent, coupon_category_id, logo, latitude, longitude, banner, category_id, available, \
                                     (SELECT COUNT(*)  FROM coupons_likes \
                                         WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes, \
@@ -772,7 +772,7 @@ def get_all_coupon_for_user_by_branch_offset():
     branch_id = request.args.get('branch_id')
     payload = parse_token(request, token_index)
 
-    list_coupon = db.engine.execute('SELECT coupon_id, branches.branch_id, branches.folio, company_id, branches.name, coupon_folio, description, start_date, \
+    list_coupon = db.engine.execute('SELECT coupon_id, branches.branch_id,"unique", branches.folio, company_id, branches.name, coupon_folio, description, start_date, \
                                             end_date, coupons.limit, min_spent, coupon_category_id, logo, latitude, longitude, banner, category_id, available, \
                                     (SELECT COUNT(*)  FROM coupons_likes \
                                         WHERE coupons.coupon_id = coupons_likes.coupon_id) AS total_likes, \

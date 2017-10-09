@@ -364,6 +364,15 @@ def on_join_room(message):
     emit('joined', {'data': 'Joined to room'}, room = room)
     return jsonify({'message': 'Todo bien'})
 
+@socketio.on('waitingForRedeemWebAdmin')
+def on_waitin_for_redeem_web(branch):
+    print branch
+    #branch_object = json.loads(branch)
+    #print branch_object.get('branch_id')
+    #room = branch_object.get('branch_id')
+    #join_room(room)
+    #emit('newAdmin',{'data':'new_admin'}, room= room)
+    return jsonify({'message', 'admin'})
 
 @socketio.on('waitingForRedeemAdmin')
 def on_waiting_for_redeem(message):
