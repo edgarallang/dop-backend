@@ -331,7 +331,8 @@ class CompanyStatsSchema(Schema):
                   'views',
                   'total_likes',
                   'total_uses',
-                  'profile_views')
+                  'profile_views',
+                  'followers')
 
 class RankingUsersSchema(Schema):
     class Meta:

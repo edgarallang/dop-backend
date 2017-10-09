@@ -142,7 +142,7 @@ def loyalty_all_get():
                 INNER JOIN branches as B on L.owner_id = B.branch_id \
                 LEFT JOIN loyalty_design as LD ON LD.loyalty_id = L.loyalty_id \
                 LEFT JOIN loyalty_user as LU ON LU.loyalty_id = L.loyalty_id \
-                AND LU.user_id = %d LIMIT %s" % (payload['id'], limit)
+                AND LU.user_id = %d ORDER BY visit LIMIT %s" % (payload['id'], limit)
     
     loyalty = db.engine.execute(query)
     loyalty_list = loyalties_schema.dump(loyalty)
