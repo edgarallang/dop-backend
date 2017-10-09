@@ -366,6 +366,7 @@ def on_join_room(message):
 
 @socketio.on('waitingForRedeemWebAdmin')
 def on_waitin_for_redeem_web(branch):
+    print branch
     #branch_object = json.loads(branch)
     #print branch_object.get('branch_id')
     #room = branch_object.get('branch_id')
