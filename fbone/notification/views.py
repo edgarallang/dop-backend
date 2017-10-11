@@ -404,7 +404,7 @@ def on_waiting_for_redeem(user):
         join_room(web_room)
  
     emit('newUser', {'data': user}, room = room)
-    emit('newUser', { 'data': user } room = web_room)
+    emit('newUser', { 'data': user }, room = web_room)
     return jsonify({'message': 'user'})
 
 @socketio.on('notifyAdmin')
