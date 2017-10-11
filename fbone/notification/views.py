@@ -365,20 +365,18 @@ def on_join_room(message):
     return jsonify({'message': 'Todo bien'})
 
 @socketio.on('waitingForRedeemWebAdmin')
-def on_waitin_for_redeem_web(branch):
-    print branch
-    #branch_object = json.loads(branch)
-    #print branch_object.get('branch_id')
-    #room = branch_object.get('branch_id')
-    #join_room(room)
-    #emit('newAdmin',{'data':'new_admin'}, room= room)
+def on_waitin_for_redeem_web(data):
+    branch_object = json.loads(data)
+    room = branch_object.get('branch_id')
+    join_room(room)
+    emit('newAdmin', {'data': 'new_admin'}, room = room)
     return jsonify({'message', 'admin'})
 
 @socketio.on('waitingForRedeemAdmin')
 def on_waiting_for_redeem(message):
     room = message
     join_room(room)
-    print room
+
     emit('newAdmin',{'data':'new_admin'}, room = room)
     return jsonify({'message': 'admin'})
 
@@ -392,18 +390,21 @@ def on_waiting_for_redeem(user):
         #session["room"] = room
         join_room(user_object.get('user_id'))
         join_room(room)
-        print room
+
     emit('newUser',{'data': user_object}, room = room)
     return jsonify({'message': 'user'})
 
 @socketio.on('waitingForRedeemUseriOS')
 def on_waiting_for_redeem(user):
     room = user.get('room')
+    web_room = user.get('owner_id')
     if user.get('join_room') == True:
         join_room(user.get('user_id'))
         join_room(room)
-        print room
-    emit('newUser',{'data': user}, room = room)
+        join_room(web_room)
+ 
+    emit('newUser', {'data': user}, room = room)
+    emit('newUser', { 'data': user } room = web_room)
     return jsonify({'message': 'user'})
 
 @socketio.on('notifyAdmin')
@@ -421,7 +422,6 @@ def on_leave(data):
 
 @socketio.on('connect')
 def test_connect():
-    print "Conectado"
     return jsonify({'message': 'Todo bien'})
 
 @socketio.on('disconnect')

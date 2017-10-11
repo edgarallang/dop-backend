@@ -223,7 +223,7 @@ def loyalty_redeem():
         user_level = level_up(user_id)
         db.session.commit()
 
-        socketio.emit('loyaltyRedeem',{'data': branch_data.data}, room = user_id)
+        socketio.emit('loyaltyRedeem', {'data': branch_data.data}, room = user_id)
 
         return jsonify({'data': branch_data.data,
                         'level': user_level,
