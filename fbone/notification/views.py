@@ -406,6 +406,7 @@ def on_waiting_for_redeem(user):
  
     emit('newUser', {'data': user }, room = room)
     emit('newUserForWeb', { 'data': user }, room = web_room)
+    print web_room
     return jsonify({'message': 'user'})
 
 @socketio.on('notifyAdmin')
