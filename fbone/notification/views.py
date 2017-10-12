@@ -368,6 +368,7 @@ def on_join_room(message):
 def on_waitin_for_redeem_web(data):
     branch_object = data
     room = branch_object.get('branch_id')
+    print room
     join_room(room)
     emit('newAdmin', {'data': 'new_admin'}, room = room)
     return jsonify({'message', 'admin'})
@@ -403,7 +404,7 @@ def on_waiting_for_redeem(user):
         join_room(room)
         join_room(web_room)
  
-    emit('newUser', {'data': user}, room = room)
+    emit('newUser', {'data': user }, room = room)
     emit('newUserForWeb', { 'data': user }, room = web_room)
     return jsonify({'message': 'user'})
 
