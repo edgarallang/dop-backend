@@ -116,7 +116,7 @@ def full_stats_get(branch_id):
                           WHERE C.coupon_id = CC.coupon_id AND CC.used = true) AS total_uses, \
                        (SELECT COUNT(*) \
 					      FROM company_stats as CS \
-					      WHERE owner_id = %d) as profile_views \
+					      WHERE owner_id = %d) as profile_views, \
                        (SELECT COUNT(*) \
 					      FROM branches_follower as BF \
 					      WHERE branch_id = %d) as followers \
