@@ -386,13 +386,14 @@ def on_waiting_for_redeem(message):
 def on_waiting_for_redeem(user):
     user_object = json.loads(user)
     room = user_object.get('room')
+    web_room = user_object.get('owner_id')
     if user_object.get('join_room') == True:
-        #session["id"] = user_object.get('user_id')
-        #session["room"] = room
         join_room(user_object.get('user_id'))
         join_room(room)
+        join_room(web_room)
 
-    emit('newUser',{'data': user_object}, room = room)
+    emit('newUser', { 'data': user_object }, room = room)
+    emit('newUserForWeb', { 'data': user_object }, room = web_room)
     return jsonify({'message': 'user'})
 
 @socketio.on('waitingForRedeemUseriOS')
@@ -406,7 +407,7 @@ def on_waiting_for_redeem(user):
  
     emit('newUser', {'data': user }, room = room)
     emit('newUserForWeb', { 'data': user }, room = web_room)
-    print web_room
+
     return jsonify({'message': 'user'})
 
 @socketio.on('notifyAdmin')

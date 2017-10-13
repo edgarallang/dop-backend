@@ -227,11 +227,13 @@ def loyalty_redeem():
 
         return jsonify({'data': branch_data.data,
                         'level': user_level,
-                        'folio': folio })
+                        'folio': folio,
+                        'message': 'success' })
     else:
         minutes_left = 480 - minutes
         socketio.emit('loyaltyFail',{'message': 'error','minutes': str(minutes_left)}, room = user_id)
-        return jsonify({ 'message': 'error', "minutes": str(minutes_left) })
+        return jsonify({ 'message': 'error',
+                         'minutes': str(minutes_left) })
 
 
 @loyalty.route('/user/old/redeem', methods=['POST'])
