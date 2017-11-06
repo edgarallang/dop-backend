@@ -372,6 +372,106 @@ def use_coupon_by_location():
         else:
             return jsonify({'message': 'expired'})
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
+
+@coupon.route('/user/redeem/by/branch', methods=['POST'])
+def use_coupon():
+    if request.headers.get('Authorization'):
+        branch_id = request.json['branch_id']
+        coupon_id = request.json['coupon_id']
+        branch_folio = request.json['branch_folio']
+        user_id = request.json['user_id']
+        room = request.json['room']
+
+
+        actual_date = datetime.now()
+        #WHEN USER HAS TAKEN A COUPON
+        client_coupon = ClientsCoupon.query.filter(and_(ClientsCoupon.coupon_id == coupon_id),
+                                                       (ClientsCoupon.user_id == user_id),
+                                                       (ClientsCoupon.used ==False )).first()
+
+
+
+        coupon = Coupon.query.get(coupon_id)
+
+        if coupon.is_global:
+            branch = Branch.query.filter_by(folio = branch_folio,silent = True).first()
+            if not branch:
+                return jsonify({'message': 'error_qr'})
+
+        if coupon.end_date > actual_date:
+            recently_used = ClientsCoupon.query.filter(and_(ClientsCoupon.coupon_id==coupon_id),
+                                                           (ClientsCoupon.user_id==user_id),
+                                                           (ClientsCoupon.used==True)) \
+                                                            .order_by(desc(ClientsCoupon.used_date)) \
+                                                            .first()
+            if recently_used:
+                minutes = (actual_date-recently_used.used_date).total_seconds() / 60
+
+            if recently_used and coupon.unique == True:
+                return jsonify({'message': 'error',"minutes": str(minutes)})
+
+            if not recently_used or minutes > 480:
+                if not client_coupon:
+                    if coupon.available > 0:
+                        client_coupon = ClientsCoupon(user_id = user_id,
+                                          coupon_id = coupon_id,
+                                          folio = '',
+                                          taken_date = actual_date,
+                                          used = True,
+                                          used_date = actual_date,
+                                          private = True,
+                                          branch_folio = branch_folio)
+                        db.session.add(client_coupon)
+                        db.session.commit()
+                        folio = '%d%s%d' % (branch_id, "{:%d%m%Y}".format(actual_date), client_coupon.clients_coupon_id)
+                        client_coupon.folio = folio
+                        coupon.available = coupon.available - 1
+
+                        db.session.commit()
+
+                        branch = Branch.query.filter_by(branch_id = branch_id).first()
+                        branch_data = branch_schema.dump(branch)
+
+                        reward = set_experience(user_id, USING)
+                        user_level = level_up(user_id)
+                        db.session.commit()
+
+                        if request.json['first_using'] == False:
+                            user_first_exp = UserFirstEXP.query.filter_by(user_id = user_id).first()
+                            user_first_exp.first_using = True
+                            first_badge = UsersBadges(user_id = user_id,
+                                                      badge_id = 1,
+                                                      reward_date = datetime.now(),
+                                                      type = 'trophy')
+
+                            db.session.add(first_badge)
+                            db.session.commit()
+
+                        return jsonify({'data': branch_data.data,
+                                        'reward': reward,
+                                        'level': user_level,
+                                        'folio': folio })
+                    else:
+                        return jsonify({'message': 'agotado'})
+                else:
+                    client_coupon.used = True
+                    client_coupon.used_date = actual_date
+
+                    db.session.commit()
+
+                    branch = Branch.query.get(branch_id)
+                    branch_data = branch_schema.dump(branch)
+
+                    reward = set_experience(user_id, USING)
+                    user_level = level_up(user_id)
+                    return jsonify({'data': branch_data.data, 'reward': reward, 'level': user_level, 'folio': client_coupon.folio })
+            else:
+                minutes_left = 25 - minutes
+                return jsonify({'message': 'error',"minutes": str(minutes_left)})
+        else:
+            return jsonify({'message': 'expired'})
+    return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, échale ganas'})
+
 @coupon.route('/report',methods=['POST'])
 def user_report():
     if request.headers.get('Authorization'):
