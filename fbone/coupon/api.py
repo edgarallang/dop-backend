@@ -374,7 +374,7 @@ def use_coupon_by_location():
     return jsonify({'message': 'Oops! algo salió mal, intentalo de nuevo, echale ganas'})
 
 @coupon.route('/user/redeem/by/branch', methods=['POST'])
-def use_coupon():
+def redeem_coupon():
     if request.headers.get('Authorization'):
         branch_id = request.json['branch_id']
         coupon_id = request.json['coupon_id']
