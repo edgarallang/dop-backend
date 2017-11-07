@@ -434,6 +434,8 @@ def redeem_coupon():
                     reward = set_experience(user_id, USING)
                     user_level = level_up(user_id)
                     db.session.commit()
+                    socketio.emit('loyaltyRedeem', {'data': branch_data.data}, room = user_id)
+
 
                 else:
                     return jsonify({'message': 'agotado'})
