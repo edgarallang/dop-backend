@@ -438,6 +438,7 @@ def redeem_coupon():
 
 
                 else:
+                    socketio.emit('loyaltyFail',{'message': 'agotado', 'type': 'error' }, room = user_id)
                     return jsonify({'message': 'agotado'})
             else:
                 client_coupon.used = True
@@ -454,6 +455,7 @@ def redeem_coupon():
                 return jsonify({'data': branch_data.data, 'reward': reward, 'level': user_level, 'folio': client_coupon.folio })
         else:
             minutes_left = 25 - minutes
+            socketio.emit('loyaltyFail',{'message': 'error','minutes': str(minutes_left)}, room = user_id)
             return jsonify({'message': 'error',"minutes": str(minutes_left)})
     else:
         return jsonify({'message': 'expired'})
