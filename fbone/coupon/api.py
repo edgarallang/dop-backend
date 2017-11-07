@@ -436,7 +436,7 @@ def redeem_coupon():
                         user_level = level_up(user_id)
                         db.session.commit()
 
-                        if request.json['first_using'] == False:
+                        if not request.json['first_using']:
                             user_first_exp = UserFirstEXP.query.filter_by(user_id = user_id).first()
                             user_first_exp.first_using = True
                             first_badge = UsersBadges(user_id = user_id,
