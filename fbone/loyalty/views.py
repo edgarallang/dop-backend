@@ -187,53 +187,53 @@ def loyalty_redeem():
     if recently_used:
         minutes = (today - recently_used.date).total_seconds() / 60
 
-    if not recently_used or minutes > 480: # 8 hours
-        loyalty_redeem = LoyaltyRedeem(user_id = user_id,
-                                        loyalty_id = loyalty_id,
-                                        date = today,
-                                        private = True,
-                                        branch_folio = branch_folio)
-        db.session.add(loyalty_redeem)
+    # if not recently_used or minutes > 480: # 8 hours
+    loyalty_redeem = LoyaltyRedeem(user_id = user_id,
+                                    loyalty_id = loyalty_id,
+                                    date = today,
+                                    private = True,
+                                    branch_folio = branch_folio)
+    db.session.add(loyalty_redeem)
+    db.session.commit()
+
+    folio = '%d%s%d' % (request.json['branch_id'], "{:%d%m%Y}".format(today),
+                                loyalty_redeem.loyalty_redeem_id)
+
+    loyalty_user = LoyaltyUser.query.filter_by(loyalty_id = loyalty_id,
+                                                        user_id = user_id).first()
+
+    if not loyalty_user:
+        loyalty_user = LoyaltyUser(user_id = user_id,
+                                    loyalty_id = loyalty_id,
+                                    visit = 1)
+
+        db.session.add(loyalty_user)
         db.session.commit()
-
-        folio = '%d%s%d' % (request.json['branch_id'], "{:%d%m%Y}".format(today),
-                                    loyalty_redeem.loyalty_redeem_id)
-
-        loyalty_user = LoyaltyUser.query.filter_by(loyalty_id = loyalty_id,
-                                                         user_id = user_id).first()
-
-        if not loyalty_user:
-            loyalty_user = LoyaltyUser(user_id = user_id,
-                                        loyalty_id = loyalty_id,
-                                        visit = 1)
-
-            db.session.add(loyalty_user)
-            db.session.commit()
-        else:
-            if loyalty_user.visit == loyalty.goal:
-                loyalty_user.visit = 0
-            else:
-                loyalty_user.visit = loyalty_user.visit + 1
-            db.session.commit()
-
-        branch = Branch.query.filter_by(branch_id = branch_id).first()
-        branch_data = branch_schema.dump(branch)
-
-        reward = set_experience(user_id, USING)
-        user_level = level_up(user_id)
-        db.session.commit()
-
-        socketio.emit('loyaltyRedeem', {'data': branch_data.data}, room = user_id)
-
-        return jsonify({'data': branch_data.data,
-                        'level': user_level,
-                        'folio': folio,
-                        'message': 'success' })
     else:
-        minutes_left = 480 - minutes
-        socketio.emit('loyaltyFail',{'message': 'error','minutes': str(minutes_left)}, room = user_id)
-        return jsonify({ 'message': 'error',
-                         'minutes': str(minutes_left) })
+        if loyalty_user.visit == loyalty.goal:
+            loyalty_user.visit = 0
+        else:
+            loyalty_user.visit = loyalty_user.visit + 1
+        db.session.commit()
+
+    branch = Branch.query.filter_by(branch_id = branch_id).first()
+    branch_data = branch_schema.dump(branch)
+
+    reward = set_experience(user_id, USING)
+    user_level = level_up(user_id)
+    db.session.commit()
+
+    socketio.emit('loyaltyRedeem', {'data': branch_data.data}, room = user_id)
+
+    return jsonify({'data': branch_data.data,
+                    'level': user_level,
+                    'folio': folio,
+                    'message': 'success' })
+    # else:
+    #     minutes_left = 480 - minutes
+    #     socketio.emit('loyaltyFail',{'message': 'error','minutes': str(minutes_left)}, room = user_id)
+    #     return jsonify({ 'message': 'error',
+    #                      'minutes': str(minutes_left) })
 
 
 @loyalty.route('/user/old/redeem', methods=['POST'])
