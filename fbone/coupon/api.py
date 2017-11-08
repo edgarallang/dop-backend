@@ -409,51 +409,51 @@ def redeem_coupon():
         if recently_used and coupon.unique == True:
             return jsonify({'message': 'error',"minutes": str(minutes)})
 
-        if not recently_used or minutes > 480:
-            if not client_coupon:
-                if coupon.available > 0:
-                    client_coupon = ClientsCoupon(user_id = user_id,
-                                      coupon_id = coupon_id,
-                                      folio = '',
-                                      taken_date = actual_date,
-                                      used = True,
-                                      used_date = actual_date,
-                                      private = True,
-                                      branch_folio = branch_folio)
-                    db.session.add(client_coupon)
-                    db.session.commit()
-                    folio = '%d%s%d' % (branch_id, "{:%d%m%Y}".format(actual_date), client_coupon.clients_coupon_id)
-                    client_coupon.folio = folio
-                    coupon.available = coupon.available - 1
-
-                    db.session.commit()
-
-                    branch = Branch.query.filter_by(branch_id = branch_id).first()
-                    branch_data = branch_schema.dump(branch)
-
-                    reward = set_experience(user_id, USING)
-                    user_level = level_up(user_id)
-                    db.session.commit()
-                    socketio.emit('loyaltyRedeem', {'data': branch_data.data}, room = user_id)
-
-
-                else:
-                    return jsonify({'message': 'agotado'})
-            else:
-                client_coupon.used = True
-                client_coupon.used_date = actual_date
+        #if not recently_used or minutes > 480:
+        if not client_coupon:
+            if coupon.available > 0:
+                client_coupon = ClientsCoupon(user_id = user_id,
+                                  coupon_id = coupon_id,
+                                  folio = '',
+                                  taken_date = actual_date,
+                                  used = True,
+                                  used_date = actual_date,
+                                  private = True,
+                                  branch_folio = branch_folio)
+                db.session.add(client_coupon)
+                db.session.commit()
+                folio = '%d%s%d' % (branch_id, "{:%d%m%Y}".format(actual_date), client_coupon.clients_coupon_id)
+                client_coupon.folio = folio
+                coupon.available = coupon.available - 1
 
                 db.session.commit()
 
-                branch = Branch.query.get(branch_id)
+                branch = Branch.query.filter_by(branch_id = branch_id).first()
                 branch_data = branch_schema.dump(branch)
 
                 reward = set_experience(user_id, USING)
                 user_level = level_up(user_id)
-                return jsonify({'data': branch_data.data, 'reward': reward, 'level': user_level, 'folio': client_coupon.folio })
+                db.session.commit()
+                socketio.emit('loyaltyRedeem', {'data': branch_data.data}, room = user_id)
+
+
+            else:
+                return jsonify({'message': 'agotado'})
         else:
-            minutes_left = 25 - minutes
-            return jsonify({'message': 'error',"minutes": str(minutes_left)})
+            client_coupon.used = True
+            client_coupon.used_date = actual_date
+
+            db.session.commit()
+
+            branch = Branch.query.get(branch_id)
+            branch_data = branch_schema.dump(branch)
+
+            reward = set_experience(user_id, USING)
+            user_level = level_up(user_id)
+            return jsonify({'data': branch_data.data, 'reward': reward, 'level': user_level, 'folio': client_coupon.folio })
+    #else:
+    #    minutes_left = 25 - minutes
+    #    return jsonify({'message': 'error',"minutes": str(minutes_left)})
     else:
         return jsonify({'message': 'expired'})
 
