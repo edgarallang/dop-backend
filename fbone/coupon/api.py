@@ -435,8 +435,10 @@ def redeem_coupon():
                     user_level = level_up(user_id)
                     db.session.commit()
                     socketio.emit('loyaltyRedeem', {'data': branch_data.data}, room = user_id)
-
-
+                    return jsonify({'data': branch_data.data,
+                        'level': user_level,
+                        'folio': folio,
+                        'message': 'success' })
                 else:
                     socketio.emit('loyaltyFail',{'message': 'agotado', 'type': 'error' }, room = user_id)
                     return jsonify({'message': 'agotado'})
