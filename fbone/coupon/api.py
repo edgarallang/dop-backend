@@ -409,7 +409,7 @@ def redeem_coupon():
         if recently_used and coupon.unique == True:
             return jsonify({'message': 'error',"minutes": str(minutes)})
 
-        if not recently_used or minutes > 0.25:
+        if not recently_used or minutes > 480:
             if not client_coupon:
                 if coupon.available > 0:
                     client_coupon = ClientsCoupon(user_id = user_id,
