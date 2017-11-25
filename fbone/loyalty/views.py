@@ -187,7 +187,7 @@ def loyalty_redeem():
     if recently_used:
         minutes = (today - recently_used.date).total_seconds() / 60
 
-    #if not recently_used or minutes > 480: # 8 hours
+    # if not recently_used or minutes > 480: # 8 hours
     loyalty_redeem = LoyaltyRedeem(user_id = user_id,
                                     loyalty_id = loyalty_id,
                                     date = today,
@@ -201,7 +201,7 @@ def loyalty_redeem():
 
     loyalty_user = LoyaltyUser.query.filter_by(loyalty_id = loyalty_id,
                                                      user_id = user_id).first()
-
+                                                        user_id = user_id).first()
     if not loyalty_user:
         loyalty_user = LoyaltyUser(user_id = user_id,
                                     loyalty_id = loyalty_id,
@@ -229,11 +229,11 @@ def loyalty_redeem():
                     'level': user_level,
                     'folio': folio,
                     'message': 'success' })
-    #else:
-    #    minutes_left = 480 - minutes
-    #    socketio.emit('loyaltyFail',{'message': 'error','minutes': str(minutes_left)}, room = user_id)
-    #    return jsonify({ 'message': 'error',
-                         'minutes': str(minutes_left) })
+    # else:
+    #     minutes_left = 480 - minutes
+    #     socketio.emit('loyaltyFail',{'message': 'error','minutes': str(minutes_left)}, room = user_id)
+    #     return jsonify({ 'message': 'error',
+    #                      'minutes': str(minutes_left) })
 
 
 @loyalty.route('/user/old/redeem', methods=['POST'])
