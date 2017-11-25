@@ -200,8 +200,8 @@ def loyalty_redeem():
                                     loyalty_redeem.loyalty_redeem_id)
 
         loyalty_user = LoyaltyUser.query.filter_by(loyalty_id = loyalty_id,
-                                                        user_id = user_id).first()
-                                                            user_id = user_id).first()
+                                                    user_id = user_id).first()
+                                                    user_id = user_id).first()
         if not loyalty_user:
             loyalty_user = LoyaltyUser(user_id = user_id,
                                         loyalty_id = loyalty_id,
