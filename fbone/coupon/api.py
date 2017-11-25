@@ -409,7 +409,7 @@ def redeem_coupon():
         if recently_used and coupon.unique == True:
             return jsonify({'message': 'error',"minutes": str(minutes)})
 
-        #if not recently_used or minutes > 480:
+        if not recently_used or minutes > 0.25:
         if not client_coupon:
             if coupon.available > 0:
                 client_coupon = ClientsCoupon(user_id = user_id,
@@ -431,26 +431,12 @@ def redeem_coupon():
                 branch = Branch.query.filter_by(branch_id = branch_id).first()
                 branch_data = branch_schema.dump(branch)
 
-<<<<<<< HEAD
                 reward = set_experience(user_id, USING)
                 user_level = level_up(user_id)
                 db.session.commit()
                 socketio.emit('loyaltyRedeem', {'data': branch_data.data}, room = user_id)
 
 
-=======
-                    reward = set_experience(user_id, USING)
-                    user_level = level_up(user_id)
-                    db.session.commit()
-                    socketio.emit('loyaltyRedeem', {'data': branch_data.data}, room = user_id)
-                    return jsonify({'data': branch_data.data,
-                        'level': user_level,
-                        'folio': folio,
-                        'message': 'success' })
-                else:
-                    socketio.emit('loyaltyFail',{'message': 'agotado', 'type': 'error' }, room = user_id)
-                    return jsonify({'message': 'agotado'})
->>>>>>> fce34a244ef77680bf85925e1a22f13704ffe869
             else:
                 return jsonify({'message': 'agotado'})
         else:
